@@ -98,16 +98,16 @@ const statsBadges = [
 
 export function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden">
+    <section className="relative min-h-[85vh] flex items-center overflow-hidden">
       {/* Premium Gradient Background */}
       <div className="absolute inset-0 -z-10 bg-white">
-        {/* Main gradient orbs */}
-        <div className="absolute top-[-15%] right-[-5%] w-[1200px] h-[1200px] bg-gradient-to-bl from-blue-500/15 via-blue-400/8 to-transparent rounded-full blur-3xl animate-pulse" />
+        {/* Main gradient orbs - smaller */}
+        <div className="absolute top-[-10%] right-[-3%] w-[800px] h-[800px] bg-gradient-to-bl from-blue-500/15 via-blue-400/8 to-transparent rounded-full blur-3xl animate-pulse" />
         <div
-          className="absolute bottom-[-15%] left-[-8%] w-[1000px] h-[1000px] bg-gradient-to-tr from-indigo-500/12 via-indigo-400/6 to-transparent rounded-full blur-3xl animate-pulse"
+          className="absolute bottom-[-10%] left-[-5%] w-[700px] h-[700px] bg-gradient-to-tr from-indigo-500/12 via-indigo-400/6 to-transparent rounded-full blur-3xl animate-pulse"
           style={{ animationDelay: "2s" }}
         />
-        <div className="absolute top-1/3 right-1/4 w-[600px] h-[600px] bg-gradient-to-b from-cyan-500/10 to-transparent rounded-full blur-3xl" />
+        <div className="absolute top-1/3 right-1/4 w-[400px] h-[400px] bg-gradient-to-b from-cyan-500/10 to-transparent rounded-full blur-3xl" />
 
         {/* Subtle accent gradients */}
         <div className="absolute inset-0 bg-gradient-to-b from-white/50 via-transparent to-transparent pointer-events-none" />
@@ -124,7 +124,7 @@ export function Hero() {
       </div>
 
       <Container size="xl">
-        <div className="pt-16 md:pt-20 pb-16 md:pb-20">
+        <div className="pt-10 md:pt-14 pb-10 md:pb-14">
           <div className="max-w-7xl mx-auto">
             {/* Stats Pills - Top */}
             <motion.div
