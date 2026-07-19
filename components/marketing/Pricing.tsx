@@ -1,10 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Check, ArrowRight, Sparkles, Zap } from 'lucide-react';
+import { Check, ArrowRight, Sparkles, Zap, Loader2 } from 'lucide-react';
 import { Container } from '@/components/common/Container';
 import { Button } from '@/components/ui/button';
+import { axiosInstance } from '@/lib/axios';
 
 interface Plan {
   name: string;
@@ -17,14 +19,14 @@ interface Plan {
   save?: string;
 }
 
-const monthlyPlans: Plan[] = [
+const FALLBACK_PLANS: Plan[] = [
   {
-    name: 'Free',
+    name: 'Free Trial',
     price: '₦0',
-    period: '/month',
-    description: 'Start selling in minutes. No risk.',
+    period: '/mo (30 days)',
+    description: 'Try Carticom free for 30 days. No credit card needed.',
     features: [
-      'Up to 10 products',
+      'Up to 25 products',
       'Basic storefront',
       'Paystack integration',
       'Community support',
@@ -46,7 +48,7 @@ const monthlyPlans: Plan[] = [
       'Email support',
       '3 user accounts',
       'Advanced analytics',
-      'Escrow protection',
+      'WhatsApp orders',
     ],
     cta: 'Start Free Trial',
     popular: false,
@@ -57,13 +59,13 @@ const monthlyPlans: Plan[] = [
     period: '/month',
     description: 'For growing businesses that need more power',
     features: [
-      'Up to 1,000 products',
+      'Up to 500 products',
       'Custom domain + SSL',
       'All payment gateways',
       'Priority support',
       '10 user accounts',
       'AI automation (basic)',
-      'Advanced escrow',
+      'Bulk import/export',
       'API access',
     ],
     cta: 'Start Free Trial',
@@ -75,13 +77,13 @@ const monthlyPlans: Plan[] = [
     period: '/month',
     description: 'For established businesses ready to scale',
     features: [
-      'Unlimited products',
+      'Up to 3,000 products',
       'Custom analytics',
       'All payment gateways',
       '24/7 phone support',
       'Unlimited users',
       'Full AI automation',
-      'Advanced escrow',
+      'Bulk import/export',
       'API access',
       'Dedicated manager',
     ],
@@ -90,11 +92,11 @@ const monthlyPlans: Plan[] = [
   },
   {
     name: 'Enterprise',
-    price: '₦50,000',
+    price: '₦45,000',
     period: '/month',
     description: 'For large organizations with custom needs',
     features: [
-      'Unlimited everything',
+      'Up to 99,999 products',
       'White-label options',
       'Custom integrations',
       'SLA guarantee',
@@ -106,102 +108,6 @@ const monthlyPlans: Plan[] = [
     ],
     cta: 'Contact Sales',
     popular: false,
-  },
-];
-
-const yearlyPlans: Plan[] = [
-  {
-    name: 'Free',
-    price: '₦0',
-    period: '/year',
-    description: 'Start selling in minutes. No risk.',
-    features: [
-      'Up to 10 products',
-      'Basic storefront',
-      'Paystack integration',
-      'Community support',
-      '1 user account',
-      'Basic analytics',
-    ],
-    cta: 'Get Started Free',
-    popular: false,
-  },
-  {
-    name: 'Starter',
-    price: '₦50,000',
-    period: '/year',
-    description: 'Perfect for small businesses just getting started',
-    features: [
-      'Up to 100 products',
-      'Custom domain',
-      'Paystack + Flutterwave',
-      'Email support',
-      '3 user accounts',
-      'Advanced analytics',
-      'Escrow protection',
-    ],
-    cta: 'Start Free Trial',
-    popular: false,
-    save: 'Save 17%',
-  },
-  {
-    name: 'Growth',
-    price: '₦150,000',
-    period: '/year',
-    description: 'For growing businesses that need more power',
-    features: [
-      'Up to 1,000 products',
-      'Custom domain + SSL',
-      'All payment gateways',
-      'Priority support',
-      '10 user accounts',
-      'AI automation (basic)',
-      'Advanced escrow',
-      'API access',
-    ],
-    cta: 'Start Free Trial',
-    popular: true,
-    save: 'Save 17%',
-  },
-  {
-    name: 'Business',
-    price: '₦250,000',
-    period: '/year',
-    description: 'For established businesses ready to scale',
-    features: [
-      'Unlimited products',
-      'Custom analytics',
-      'All payment gateways',
-      '24/7 phone support',
-      'Unlimited users',
-      'Full AI automation',
-      'Advanced escrow',
-      'API access',
-      'Dedicated manager',
-    ],
-    cta: 'Start Free Trial',
-    popular: false,
-    save: 'Save 17%',
-  },
-  {
-    name: 'Enterprise',
-    price: '₦500,000',
-    period: '/year',
-    description: 'For large organizations with custom needs',
-    features: [
-      'Unlimited everything',
-      'White-label options',
-      'Custom integrations',
-      'SLA guarantee',
-      'Unlimited users',
-      'Custom AI training',
-      'On-premise deployment',
-      'Dedicated support team',
-      'Custom contracts',
-    ],
-    cta: 'Contact Sales',
-    popular: false,
-    save: 'Save 17%',
   },
 ];
 
@@ -252,8 +158,31 @@ function ToggleSwitch({
   );
 }
 
+interface PlansResponse {
+  monthlyPlans?: Plan[];
+  yearlyPlans?: Plan[];
+}
+
 export function Pricing() {
   const [isYearly, setIsYearly] = useState(false);
+
+  const { data: plansData, isLoading } = useQuery<PlansResponse>({
+    queryKey: ['subscription-plans'],
+    queryFn: async () => {
+      const res = await axiosInstance.get('/api/v1/subscriptions/plans');
+      return res.data?.data ?? {};
+    },
+    staleTime: 5 * 60_000,
+  });
+
+  const monthlyPlans = plansData?.monthlyPlans ?? FALLBACK_PLANS;
+  const yearlyFallback = FALLBACK_PLANS.map((p) => ({
+    ...p,
+    period: '/year',
+    price: `₦${(parseInt(p.price.replace(/[₦,]/g, ''), 10) * 10).toLocaleString()}`,
+    save: p.price !== '₦0' ? 'Save 17%' : undefined,
+  }));
+  const yearlyPlans = plansData?.yearlyPlans ?? yearlyFallback;
   const plans = isYearly ? yearlyPlans : monthlyPlans;
 
   return (
@@ -290,6 +219,12 @@ export function Pricing() {
           </motion.p>
         </div>
 
+        {isLoading && (
+          <div className="flex justify-center py-12">
+            <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+          </div>
+        )}
+
         <ToggleSwitch isYearly={isYearly} onToggle={() => setIsYearly(!isYearly)} />
 
         <AnimatePresence mode="wait">
@@ -312,7 +247,7 @@ export function Pricing() {
                 className={`relative rounded-2xl p-5 flex flex-col ${
                   plan.popular
                     ? 'bg-gradient-to-br from-blue-600 to-blue-500 text-white shadow-2xl scale-105 z-10 ring-2 ring-blue-400'
-                    : plan.name === 'Free'
+                      : plan.name === 'Free Trial'
                     ? 'bg-white border-2 border-dashed border-gray-200 hover:border-gray-300'
                     : 'bg-white border border-gray-200'
                 } transition-all duration-300 hover:shadow-xl`}
@@ -367,7 +302,7 @@ export function Pricing() {
                   className={`w-full mb-5 text-sm ${
                     plan.popular
                       ? 'bg-white text-blue-600 hover:bg-blue-50'
-                      : plan.name === 'Free'
+                    : plan.name === 'Free Trial'
                       ? 'bg-blue-600 text-white hover:bg-blue-700'
                       : 'bg-gray-900 text-white hover:bg-gray-800'
                   }`}

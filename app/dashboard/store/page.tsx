@@ -1,0 +1,277 @@
+'use client';
+
+import { useState, useEffect, useRef } from 'react';
+import { useAuthStore } from '@/features/auth/store/auth.store';
+import { useMyStores, useUpdateStore } from '@/features/onboarding/hooks/useOnboarding';
+import { LoadingState, EmptyState, ErrorState } from '@/components/dashboard/shared/StateComponents';
+import { Globe, Eye, Upload, ExternalLink } from 'lucide-react';
+import axiosInstance from '@/lib/axios';
+import { showToast } from '@/lib/notifications/toast';
+
+export default function StorePage() {
+  const user = useAuthStore((state) => state.user);
+  const { data: stores, isLoading, error, refetch } = useMyStores();
+  const updateStore = useUpdateStore();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const store = stores?.[0] ?? null;
+
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [editing, setEditing] = useState(false);
+  const [publishing, setPublishing] = useState(false);
+
+  useEffect(() => {
+    if (store) {
+      setName(store.name ?? '');
+      setDescription(store.description ?? '');
+    }
+  }, [store]);
+
+  const handleSave = () => {
+    if (!store) return;
+    updateStore.mutate(
+      { id: store.id, data: { name, description } },
+      { onSuccess: () => setEditing(false) }
+    );
+  };
+
+  const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !store) return;
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      await axiosInstance.post(`/api/v1/stores/${store.id}/logo`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      showToast('success', 'Logo uploaded successfully');
+      refetch();
+    } catch {
+      showToast('error', 'Failed to upload logo');
+    }
+  };
+
+  const handleTogglePublish = async () => {
+    if (!store) return;
+    setPublishing(true);
+    try {
+      const action = store.status === 'ACTIVE' ? 'unpublish' : 'publish';
+      await axiosInstance.patch(`/api/v1/stores/${store.id}/${action}`);
+      showToast('success', `Store ${action === 'publish' ? 'published' : 'unpublished'} successfully`);
+      refetch();
+    } catch {
+      showToast('error', 'Failed to update store status');
+    } finally {
+      setPublishing(false);
+    }
+  };
+
+  if (isLoading) {
+    return <LoadingState message="Loading store..." />;
+  }
+
+  if (error) {
+    return <ErrorState onRetry={() => refetch()} />;
+  }
+
+  if (!store) {
+    return <EmptyState title="No store found" description="You don't have any stores yet." />;
+  }
+
+  const isPublished = store.status === 'ACTIVE';
+  const storefrontUrl = `${window.location.origin}/store/${store.slug}`;
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Store</h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-2">
+            Manage your store settings and branding
+          </p>
+        </div>
+        <div className="flex gap-2">
+          {isPublished && (
+            <a
+              href={storefrontUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg text-sm hover:bg-gray-50 dark:hover:bg-gray-800"
+            >
+              <Eye className="h-4 w-4" />
+              View Store
+            </a>
+          )}
+          <button
+            onClick={handleTogglePublish}
+            disabled={publishing}
+            className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium ${
+              isPublished
+                ? 'border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300'
+                : 'bg-blue-600 text-white hover:bg-blue-700'
+            }`}
+          >
+            <Globe className="h-4 w-4" />
+            {publishing ? '...' : isPublished ? 'Unpublish' : 'Publish'}
+          </button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Store Information</h2>
+            <button
+              onClick={() => setEditing(!editing)}
+              className="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 font-medium"
+            >
+              {editing ? 'Cancel' : 'Edit'}
+            </button>
+          </div>
+          {editing ? (
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Store Name</label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description</label>
+                <textarea
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  rows={3}
+                />
+              </div>
+              <button
+                onClick={handleSave}
+                disabled={updateStore.isPending}
+                className="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+              >
+                {updateStore.isPending ? 'Saving...' : 'Save Changes'}
+              </button>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Store Name</label>
+                <p className="mt-1 text-sm text-gray-900 dark:text-white">{store.name}</p>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
+                <p className="mt-1 text-sm text-gray-900 dark:text-white">{store.description || 'No description'}</p>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Slug</label>
+                <p className="mt-1 text-sm text-gray-900 dark:text-white">/{store.slug}</p>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
+                <span className={`inline-block mt-1 px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                  store.status === 'ACTIVE'
+                    ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+                    : store.status === 'PENDING'
+                    ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
+                    : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
+                }`}>
+                  {store.status}
+                </span>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Currency</label>
+                <p className="mt-1 text-sm text-gray-900 dark:text-white">{store.currency}</p>
+              </div>
+              {isPublished && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Store URL</label>
+                  <a href={storefrontUrl} target="_blank" rel="noopener noreferrer" className="mt-1 inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400">
+                    {storefrontUrl} <ExternalLink className="h-3 w-3" />
+                  </a>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Branding</h2>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Logo</label>
+              <div className="mt-2 flex items-start gap-4">
+                <div className="w-24 h-24 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center overflow-hidden shrink-0">
+                  {store.logoUrl ? (
+                    <img src={store.logoUrl} alt="Store logo" className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="text-xs text-gray-500">No logo</span>
+                  )}
+                </div>
+                <div>
+                  <button
+                    onClick={() => fileInputRef.current?.click()}
+                    className="inline-flex items-center gap-2 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg text-sm hover:bg-gray-50 dark:hover:bg-gray-800"
+                  >
+                    <Upload className="h-4 w-4" />
+                    Upload Logo
+                  </button>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleLogoUpload}
+                  />
+                  <p className="text-xs text-gray-500 mt-2">Recommended: 512x512px, PNG or JPG</p>
+                </div>
+              </div>
+            </div>
+            {store.bannerUrl && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Banner</label>
+                <div className="mt-1 w-full h-24 rounded-lg border border-gray-300 dark:border-gray-700 overflow-hidden">
+                  <img src={store.bannerUrl} alt="Store banner" className="w-full h-full object-cover" />
+                </div>
+              </div>
+            )}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Business Owner</label>
+              <p className="mt-1 text-sm text-gray-900 dark:text-white">{user?.fullName || 'Not set'}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* SEO Settings */}
+        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 lg:col-span-2">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">SEO & Preview</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">SEO Title</label>
+                <input type="text" defaultValue={store.name} className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white" placeholder="Store SEO title" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">SEO Description</label>
+                <textarea className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white" rows={3} placeholder="Store SEO description" defaultValue={store.description ?? ''} />
+              </div>
+              <button className="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">
+                Save SEO
+              </button>
+            </div>
+            <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800/50">
+              <p className="text-xs font-medium text-gray-500 uppercase mb-2">Google Preview</p>
+              <p className="text-sm text-blue-700 dark:text-blue-400 truncate">{store.name} — Carticom</p>
+              <p className="text-xs text-green-700 dark:text-green-400 truncate">{storefrontUrl}</p>
+              <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 line-clamp-2">{store.description || 'Shop on Carticom'}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

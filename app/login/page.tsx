@@ -10,14 +10,18 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Eye, EyeOff, Loader2, AlertCircle } from 'lucide-react';
+import { FcGoogle } from 'react-icons/fc';
 import { AuthLayout } from '@/features/auth/components/AuthLayout';
+import { PublicOnlyGuard } from '@/features/auth/components/AuthGuard';
 import { loginSchema } from '@/features/auth/schemas';
+import { useAuthStore } from '@/features/auth/store/auth.store';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { authToasts } from '@/features/auth/hooks/useToast';
 import type { LoginSchema } from '@/features/auth/schemas';
 
 function LoginForm() {
   const { login } = useAuth();
+  const user = useAuthStore((state) => state.user);
   const router = useRouter();
   const searchParams = useSearchParams();
   const [showPassword, setShowPassword] = useState(false);
@@ -46,8 +50,22 @@ function LoginForm() {
 
     if (result.success) {
       authToasts.loginSuccess();
-      const returnUrl = searchParams.get('returnUrl');
-      router.push(returnUrl ? decodeURIComponent(returnUrl) : '/dashboard');
+      const returnUrl = searchParams.get('returnUrl') || searchParams.get('redirect');
+
+      if (returnUrl) {
+        router.push(decodeURIComponent(returnUrl));
+        return;
+      }
+
+      const roleRedirectMap: Record<string, string> = {
+        SUPER_ADMIN: '/super-admin/dashboard',
+        ADMIN: '/admin/dashboard',
+        BUSINESS_OWNER: '/dashboard',
+        STAFF: '/staff/dashboard',
+        CUSTOMER: '/storefront',
+      };
+      const redirect = roleRedirectMap[user?.role ?? ''] ?? '/dashboard';
+      router.push(redirect);
     } else {
       const errorMessage = result.error ?? 'Login failed. Please try again.';
       setServerError(errorMessage);
@@ -180,6 +198,28 @@ function LoginForm() {
         </button>
       </form>
 
+      {/* Divider */}
+      <div className="relative my-6">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-gray-300 dark:border-gray-700" />
+        </div>
+        <div className="relative flex justify-center text-sm">
+          <span className="bg-white dark:bg-gray-900 px-4 text-gray-500">Or continue with</span>
+        </div>
+      </div>
+
+      {/* Google OAuth Button */}
+      <button
+        type="button"
+        onClick={() => {
+          window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
+        }}
+        className="flex w-full items-center justify-center gap-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+      >
+        <FcGoogle className="h-5 w-5" />
+        Continue with Google
+      </button>
+
       {/* Register Link */}
       <p className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
         Don't have an account?{' '}
@@ -198,19 +238,21 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <AuthLayout
-      title="Welcome back"
-      subtitle="Login to your Carticom dashboard"
-    >
-      <Suspense
-        fallback={
-          <div className="flex justify-center py-8">
-            <Loader2 className="h-6 w-6 animate-spin text-blue-600" />
-          </div>
-        }
+    <PublicOnlyGuard>
+      <AuthLayout
+        title="Welcome back"
+        subtitle="Login to your Carticom dashboard"
       >
-        <LoginForm />
-      </Suspense>
-    </AuthLayout>
+        <Suspense
+          fallback={
+            <div className="flex justify-center py-8">
+              <Loader2 className="h-6 w-6 animate-spin text-blue-600" />
+            </div>
+          }
+        >
+          <LoginForm />
+        </Suspense>
+      </AuthLayout>
+    </PublicOnlyGuard>
   );
 }

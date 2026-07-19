@@ -139,6 +139,26 @@ export const queryKeys = {
     roles: () => [...queryKeys.staff.all, 'roles'] as const,
   },
 
+  // ─── AI ────────────────────────────────────────────────────
+  ai: {
+    all: ['ai'] as const,
+    byStore: (storeId: string) => [...queryKeys.ai.all, 'store', storeId] as const,
+  },
+
+  // ─── Subscription ─────────────────────────────────────────
+  subscription: {
+    all: ['subscription'] as const,
+    byStore: (storeId: string) => ['subscription', 'store', storeId] as const,
+  },
+
+  // ─── Wallet ───────────────────────────────────────────────
+  wallet: {
+    all: ['wallet'] as const,
+    byStore: (storeId: string) => ['wallet', 'store', storeId] as const,
+    transactions: (storeId: string, params?: Record<string, unknown>) =>
+      ['wallet', storeId, 'transactions', params] as const,
+  },
+
   // ─── Generic Helper ──────────────────────────────────────
   // Use for any domain not yet covered by the above factories
   generic: {

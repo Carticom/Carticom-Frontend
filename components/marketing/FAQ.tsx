@@ -8,11 +8,7 @@ import { Container } from '@/components/common/Container';
 const faqs = [
   {
     question: 'What is Carticom?',
-    answer: 'Carticom is a Commerce Operating System built specifically for African businesses. It combines store management, payments (Paystack, Flutterwave), escrow protection, AI automation via WhatsApp, and advanced analytics into one unified platform.',
-  },
-  {
-    question: 'How does the escrow system work?',
-    answer: 'Our escrow system holds funds securely between buyers and sellers until both parties confirm transaction completion. This protects against fraud and builds trust. Funds are released automatically once delivery is confirmed, or through our AI-assisted dispute resolution if issues arise.',
+    answer: 'Carticom is a Commerce Operating System built specifically for African businesses. It combines store management, payments (Paystack, Flutterwave), AI automation via WhatsApp, and advanced analytics into one unified platform.',
   },
   {
     question: 'Which payment gateways are supported?',

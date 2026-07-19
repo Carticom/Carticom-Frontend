@@ -5,6 +5,7 @@
 // ─── Enums ───────────────────────────────────────────────────
 
 export enum UserRole {
+  CUSTOMER = 'CUSTOMER',
   BUSINESS_OWNER = 'BUSINESS_OWNER',
   STAFF = 'STAFF',
   ADMIN = 'ADMIN',
@@ -60,6 +61,7 @@ export interface AuthTokens {
   accessToken: string;
   refreshToken: string;
   expiresIn: number;
+  tokenType: string;
 }
 
 export interface UserDto {
@@ -72,6 +74,7 @@ export interface UserDto {
   status: AccountStatus;
   emailVerified: boolean;
   avatarUrl?: string;
+  onboardingCompleted?: boolean;
   createdAt: string;
   updatedAt: string;
 }

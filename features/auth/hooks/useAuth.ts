@@ -27,34 +27,15 @@ export function useAuth() {
     async (dto: LoginDto): Promise<{ success: boolean; error?: string }> => {
       try {
         const response = await authService.login(dto);
-        console.log('Login hook received:', response);
         
-        // If service succeeded (no exception), consider it a success
-        // The backend returned 200 OK, so we should proceed
-        const responseData = response as any;
+        // Service returns AuthResponse with user and tokens
+        const { user, tokens } = response;
         
-        // Try to extract tokens and user from various possible structures
-        const tokens = responseData?.tokens || responseData;
-        const user = responseData?.user;
-        
-        // If we have the minimum required (accessToken), proceed with login
-        if (tokens?.accessToken) {
-          store.login(user || { 
-            id: '', 
-            fullName: '', 
-            businessName: '', 
-            email: dto.email, 
-            phone: '', 
-            role: 0, 
-            status: 0, 
-            emailVerified: false, 
-            createdAt: '', 
-            updatedAt: '' 
-          } as any, tokens);
+        if (tokens?.accessToken && user) {
+          store.login(user, tokens);
           return { success: true };
         }
         
-        console.warn('Login response missing accessToken:', response);
         return { success: false, error: 'Invalid response from server' };
       } catch (error) {
         const message =
@@ -71,34 +52,15 @@ export function useAuth() {
     ): Promise<{ success: boolean; error?: string }> => {
       try {
         const response = await authService.registerBusinessOwner(dto);
-        console.log('Register hook received:', response);
         
-        // If service succeeded (no exception), consider it a success
-        // The backend returned 200 OK, so we should proceed
-        const responseData = response as any;
+        // Service returns AuthResponse with user and tokens
+        const { user, tokens } = response;
         
-        // Try to extract tokens and user from various possible structures
-        const tokens = responseData?.tokens || responseData;
-        const user = responseData?.user;
-        
-        // If we have the minimum required (accessToken), proceed with login
-        if (tokens?.accessToken) {
-          store.login(user || { 
-            id: '', 
-            fullName: dto.fullName, 
-            businessName: dto.businessName, 
-            email: dto.email, 
-            phone: dto.phone, 
-            role: 0, 
-            status: 0, 
-            emailVerified: false, 
-            createdAt: '', 
-            updatedAt: '' 
-          } as any, tokens);
+        if (tokens?.accessToken && user) {
+          store.login(user, tokens);
           return { success: true };
         }
         
-        console.warn('Register response missing accessToken:', response);
         return { success: false, error: 'Invalid response from server' };
       } catch (error) {
         const message =

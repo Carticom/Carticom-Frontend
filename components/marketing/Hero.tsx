@@ -69,16 +69,6 @@ const floatingCards = [
     borderColor: "border-emerald-200/50",
   },
   {
-    icon: Shield,
-    title: "Buyer Protection",
-    value: "Protected",
-    description: "Secure escrow",
-    color: "from-violet-500 to-violet-600",
-    bg: "bg-violet-50",
-    iconColor: "text-violet-600",
-    borderColor: "border-violet-200/50",
-  },
-  {
     icon: Bot,
     title: "AI Assistant",
     value: "24/7 Support",

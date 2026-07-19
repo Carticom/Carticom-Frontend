@@ -20,12 +20,6 @@ const features = [
     color: 'green',
   },
   {
-    icon: Shield,
-    title: 'Escrow System',
-    description: 'Secure transactions with our built-in escrow. Protect buyers and sellers with automated verification and dispute resolution.',
-    color: 'purple',
-  },
-  {
     icon: Bot,
     title: 'AI Automation',
     description: 'Automate customer support, order tracking, and marketing via WhatsApp. Let AI handle routine tasks while you focus on growth.',

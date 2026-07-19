@@ -1,0 +1,66 @@
+// ============================================================
+// CARTICOM PRODUCTS — Domain Types
+// ============================================================
+
+export interface ProductDto {
+  id: string;
+  storeId: string;
+  name: string;
+  description: string;
+  price: number;
+  compareAtPrice?: number;
+  cost?: number;
+  sku?: string;
+  barcode?: string;
+  categoryId?: string;
+  categoryName?: string;
+  images: string[];
+  status: ProductStatus;
+  inventory: InventoryInfo;
+  seoTitle?: string;
+  seoDescription?: string;
+  slug: string;
+  tags: string[];
+  metadata: Record<string, unknown>;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateProductDto {
+  name: string;
+  description: string;
+  price: number;
+  compareAtPrice?: number;
+  cost?: number;
+  sku?: string;
+  barcode?: string;
+  categoryId?: string;
+  images?: string[];
+  inventory?: {
+    quantity: number;
+    trackQuantity: boolean;
+    allowBackorder: boolean;
+  };
+  seoTitle?: string;
+  seoDescription?: string;
+  tags?: string[];
+  metadata?: Record<string, unknown>;
+}
+
+export interface UpdateProductDto extends Partial<CreateProductDto> {
+  status?: ProductStatus;
+}
+
+export interface InventoryInfo {
+  quantity: number;
+  trackQuantity: boolean;
+  allowBackorder: boolean;
+  lowStockThreshold: number;
+}
+
+export enum ProductStatus {
+  DRAFT = 'DRAFT',
+  ACTIVE = 'ACTIVE',
+  ARCHIVED = 'ARCHIVED',
+  OUT_OF_STOCK = 'OUT_OF_STOCK',
+}

@@ -17,15 +17,15 @@ import type {
 import { AccountStatus } from '../types';
 
 const AUTH_ENDPOINTS = {
-  REGISTER: '/auth/register',
-  LOGIN: '/auth/login',
-  LOGOUT: '/auth/logout',
-  REFRESH: '/auth/refresh',
-  FORGOT_PASSWORD: '/auth/forgot-password',
-  RESET_PASSWORD: '/auth/reset-password',
-  VERIFY_EMAIL: '/auth/verify-email',
-  ME: '/auth/me',
-  UPDATE_PROFILE: '/auth/profile',
+  REGISTER: '/api/v1/auth/register',
+  LOGIN: '/api/v1/auth/login',
+  LOGOUT: '/api/v1/auth/logout',
+  REFRESH: '/api/v1/auth/refresh',
+  FORGOT_PASSWORD: '/api/v1/auth/forgot-password',
+  RESET_PASSWORD: '/api/v1/auth/reset-password',
+  VERIFY_EMAIL: '/api/v1/auth/verify-email',
+  ME: '/api/v1/auth/me',
+  UPDATE_PROFILE: '/api/v1/auth/profile',
 } as const;
 
 // ─── Service Class ───────────────────────────────────────────
@@ -64,6 +64,7 @@ class AuthService {
             accessToken: backendData.accessToken,
             refreshToken: backendData.refreshToken,
             expiresIn: backendData.expiresIn,
+            tokenType: backendData.tokenType || 'Bearer',
           },
         };
         
@@ -109,6 +110,7 @@ class AuthService {
             accessToken: backendData.accessToken,
             refreshToken: backendData.refreshToken,
             expiresIn: backendData.expiresIn,
+            tokenType: backendData.tokenType || 'Bearer',
           },
         };
         
@@ -200,6 +202,19 @@ class AuthService {
         throw new Error('Invalid response from server');
       }
       return response.data.data as UserDto;
+    } catch (error) {
+      throw new Error(extractErrorMessage(error));
+    }
+  }
+
+  // ─── Change Password ─────────────────────────────────────
+
+  async changePassword(data: {
+    currentPassword: string;
+    newPassword: string;
+  }): Promise<void> {
+    try {
+      await axiosInstance.post('/api/v1/auth/change-password', data);
     } catch (error) {
       throw new Error(extractErrorMessage(error));
     }

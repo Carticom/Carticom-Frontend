@@ -7,6 +7,14 @@ import { persist } from 'zustand/middleware';
 import type { UserDto, AuthTokens } from '../types';
 import { setAccessToken } from '@/lib/axios';
 
+const setCookie = (name: string, value: string, maxAge: number) => {
+  document.cookie = `${name}=${value}; Path=/; Max-Age=${maxAge}; SameSite=Lax; Secure`;
+};
+
+const removeCookie = (name: string) => {
+  document.cookie = `${name}=; Path=/; Max-Age=0; SameSite=Lax`;
+};
+
 // ─── Constants ───────────────────────────────────────────────
 
 const SESSION_TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes idle timeout
@@ -57,6 +65,10 @@ export const useAuthStore = create<AuthState>()(
           return;
         }
         setAccessToken(tokens.accessToken);
+        setCookie('accessToken', tokens.accessToken, tokens.expiresIn);
+        if (tokens.refreshToken) {
+          setCookie('refreshToken', tokens.refreshToken, 7 * 24 * 60 * 60);
+        }
         set({
           user,
           accessToken: tokens.accessToken,
@@ -71,6 +83,8 @@ export const useAuthStore = create<AuthState>()(
       // ─── Logout ───────────────────────────────────────────
       logout: () => {
         setAccessToken(null);
+        removeCookie('accessToken');
+        removeCookie('refreshToken');
         set({
           user: null,
           accessToken: null,
@@ -175,6 +189,10 @@ export const useAuthStore = create<AuthState>()(
         return (state) => {
           if (state?.accessToken) {
             setAccessToken(state.accessToken);
+            setCookie('accessToken', state.accessToken, state.expiresIn ?? 3600);
+            if (state.refreshToken) {
+              setCookie('refreshToken', state.refreshToken, 7 * 24 * 60 * 60);
+            }
           }
         };
       },

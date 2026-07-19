@@ -1,0 +1,150 @@
+'use client';
+
+import React from 'react';
+import { motion } from 'framer-motion';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Plus, Loader2 } from 'lucide-react';
+import { firstProductSchema, type FirstProductFormData } from '@/features/onboarding/schemas';
+import { useCreateProduct } from '@/features/onboarding/hooks/useOnboarding';
+
+interface FirstProductStepProps {
+  onNext: () => void;
+  onBack: () => void;
+  storeId?: string;
+  onProductCreated: (productId: string) => void;
+}
+
+export function FirstProductStep({ onNext, onBack, storeId, onProductCreated }: FirstProductStepProps) {
+  const createProduct = useCreateProduct();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<FirstProductFormData>({
+    resolver: zodResolver(firstProductSchema),
+    defaultValues: {
+      name: '',
+      description: '',
+      price: '',
+      quantity: '',
+    },
+  });
+
+  const onSubmit = async (data: FirstProductFormData) => {
+    try {
+      const product = await createProduct.mutateAsync({
+        storeId: '',
+        name: data.name,
+        description: data.description || undefined,
+        price: Number(data.price),
+        quantity: Number(data.quantity),
+      });
+
+      if (product?.id) {
+        onProductCreated(product.id);
+      }
+      onNext();
+    } catch {
+      // Error handled by the hook (toast)
+    }
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="space-y-6"
+    >
+      <div>
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+          Create Your First Product
+        </h2>
+        <p className="text-gray-600 dark:text-gray-400">
+          Add your first product to start selling
+        </p>
+      </div>
+
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor="name">Product Name *</Label>
+          <Input id="name" placeholder="My Awesome Product" {...register('name')} />
+          {errors.name && (
+            <p className="text-sm text-red-500">{errors.name.message}</p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="description">Product Description</Label>
+          <Textarea
+            id="description"
+            placeholder="Describe your product..."
+            rows={4}
+            {...register('description')}
+          />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="price">Price (₦) *</Label>
+            <Input id="price" type="number" placeholder="10000" {...register('price')} />
+            {errors.price && (
+              <p className="text-sm text-red-500">{errors.price.message}</p>
+            )}
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="quantity">Stock Quantity *</Label>
+            <Input id="quantity" type="number" placeholder="100" {...register('quantity')} />
+            {errors.quantity && (
+              <p className="text-sm text-red-500">{errors.quantity.message}</p>
+            )}
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <Label>Product Images</Label>
+          <div className="flex items-center justify-center w-full">
+            <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700">
+              <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                <Plus className="h-8 w-8 text-gray-500 dark:text-gray-400 mb-2" />
+                <p className="text-sm text-gray-500 dark:text-gray-400">Click to upload product images</p>
+              </div>
+              <input type="file" className="hidden" accept="image/*" multiple />
+            </label>
+          </div>
+        </div>
+
+        <div className="p-4 rounded-lg border border-blue-200 dark:border-blue-900 bg-blue-50 dark:bg-blue-900/20">
+          <p className="text-sm text-blue-800 dark:text-blue-300">
+            💡 <strong>Tip:</strong> You can add more products later from your dashboard. This is just to get you started!
+          </p>
+        </div>
+
+        <div className="flex justify-between pt-6">
+          <Button type="button" variant="outline" onClick={onBack} disabled={isSubmitting}>
+            Back
+          </Button>
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700"
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                Creating...
+              </>
+            ) : (
+              'Continue'
+            )}
+          </Button>
+        </div>
+      </form>
+    </motion.div>
+  );
+}

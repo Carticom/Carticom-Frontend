@@ -14,13 +14,6 @@ const testimonials = [
     rating: 5,
   },
   {
-    quote: 'The escrow system gave our customers confidence. We saw a 40% increase in completed transactions within the first month of using Carticom.',
-    author: 'Amina Bello',
-    role: 'Founder, FashionHub',
-    avatar: 'AB',
-    rating: 5,
-  },
-  {
     quote: 'The AI automation for WhatsApp is a game-changer. We handle 10x more customer inquiries without hiring additional support staff.',
     author: 'Emeka Nwosu',
     role: 'Operations Manager, QuickMart',
