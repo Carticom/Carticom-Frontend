@@ -22,21 +22,21 @@ export function useSubscription(storeId: string) {
   });
 }
 
-// ─── Use Update Subscription ──────────────────────────────────
+// ─── Use Cancel Subscription ──────────────────────────────────
 
-export function useUpdateSubscription() {
+export function useCancelSubscription() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ id, data }: { id: string; data: Partial<UpdateSubscriptionDto> }) => {
-      return subscriptionRepository.update({ id, data });
+    mutationFn: async (subscriptionId: string) => {
+      return subscriptionRepository.cancel(subscriptionId);
     },
-    onSuccess: (_, variables) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.subscription.all });
-      showToast('success', 'Subscription updated successfully');
+      showToast('success', 'Subscription cancelled successfully');
     },
     onError: (error: Error) => {
-      showToast('error', 'Failed to update subscription', {
+      showToast('error', 'Failed to cancel subscription', {
         description: error.message,
       });
     },

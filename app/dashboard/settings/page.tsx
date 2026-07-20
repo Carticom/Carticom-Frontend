@@ -38,7 +38,7 @@ export default function SettingsPage() {
   const handleSaveBusiness = () => {
     if (!storeId) return;
     updateSettings.mutate({
-      id: settings?.id ?? storeId,
+      storeId: storeId,
       data: {
         business: {
           businessName,

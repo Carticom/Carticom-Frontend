@@ -2,6 +2,7 @@ import { Hero } from '@/components/marketing/Hero';
 import { Features } from '@/components/marketing/Features';
 import { AI } from '@/components/marketing/AI';
 import { Analytics } from '@/components/marketing/Analytics';
+import { CustomSolutions } from '@/components/marketing/CustomSolutions';
 import { Pricing } from '@/components/marketing/Pricing';
 import { Testimonials } from '@/components/marketing/Testimonials';
 import { FAQ } from '@/components/marketing/FAQ';
@@ -47,6 +48,7 @@ export default function Home() {
       <Features />
       <AI />
       <Analytics />
+      <CustomSolutions />
       <Pricing />
       <Testimonials />
       <FAQ />

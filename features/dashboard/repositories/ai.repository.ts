@@ -15,7 +15,11 @@ export class AIRepository extends BaseRepository<AIConfigDto, CreateAIConfigDto,
   }
 
   async getByStore(storeId: string) {
-    return this.get<AIConfigDto>(`/api/v1/ai/store/${storeId}`);
+    return this.get<AIConfigDto>(`/api/v1/ai/status/${storeId}`);
+  }
+
+  async enable(storeId: string, enabled: boolean) {
+    return this.post<AIConfigDto>(`/api/v1/ai/enable/${storeId}`, { enabled });
   }
 }
 

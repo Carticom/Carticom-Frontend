@@ -1,7 +1,7 @@
 'use client';
 
 import { useCurrentStoreId } from '@/hooks/useCurrentStore';
-import { useAIConfig, useUpdateAIConfig } from '@/features/dashboard/hooks/useAI';
+import { useAIConfig, useToggleAI } from '@/features/dashboard/hooks/useAI';
 import { LoadingState, ErrorState, EmptyState } from '@/components/dashboard/shared/StateComponents';
 import { AIStatus } from '@/features/dashboard/types/ai.types';
 import { MessageSquare, ShoppingCart, TrendingUp, Brain } from 'lucide-react';
@@ -16,11 +16,11 @@ const statusColors: Record<AIStatus, string> = {
 export default function AIPage() {
   const { storeId } = useCurrentStoreId();
   const { data: aiConfig, isLoading, error, refetch } = useAIConfig(storeId ?? '');
-  const updateMutation = useUpdateAIConfig();
+  const toggleMutation = useToggleAI();
 
   const handleToggle = () => {
-    if (!aiConfig) return;
-    updateMutation.mutate({ id: aiConfig.id, data: { enabled: !aiConfig.enabled } });
+    if (!aiConfig || !storeId) return;
+    toggleMutation.mutate({ storeId, enabled: !aiConfig.enabled });
   };
 
   if (isLoading) return <LoadingState message="Loading AI configuration..." />;
@@ -59,14 +59,14 @@ export default function AIPage() {
             </span>
             <button
               onClick={handleToggle}
-              disabled={updateMutation.isPending}
+              disabled={toggleMutation.isPending}
               className={`px-4 py-2 text-sm rounded-lg transition-colors ${
                 enabled
                   ? 'bg-red-100 text-red-700 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-400'
                   : 'bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400'
               }`}
             >
-              {updateMutation.isPending ? 'Updating...' : enabled ? 'Disable' : 'Enable'}
+              {toggleMutation.isPending ? 'Updating...' : enabled ? 'Disable' : 'Enable'}
             </button>
           </div>
         </div>

@@ -5,6 +5,7 @@
 'use client';
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import axiosInstance from '@/lib/axios';
 import { settingsRepository } from '@/features/dashboard/repositories/settings.repository';
 import type { SettingsDto, UpdateSettingsDto } from '@/features/dashboard/types/settings.types';
 import { queryKeys } from '@/lib/dal/query-keys';
@@ -28,8 +29,8 @@ export function useUpdateSettings() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ id, data }: { id: string; data: Partial<UpdateSettingsDto> }) => {
-      return settingsRepository.update({ id, data });
+    mutationFn: async ({ storeId, data }: { storeId: string; data: Partial<UpdateSettingsDto> }) => {
+      return axiosInstance.put(`/api/v1/stores/${storeId}/settings`, data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.settings.all });

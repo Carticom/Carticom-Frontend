@@ -162,16 +162,17 @@ export const cartApi = {
     ),
 
   add: (data: { storeId: string; productId: string; quantity: number }) =>
-    axiosInstance.post<ApiResponse<CartDto>>(`${API_PREFIX}/cart/add`, data),
+    axiosInstance.post<ApiResponse<CartDto>>(`${API_PREFIX}/cart/items`, data),
 
   updateItem: (storeId: string, productId: string, quantity: number) =>
     axiosInstance.put<ApiResponse<CartDto>>(
-      `${API_PREFIX}/cart/update?storeId=${storeId}&productId=${productId}&quantity=${quantity}`
+      `${API_PREFIX}/cart/items`,
+      { storeId, productId, quantity }
     ),
 
   removeItem: (storeId: string, productId: string) =>
     axiosInstance.delete<ApiResponse<CartDto>>(
-      `${API_PREFIX}/cart/remove?storeId=${storeId}&productId=${productId}`
+      `${API_PREFIX}/cart/items?storeId=${storeId}&productId=${productId}`
     ),
 
   clear: (storeId: string) =>
@@ -241,7 +242,7 @@ export const paymentApi = {
 
 export const walletApi = {
   getBalance: () =>
-    axiosInstance.get<ApiResponse<WalletDto>>(`${API_PREFIX}/wallets/balance`),
+    axiosInstance.get<ApiResponse<WalletDto>>(`${API_PREFIX}/wallet`),
 };
 
 // ─── Storefront API (public) ─────────────────────────────────

@@ -22,16 +22,16 @@ export function useAIConfig(storeId: string) {
   });
 }
 
-// ─── Use Update AI Config ─────────────────────────────────────
+// ─── Use Toggle AI Config ─────────────────────────────────────
 
-export function useUpdateAIConfig() {
+export function useToggleAI() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ id, data }: { id: string; data: Partial<UpdateAIConfigDto> }) => {
-      return aiRepository.update({ id, data });
+    mutationFn: async ({ storeId, enabled }: { storeId: string; enabled: boolean }) => {
+      return aiRepository.enable(storeId, enabled);
     },
-    onSuccess: (_, variables) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.ai.all });
       showToast('success', 'AI configuration updated successfully');
     },

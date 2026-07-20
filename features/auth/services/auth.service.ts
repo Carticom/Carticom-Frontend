@@ -214,7 +214,7 @@ class AuthService {
     newPassword: string;
   }): Promise<void> {
     try {
-      await axiosInstance.post('/api/v1/auth/change-password', data);
+      await axiosInstance.put('/api/v1/auth/password', data);
     } catch (error) {
       throw new Error(extractErrorMessage(error));
     }

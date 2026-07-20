@@ -16,8 +16,7 @@ export function useOrders(storeId: string, params?: { page?: number; limit?: num
   return useQuery({
     queryKey: queryKeys.orders.list({ storeId, ...params }),
     queryFn: async () => {
-      const result = await ordersRepository.list(params);
-      return result.data;
+      return ordersRepository.getByStore(storeId, params);
     },
     enabled: !!storeId,
   });

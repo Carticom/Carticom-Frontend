@@ -16,8 +16,7 @@ export function useCustomers(storeId: string, params?: { page?: number; limit?: 
   return useQuery({
     queryKey: queryKeys.customers.list({ storeId, ...params }),
     queryFn: async () => {
-      const result = await customersRepository.list(params);
-      return result.data;
+      return customersRepository.getByStore(storeId, params);
     },
     enabled: !!storeId,
   });

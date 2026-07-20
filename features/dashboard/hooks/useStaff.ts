@@ -16,8 +16,7 @@ export function useStaff(storeId: string, params?: { page?: number; limit?: numb
   return useQuery({
     queryKey: queryKeys.staff.list({ storeId, ...params }),
     queryFn: async () => {
-      const result = await staffRepository.list(params);
-      return result.data;
+      return staffRepository.getByStore(storeId, params);
     },
     enabled: !!storeId,
   });
@@ -65,7 +64,7 @@ export function useUpdateStaff() {
 
   return useMutation({
     mutationFn: async ({ id, data }: { id: string; data: Partial<UpdateStaffDto> }) => {
-      return staffRepository.update({ id, data });
+      return staffRepository.updatePermissions(id, data);
     },
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.staff.all });

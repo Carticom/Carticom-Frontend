@@ -15,7 +15,7 @@ export class SettingsRepository extends BaseRepository<SettingsDto, never, Updat
   }
 
   async getByStore(storeId: string) {
-    return this.get<SettingsDto>(`/api/v1/settings/store/${storeId}`);
+    return this.get<SettingsDto>(`/api/v1/stores/${storeId}/settings`);
   }
 }
 

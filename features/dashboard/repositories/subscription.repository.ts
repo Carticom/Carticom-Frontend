@@ -17,6 +17,10 @@ export class SubscriptionRepository extends BaseRepository<SubscriptionDto, Crea
   async getByStore(storeId: string) {
     return this.get<SubscriptionDto>(`/api/v1/subscriptions/store/${storeId}`);
   }
+
+  async cancel(subscriptionId: string) {
+    return this.delete({ id: subscriptionId });
+  }
 }
 
 export const subscriptionRepository = new SubscriptionRepository();
