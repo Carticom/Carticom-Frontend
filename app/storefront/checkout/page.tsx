@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { Suspense, useEffect, useState, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ArrowLeft, Loader2, ShoppingBag, Tag, Truck, Package } from 'lucide-react';
 import { cartApi, checkoutApi, storefrontApi } from '@/features/onboarding/services/onboarding.service';
@@ -21,7 +21,7 @@ interface CustomerDetails {
   state: string;
 }
 
-export default function CheckoutPage() {
+function CheckoutPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const storeSlug = searchParams.get('store');
@@ -307,5 +307,17 @@ export default function CheckoutPage() {
         </Button>
       </form>
     </div>
+  );
+}
+
+export default function CheckoutPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    }>
+      <CheckoutPageContent />
+    </Suspense>
   );
 }
