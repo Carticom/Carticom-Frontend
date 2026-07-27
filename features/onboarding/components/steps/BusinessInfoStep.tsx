@@ -22,6 +22,7 @@ interface BusinessInfoStepProps {
 export function BusinessInfoStep({ onNext, onBack, initialData, onSave }: BusinessInfoStepProps) {
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [bannerFile, setBannerFile] = useState<File | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const createStore = useCreateStore();
 
   const {
@@ -41,6 +42,7 @@ export function BusinessInfoStep({ onNext, onBack, initialData, onSave }: Busine
   });
 
   const onSubmit = async (data: BusinessInfoFormData) => {
+    setSubmitError(null);
     try {
       onSave(data);
       await createStore.mutateAsync({
@@ -48,8 +50,9 @@ export function BusinessInfoStep({ onNext, onBack, initialData, onSave }: Busine
         description: data.description || undefined,
       });
       onNext();
-    } catch {
-      // Error handled by the hook (toast)
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Failed to save. Please try again.';
+      setSubmitError(msg);
     }
   };
 
@@ -69,6 +72,12 @@ export function BusinessInfoStep({ onNext, onBack, initialData, onSave }: Busine
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        {submitError && (
+          <div className="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700" role="alert">
+            <span className="mt-0.5 shrink-0">⚠</span>
+            <p>{submitError}</p>
+          </div>
+        )}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="businessName">Business Name *</Label>

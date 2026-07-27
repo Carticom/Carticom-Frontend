@@ -49,6 +49,7 @@ function getBasePath(role: string): string {
 
 export const config = {
   matcher: [
+    '/',
     '/dashboard/:path*',
     '/staff/:path*',
     '/admin/:path*',
@@ -73,8 +74,8 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
-  // Redirect authenticated users away from auth pages
-  if (accessToken && (pathname === '/login' || pathname === '/register')) {
+  // Redirect authenticated users away from landing/auth pages
+  if (accessToken && (pathname === '/' || pathname === '/login' || pathname === '/register')) {
     const role = getRoleFromToken(accessToken);
     const redirect = role ? getRoleRedirect(role) : '/dashboard';
     return NextResponse.redirect(new URL(redirect, req.url));

@@ -6,6 +6,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { UserDto, AuthTokens } from '../types';
 import { setAccessToken } from '@/lib/axios';
+import authService from '../services/auth.service';
 
 const setCookie = (name: string, value: string, maxAge: number) => {
   document.cookie = `${name}=${value}; Path=/; Max-Age=${maxAge}; SameSite=Lax; Secure`;
@@ -162,13 +163,35 @@ export const useAuthStore = create<AuthState>()(
       initialize: async () => {
         try {
           const state = get();
-          if (state?.accessToken) {
-            setAccessToken(state.accessToken);
-            // Optionally validate the token by fetching current user
-            set({ isLoading: false });
-          } else {
-            set({ isLoading: false });
+          if (!state?.accessToken) {
+            set({ isLoading: false, isAuthenticated: false });
+            return;
           }
+
+          setAccessToken(state.accessToken);
+
+          try {
+            const user = await authService.getCurrentUser();
+            set({ user, isLoading: false, isAuthenticated: true });
+            return;
+          } catch {
+            // Token invalid — try refresh
+          }
+
+          try {
+            const { accessToken: newToken } = await authService.refreshToken();
+            if (newToken) {
+              setAccessToken(newToken);
+              const user = await authService.getCurrentUser();
+              set({ user, accessToken: newToken, isLoading: false, isAuthenticated: true });
+              return;
+            }
+          } catch {
+            // Refresh failed
+          }
+
+          get().logout();
+          set({ isLoading: false, isAuthenticated: false });
         } catch {
           get().logout();
           set({ isLoading: false });

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -19,7 +19,8 @@ interface StoreBrandingStepProps {
   onStoreCreated: (store: StoreDto) => void;
 }
 
-export function StoreBrandingStep({ onNext, onBack, storeId }: StoreBrandingStepProps) {
+export function StoreBrandingStep({ onNext, onBack, storeId, onStoreCreated }: StoreBrandingStepProps) {
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const updateStore = useUpdateStore();
 
   const {
@@ -64,8 +65,9 @@ export function StoreBrandingStep({ onNext, onBack, storeId }: StoreBrandingStep
       });
 
       onNext();
-    } catch {
-      // Error handled by the hook (toast)
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Failed to save branding. Please try again.';
+      setSubmitError(msg);
     }
   };
 
@@ -85,6 +87,12 @@ export function StoreBrandingStep({ onNext, onBack, storeId }: StoreBrandingStep
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        {submitError && (
+          <div className="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700" role="alert">
+            <span className="mt-0.5 shrink-0">⚠</span>
+            <p>{submitError}</p>
+          </div>
+        )}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="storeName">Store Name *</Label>

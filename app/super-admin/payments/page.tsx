@@ -40,7 +40,7 @@ export default function SuperAdminPaymentsPage() {
     queryKey: ['super-admin', 'payments'],
     queryFn: async () => {
       const res = await axiosInstance.get('/api/v1/super-admin/payments');
-      return (res.data.data ?? []) as Payment[];
+      return (res.data.data?.content ?? []) as Payment[];
     },
   });
 

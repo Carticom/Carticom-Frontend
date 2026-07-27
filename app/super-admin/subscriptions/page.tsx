@@ -33,7 +33,7 @@ export default function SuperAdminSubscriptionsPage() {
     queryKey: ['super-admin', 'subscriptions'],
     queryFn: async () => {
       const res = await axiosInstance.get('/api/v1/super-admin/subscriptions');
-      return (res.data.data ?? []) as Subscription[];
+      return (res.data.data?.content ?? []) as Subscription[];
     },
   });
 

@@ -64,7 +64,8 @@ function LoginForm() {
         STAFF: '/staff/dashboard',
         CUSTOMER: '/storefront',
       };
-      const redirect = roleRedirectMap[user?.role ?? ''] ?? '/dashboard';
+      const currentUser = useAuthStore.getState().user;
+      const redirect = roleRedirectMap[currentUser?.role ?? ''] ?? '/dashboard';
       router.push(redirect);
     } else {
       const errorMessage = result.error ?? 'Login failed. Please try again.';

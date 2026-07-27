@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -20,6 +20,7 @@ interface FirstProductStepProps {
 }
 
 export function FirstProductStep({ onNext, onBack, storeId, onProductCreated }: FirstProductStepProps) {
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const createProduct = useCreateProduct();
 
   const {
@@ -37,9 +38,14 @@ export function FirstProductStep({ onNext, onBack, storeId, onProductCreated }: 
   });
 
   const onSubmit = async (data: FirstProductFormData) => {
+    setSubmitError(null);
+    if (!storeId) {
+      setSubmitError('Store not ready. Please complete the previous steps first.');
+      return;
+    }
     try {
       const product = await createProduct.mutateAsync({
-        storeId: '',
+        storeId: storeId,
         name: data.name,
         description: data.description || undefined,
         price: Number(data.price),
@@ -50,8 +56,9 @@ export function FirstProductStep({ onNext, onBack, storeId, onProductCreated }: 
         onProductCreated(product.id);
       }
       onNext();
-    } catch {
-      // Error handled by the hook (toast)
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Failed to create product. Please try again.';
+      setSubmitError(msg);
     }
   };
 
@@ -71,6 +78,12 @@ export function FirstProductStep({ onNext, onBack, storeId, onProductCreated }: 
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        {submitError && (
+          <div className="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700" role="alert">
+            <span className="mt-0.5 shrink-0">⚠</span>
+            <p>{submitError}</p>
+          </div>
+        )}
         <div className="space-y-2">
           <Label htmlFor="name">Product Name *</Label>
           <Input id="name" placeholder="My Awesome Product" {...register('name')} />

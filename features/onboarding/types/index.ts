@@ -63,6 +63,11 @@ export interface UpdateStoreDto {
   description?: string;
   logoUrl?: string;
   bannerUrl?: string;
+  template?: string;
+  primaryColor?: string;
+  secondaryColor?: string;
+  fontFamily?: string;
+  businessCategory?: string;
 }
 
 // ─── Product ──────────────────────────────────────────────────
