@@ -2,72 +2,78 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
-import type { KpiCardData } from '@/types/dashboard';
+import { TrendingUp, TrendingDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Skeleton } from '@/components/ui/skeleton';
 
-const TREND_ICONS = { up: TrendingUp, down: TrendingDown, flat: Minus } as const;
-
-interface KpiCardProps {
-  data: KpiCardData;
-  isLoading?: boolean;
-  index?: number;
+export interface KpiCardData {
+  id: string;
+  label: string;
+  value: string;
+  change?: string;
+  changeType?: 'positive' | 'negative' | 'neutral';
+  icon: React.ElementType;
 }
 
-function Skeleton() {
+function KpiSkeleton() {
   return (
-    <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
-      <div className="flex items-center justify-between mb-4">
-        <div className="h-5 w-24 bg-gray-100 dark:bg-gray-800 rounded animate-pulse" />
-        <div className="h-12 w-12 rounded-lg bg-gray-100 dark:bg-gray-800 animate-pulse" />
+    <div className="rounded-xl border bg-card p-5">
+      <div className="flex items-start justify-between mb-4">
+        <div className="space-y-2">
+          <Skeleton className="h-3 w-20" />
+          <Skeleton className="h-7 w-28" />
+        </div>
+        <Skeleton className="h-10 w-10 rounded-full" />
       </div>
-      <div className="h-10 w-28 bg-gray-100 dark:bg-gray-800 rounded animate-pulse mb-3" />
-      <div className="h-5 w-20 bg-gray-100 dark:bg-gray-800 rounded animate-pulse" />
+      <Skeleton className="h-3 w-24" />
     </div>
   );
 }
 
-export function KpiCard({ data, isLoading, index = 0 }: KpiCardProps) {
-  if (isLoading) return <Skeleton />;
+export function KpiCard({ data, isLoading, index = 0 }: { data: KpiCardData; isLoading?: boolean; index?: number }) {
+  if (isLoading) return <KpiSkeleton />;
   const Icon = data.icon;
-  const TrendIcon = TREND_ICONS[data.trend];
-  const trendColor = data.changeType === 'positive' ? 'text-green-600 dark:text-green-400' : data.changeType === 'negative' ? 'text-red-600 dark:text-red-400' : 'text-gray-600 dark:text-gray-400';
-  const iconBg = data.changeType === 'positive' ? 'bg-green-50 dark:bg-green-900/20' : data.changeType === 'negative' ? 'bg-red-50 dark:bg-red-900/20' : 'bg-gray-50 dark:bg-gray-800';
-  const iconColor = data.changeType === 'positive' ? 'text-green-600 dark:text-green-400' : data.changeType === 'negative' ? 'text-red-600 dark:text-red-400' : 'text-gray-600 dark:text-gray-400';
+  const hasChange = data.change && data.changeType;
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.05 }}
-      className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 hover:shadow-lg transition-shadow"
+      transition={{ delay: index * 0.05, type: 'spring', stiffness: 300, damping: 30, mass: 0.8 }}
+      whileHover={{ y: -3 }}
+      className="rounded-xl border bg-card p-5 hover:shadow-sm transition-shadow"
     >
-      <div className="flex items-center justify-between mb-4">
-        <span className="text-base font-semibold text-gray-600 dark:text-gray-300">{data.label}</span>
-        <div className={cn('p-3 rounded-xl', iconBg)}>
-          <Icon className={cn('h-6 w-6', iconColor)} />
+      <div className="flex items-start justify-between mb-3">
+        <div className="space-y-1">
+          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{data.label}</p>
+          <p className="text-2xl font-semibold text-foreground tracking-tight">{data.value}</p>
+        </div>
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-muted">
+          <Icon className="h-5 w-5 text-muted-foreground" />
         </div>
       </div>
-      <div className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-        {data.prefix}{data.value}{data.suffix}
-      </div>
-      <div className={cn('flex items-center gap-1.5 text-sm font-semibold', trendColor)}>
-        <TrendIcon className="h-4 w-4" />
-        <span>{data.change}</span>
-        <span className="text-gray-400 ml-1 font-normal">vs last month</span>
-      </div>
+      {hasChange && (
+        <div className="flex items-center gap-1.5">
+          {data.changeType === 'positive' && <TrendingUp className="h-3.5 w-3.5 text-emerald-500" />}
+          {data.changeType === 'negative' && <TrendingDown className="h-3.5 w-3.5 text-red-500" />}
+          <span className={cn(
+            'text-xs font-medium',
+            data.changeType === 'positive' && 'text-emerald-600',
+            data.changeType === 'negative' && 'text-red-600',
+            data.changeType === 'neutral' && 'text-muted-foreground',
+          )}>
+            {data.change}
+          </span>
+          <span className="text-xs text-muted-foreground">vs last month</span>
+        </div>
+      )}
     </motion.div>
   );
 }
 
-interface KpiGridProps {
-  cards: KpiCardData[];
-  isLoading?: boolean;
-}
-
-export function KpiGrid({ cards, isLoading }: KpiGridProps) {
+export function KpiGrid({ cards, isLoading }: { cards: KpiCardData[]; isLoading?: boolean }) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {cards.map((card, i) => (
         <KpiCard key={card.id} data={card} isLoading={isLoading} index={i} />
       ))}

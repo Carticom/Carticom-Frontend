@@ -40,7 +40,7 @@ export default function SuperAdminStoresPage() {
     queryKey: ['super-admin', 'stores'],
     queryFn: async () => {
       const res = await axiosInstance.get('/api/v1/super-admin/stores');
-      return (res.data.data ?? []) as StoreEntry[];
+      return (res.data.data?.content ?? []) as StoreEntry[];
     },
   });
 

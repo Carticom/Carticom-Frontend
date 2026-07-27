@@ -19,6 +19,7 @@ export default function StorefrontLayout({
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
 
   const isCheckoutPage = pathname?.startsWith('/storefront/checkout');
+  const isPreviewPage = pathname?.startsWith('/store/preview/');
 
   const getStoreNameFromPath = () => {
     if (!pathname) return null;
@@ -28,6 +29,8 @@ export default function StorefrontLayout({
 
   const storeSlug = getStoreNameFromPath();
   const storeLabel = storeSlug ? storeSlug.replace(/-/g, ' ') : null;
+
+  if (isPreviewPage) return <>{children}</>;
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-50 dark:bg-gray-950">

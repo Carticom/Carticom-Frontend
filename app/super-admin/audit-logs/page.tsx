@@ -21,7 +21,7 @@ export default function SuperAdminAuditLogsPage() {
     queryKey: ['super-admin', 'audit-logs'],
     queryFn: async () => {
       const res = await axiosInstance.get('/api/v1/super-admin/audit-logs');
-      return (res.data.data ?? []) as AuditLog[];
+      return (res.data.data?.content ?? []) as AuditLog[];
     },
   });
 

@@ -137,11 +137,11 @@ class AuthService {
 
   // ─── Refresh Token ─────────────────────────────────────────
 
-  async refreshToken(): Promise<{ accessToken: string }> {
+  async refreshToken(refreshToken?: string): Promise<{ accessToken: string }> {
     try {
       const response = await axiosInstance.post<
         ApiResponse<{ accessToken: string }>
-      >(AUTH_ENDPOINTS.REFRESH);
+      >(AUTH_ENDPOINTS.REFRESH, refreshToken ? { refreshToken } : undefined);
       if (!response.data?.data?.accessToken) {
         throw new Error('No access token in refresh response');
       }

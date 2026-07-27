@@ -1,12 +1,15 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAuthStore } from '@/features/auth/store/auth.store';
 import { useMyStores, useUpdateStore } from '@/features/onboarding/hooks/useOnboarding';
 import { LoadingState, EmptyState, ErrorState } from '@/components/dashboard/shared/StateComponents';
-import { Globe, Eye, Upload, ExternalLink } from 'lucide-react';
+import { Globe, Eye, Upload, ExternalLink, Check, ChevronDown, ChevronUp } from 'lucide-react';
+import { getTemplateIcon, getTemplatesForCategory } from '@/features/templates/registry';
+import { BUSINESS_CATEGORIES } from '@/features/templates/types';
 import axiosInstance from '@/lib/axios';
 import { showToast } from '@/lib/notifications/toast';
+import { cn } from '@/lib/utils';
 
 export default function StorePage() {
   const user = useAuthStore((state) => state.user);
@@ -243,6 +246,63 @@ export default function StorePage() {
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Business Owner</label>
               <p className="mt-1 text-sm text-gray-900 dark:text-white">{user?.fullName || 'Not set'}</p>
             </div>
+          </div>
+        </div>
+
+        {/* Template Selection */}
+        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Storefront Template</h2>
+          <div className="space-y-4">
+            {BUSINESS_CATEGORIES.map((cat) => {
+              const catTemplates = getTemplatesForCategory(cat.value);
+              if (catTemplates.length === 0) return null;
+              return (
+                <details key={cat.value} className="group rounded-xl border border-gray-200 dark:border-gray-700 open:bg-gray-50 dark:open:bg-gray-800/50 transition-colors">
+                  <summary className="flex items-center justify-between px-4 py-3 cursor-pointer list-none text-sm font-semibold text-gray-900 dark:text-white">
+                    <span className="capitalize">{cat.label.toLowerCase()}</span>
+                    <ChevronDown className="h-4 w-4 text-gray-400 group-open:rotate-180 transition-transform" />
+                  </summary>
+                  <div className="px-4 pb-4 grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    {catTemplates.map((t) => {
+                      const Icon = getTemplateIcon(t.id);
+                      const isActive = store.template === t.id || (!store.template && t.id === catTemplates[0].id);
+                      return (
+                        <button
+                          key={t.id}
+                          onClick={async () => {
+                            try {
+                              await updateStore.mutateAsync({ id: store.id, data: { template: t.id } });
+                              showToast('success', `Template updated to ${t.name}`);
+                              refetch();
+                            } catch {
+                              showToast('error', 'Failed to update template');
+                            }
+                          }}
+                          disabled={updateStore.isPending}
+                          className={cn(
+                            'relative flex flex-col items-center gap-2 p-3 rounded-xl border-2 text-center transition-all',
+                            isActive
+                              ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 shadow-sm'
+                              : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-sm'
+                          )}
+                        >
+                          {isActive && (
+                            <div className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-blue-500 flex items-center justify-center">
+                              <Check className="h-2.5 w-2.5 text-white" />
+                            </div>
+                          )}
+                          <Icon className={cn('h-5 w-5', isActive ? 'text-blue-600' : 'text-gray-600')} />
+                          <div>
+                            <p className="text-xs font-semibold text-gray-900 dark:text-white">{t.name}</p>
+                            <p className="text-[10px] text-gray-500 mt-0.5 leading-tight">{t.description.slice(0, 50)}...</p>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </details>
+              );
+            })}
           </div>
         </div>
 

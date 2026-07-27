@@ -1,18 +1,20 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axiosInstance from '@/lib/axios';
 import { LoadingState, EmptyState, ErrorState } from '@/components/dashboard/shared/StateComponents';
 import { Button } from '@/components/ui/button';
-import { Search } from 'lucide-react';
+import { Search, Filter } from 'lucide-react';
 
 interface User {
   id: string;
   fullName: string;
   email: string;
+  phone: string;
   role: string;
-  status: string;
+  active: boolean;
+  tenantId: string;
   createdAt: string;
 }
 
@@ -30,26 +32,28 @@ function roleBadge(role: string) {
   return map[role] ?? 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400';
 }
 
-function statusBadge(status: string) {
-  const map: Record<string, string> = {
-    ACTIVE: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
-    SUSPENDED: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
-    PENDING: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400',
-  };
-  return map[status] ?? 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400';
+function statusBadge(active: boolean) {
+  return active
+    ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+    : 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400';
 }
+
+const ROLE_OPTIONS = ['ALL', 'SUPER_ADMIN', 'ADMIN', 'BUSINESS_OWNER', 'STAFF'] as const;
 
 export default function SuperAdminUsersPage() {
   const queryClient = useQueryClient();
   const [search, setSearch] = useState('');
+  const [roleFilter, setRoleFilter] = useState<string>('ALL');
 
-  const { data: users, isLoading, error, refetch } = useQuery({
+  const { data: page, isLoading, error, refetch } = useQuery({
     queryKey: ['super-admin', 'users'],
     queryFn: async () => {
       const res = await axiosInstance.get('/api/v1/super-admin/users');
-      return (res.data.data ?? []) as User[];
+      return res.data.data as { content: User[]; totalElements: number; totalPages: number };
     },
   });
+
+  const users = page?.content ?? [];
 
   const toggleMutation = useMutation({
     mutationFn: async ({ id, action }: { id: string; action: 'suspend' | 'activate' }) => {
@@ -60,13 +64,17 @@ export default function SuperAdminUsersPage() {
     },
   });
 
+  const filtered = useMemo(() => {
+    return users.filter((u) => {
+      const matchesSearch = (u.fullName ?? '').toLowerCase().includes(search.toLowerCase()) ||
+        (u.email ?? '').toLowerCase().includes(search.toLowerCase());
+      const matchesRole = roleFilter === 'ALL' || u.role === roleFilter;
+      return matchesSearch && matchesRole;
+    });
+  }, [users, search, roleFilter]);
+
   if (isLoading) return <LoadingState message="Loading users..." />;
   if (error) return <ErrorState onRetry={() => refetch()} />;
-
-  const filtered = (users ?? []).filter((u) =>
-    u.fullName.toLowerCase().includes(search.toLowerCase()) ||
-    u.email.toLowerCase().includes(search.toLowerCase())
-  );
 
   return (
     <div className="space-y-6">
@@ -76,19 +84,33 @@ export default function SuperAdminUsersPage() {
       </div>
 
       <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
-        <div className="relative mb-4">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search users..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
-          />
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-4">
+          <div className="relative flex-1 w-full">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search by name or email..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+            />
+          </div>
+          <div className="flex items-center gap-2">
+            <Filter className="h-4 w-4 text-gray-400" />
+            <select
+              value={roleFilter}
+              onChange={(e) => setRoleFilter(e.target.value)}
+              className="border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm px-3 py-2"
+            >
+              {ROLE_OPTIONS.map((role) => (
+                <option key={role} value={role}>{role === 'ALL' ? 'All Roles' : role}</option>
+              ))}
+            </select>
+          </div>
         </div>
 
         {filtered.length === 0 ? (
-          <EmptyState title={search ? 'No users match your search' : 'No users found'} description={search ? 'Try a different search term.' : undefined} />
+          <EmptyState title={search || roleFilter !== 'ALL' ? 'No users match your filters' : 'No users found'} description={search || roleFilter !== 'ALL' ? 'Try different search or filter criteria.' : undefined} />
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -111,17 +133,17 @@ export default function SuperAdminUsersPage() {
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${roleBadge(user.role)}`}>{user.role}</span>
                     </td>
                     <td className="py-3 px-4">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusBadge(user.status)}`}>{user.status}</span>
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusBadge(user.active)}`}>{user.active ? 'ACTIVE' : 'INACTIVE'}</span>
                     </td>
                     <td className="py-3 px-4 text-gray-500 dark:text-gray-400">{formatDate(user.createdAt)}</td>
                     <td className="py-3 px-4">
-                      {user.status === 'SUSPENDED' ? (
-                        <Button size="xs" variant="outline" onClick={() => toggleMutation.mutate({ id: user.id, action: 'activate' })} disabled={toggleMutation.isPending}>
-                          Activate
-                        </Button>
-                      ) : (
+                      {user.active ? (
                         <Button size="xs" variant="destructive" onClick={() => toggleMutation.mutate({ id: user.id, action: 'suspend' })} disabled={toggleMutation.isPending}>
                           Suspend
+                        </Button>
+                      ) : (
+                        <Button size="xs" variant="outline" onClick={() => toggleMutation.mutate({ id: user.id, action: 'activate' })} disabled={toggleMutation.isPending}>
+                          Activate
                         </Button>
                       )}
                     </td>
@@ -129,6 +151,15 @@ export default function SuperAdminUsersPage() {
                 ))}
               </tbody>
             </table>
+          </div>
+        )}
+
+        {page && (
+          <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100 dark:border-gray-800 text-sm text-gray-500 dark:text-gray-400">
+            <span>{page.totalElements} total user{(page.totalElements ?? 0) !== 1 ? 's' : ''}</span>
+            {page.totalPages > 1 && (
+              <span>Page 1 of {page.totalPages}</span>
+            )}
           </div>
         )}
       </div>

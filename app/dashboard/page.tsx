@@ -1,14 +1,49 @@
 'use client';
 
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState, useEffect, lazy } from 'react';
+import dynamic from 'next/dynamic';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
 import { useAuthStore } from '@/features/auth/store/auth.store';
 import { useBusinessOwnerDashboard } from '@/features/business-owner/hooks/useBusinessOwner';
-import { KpiGrid } from '@/components/dashboard/cards/KpiCards';
-import { RecentOrdersTable } from '@/components/dashboard/tables/RecentOrdersTable';
-import { LoadingState, ErrorState, EmptyState } from '@/components/dashboard/shared/StateComponents';
-import { DollarSign, ShoppingCart, Wallet, Shield, Users } from 'lucide-react';
-import type { KpiCardData, RecentOrder } from '@/types/dashboard';
+import { KpiGrid, type KpiCardData } from '@/components/dashboard/cards/KpiCards';
+import { LoadingState, ErrorState } from '@/components/dashboard/shared/StateComponents';
+import { StaggerGrid, StaggerItem, FadeIn } from '@/components/ui/motion';
+import { CountUp } from '@/components/ui/count-up';
+import { DollarSign, ShoppingCart, Shield, TrendingUp, Eye, Loader2, ArrowRight } from 'lucide-react';
+import type { RecentOrder } from '@/types/dashboard';
 import type { OrderSummaryDTO } from '@/features/business-owner/types';
+import { cn } from '@/lib/utils';
+import { EmptyState } from '@/components/ui/empty-state';
+import { Button } from '@/components/ui/button';
+
+const SalesBarChart = dynamic(() => import('@/components/dashboard/charts/ChartCard').then(m => ({ default: m.SalesBarChart })), {
+  loading: () => <ChartSkeleton />,
+});
+
+const RevenueLineChart = dynamic(() => import('@/components/dashboard/charts/ChartCard').then(m => ({ default: m.RevenueLineChart })), {
+  loading: () => <ChartSkeleton />,
+});
+
+const TargetProgressCard = dynamic(() => import('@/components/dashboard/charts/ChartCard').then(m => ({ default: m.TargetProgressCard })), {
+  loading: () => <ChartSkeleton />,
+});
+
+const DemographicCard = dynamic(() => import('@/components/dashboard/charts/ChartCard').then(m => ({ default: m.DemographicCard })), {
+  loading: () => <ChartSkeleton />,
+});
+
+const RecentOrdersCard = dynamic(() => import('@/components/dashboard/charts/ChartCard').then(m => ({ default: m.RecentOrdersCard })), {
+  loading: () => <ChartSkeleton />,
+});
+
+function ChartSkeleton() {
+  return (
+    <div className="rounded-xl border bg-card p-5 h-80 flex items-center justify-center">
+      <Loader2 className="h-6 w-6 animate-spin text-muted-foreground/50" />
+    </div>
+  );
+}
 
 function toRecentOrder(o: OrderSummaryDTO): RecentOrder {
   return {
@@ -26,6 +61,41 @@ function toRecentOrder(o: OrderSummaryDTO): RecentOrder {
 function formatCurrency(amount: number): string {
   return amount.toLocaleString('en-NG', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
 }
+
+const STATUS_STYLES: Record<string, string> = {
+  pending: 'bg-amber-50 text-amber-600',
+  processing: 'bg-blue-50 text-blue-600',
+  completed: 'bg-emerald-50 text-emerald-600',
+  cancelled: 'bg-red-50 text-red-600',
+  refunded: 'bg-muted text-muted-foreground',
+};
+
+const MONTHLY_SALES_DATA = [
+  { name: 'Jan', sales: 4000, revenue: 2400 },
+  { name: 'Feb', sales: 3000, revenue: 1398 },
+  { name: 'Mar', sales: 2000, revenue: 9800 },
+  { name: 'Apr', sales: 2780, revenue: 3908 },
+  { name: 'May', sales: 1890, revenue: 4800 },
+  { name: 'Jun', sales: 2390, revenue: 3800 },
+  { name: 'Jul', sales: 3490, revenue: 4300 },
+];
+
+const REVENUE_DATA = [
+  { name: 'Jan', revenue: 5000, orders: 40 },
+  { name: 'Feb', revenue: 3500, orders: 30 },
+  { name: 'Mar', revenue: 8200, orders: 65 },
+  { name: 'Apr', revenue: 4200, orders: 35 },
+  { name: 'May', revenue: 6100, orders: 50 },
+  { name: 'Jun', revenue: 7800, orders: 62 },
+  { name: 'Jul', revenue: 9300, orders: 75 },
+];
+
+const DEMOGRAPHIC_DATA = [
+  { country: 'Nigeria', flag: '🇳🇬', customers: 2379, percentage: 79 },
+  { country: 'Ghana', flag: '🇬🇭', customers: 589, percentage: 23 },
+  { country: 'Kenya', flag: '🇰🇪', customers: 412, percentage: 16 },
+  { country: 'South Africa', flag: '🇿🇦', customers: 328, percentage: 13 },
+];
 
 export default function DashboardPage() {
   const user = useAuthStore((state) => state.user);
@@ -63,10 +133,8 @@ export default function DashboardPage() {
     {
       id: 'available-revenue',
       label: 'Available Revenue',
-      value: formatCurrency(dashboard.availableRevenue),
-      prefix: '₦',
-      change: '',
-      trend: 'up',
+      value: `₦${formatCurrency(dashboard.availableRevenue)}`,
+      change: '+12.5%',
       changeType: 'positive',
       icon: DollarSign,
     },
@@ -74,107 +142,169 @@ export default function DashboardPage() {
       id: 'pending-orders',
       label: 'Pending Orders',
       value: String(dashboard.pendingOrders ?? 0),
-      change: '',
-      trend: dashboard.pendingOrders > 0 ? 'up' : 'flat',
-      changeType: dashboard.pendingOrders > 0 ? 'neutral' : 'neutral',
+      change: dashboard.pendingOrders > 0 ? '+3 this week' : 'No change',
+      changeType: 'neutral',
       icon: ShoppingCart,
     },
     {
-      id: 'wallet',
+      id: 'lifetime-revenue',
       label: 'Lifetime Revenue',
-      value: formatCurrency(dashboard.lifetimeRevenue),
-      prefix: '₦',
-      change: '',
-      trend: 'up',
+      value: `₦${formatCurrency(dashboard.lifetimeRevenue)}`,
+      change: '+8.1%',
       changeType: 'positive',
-      icon: Wallet,
+      icon: TrendingUp,
     },
     {
-      id: 'trust',
-      label: `Trust Score (${dashboard.trustLevel})`,
+      id: 'trust-score',
+      label: 'Trust Score',
       value: String(dashboard.trustScore ?? 0),
-      change: `Active Disputes: ${dashboard.activeDisputes ?? 0}`,
-      trend: (dashboard.activeDisputes ?? 0) === 0 ? 'up' : 'down',
-      changeType: (dashboard.activeDisputes ?? 0) === 0 ? 'positive' : 'negative',
+      change: dashboard.activeDisputes > 0 ? `${dashboard.activeDisputes} active disputes` : 'No disputes',
+      changeType: dashboard.activeDisputes === 0 ? 'positive' : 'negative',
       icon: Shield,
     },
   ];
 
   return (
-    <div className="space-y-8">
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-          {greeting}, {firstName}
-        </h1>
-        <p className="text-gray-600 dark:text-gray-400">{businessName}</p>
-      </div>
+    <div className="space-y-6">
+      <FadeIn>
+        <div className="flex items-center justify-between">
+          <div className="space-y-1">
+            <h1 className="text-xl font-semibold text-foreground tracking-tight">
+              {greeting}, {firstName}
+            </h1>
+            <p className="text-sm text-muted-foreground">{businessName}</p>
+          </div>
+        </div>
+      </FadeIn>
 
       <KpiGrid cards={kpiCards} isLoading={isLoading} />
 
+      <FadeIn delay={0.1}>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div className="lg:col-span-2">
+            <SalesBarChart data={MONTHLY_SALES_DATA} />
+          </div>
+          <div>
+            <TargetProgressCard percentage={65} target="₦20M" revenue="₦13M" today="₦0" />
+          </div>
+        </div>
+      </FadeIn>
+
+      <FadeIn delay={0.15}>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div className="lg:col-span-2">
+            <RevenueLineChart data={REVENUE_DATA} />
+          </div>
+          <div>
+            <DemographicCard data={DEMOGRAPHIC_DATA} />
+          </div>
+        </div>
+      </FadeIn>
+
+      <StaggerGrid className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {[
+          { label: 'Pending Revenue', value: dashboard.pendingRevenue, prefix: '₦', format: (v: number) => formatCurrency(v) },
+          { label: 'Total Withdrawn', value: dashboard.totalWithdrawn, prefix: '₦', format: (v: number) => formatCurrency(v) },
+          { label: 'Avg Delivery Time', value: dashboard.averageDeliveryTime ?? 0, suffix: ' days', format: (v: number) => v?.toFixed(1) ?? '—' },
+        ].map((stat) => (
+          <StaggerItem key={stat.label}>
+            <motion.div
+              whileHover={{ y: -2 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+              className="rounded-xl border bg-card p-4"
+            >
+              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{stat.label}</p>
+              <p className="text-lg font-semibold text-foreground mt-1.5">
+                {stat.prefix}<CountUp from={0} to={stat.value} duration={1.5} decimals={0} />{stat.suffix ?? ''}
+              </p>
+            </motion.div>
+          </StaggerItem>
+        ))}
+      </StaggerGrid>
+
       {dashboard.activeDisputes > 0 && (
-        <div className="rounded-xl border border-red-200 dark:border-red-900/50 bg-red-50 dark:bg-red-950/40 p-4">
-          <p className="text-sm text-red-700 dark:text-red-400">
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
+          className="rounded-xl border border-amber-200 bg-amber-50 p-4"
+        >
+          <p className="text-sm text-amber-800 font-medium">
             You have <strong>{dashboard.activeDisputes}</strong> active dispute{dashboard.activeDisputes !== 1 ? 's' : ''}.
             {' '}Please resolve them to maintain your trust score.
           </p>
-        </div>
+        </motion.div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-5">
-          <p className="text-xs text-gray-500 uppercase tracking-wide">Pending Revenue</p>
-          <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">
-            ₦{formatCurrency(dashboard.pendingRevenue)}
-          </p>
-        </div>
-        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-5">
-          <p className="text-xs text-gray-500 uppercase tracking-wide">Total Withdrawn</p>
-          <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">
-            ₦{formatCurrency(dashboard.totalWithdrawn)}
-          </p>
-        </div>
-        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-5">
-          <p className="text-xs text-gray-500 uppercase tracking-wide">Avg Delivery</p>
-          <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">
-            {dashboard.averageDeliveryTime?.toFixed(1) ?? '—'} days
-          </p>
-        </div>
-      </div>
-
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Recent Orders</h2>
+      <RecentOrdersCard>
         {orders.length > 0 ? (
-          <RecentOrdersTable orders={orders} />
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border">
+                  <th className="px-5 py-3 text-left font-medium text-muted-foreground text-xs uppercase tracking-wider">Customer</th>
+                  <th className="px-5 py-3 text-left font-medium text-muted-foreground text-xs uppercase tracking-wider">Order</th>
+                  <th className="px-5 py-3 text-left font-medium text-muted-foreground text-xs uppercase tracking-wider">Amount</th>
+                  <th className="px-5 py-3 text-left font-medium text-muted-foreground text-xs uppercase tracking-wider">Items</th>
+                  <th className="px-5 py-3 text-left font-medium text-muted-foreground text-xs uppercase tracking-wider">Status</th>
+                  <th className="px-5 py-3 text-right font-medium text-muted-foreground text-xs uppercase tracking-wider" />
+                </tr>
+              </thead>
+              <tbody>
+                {orders.slice(0, 5).map((order, i) => (
+                  <motion.tr
+                    key={order.id}
+                    initial={{ opacity: 0, x: -8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.04, duration: 0.25 }}
+                    className="border-b border-border/50 hover:bg-muted/30 transition-colors"
+                  >
+                    <td className="px-5 py-3.5">
+                      <div className="flex items-center gap-3">
+                        <div className="h-8 w-8 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white text-xs font-semibold">
+                          {order.customer.name.charAt(0)}
+                        </div>
+                        <div>
+                          <div className="font-medium text-foreground text-sm">{order.customer.name}</div>
+                          <div className="text-xs text-muted-foreground">{order.customer.email}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-5 py-3.5 font-mono text-xs text-muted-foreground">#{order.orderId}</td>
+                    <td className="px-5 py-3.5 font-semibold text-foreground text-sm">
+                      {new Intl.NumberFormat('en-NG', { style: 'currency', currency: order.currency, minimumFractionDigits: 0 }).format(order.amount)}
+                    </td>
+                    <td className="px-5 py-3.5 text-muted-foreground text-sm">{order.items} item{order.items !== 1 ? 's' : ''}</td>
+                    <td className="px-5 py-3.5">
+                      <span className={cn('inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium capitalize', STATUS_STYLES[order.status] || STATUS_STYLES.pending)}>
+                        {order.status}
+                      </span>
+                    </td>
+                    <td className="px-5 py-3.5 text-right">
+                      <Link
+                        href={`/dashboard/orders/${order.orderId}`}
+                        className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:text-primary/80 transition-colors"
+                      >
+                        View <ArrowRight className="h-3 w-3" />
+                      </Link>
+                    </td>
+                  </motion.tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         ) : (
           <EmptyState
+            icon={<ShoppingCart className="h-6 w-6 text-muted-foreground" />}
             title="No orders yet"
             description="Start by adding products to your store."
-            action={{
-              label: 'Add Product',
-              onClick: () => { window.location.href = '/dashboard/products'; },
-            }}
+            action={
+              <Link href="/dashboard/products">
+                <Button size="sm">Add Product</Button>
+              </Link>
+            }
           />
         )}
-      </div>
-
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-        <QuickAction label="Add Product" href="/dashboard/products" />
-        <QuickAction label="Invite Staff" href="/dashboard/team" />
-        <QuickAction label="Connect AI" href="/dashboard/ai" />
-        <QuickAction label="Withdraw Funds" href="/dashboard/wallet" />
-        <QuickAction label="Share Store" href="/dashboard/store" />
-      </div>
+      </RecentOrdersCard>
     </div>
-  );
-}
-
-function QuickAction({ label, href }: { label: string; href: string }) {
-  return (
-    <a
-      href={href}
-      className="flex flex-col items-center justify-center p-4 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 hover:border-blue-500 dark:hover:border-blue-500 transition-colors"
-    >
-      <span className="text-sm font-medium text-gray-900 dark:text-white">{label}</span>
-    </a>
   );
 }

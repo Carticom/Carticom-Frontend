@@ -23,6 +23,7 @@ const REFRESH_ENDPOINT = '/auth/refresh';
 // ─── State ───────────────────────────────────────────────────
 
 let accessToken: string | null = null;
+let refreshTokenValue: string | null = null;
 let isRefreshing = false;
 let failedQueue: FailedRequest[] = [];
 
@@ -34,6 +35,14 @@ export const setAccessToken = (token: string | null) => {
 
 export const getAccessToken = (): string | null => {
   return accessToken;
+};
+
+export const setRefreshTokenValue = (token: string | null) => {
+  refreshTokenValue = token;
+};
+
+export const getRefreshTokenValue = (): string | null => {
+  return refreshTokenValue;
 };
 
 // ─── Queue Management ────────────────────────────────────────
@@ -110,9 +119,10 @@ axiosInstance.interceptors.response.use(
       isRefreshing = true;
 
       try {
+        const refreshToken = refreshTokenValue;
         const response = await axiosInstance.post<{
           accessToken: string;
-        }>(REFRESH_ENDPOINT);
+        }>(REFRESH_ENDPOINT, refreshToken ? { refreshToken } : undefined);
 
         const newToken = response.data?.accessToken;
         if (!newToken) {

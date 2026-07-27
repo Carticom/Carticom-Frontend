@@ -1,15 +1,18 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useQueryClient } from '@tanstack/react-query';
+import axiosInstance from '@/lib/axios';
 import {
   LayoutDashboard, Store, Package, ShoppingCart, Users,
   Wallet, Brain, BarChart3, Crown,
   Headphones, Settings, LogOut, DollarSign,
   ChevronLeft, ChevronRight, Menu, X,
-  Tags, CreditCard, UserPlus, Shield,
+  Tags, CreditCard, UserPlus, Shield
 } from 'lucide-react';
 import { useAuthStore } from '@/features/auth/store/auth.store';
 import { UserRole } from '@/features/auth/types';
@@ -72,25 +75,42 @@ const SUPER_ADMIN_ITEMS = [
 
 function getRoleItems(role: string | undefined) {
   switch (role) {
-    case UserRole.STAFF:
-      return STAFF_ITEMS;
-    case UserRole.ADMIN:
-      return ADMIN_ITEMS;
-    case UserRole.SUPER_ADMIN:
-      return SUPER_ADMIN_ITEMS;
+    case UserRole.STAFF: return STAFF_ITEMS;
+    case UserRole.ADMIN: return ADMIN_ITEMS;
+    case UserRole.SUPER_ADMIN: return SUPER_ADMIN_ITEMS;
     case UserRole.BUSINESS_OWNER:
-    default:
-      return OWNER_ITEMS;
+    default: return OWNER_ITEMS;
   }
+}
+
+const NAV_GROUPS: Record<string, { label: string; keys: string[] }[]> = {
+  [UserRole.BUSINESS_OWNER]: [
+    { label: 'Menu', keys: ['dashboard', 'store', 'products', 'categories', 'orders', 'customers', 'payments', 'wallet'] },
+    { label: 'Manage', keys: ['subscription', 'staff', 'custom-solutions', 'ai'] },
+    { label: 'Insights', keys: ['analytics', 'settings', 'support'] },
+  ],
+  [UserRole.STAFF]: [
+    { label: 'Menu', keys: ['dashboard', 'orders', 'products', 'customers', 'categories'] },
+  ],
+  [UserRole.ADMIN]: [
+    { label: 'Menu', keys: ['dashboard', 'users', 'stores', 'orders', 'payments', 'disputes', 'settlements'] },
+    { label: 'Insights', keys: ['analytics', 'subscriptions', 'wallets', 'audit'] },
+  ],
+  [UserRole.SUPER_ADMIN]: [
+    { label: 'Menu', keys: ['dashboard', 'users', 'stores', 'plans', 'subscriptions', 'settings'] },
+    { label: 'Manage', keys: ['custom-solutions', 'waitlist', 'payments', 'audit'] },
+  ],
+};
+
+function getNavGroups(role: string | undefined) {
+  return NAV_GROUPS[role || UserRole.BUSINESS_OWNER] || NAV_GROUPS[UserRole.BUSINESS_OWNER];
 }
 
 function isActive(href: string | undefined, pathname: string) {
   if (!href) return false;
-  if (href === '/dashboard' && pathname === '/dashboard') return true;
-  if (href === '/staff/dashboard' && pathname === '/staff/dashboard') return true;
-  if (href === '/admin/dashboard' && pathname === '/admin/dashboard') return true;
-  if (href === '/super-admin/dashboard' && pathname === '/super-admin/dashboard') return true;
-  return pathname.startsWith(href);
+  if (href === pathname) return true;
+  if (href !== '/' && pathname.startsWith(href + '/')) return true;
+  return false;
 }
 
 function getLogoHref(role: string | undefined): string {
@@ -109,90 +129,155 @@ interface SidebarProps {
   onMobileClose: () => void;
 }
 
+function NavItem({ item, active, collapsed, onMouseEnter, onClick }: {
+  item: { id: string; label: string; href?: string; icon: React.ComponentType<{ className?: string }> };
+  active: boolean;
+  collapsed: boolean;
+  onMouseEnter?: () => void;
+  onClick?: () => void;
+}) {
+  const Icon = item.icon;
+  return (
+    <Link
+      href={item.href || '#'}
+      onClick={onClick}
+      onMouseEnter={onMouseEnter}
+      className={cn(
+        'group relative flex items-center gap-3 rounded-lg text-sm font-medium transition-all duration-150',
+        collapsed ? 'justify-center px-2 py-2' : 'px-3 py-2',
+        active
+          ? 'text-blue-700 bg-blue-50'
+          : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+      )}
+      title={collapsed ? item.label : undefined}
+      aria-current={active ? 'page' : undefined}
+    >
+      {active && (
+        <span className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-0.5 rounded-full bg-blue-600" />
+      )}
+      <Icon className={cn('shrink-0', collapsed ? 'h-5 w-5' : 'h-4 w-4')} aria-hidden />
+      {!collapsed && <span>{item.label}</span>}
+    </Link>
+  );
+}
+
 export function Sidebar({ isCollapsed, onToggleCollapse, isMobileOpen, onMobileClose }: SidebarProps) {
   const pathname = usePathname();
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
   const role = user?.role;
-
   const items = useMemo(() => getRoleItems(role), [role]);
+  const groups = useMemo(() => getNavGroups(role), [role]);
   const logoHref = useMemo(() => getLogoHref(role), [role]);
+  const queryClient = useQueryClient();
 
-  const nav = items.map((item) => {
-    const Icon = item.icon;
-    const active = isActive(item.href, pathname);
+  const prefetchDashboard = useCallback(() => {
+    const queryKey = role === UserRole.SUPER_ADMIN ? ['super-admin', 'dashboard'] : ['business-owner', 'dashboard'];
+    if (!queryClient.getQueryData(queryKey)) {
+      queryClient.prefetchQuery({
+        queryKey,
+        queryFn: async () => {
+          const endpoint = role === UserRole.SUPER_ADMIN ? '/api/v1/super-admin/dashboard' : '/api/v1/business-owner/dashboard';
+          const res = await axiosInstance.get(endpoint);
+          return res.data.data;
+        },
+        staleTime: 1000 * 60 * 5,
+      });
+    }
+  }, [queryClient, role]);
 
-    return (
-      <Link
-        key={item.id}
-        href={item.href || '#'}
-        onClick={onMobileClose}
-        className={cn(
-          'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200',
-          active
-            ? 'bg-blue-50 text-blue-700 shadow-sm dark:bg-blue-900/30 dark:text-blue-400'
-            : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800',
-          isCollapsed && 'justify-center px-2'
+  const itemsMap = useMemo(() => {
+    const map = new Map<string, typeof items[0]>();
+    for (const item of items) map.set(item.id, item);
+    return map;
+  }, [items]);
+
+  const sidebarContent = (isMobile: boolean) => (
+    <div className="flex h-full flex-col bg-white">
+      <div className={cn(
+        'flex items-center border-b border-gray-200',
+        isCollapsed && !isMobile ? 'justify-center h-16' : 'justify-between h-16 px-4'
+      )}>
+        <Link href={logoHref} className="flex items-center gap-3 min-w-0" aria-label="Dashboard home">
+          <Image src="/image/carticom_logo.png" alt="Carticom Logo" width={32} height={32} className="rounded-lg shrink-0" />
+          {(!isCollapsed || isMobile) && (
+            <span className="font-semibold text-gray-900 text-sm tracking-tight">Carticom</span>
+          )}
+        </Link>
+        {(!isCollapsed || isMobile) && (
+          <button
+            onClick={isMobile ? onMobileClose : onToggleCollapse}
+            className="flex p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
+            aria-label={isMobile ? 'Close menu' : isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          >
+            {isMobile ? (
+              <X className="h-4 w-4 text-gray-400" />
+            ) : isCollapsed ? (
+              <ChevronRight className="h-4 w-4 text-gray-400" />
+            ) : (
+              <ChevronLeft className="h-4 w-4 text-gray-400" />
+            )}
+          </button>
         )}
-        title={isCollapsed ? item.label : undefined}
-        aria-current={active ? 'page' : undefined}
-      >
-        <Icon className="h-5 w-5 shrink-0" aria-hidden />
-        {!isCollapsed && <span>{item.label}</span>}
-      </Link>
-    );
-  });
+      </div>
+
+      <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-5 scrollbar-thin">
+        {groups.map((group) => (
+          <div key={group.label}>
+            {(!isCollapsed || isMobile) && (
+              <p className="px-3 text-[10px] font-semibold uppercase tracking-[0.12em] text-gray-400 mb-2">
+                {group.label}
+              </p>
+            )}
+            <div className="space-y-0.5">
+              {group.keys.map((key) => {
+                const item = itemsMap.get(key);
+                if (!item) return null;
+                const active = isActive(item.href, pathname);
+                return (
+                  <NavItem
+                    key={item.id}
+                    item={item}
+                    active={active}
+                    collapsed={isCollapsed && !isMobile}
+                    onMouseEnter={item.id === 'dashboard' ? prefetchDashboard : undefined}
+                    onClick={isMobile ? onMobileClose : undefined}
+                  />
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </nav>
+
+      <div className={cn('border-t border-gray-200', isCollapsed && !isMobile ? 'px-2 py-3' : 'px-3 py-3')}>
+        <button
+          onClick={() => { logout(); if (isMobile) onMobileClose(); }}
+          className={cn(
+            'flex w-full items-center gap-3 rounded-lg text-sm font-medium transition-all duration-150 text-gray-500 hover:text-red-600 hover:bg-red-50',
+            isCollapsed && !isMobile ? 'justify-center p-2' : 'px-3 py-2'
+          )}
+          aria-label="Logout"
+          title={isCollapsed && !isMobile ? 'Logout' : undefined}
+        >
+          <LogOut className="h-4 w-4 shrink-0" />
+          {(!isCollapsed || isMobile) && <span>Logout</span>}
+        </button>
+      </div>
+    </div>
+  );
 
   return (
     <>
       <aside
-        className="hidden lg:fixed lg:inset-y-0 lg:z-30 lg:flex lg:flex-col transition-all duration-300 ease-in-out"
-        style={{ width: isCollapsed ? 72 : 256 }}
+        className={cn(
+          'hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:flex-col',
+          'transition-all duration-300 ease-in-out'
+        )}
+        style={{ width: isCollapsed ? 72 : 240 }}
         aria-label="Sidebar navigation"
       >
-        <div className="flex h-full flex-col bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800">
-          <div className="flex h-16 items-center justify-between px-4 border-b border-gray-200 dark:border-gray-800">
-            <Link href={logoHref} className="flex items-center gap-3 min-w-0" aria-label="Dashboard home">
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-cyan-600">
-                <Store className="h-5 w-5 text-white" />
-              </div>
-              {!isCollapsed && (
-                <span className="font-semibold text-gray-900 dark:text-white truncate">Carticom</span>
-              )}
-            </Link>
-            <button
-              onClick={onToggleCollapse}
-              className="hidden lg:flex p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-              aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-            >
-              {isCollapsed ? (
-                <ChevronRight className="h-4 w-4 text-gray-500" />
-              ) : (
-                <ChevronLeft className="h-4 w-4 text-gray-500" />
-              )}
-            </button>
-          </div>
-
-          <nav className="flex-1 overflow-y-auto px-2 py-4 space-y-0.5 scrollbar-thin">
-            {nav}
-          </nav>
-
-          <div className="px-2 py-4 border-t border-gray-200 dark:border-gray-800">
-            <button
-              onClick={logout}
-              className={cn(
-                'flex w-full items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200',
-                'text-gray-600 hover:bg-red-50 hover:text-red-600 dark:text-gray-400 dark:hover:bg-red-900/20',
-                isCollapsed && 'justify-center px-2'
-              )}
-              aria-label="Logout"
-              title={isCollapsed ? 'Logout' : undefined}
-            >
-              <LogOut className="h-5 w-5 shrink-0" />
-              {!isCollapsed && <span>Logout</span>}
-            </button>
-          </div>
-        </div>
+        {sidebarContent(false)}
       </aside>
 
       <AnimatePresence>
@@ -203,37 +288,15 @@ export function Sidebar({ isCollapsed, onToggleCollapse, isMobileOpen, onMobileC
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 lg:hidden"
           >
-            <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onMobileClose} />
+            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onMobileClose} />
             <motion.aside
               initial={{ x: '-100%' }}
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ type: 'spring', damping: 28, stiffness: 300 }}
-              className="absolute left-0 top-0 bottom-0 w-72 bg-white dark:bg-gray-900 shadow-2xl"
+              className="absolute left-0 top-0 bottom-0 w-72 bg-white shadow-2xl"
             >
-              <div className="flex h-full flex-col">
-                <div className="flex h-16 items-center justify-between px-4 border-b border-gray-200 dark:border-gray-800">
-                  <span className="font-semibold text-gray-900 dark:text-white">Menu</span>
-                  <button
-                    onClick={onMobileClose}
-                    className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
-                    aria-label="Close menu"
-                  >
-                    <X className="h-5 w-5" />
-                  </button>
-                </div>
-                <nav className="flex-1 overflow-y-auto px-2 py-4 space-y-0.5">
-                  {nav}
-                </nav>
-                <div className="px-2 py-4 border-t border-gray-200 dark:border-gray-800">
-                  <button
-                    onClick={() => { logout(); onMobileClose(); }}
-                    className="flex w-full items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-red-50 hover:text-red-600 dark:text-gray-400 dark:hover:bg-red-900/20"
-                  >
-                    <LogOut className="h-5 w-5 shrink-0" /> Logout
-                  </button>
-                </div>
-              </div>
+              {sidebarContent(true)}
             </motion.aside>
           </motion.div>
         )}
@@ -246,10 +309,10 @@ export function MobileToggle({ onClick }: { onClick: () => void }) {
   return (
     <button
       onClick={onClick}
-      className="lg:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+      className="lg:hidden p-1.5 rounded-lg hover:bg-accent transition-colors"
       aria-label="Open menu"
     >
-      <Menu className="h-5 w-5" aria-hidden />
+      <Menu className="h-4 w-4 text-muted-foreground" aria-hidden />
     </button>
   );
 }
@@ -258,10 +321,10 @@ export function SidebarCollapsedButton({ onClick }: { onClick: () => void }) {
   return (
     <button
       onClick={onClick}
-      className="hidden lg:flex p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+      className="hidden lg:flex p-1.5 rounded-lg hover:bg-accent transition-colors"
       aria-label="Expand sidebar"
     >
-      <ChevronRight className="h-4 w-4 text-gray-500" />
+      <ChevronRight className="h-4 w-4 text-muted-foreground" />
     </button>
   );
 }

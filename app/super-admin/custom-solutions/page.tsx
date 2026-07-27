@@ -36,9 +36,9 @@ export default function SuperAdminCustomSolutionsPage() {
 
   const filtered = (requests ?? []).filter(
     (r) =>
-      r.businessName.toLowerCase().includes(search.toLowerCase()) ||
-      r.industry.toLowerCase().includes(search.toLowerCase()) ||
-      r.country.toLowerCase().includes(search.toLowerCase())
+      (r.businessName ?? '').toLowerCase().includes(search.toLowerCase()) ||
+      (r.industry ?? '').toLowerCase().includes(search.toLowerCase()) ||
+      (r.country ?? '').toLowerCase().includes(search.toLowerCase())
   );
 
   return (
