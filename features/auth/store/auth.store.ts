@@ -5,7 +5,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { UserDto, AuthTokens } from '../types';
-import { setAccessToken } from '@/lib/axios';
+import { setAccessToken, setRefreshTokenValue } from '@/lib/axios';
 import authService from '../services/auth.service';
 
 const setCookie = (name: string, value: string, maxAge: number) => {
@@ -66,6 +66,7 @@ export const useAuthStore = create<AuthState>()(
           return;
         }
         setAccessToken(tokens.accessToken);
+        setRefreshTokenValue(tokens.refreshToken ?? null);
         setCookie('accessToken', tokens.accessToken, tokens.expiresIn);
         if (tokens.refreshToken) {
           setCookie('refreshToken', tokens.refreshToken, 7 * 24 * 60 * 60);
@@ -84,6 +85,7 @@ export const useAuthStore = create<AuthState>()(
       // ─── Logout ───────────────────────────────────────────
       logout: () => {
         setAccessToken(null);
+        setRefreshTokenValue(null);
         removeCookie('accessToken');
         removeCookie('refreshToken');
         set({
@@ -109,6 +111,7 @@ export const useAuthStore = create<AuthState>()(
           return;
         }
         setAccessToken(tokens.accessToken);
+        setRefreshTokenValue(tokens.refreshToken ?? null);
         set({
           accessToken: tokens.accessToken,
           refreshToken: tokens.refreshToken,
@@ -179,7 +182,7 @@ export const useAuthStore = create<AuthState>()(
           }
 
           try {
-            const { accessToken: newToken } = await authService.refreshToken();
+            const { accessToken: newToken } = await authService.refreshToken(state.refreshToken ?? undefined);
             if (newToken) {
               setAccessToken(newToken);
               const user = await authService.getCurrentUser();
@@ -212,6 +215,7 @@ export const useAuthStore = create<AuthState>()(
         return (state) => {
           if (state?.accessToken) {
             setAccessToken(state.accessToken);
+            setRefreshTokenValue(state.refreshToken ?? null);
             setCookie('accessToken', state.accessToken, state.expiresIn ?? 3600);
             if (state.refreshToken) {
               setCookie('refreshToken', state.refreshToken, 7 * 24 * 60 * 60);
