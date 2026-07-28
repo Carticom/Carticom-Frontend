@@ -70,7 +70,7 @@ export function middleware(req: NextRequest) {
 
   if (isProtected && !accessToken) {
     const loginUrl = new URL('/login', req.url);
-    loginUrl.searchParams.set('redirect', pathname);
+    loginUrl.searchParams.set('returnUrl', pathname);
     return NextResponse.redirect(loginUrl);
   }
 

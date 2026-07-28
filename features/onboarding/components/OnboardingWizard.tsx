@@ -16,6 +16,7 @@ import { AIStep } from './steps/AIStep';
 import { CompletionStep } from './steps/CompletionStep';
 import type { BusinessInfoFormData } from '@/features/onboarding/schemas';
 import type { StoreDto } from '@/features/onboarding/types';
+import { useUpdateStore } from '@/features/onboarding/hooks/useOnboarding';
 
 const STEPS = [
   'welcome',
@@ -32,7 +33,9 @@ const STEPS = [
 
 export function OnboardingWizard() {
   const router = useRouter();
+  const updateStore = useUpdateStore();
   const [currentStep, setCurrentStep] = useState(0);
+  const totalSteps = STEPS.length;Step] = useState(0);
   const totalSteps = STEPS.length;
   const [store, setStore] = useState<StoreDto | null>(null);
   const [category, setCategory] = useState('');
@@ -92,7 +95,11 @@ export function OnboardingWizard() {
           <TemplateSelectStep
             key="template"
             category={category}
-            onSelect={() => {}}
+            onSelect={(templ) => {
+              if (store) {
+                updateStore.mutate({ id: store.id, data: { template: templ } });
+              }
+            }}
             onNext={goNext}
             onBack={goBack}
           />

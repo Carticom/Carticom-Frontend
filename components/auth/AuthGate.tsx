@@ -32,12 +32,8 @@ export function AuthGate({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (initRef.current) return;
     initRef.current = true;
-    if (!accessToken) {
-      setReady(true);
-      return;
-    }
     initialize().finally(() => setReady(true));
-  }, [initialize, accessToken]);
+  }, [initialize]);
 
   useEffect(() => {
     if (!ready) return;

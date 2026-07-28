@@ -143,10 +143,10 @@ export const useAuthStore = create<AuthState>()(
           return false;
         }
 
-        // Check token expiry
-        if (state.expiresIn) {
-          const tokenAge = Date.now() - (state.lastActivity - state.expiresIn * 1000);
-          if (tokenAge > state.expiresIn * 1000) {
+        // Check token expiry based on last activity
+        if (state.expiresIn && state.lastActivity) {
+          const elapsed = Date.now() - state.lastActivity;
+          if (elapsed > state.expiresIn * 1000) {
             get().logout();
             return false;
           }

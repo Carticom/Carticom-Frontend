@@ -18,7 +18,7 @@ interface FailedRequest {
 // ─── Constants ───────────────────────────────────────────────
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
-const REFRESH_ENDPOINT = '/auth/refresh';
+const REFRESH_ENDPOINT = '/api/v1/auth/refresh';
 
 // ─── State ───────────────────────────────────────────────────
 

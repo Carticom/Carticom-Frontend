@@ -1,10 +1,24 @@
 'use client';
 
+import { useState, useCallback } from 'react';
 import { useCurrentStoreId } from '@/hooks/useCurrentStore';
-import { useProductsByStore, useDeleteProduct } from '@/features/dashboard/hooks/useProducts';
+import { useProductsByStore, useDeleteProduct, useCreateProduct } from '@/features/dashboard/hooks/useProducts';
 import { LoadingState, EmptyState, ErrorState } from '@/components/dashboard/shared/StateComponents';
 import { ProductStatus } from '@/features/dashboard/types/products.types';
 import type { ProductDto } from '@/features/dashboard/types/products.types';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { X, Plus, Trash2 } from 'lucide-react';
+
+const productSchema = z.object({
+  name: z.string().min(1, 'Name is required'),
+  description: z.string().optional(),
+  price: z.number().positive('Price must be positive'),
+  quantity: z.number().int().nonnegative('Quantity must be 0 or more'),
+});
+
+type ProductFormData = z.infer<typeof productSchema>;
 
 function formatCurrency(amount: number) {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
@@ -16,113 +30,184 @@ function formatDate(dateStr: string) {
 
 function statusBadgeClasses(status: ProductStatus) {
   const map: Record<string, string> = {
-    [ProductStatus.ACTIVE]: 'text-green-600 bg-green-50 dark:text-green-400 dark:bg-green-900/20',
-    [ProductStatus.DRAFT]: 'text-gray-600 bg-gray-50 dark:text-gray-400 dark:bg-gray-900/20',
-    [ProductStatus.ARCHIVED]: 'text-yellow-600 bg-yellow-50 dark:text-yellow-400 dark:bg-yellow-900/20',
-    [ProductStatus.OUT_OF_STOCK]: 'text-red-600 bg-red-50 dark:text-red-400 dark:bg-red-900/20',
+    [ProductStatus.ACTIVE]: 'text-green-600 bg-green-50',
+    [ProductStatus.DRAFT]: 'text-gray-600 bg-gray-50',
+    [ProductStatus.ARCHIVED]: 'text-yellow-600 bg-yellow-50',
+    [ProductStatus.OUT_OF_STOCK]: 'text-red-600 bg-red-50',
   };
-  return map[status] ?? 'text-gray-600 bg-gray-50 dark:text-gray-400 dark:bg-gray-900/20';
+  return map[status] ?? 'text-gray-600 bg-gray-50';
 }
 
 export default function ProductsPage() {
   const { storeId } = useCurrentStoreId();
   const { data: products, isLoading, error, refetch } = useProductsByStore(storeId ?? '');
   const deleteProduct = useDeleteProduct();
+  const createProduct = useCreateProduct();
+  const [showForm, setShowForm] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<ProductFormData>({
+    resolver: zodResolver(productSchema),
+    defaultValues: { name: '', description: '', price: 0, quantity: 0 },
+  });
+
+  const onSubmit = useCallback(async (data: ProductFormData) => {
+    if (!storeId) return;
+    setFormError(null);
+    try {
+      await createProduct.mutateAsync({
+        storeId,
+        name: data.name,
+        description: data.description ?? '',
+        price: data.price,
+        quantity: data.quantity,
+      });
+      reset();
+      setShowForm(false);
+      refetch();
+    } catch (err) {
+      setFormError(err instanceof Error ? err.message : 'Failed to create product');
+    }
+  }, [storeId, createProduct, reset, refetch]);
+
+  const handleDelete = useCallback(async (id: string) => {
+    if (!confirm('Delete this product?')) return;
+    try {
+      await deleteProduct.mutateAsync(id);
+      refetch();
+    } catch {
+      // handled by hook
+    }
+  }, [deleteProduct, refetch]);
 
   if (!storeId || isLoading) return <LoadingState message="Loading products..." />;
   if (error) return <ErrorState title="Failed to load products" onRetry={refetch} />;
-  if (!products?.length) return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Products</h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">Manage your product catalog</p>
-        </div>
-        <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">+ Add Product</button>
-      </div>
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
-        <EmptyState
-          title="No products yet"
-          description="Create your first product to start selling."
-        />
-      </div>
-    </div>
-  );
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Products</h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">Manage your product catalog</p>
+          <h1 className="text-3xl font-bold text-gray-900">Products</h1>
+          <p className="text-gray-600 mt-2">Manage your product catalog</p>
         </div>
-        <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">+ Add Product</button>
+        <button
+          onClick={() => setShowForm(true)}
+          className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+        >
+          <Plus className="h-4 w-4" /> Add Product
+        </button>
       </div>
 
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
-        <div className="flex items-center justify-between mb-4">
-          <input
-            type="text"
-            placeholder="Search products..."
-            className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-          />
-          <div className="flex gap-2">
-            <button className="px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg text-sm text-gray-700 dark:text-gray-300">
-              Filter
-            </button>
-            <button className="px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg text-sm text-gray-700 dark:text-gray-300">
-              Sort
-            </button>
+      {showForm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" onClick={() => setShowForm(false)}>
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg mx-4 p-6" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-gray-900">New Product</h2>
+              <button onClick={() => setShowForm(false)} className="p-1 rounded-lg hover:bg-gray-100 transition-colors">
+                <X className="h-5 w-5 text-gray-500" />
+              </button>
+            </div>
+            {formError && (
+              <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">{formError}</div>
+            )}
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Name *</label>
+                <input {...register('name')} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" />
+                {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name.message}</p>}
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <textarea {...register('description')} rows={3} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Price *</label>
+                  <input type="number" step="0.01" {...register('price', { valueAsNumber: true })} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" />
+                  {errors.price && <p className="text-xs text-red-500 mt-1">{errors.price.message}</p>}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
+                  <input type="number" {...register('quantity', { valueAsNumber: true })} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" />
+                  {errors.quantity && <p className="text-xs text-red-500 mt-1">{errors.quantity.message}</p>}
+                </div>
+              </div>
+              <div className="flex justify-end gap-3 pt-2">
+                <button type="button" onClick={() => setShowForm(false)} className="px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50">Cancel</button>
+                <button type="submit" disabled={isSubmitting} className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 disabled:opacity-50">
+                  {isSubmitting ? 'Creating...' : 'Create Product'}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
+      )}
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-gray-200 dark:border-gray-800">
-                <th className="text-left py-3 px-4 font-medium text-gray-600 dark:text-gray-400">Product</th>
-                <th className="text-left py-3 px-4 font-medium text-gray-600 dark:text-gray-400">SKU</th>
-                <th className="text-left py-3 px-4 font-medium text-gray-600 dark:text-gray-400">Price</th>
-                <th className="text-left py-3 px-4 font-medium text-gray-600 dark:text-gray-400">Status</th>
-                <th className="text-left py-3 px-4 font-medium text-gray-600 dark:text-gray-400">Inventory</th>
-                <th className="text-left py-3 px-4 font-medium text-gray-600 dark:text-gray-400">Created</th>
-              </tr>
-            </thead>
-            <tbody>
-              {products.map((product: ProductDto) => (
-                <tr key={product.id} className="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                  <td className="py-3 px-4">
-                    <div className="flex items-center gap-3">
-                      {product.images?.[0] ? (
-                        <img src={product.images[0]} alt={product.name} className="w-10 h-10 rounded-lg object-cover bg-gray-100 dark:bg-gray-800" />
-                      ) : (
-                        <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-400 text-xs">
-                          N/A
-                        </div>
-                      )}
-                      <div>
-                        <p className="font-medium text-gray-900 dark:text-white">{product.name}</p>
-                        {product.categoryName && (
-                          <p className="text-xs text-gray-500 dark:text-gray-400">{product.categoryName}</p>
-                        )}
-                      </div>
-                    </div>
-                  </td>
-                  <td className="py-3 px-4 text-gray-600 dark:text-gray-400 font-mono text-xs">{product.sku || '—'}</td>
-                  <td className="py-3 px-4 text-gray-900 dark:text-white font-medium">{formatCurrency(product.price)}</td>
-                  <td className="py-3 px-4">
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusBadgeClasses(product.status)}`}>
-                      {product.status === ProductStatus.OUT_OF_STOCK ? 'Out of Stock' : product.status.charAt(0) + product.status.slice(1).toLowerCase()}
-                    </span>
-                  </td>
-                  <td className="py-3 px-4 text-gray-600 dark:text-gray-400">{product.inventory.quantity}</td>
-                  <td className="py-3 px-4 text-gray-500 dark:text-gray-400">{formatDate(product.createdAt)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      {!products?.length ? (
+        <div className="rounded-xl border border-gray-200 bg-white p-6">
+          <EmptyState title="No products yet" description="Create your first product to start selling." />
         </div>
-      </div>
+      ) : (
+        <div className="rounded-xl border border-gray-200 bg-white p-6">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-gray-200">
+                  <th className="text-left py-3 px-4 font-medium text-gray-600">Product</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-600">SKU</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-600">Price</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-600">Status</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-600">Inventory</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-600">Created</th>
+                  <th className="text-right py-3 px-4 font-medium text-gray-600">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {products.map((product: ProductDto) => (
+                  <tr key={product.id} className="border-b border-gray-100 hover:bg-gray-50">
+                    <td className="py-3 px-4">
+                      <div className="flex items-center gap-3">
+                        {product.images?.[0] ? (
+                          <img src={product.images[0]} alt={product.name} className="w-10 h-10 rounded-lg object-cover bg-gray-100" />
+                        ) : (
+                          <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-gray-400 text-xs">N/A</div>
+                        )}
+                        <div>
+                          <p className="font-medium text-gray-900">{product.name}</p>
+                          {product.categoryName && <p className="text-xs text-gray-500">{product.categoryName}</p>}
+                        </div>
+                      </div>
+                    </td>
+                    <td className="py-3 px-4 text-gray-600 font-mono text-xs">{product.sku || '—'}</td>
+                    <td className="py-3 px-4 text-gray-900 font-medium">{formatCurrency(product.price)}</td>
+                    <td className="py-3 px-4">
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusBadgeClasses(product.status)}`}>
+                        {product.status === ProductStatus.OUT_OF_STOCK ? 'Out of Stock' : product.status.charAt(0) + product.status.slice(1).toLowerCase()}
+                      </span>
+                    </td>
+                    <td className="py-3 px-4 text-gray-600">{product.inventory?.quantity ?? '—'}</td>
+                    <td className="py-3 px-4 text-gray-500">{formatDate(product.createdAt)}</td>
+                    <td className="py-3 px-4 text-right">
+                      <button
+                        onClick={() => handleDelete(product.id)}
+                        className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                        title="Delete product"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

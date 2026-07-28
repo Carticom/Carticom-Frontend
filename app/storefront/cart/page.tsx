@@ -18,14 +18,21 @@ export default function CartPage() {
   const [error, setError] = useState<string | null>(null);
   const [updatingItems, setUpdatingItems] = useState<Set<string>>(new Set());
 
-  const storeId = cart?.storeId || null;
+  // storeId comes from URL query param ?store=<id> set on add-to-cart
+  const [searchParams] = useState(() => new URLSearchParams(
+    typeof window !== 'undefined' ? window.location.search : ''
+  ));
+  const storeId = searchParams.get('store');
 
   const fetchCart = useCallback(async () => {
-    if (!storeId && cart?.storeId) return;
+    if (!storeId) {
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     setError(null);
     try {
-      const res = await cartApi.get(storeId || '');
+      const res = await cartApi.get(storeId);
       if (!res.data.data) throw new Error('Cart is empty');
       setCart(res.data.data);
     } catch {
@@ -36,12 +43,8 @@ export default function CartPage() {
   }, [storeId]);
 
   useEffect(() => {
-    if (storeId) {
-      fetchCart();
-    } else {
-      setLoading(false);
-    }
-  }, [storeId, fetchCart]);
+    fetchCart();
+  }, [fetchCart]);
 
   const storeIdToUse = cart?.storeId || '';
 

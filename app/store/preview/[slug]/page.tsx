@@ -222,8 +222,7 @@ export default function TemplatePreviewPage() {
 
   if (!template) return <ErrorState title="Template not found" description={`No template found for "${slug}".`} />;
 
-  const templateComponentSlug = getTemplateByCategory(template.category);
-  const TemplateComponent = getTemplateComponent(templateComponentSlug);
+  const TemplateComponent = getTemplateComponent(slug);
 
   return (
     <>

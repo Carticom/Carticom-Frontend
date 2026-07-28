@@ -30,4 +30,16 @@ export const useCurrentStore = create<CurrentStoreState>()(
   )
 );
 
+// Clear current store when auth state changes
+import { useAuthStore } from '@/features/auth/store/auth.store';
+import { useEffect } from 'react';
+
+export function useClearStoreOnLogout() {
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const clearCurrentStore = useCurrentStore((s) => s.clearCurrentStore);
+  useEffect(() => {
+    if (!isAuthenticated) clearCurrentStore();
+  }, [isAuthenticated, clearCurrentStore]);
+}
+
 export default useCurrentStore;

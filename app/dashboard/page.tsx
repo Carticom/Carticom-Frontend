@@ -5,12 +5,12 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useAuthStore } from '@/features/auth/store/auth.store';
-import { useBusinessOwnerDashboard } from '@/features/business-owner/hooks/useBusinessOwner';
+import { useBusinessOwnerDashboard, useBusinessOwnerAnalytics } from '@/features/business-owner/hooks/useBusinessOwner';
 import { KpiGrid, type KpiCardData } from '@/components/dashboard/cards/KpiCards';
 import { LoadingState, ErrorState } from '@/components/dashboard/shared/StateComponents';
 import { StaggerGrid, StaggerItem, FadeIn } from '@/components/ui/motion';
 import { CountUp } from '@/components/ui/count-up';
-import { DollarSign, ShoppingCart, Shield, TrendingUp, Eye, Loader2, ArrowRight } from 'lucide-react';
+import { DollarSign, ShoppingCart, Shield, TrendingUp, Eye, Loader2, ArrowRight, BarChart3 } from 'lucide-react';
 import type { RecentOrder } from '@/types/dashboard';
 import type { OrderSummaryDTO } from '@/features/business-owner/types';
 import { cn } from '@/lib/utils';
@@ -58,10 +58,6 @@ function toRecentOrder(o: OrderSummaryDTO): RecentOrder {
   };
 }
 
-function formatCurrency(amount: number): string {
-  return amount.toLocaleString('en-NG', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-}
-
 const STATUS_STYLES: Record<string, string> = {
   pending: 'bg-amber-50 text-amber-600',
   processing: 'bg-blue-50 text-blue-600',
@@ -70,36 +66,14 @@ const STATUS_STYLES: Record<string, string> = {
   refunded: 'bg-muted text-muted-foreground',
 };
 
-const MONTHLY_SALES_DATA = [
-  { name: 'Jan', sales: 4000, revenue: 2400 },
-  { name: 'Feb', sales: 3000, revenue: 1398 },
-  { name: 'Mar', sales: 2000, revenue: 9800 },
-  { name: 'Apr', sales: 2780, revenue: 3908 },
-  { name: 'May', sales: 1890, revenue: 4800 },
-  { name: 'Jun', sales: 2390, revenue: 3800 },
-  { name: 'Jul', sales: 3490, revenue: 4300 },
-];
-
-const REVENUE_DATA = [
-  { name: 'Jan', revenue: 5000, orders: 40 },
-  { name: 'Feb', revenue: 3500, orders: 30 },
-  { name: 'Mar', revenue: 8200, orders: 65 },
-  { name: 'Apr', revenue: 4200, orders: 35 },
-  { name: 'May', revenue: 6100, orders: 50 },
-  { name: 'Jun', revenue: 7800, orders: 62 },
-  { name: 'Jul', revenue: 9300, orders: 75 },
-];
-
-const DEMOGRAPHIC_DATA = [
-  { country: 'Nigeria', flag: '🇳🇬', customers: 2379, percentage: 79 },
-  { country: 'Ghana', flag: '🇬🇭', customers: 589, percentage: 23 },
-  { country: 'Kenya', flag: '🇰🇪', customers: 412, percentage: 16 },
-  { country: 'South Africa', flag: '🇿🇦', customers: 328, percentage: 13 },
-];
+function formatCurrency(amount: number): string {
+  return amount.toLocaleString('en-NG', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
 
 export default function DashboardPage() {
   const user = useAuthStore((state) => state.user);
   const { data: dashboard, isLoading, error, refetch } = useBusinessOwnerDashboard();
+  const { data: analytics } = useBusinessOwnerAnalytics('monthly');
   const [greeting, setGreeting] = useState('Hello');
 
   useEffect(() => {
@@ -182,10 +156,22 @@ export default function DashboardPage() {
       <FadeIn delay={0.1}>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <div className="lg:col-span-2">
-            <SalesBarChart data={MONTHLY_SALES_DATA} />
+            {analytics?.length ? (
+              <SalesBarChart data={analytics.map((a) => ({
+                name: a.period,
+                sales: a.orders,
+                revenue: a.revenue,
+              }))} />
+            ) : (
+              <div className="rounded-xl border border-gray-200 bg-white p-8 flex flex-col items-center justify-center text-center">
+                <BarChart3 className="h-10 w-10 text-gray-300 mb-3" />
+                <p className="text-sm text-gray-500 font-medium">Sales data coming soon</p>
+                <p className="text-xs text-gray-400 mt-1">Monthly analytics will appear here once you start selling</p>
+              </div>
+            )}
           </div>
           <div>
-            <TargetProgressCard percentage={65} target="₦20M" revenue="₦13M" today="₦0" />
+            <TargetProgressCard percentage={dashboard.trustScore ?? 0} target="₦20M" revenue={`₦${formatCurrency(dashboard.lifetimeRevenue ?? 0)}`} today="₦0" />
           </div>
         </div>
       </FadeIn>
@@ -193,10 +179,22 @@ export default function DashboardPage() {
       <FadeIn delay={0.15}>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <div className="lg:col-span-2">
-            <RevenueLineChart data={REVENUE_DATA} />
+            {analytics?.length ? (
+              <RevenueLineChart data={analytics.map((a) => ({
+                name: a.period,
+                revenue: a.revenue,
+                orders: a.orders,
+              }))} />
+            ) : (
+              <div className="rounded-xl border border-gray-200 bg-white p-8 flex flex-col items-center justify-center text-center">
+                <BarChart3 className="h-10 w-10 text-gray-300 mb-3" />
+                <p className="text-sm text-gray-500 font-medium">Revenue data coming soon</p>
+                <p className="text-xs text-gray-400 mt-1">Monthly revenue trends will appear here once you start selling</p>
+              </div>
+            )}
           </div>
           <div>
-            <DemographicCard data={DEMOGRAPHIC_DATA} />
+            <DemographicCard data={[{ country: 'Nigeria', flag: '🇳🇬', customers: dashboard.recentOrders?.length ?? 0, percentage: 100 }]} />
           </div>
         </div>
       </FadeIn>
