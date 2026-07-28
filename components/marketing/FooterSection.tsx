@@ -56,9 +56,10 @@ export function FooterSection() {
               The all-in-one commerce operating system for Africa. Build, manage, and grow your business from one platform.
             </p>
             <div className="flex items-center gap-4">
-              {['X', 'IG', 'LI', 'YT'].map((s) => (
-                <a key={s} href="#" className="text-xs font-medium text-gray-500 hover:text-gray-300 transition-colors bg-gray-800 px-3 py-1.5 rounded-lg">{s}</a>
-              ))}
+              <a href="https://twitter.com/carticom" target="_blank" rel="noopener noreferrer" className="text-xs font-medium text-gray-500 hover:text-gray-300 transition-colors bg-gray-800 px-3 py-1.5 rounded-lg">X</a>
+              <a href="https://instagram.com/carticom" target="_blank" rel="noopener noreferrer" className="text-xs font-medium text-gray-500 hover:text-gray-300 transition-colors bg-gray-800 px-3 py-1.5 rounded-lg">IG</a>
+              <a href="https://linkedin.com/company/carticom" target="_blank" rel="noopener noreferrer" className="text-xs font-medium text-gray-500 hover:text-gray-300 transition-colors bg-gray-800 px-3 py-1.5 rounded-lg">LI</a>
+              <a href="https://youtube.com/@carticom" target="_blank" rel="noopener noreferrer" className="text-xs font-medium text-gray-500 hover:text-gray-300 transition-colors bg-gray-800 px-3 py-1.5 rounded-lg">YT</a>
             </div>
           </div>
 
@@ -85,12 +86,12 @@ export function FooterSection() {
             <Link href="/legal/terms" className="hover:text-gray-400">Terms</Link>
             <Link href="/legal/cookies" className="hover:text-gray-400">Cookies</Link>
           </div>
-          <div className="flex items-center gap-2">
-            <input type="email" placeholder="Join newsletter" className="px-3 py-2 rounded-lg bg-gray-800 border border-gray-700 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-blue-500 w-40" />
-            <button className="px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium">
+          <form onSubmit={(e) => { e.preventDefault(); alert('Newsletter subscription coming soon!'); }} className="flex items-center gap-2">
+            <input type="email" placeholder="Join newsletter" className="px-3 py-2 rounded-lg bg-gray-800 border border-gray-700 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-blue-500 w-40" required />
+            <button type="submit" className="px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium">
               <ArrowRight className="h-4 w-4" />
             </button>
-          </div>
+          </form>
         </div>
       </div>
     </footer>

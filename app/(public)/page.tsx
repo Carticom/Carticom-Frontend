@@ -5,11 +5,9 @@ import { FeaturesSection } from '@/components/marketing/FeaturesSection';
 import { WhyCarticom } from '@/components/marketing/WhyCarticom';
 import { SolutionsSection } from '@/components/marketing/SolutionsSection';
 import { DashboardShowcase } from '@/components/marketing/DashboardShowcase';
-import { AISection } from '@/components/marketing/AISection';
 import { PricingSection } from '@/components/marketing/PricingSection';
 import { CustomSolutionsSection } from '@/components/marketing/CustomSolutionsSection';
 import { TestimonialsSection } from '@/components/marketing/TestimonialsSection';
-import { DeveloperSection } from '@/components/marketing/DeveloperSection';
 import { FAQSection } from '@/components/marketing/FAQSection';
 import { CTASection } from '@/components/marketing/CTASection';
 import { FooterSection } from '@/components/marketing/FooterSection';
@@ -41,11 +39,9 @@ export default function Home() {
       <WhyCarticom />
       <SolutionsSection />
       <DashboardShowcase />
-      <AISection />
       <PricingSection />
       <CustomSolutionsSection />
       <TestimonialsSection />
-      <DeveloperSection />
       <FAQSection />
       <CTASection />
       <FooterSection />

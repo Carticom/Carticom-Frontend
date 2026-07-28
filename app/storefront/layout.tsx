@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ShoppingCart, Menu, X, Store } from 'lucide-react';
@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Container } from '@/components/common/Container';
 import { cn } from '@/lib/utils';
 import { useAuthStore } from '@/features/auth/store/auth.store';
+import { cartApi } from '@/features/onboarding/services/onboarding.service';
 
 export default function StorefrontLayout({
   children,
@@ -16,7 +17,17 @@ export default function StorefrontLayout({
 }) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+
+  useEffect(() => {
+    const storeId = new URLSearchParams(window.location.search).get('store');
+    if (storeId) {
+      cartApi.get(storeId).then((res) => {
+        if (res.data.data?.items) setCartCount(res.data.data.items.length);
+      }).catch(() => {});
+    }
+  }, [pathname]);
 
   const isCheckoutPage = pathname?.startsWith('/storefront/checkout');
   const isPreviewPage = pathname?.startsWith('/store/preview/');
@@ -85,9 +96,11 @@ export default function StorefrontLayout({
                 aria-label="Shopping cart"
               >
                 <ShoppingCart className="h-5 w-5" />
-                <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-blue-600 text-[10px] font-bold text-white">
-                  0
-                </span>
+                {cartCount > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-blue-600 text-[10px] font-bold text-white">
+                    {cartCount > 9 ? '9+' : cartCount}
+                  </span>
+                )}
               </Link>
 
               {isAuthenticated ? (

@@ -2,7 +2,7 @@
 
 import React, { Suspense, useEffect, useState, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { ArrowLeft, Loader2, ShoppingBag, Tag, Truck, Package } from 'lucide-react';
+import { ArrowLeft, Loader2, ShoppingBag, Tag, Truck, Package, CreditCard, Building2, Smartphone } from 'lucide-react';
 import { cartApi, checkoutApi, storefrontApi } from '@/features/onboarding/services/onboarding.service';
 import type { CartDto, StoreDto } from '@/features/onboarding/types';
 import { Button } from '@/components/ui/button';
@@ -31,6 +31,7 @@ function CheckoutPageContent() {
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [deliveryMethod, setDeliveryMethod] = useState<'PICKUP' | 'LOCAL_DELIVERY' | 'INTERSTATE_DELIVERY'>('LOCAL_DELIVERY');
+  const [paymentMethod, setPaymentMethod] = useState<'CARD' | 'BANK_TRANSFER' | 'MOBILE_MONEY'>('CARD');
   const [couponCode, setCouponCode] = useState('');
   const [notes, setNotes] = useState('');
 
@@ -92,6 +93,7 @@ function CheckoutPageContent() {
     try {
       const payload: Record<string, unknown> = {
         deliveryMethod,
+        paymentMethod,
         notes: notes || undefined,
         couponCode: couponCode || undefined,
       };
@@ -107,9 +109,14 @@ function CheckoutPageContent() {
         };
       }
 
-      await checkoutApi.checkout(cart.storeId, payload);
+      const res = await checkoutApi.checkout(cart.storeId, payload);
       toast.success('Order placed successfully!');
-      router.push('/storefront');
+      const orderId = res?.data?.data?.id;
+      if (orderId) {
+        router.push(`/storefront/order-confirmation?id=${orderId}`);
+      } else {
+        router.push('/storefront');
+      }
     } catch {
       toast.error('Failed to place order. Please try again.');
     } finally {
@@ -223,6 +230,38 @@ function CheckoutPageContent() {
                 </div>
               </>
             )}
+          </div>
+        </div>
+
+        {/* Payment Method */}
+        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 space-y-4">
+          <h2 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <CreditCard className="h-5 w-5 text-blue-600" />
+            Payment Method
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {[
+              { value: 'CARD' as const, icon: CreditCard, label: 'Card', desc: 'Debit/Credit card' },
+              { value: 'BANK_TRANSFER' as const, icon: Building2, label: 'Bank Transfer', desc: 'Pay via bank transfer' },
+              { value: 'MOBILE_MONEY' as const, icon: Smartphone, label: 'Mobile Money', desc: 'USSD or mobile wallet' },
+            ].map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                onClick={() => setPaymentMethod(option.value)}
+                className={`p-4 rounded-xl border-2 text-left transition-all ${
+                  paymentMethod === option.value
+                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                    : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'
+                }`}
+              >
+                <option.icon className={`h-5 w-5 mb-2 ${
+                  paymentMethod === option.value ? 'text-blue-600' : 'text-gray-400'
+                }`} />
+                <div className="font-medium text-sm text-gray-900 dark:text-white">{option.label}</div>
+                <div className="text-xs text-gray-500">{option.desc}</div>
+              </button>
+            ))}
           </div>
         </div>
 

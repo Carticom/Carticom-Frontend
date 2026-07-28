@@ -118,9 +118,16 @@ export default function CartPage() {
             key={item.productId}
             className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-4 flex items-center gap-4"
           >
+            <div className="flex-shrink-0 w-14 h-14 rounded-lg bg-gray-100 dark:bg-gray-800 overflow-hidden">
+              {item.productImage ? (
+                <img src={item.productImage} alt={item.productName || 'Product'} className="w-full h-full object-cover" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">No img</div>
+              )}
+            </div>
             <div className="flex-1 min-w-0">
               <p className="font-medium text-gray-900 dark:text-white truncate">
-                Product ID: {item.productId}
+                {item.productName || `Product ${item.productId.slice(0, 8)}`}
               </p>
               <p className="text-sm text-blue-600 font-semibold mt-1">
                 {formatPrice(item.unitPrice)}

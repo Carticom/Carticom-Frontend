@@ -1,11 +1,24 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { Check, ArrowRight, Sparkles } from 'lucide-react';
+import { Check, ArrowRight, Sparkles, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { axiosInstance } from '@/lib/axios';
 
-const plans = [
+interface Plan {
+  name: string;
+  price: string;
+  period: string;
+  desc: string;
+  features: string[];
+  cta: string;
+  href: string;
+  popular: boolean;
+}
+
+const fallbackPlans: Plan[] = [
   {
     name: 'Starter',
     price: '₦0',
@@ -46,6 +59,30 @@ const faqs = [
 ];
 
 export default function PricingPage() {
+  const [plans, setPlans] = useState<Plan[]>(fallbackPlans);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axiosInstance.get('/api/v1/super-admin/plans')
+      .then((res) => {
+        const data = res.data?.data;
+        if (Array.isArray(data) && data.length > 0) {
+          setPlans(data.map((p: { name: string; price: number; description?: string; features?: Record<string, unknown> }) => ({
+            name: p.name,
+            price: p.price === 0 ? '₦0' : `₦${p.price.toLocaleString()}`,
+            period: p.price === 0 ? 'forever' : '/month',
+            desc: p.description || '',
+            features: p.features ? Object.keys(p.features) : [],
+            cta: p.price === 0 ? 'Get Started Free' : 'Start 14-Day Trial',
+            href: '/register',
+            popular: p.name.toLowerCase().includes('growth') || p.name.toLowerCase().includes('pro'),
+          })));
+        }
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
   return (
     <main className="min-h-screen pt-28 pb-20">
       <div className="max-w-7xl mx-auto px-4 md:px-8">

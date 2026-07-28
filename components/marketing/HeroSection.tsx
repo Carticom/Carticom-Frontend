@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ArrowRight, Play, Shield, Cloud, Key, Store, ShoppingBag, Package, Users, CreditCard, TrendingUp, Bot } from 'lucide-react';
+import { ArrowRight, Play, Store, ShoppingBag, Package, CreditCard, TrendingUp, Building2, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { TEMPLATES, getTemplateIcon } from '@/features/templates/registry';
 import type { TemplateConfig } from '@/features/templates/types';
@@ -19,14 +19,14 @@ const FLOATING_ITEMS = [
   { icon: ShoppingBag, label: 'Orders', color: 'from-blue-500 to-blue-600', x: '75%', y: '10%', delay: 0.5 },
   { icon: Package, label: 'Products', color: 'from-amber-500 to-amber-600', x: '-8%', y: '55%', delay: 0.4 },
   { icon: CreditCard, label: 'Payments', color: 'from-violet-500 to-violet-600', x: '78%', y: '50%', delay: 0.6 },
-  { icon: TrendingUp, label: 'Analytics', color: 'from-rose-500 to-rose-600', x: '35%', y: '5%', delay: 0.35 },
-  { icon: Bot, label: 'AI', color: 'from-cyan-500 to-cyan-600', x: '35%', y: '70%', delay: 0.45 },
+  { icon: Users, label: 'Team', color: 'from-green-500 to-green-600', x: '35%', y: '5%', delay: 0.35 },
+  { icon: Building2, label: 'Multi-Store', color: 'from-rose-500 to-rose-600', x: '35%', y: '70%', delay: 0.45 },
 ];
 
 const TRUST_BADGES = [
-  { icon: Shield, text: 'Secure Authentication' },
-  { icon: Cloud, text: 'Cloud Hosted' },
-  { icon: Key, text: 'API First' },
+  { icon: Store, text: 'Store Builder' },
+  { icon: CreditCard, text: 'Paystack + Flutterwave' },
+  { icon: ShoppingBag, text: 'Order Management' },
 ];
 
 export function HeroSection() {
@@ -52,20 +52,20 @@ export function HeroSection() {
             <motion.h1 {...fadeUp(0.2)}
               className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 leading-[1.05] tracking-tight"
             >
-              Launch, Manage and Grow
+              Launch Your Online
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-500">
-                Your Business
+                Store in Minutes
               </span>
               <br />
-              with One Platform.
+              Start Selling Today.
             </motion.h1>
 
             <motion.p {...fadeUp(0.3)}
               className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-xl"
             >
-              The all-in-one commerce operating system for Africa. Create stores, manage products and orders,
-              accept payments, handle subscriptions, and automate with AI — from one dashboard.
+              Create a professional online store, manage products and orders, accept payments with Paystack and Flutterwave, 
+              and grow your business — all from one dashboard. No coding required.
             </motion.p>
 
             <motion.div {...fadeUp(0.4)} className="flex flex-wrap gap-4">
@@ -108,13 +108,28 @@ export function HeroSection() {
 
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center space-y-4">
-                  <div className="flex items-center justify-center gap-3">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-100">
-                      <Store className="h-6 w-6 text-blue-600" />
+                  <div className="bg-gradient-to-br from-blue-50 to-white rounded-2xl p-8 max-w-sm mx-auto shadow-inner">
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-3">
+                        <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+                          <Store className="h-5 w-5 text-white" />
+                        </div>
+                        <div className="flex-1">
+                          <div className="h-3 bg-gray-200 rounded w-24" />
+                          <div className="h-2 bg-gray-100 rounded w-16 mt-1" />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div className="h-12 rounded-lg bg-gray-100" />
+                        <div className="h-12 rounded-lg bg-gray-50" />
+                        <div className="h-12 rounded-lg bg-blue-50 border border-blue-100 flex items-center justify-center text-xs font-medium text-blue-600">Active Store</div>
+                        <div className="h-12 rounded-lg bg-gray-100" />
+                      </div>
+                      <div className="h-20 rounded-xl bg-gradient-to-r from-blue-100 via-blue-50 to-transparent flex items-center justify-center text-xs text-blue-500 font-medium">
+                        Real-time Analytics Dashboard
+                      </div>
                     </div>
-                    <span className="text-lg font-semibold text-gray-400">Dashboard Preview</span>
                   </div>
-                  <p className="text-sm text-gray-400 max-w-xs mx-auto">Screenshot of Carticom business dashboard will appear here</p>
                 </div>
               </div>
 
