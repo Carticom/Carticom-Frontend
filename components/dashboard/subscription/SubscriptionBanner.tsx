@@ -2,19 +2,31 @@
 
 import { AlertTriangle, Crown, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
+import { useQuery } from '@tanstack/react-query';
 import { useCurrentStoreId } from '@/hooks/useCurrentStore';
-import { useSubscription } from '@/features/dashboard/hooks/useSubscription';
-import { SubscriptionStatus } from '@/features/dashboard/types/subscription.types';
+import { axiosInstance } from '@/lib/axios';
 
 export function SubscriptionBanner() {
   const { storeId } = useCurrentStoreId();
-  const { data: subscription } = useSubscription(storeId ?? '');
 
-  if (!subscription) return null;
+  const { data: sub } = useQuery({
+    queryKey: ['store-subscription', storeId],
+    queryFn: async () => {
+      if (!storeId) return null;
+      const res = await axiosInstance.get(`/api/v1/subscriptions/store/${storeId}`);
+      return res.data?.data ?? null;
+    },
+    enabled: !!storeId,
+    refetchInterval: 300_000,
+  });
 
-  const { status, currentPeriodEnd } = subscription;
+  if (!sub) return null;
 
-  if (status === SubscriptionStatus.EXPIRED) {
+  const status = sub.status as string;
+  const endDate = sub.endDate as number | null;
+  const planName = (sub.planName ?? sub.planCode ?? '') as string;
+
+  if (status === 'EXPIRED') {
     return (
       <div className="bg-orange-50 border-b border-orange-200 dark:bg-orange-950/40 dark:border-orange-900/50">
         <div className="mx-auto max-w-7xl px-6 py-3">
@@ -40,41 +52,8 @@ export function SubscriptionBanner() {
     );
   }
 
-  if (status === SubscriptionStatus.READ_ONLY) {
-    return (
-      <div className="bg-orange-50 border-b border-orange-200 dark:bg-orange-950/40 dark:border-orange-900/50">
-        <div className="mx-auto max-w-7xl px-6 py-3">
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-3 text-sm text-orange-800 dark:text-orange-300">
-              <RefreshCw className="h-5 w-5 shrink-0" aria-hidden="true" />
-              <span>
-                Your store is in read-only mode. You can view data and export, but cannot create
-                products, receive orders, or process payments.{' '}
-                <span className="font-medium">Upgrade to restore full access.</span>
-              </span>
-            </div>
-            <Link
-              href="/dashboard/subscription"
-              className="flex shrink-0 items-center gap-2 rounded-lg bg-orange-600 px-4 py-2 text-sm font-medium text-white hover:bg-orange-700 transition-colors"
-            >
-              <Crown className="h-4 w-4" aria-hidden="true" />
-              Upgrade Plan
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (
-    status === SubscriptionStatus.ACTIVE &&
-    currentPeriodEnd &&
-    subscription.plan === 'FREE_TRIAL'
-  ) {
-    const daysLeft = Math.ceil(
-      (new Date(currentPeriodEnd).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
-    );
-
+  if (planName === 'Free Trial' && endDate) {
+    const daysLeft = Math.ceil((endDate - Date.now()) / (1000 * 60 * 60 * 24));
     if (daysLeft <= 7 && daysLeft > 0) {
       return (
         <div className="bg-blue-50 border-b border-blue-200 dark:bg-blue-950/40 dark:border-blue-900/50">

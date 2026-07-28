@@ -80,7 +80,6 @@ export function PricingSection() {
     if (!plans) return [];
     const sorted = [...plans].sort((a, b) => (PLAN_ORDER[a.name] ?? 99) - (PLAN_ORDER[b.name] ?? 99));
     return sorted.map((dto) => {
-      const isEnterprise = dto.name === 'Enterprise';
       const price = yearly ? dto.yearlyPrice : dto.monthlyPrice;
       const period = yearly ? '/year' : dto.name === 'Free Trial' ? ' trial' : '/month';
       return {
@@ -89,7 +88,7 @@ export function PricingSection() {
         period,
         desc: dto.description,
         features: generateFeatures(dto, yearly),
-        cta: isEnterprise ? 'Contact Sales' : dto.monthlyPrice === 0 ? 'Get Started Free' : 'Start Free Trial',
+        cta: dto.monthlyPrice === 0 ? 'Get Started Free' : 'Start Free Trial',
         popular: dto.name === 'Growth',
       };
     });
@@ -170,7 +169,7 @@ export function PricingSection() {
                       : 'bg-gray-100 hover:bg-gray-200 text-gray-900'
                   )}
                 >
-                  <Link href={plan.name === 'Enterprise' || plan.name === 'Business' ? '/contact' : '/register'}>{plan.cta}</Link>
+                  <Link href={'/register'}>{plan.cta}</Link>
                 </Button>
               </motion.div>
             ))}

@@ -56,6 +56,10 @@ function generateFeatures(dto: SubscriptionPlanDTO): string[] {
   if (dto.name === 'Enterprise') {
     features.push('White-label option', 'Custom development', '24/7 dedicated support');
   }
+  if (dto.yearlyPrice > 0 && dto.monthlyPrice > 0) {
+    const savePct = Math.round((1 - dto.yearlyPrice / (dto.monthlyPrice * 12)) * 100);
+    if (savePct > 0) features.push(`Save ${savePct}% with yearly billing`);
+  }
   return features;
 }
 
@@ -96,32 +100,34 @@ const fallbackPlans: Plan[] = [
     period: '/month',
     desc: 'For established businesses. Custom domain, API access, dedicated support.',
     features: ['3,000 products', '25 staff accounts', 'Payment processing', 'Custom domain', 'Order management', 'Inventory tracking', 'Advanced analytics', 'AI insights', 'Escrow protection', 'Priority support', 'Dedicated account manager', 'Custom integrations', 'SLA guarantee'],
-    cta: 'Contact Sales',
-    href: '/contact',
+    cta: 'Start Free Trial',
+    href: '/register',
     popular: false,
   },
   {
     name: 'Enterprise',
-    price: 'Custom',
-    period: '',
+    price: '₦45,000',
+    period: '/month',
     desc: 'For large operations. Unlimited everything, dedicated manager, SLA, 24/7 support.',
     features: ['Unlimited products', 'Unlimited staff', 'Custom domain', 'Order management', 'Inventory tracking', 'Advanced analytics', 'AI insights', 'Escrow protection', 'Priority support', 'Dedicated account manager', 'Custom integrations', 'SLA guarantee', 'White-label option', 'Custom development', '24/7 dedicated support'],
-    cta: 'Contact Sales',
-    href: '/contact',
+    cta: 'Start Free Trial',
+    href: '/register',
     popular: false,
   },
 ];
 
 const faqs = [
   { q: 'Can I upgrade or downgrade anytime?', a: 'Yes. You can change your plan at any time. Changes take effect at the start of your next billing cycle.' },
-  { q: 'Is there a free trial?', a: 'Yes, every paid plan comes with a 14-day free trial. No credit card required.' },
+  { q: 'Is there a free trial?', a: 'Yes, every paid plan comes with a 30-day free trial. No credit card required.' },
   { q: 'What payment methods do you accept?', a: 'We accept card payments, bank transfers, USSD, and mobile money across supported African countries.' },
+  { q: 'How does yearly billing work?', a: 'Pay for a full year upfront and save up to 20% compared to monthly billing. Your subscription renews annually.' },
   { q: 'Are there any setup fees?', a: 'No. There are no setup fees or hidden charges. You only pay your subscription fee.' },
 ];
 
 export default function PricingPage() {
   const [plans, setPlans] = useState<Plan[]>(fallbackPlans);
   const [loading, setLoading] = useState(true);
+  const [yearly, setYearly] = useState(false);
 
   useEffect(() => {
     axiosInstance.get('/api/v1/subscriptions/plans')
@@ -131,19 +137,19 @@ export default function PricingPage() {
           const sorted = [...data].sort((a, b) => (PLAN_ORDER[a.name] ?? 99) - (PLAN_ORDER[b.name] ?? 99));
           setPlans(sorted.map((p) => ({
             name: p.name,
-            price: p.monthlyPrice === 0 ? 'Free' : formatPrice(p.monthlyPrice),
-            period: p.monthlyPrice === 0 ? ' trial' : '/month',
+            price: p.monthlyPrice === 0 ? 'Free' : formatPrice(yearly ? p.yearlyPrice : p.monthlyPrice),
+            period: yearly ? '/year' : p.monthlyPrice === 0 ? ' trial' : '/month',
             desc: p.description || '',
             features: generateFeatures(p),
-            cta: p.name === 'Enterprise' ? 'Contact Sales' : p.monthlyPrice === 0 ? 'Get Started Free' : 'Start Free Trial',
-            href: p.name === 'Enterprise' || p.name === 'Business' ? '/contact' : '/register',
+            cta: p.monthlyPrice === 0 ? 'Get Started Free' : 'Start Free Trial',
+            href: '/register',
             popular: p.name === 'Growth',
           })));
         }
       })
       .catch(() => {})
       .finally(() => setLoading(false));
-  }, []);
+  }, [yearly]);
 
   return (
     <main className="min-h-screen pt-28 pb-20">
@@ -155,6 +161,13 @@ export default function PricingPage() {
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900">Choose Your Plan</h1>
           <p className="text-lg text-gray-600 mt-4 max-w-2xl mx-auto">Start free, upgrade as you grow. No hidden fees, no surprise charges.</p>
+          <div className="inline-flex items-center gap-3 mt-8 p-1 rounded-xl bg-gray-100">
+            <button onClick={() => setYearly(false)} className={`px-5 py-2 text-sm font-medium rounded-lg transition-all ${!yearly ? 'bg-white text-gray-900 shadow-sm' : ''}`}>Monthly</button>
+            <button onClick={() => setYearly(true)} className={`px-5 py-2 text-sm font-medium rounded-lg transition-all ${yearly ? 'bg-white text-gray-900 shadow-sm' : ''}`}>
+              Yearly
+              <span className="ml-1.5 text-[10px] text-blue-600 font-bold bg-blue-50 px-1.5 py-0.5 rounded-full">Save up to 20%</span>
+            </button>
+          </div>
         </motion.div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5 max-w-7xl mx-auto">
