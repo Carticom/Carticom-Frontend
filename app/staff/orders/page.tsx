@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useCurrentStoreId } from '@/hooks/useCurrentStore';
-import { useOrders, useUpdateOrder } from '@/features/dashboard/hooks/useOrders';
+import { useOrders, useUpdateOrderStatus } from '@/features/dashboard/hooks/useOrders';
 import { useAuthStore } from '@/features/auth/store/auth.store';
 import { LoadingState, EmptyState, ErrorState } from '@/components/dashboard/shared/StateComponents';
 import { OrderStatus } from '@/features/dashboard/types/orders.types';
@@ -62,12 +62,12 @@ export default function StaffOrdersPage() {
     status: selectedStatus || undefined,
   });
 
-  const updateOrder = useUpdateOrder();
+  const updateOrder = useUpdateOrderStatus();
 
   const canUpdateOrders = user?.role === 'STAFF' || user?.role === 'BUSINESS_OWNER';
 
   const handleStatusChange = (orderId: string, newStatus: string) => {
-    updateOrder.mutate({ id: orderId, data: { status: newStatus as OrderStatus } });
+    updateOrder.mutate({ id: orderId, status: newStatus });
   };
 
   if (!storeId || isLoading) return <LoadingState message="Loading orders..." />;

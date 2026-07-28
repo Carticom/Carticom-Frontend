@@ -1,16 +1,10 @@
-// ============================================================
-// CARTICOM ORDERS — React Query Hooks
-// ============================================================
-
 'use client';
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { ordersRepository } from '@/features/dashboard/repositories/orders.repository';
-import type { OrderDto, CreateOrderDto, UpdateOrderDto } from '@/features/dashboard/types/orders.types';
+import type { OrderDto, CreateOrderDto } from '@/features/dashboard/types/orders.types';
 import { queryKeys } from '@/lib/dal/query-keys';
 import { showToast } from '@/lib/notifications/toast';
-
-// ─── Use Orders ───────────────────────────────────────────────
 
 export function useOrders(storeId: string, params?: { page?: number; limit?: number; status?: string }) {
   return useQuery({
@@ -21,8 +15,6 @@ export function useOrders(storeId: string, params?: { page?: number; limit?: num
     enabled: !!storeId,
   });
 }
-
-// ─── Use Order By ID ──────────────────────────────────────────
 
 export function useOrder(id: string | undefined | null) {
   return useQuery({
@@ -35,8 +27,6 @@ export function useOrder(id: string | undefined | null) {
   });
 }
 
-// ─── Use Orders By Status ─────────────────────────────────────
-
 export function useOrdersByStatus(storeId: string, status: string) {
   return useQuery({
     queryKey: queryKeys.orders.byStatus(status),
@@ -46,8 +36,6 @@ export function useOrdersByStatus(storeId: string, status: string) {
     enabled: !!storeId && !!status,
   });
 }
-
-// ─── Use Create Order ─────────────────────────────────────────
 
 export function useCreateOrder() {
   const queryClient = useQueryClient();
@@ -68,19 +56,17 @@ export function useCreateOrder() {
   });
 }
 
-// ─── Use Update Order ─────────────────────────────────────────
-
-export function useUpdateOrder() {
+export function useUpdateOrderStatus() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ id, data }: { id: string; data: Partial<UpdateOrderDto> }) => {
-      return ordersRepository.update({ id, data });
+    mutationFn: async ({ id, status }: { id: string; status: string }) => {
+      return ordersRepository.updateOrderStatus(id, status);
     },
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.orders.all });
       queryClient.invalidateQueries({ queryKey: queryKeys.orders.byId(variables.id) });
-      showToast('success', 'Order updated successfully');
+      showToast('success', 'Order status updated');
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to update order', {

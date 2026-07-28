@@ -35,7 +35,6 @@ export function OnboardingWizard() {
   const router = useRouter();
   const updateStore = useUpdateStore();
   const [currentStep, setCurrentStep] = useState(0);
-  const totalSteps = STEPS.length;Step] = useState(0);
   const totalSteps = STEPS.length;
   const [store, setStore] = useState<StoreDto | null>(null);
   const [category, setCategory] = useState('');

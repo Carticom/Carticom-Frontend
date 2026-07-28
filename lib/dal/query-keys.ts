@@ -159,6 +159,15 @@ export const queryKeys = {
       ['wallet', storeId, 'transactions', params] as const,
   },
 
+  // ─── Addresses ───────────────────────────────────────────
+  addresses: {
+    all: ['addresses'] as const,
+    lists: () => [...queryKeys.addresses.all, 'list'] as const,
+    list: (filters: Record<string, unknown>) =>
+      [...queryKeys.addresses.lists(), filters] as const,
+    byId: (id: string) => [...queryKeys.addresses.all, id] as const,
+  },
+
   // ─── Generic Helper ──────────────────────────────────────
   // Use for any domain not yet covered by the above factories
   generic: {

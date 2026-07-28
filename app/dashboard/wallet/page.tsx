@@ -1,7 +1,6 @@
 'use client';
 
 import { useWallet, useWalletTransactions } from '@/features/dashboard/hooks/useWallet';
-import { useCurrentStoreId } from '@/hooks/useCurrentStore';
 import { LoadingState, ErrorState, EmptyState } from '@/components/dashboard/shared/StateComponents';
 import { WalletTransactionType } from '@/features/dashboard/types/wallet.types';
 import type { WalletTransactionDto } from '@/features/dashboard/types/wallet.types';
@@ -55,23 +54,21 @@ function TypeBadge({ type }: { type: string }) {
 }
 
 export default function WalletPage() {
-  const { storeId } = useCurrentStoreId();
-
   const {
     data: wallet,
     isLoading: walletLoading,
     error: walletError,
     refetch: refetchWallet,
-  } = useWallet(storeId ?? '');
+  } = useWallet();
 
   const {
     data: transactions,
     isLoading: txLoading,
     error: txError,
     refetch: refetchTx,
-  } = useWalletTransactions(storeId ?? '');
+  } = useWalletTransactions();
 
-  const isLoading = walletLoading || txLoading || !storeId;
+  const isLoading = walletLoading || txLoading;
   const error = walletError || txError;
 
   if (isLoading) {

@@ -61,11 +61,10 @@ export default function ProductsPage() {
     setFormError(null);
     try {
       await createProduct.mutateAsync({
-        storeId,
         name: data.name,
         description: data.description ?? '',
         price: data.price,
-        quantity: data.quantity,
+        inventory: { quantity: data.quantity, trackQuantity: true, allowBackorder: false },
       });
       reset();
       setShowForm(false);

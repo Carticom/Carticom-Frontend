@@ -17,6 +17,7 @@ import { loginSchema } from '@/features/auth/schemas';
 import { useAuthStore } from '@/features/auth/store/auth.store';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { authToasts } from '@/features/auth/hooks/useToast';
+import axiosInstance from '@/lib/axios';
 import type { LoginSchema } from '@/features/auth/schemas';
 
 function LoginForm() {
@@ -212,8 +213,16 @@ function LoginForm() {
       {/* Google OAuth Button */}
       <button
         type="button"
-        onClick={() => {
-          window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
+        onClick={async () => {
+          try {
+            const res = await axiosInstance.get('/api/v1/auth/oauth/url');
+            const url = res.data?.data?.url ?? res.data?.url;
+            if (url) {
+              window.location.href = url;
+            }
+          } catch {
+            window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
+          }
         }}
         className="flex w-full items-center justify-center gap-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
       >
