@@ -3,9 +3,22 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { Check, ArrowRight, Sparkles, Loader2 } from 'lucide-react';
+import { Check, ArrowRight, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { axiosInstance } from '@/lib/axios';
+
+interface SubscriptionPlanDTO {
+  id: string;
+  name: string;
+  description: string;
+  monthlyPrice: number;
+  yearlyPrice: number;
+  productLimit: number;
+  staffLimit: number;
+  paymentsEnabled: boolean;
+  customDomainEnabled: boolean;
+  durationDays: number | null;
+}
 
 interface Plan {
   name: string;
@@ -18,14 +31,52 @@ interface Plan {
   popular: boolean;
 }
 
+const PLAN_ORDER: Record<string, number> = {
+  'Free Trial': 0, 'Starter': 1, 'Growth': 2, 'Business': 3, 'Enterprise': 4,
+};
+
+function formatPrice(amount: number): string {
+  if (amount === 0) return 'Free';
+  return `₦${amount.toLocaleString()}`;
+}
+
+function generateFeatures(dto: SubscriptionPlanDTO): string[] {
+  const features: string[] = [];
+  features.push(`${dto.productLimit >= 99999 ? 'Unlimited' : dto.productLimit.toLocaleString()} products`);
+  features.push(`${dto.staffLimit >= 99999 ? 'Unlimited' : dto.staffLimit} staff accounts`);
+  if (dto.paymentsEnabled) features.push('Payment processing');
+  if (dto.customDomainEnabled) features.push('Custom domain');
+  features.push('Order management', 'Inventory tracking');
+  if (dto.name === 'Growth' || dto.name === 'Business' || dto.name === 'Enterprise') {
+    features.push('Advanced analytics', 'AI insights', 'Escrow protection', 'Priority support');
+  }
+  if (dto.name === 'Business' || dto.name === 'Enterprise') {
+    features.push('Dedicated account manager', 'Custom integrations', 'SLA guarantee');
+  }
+  if (dto.name === 'Enterprise') {
+    features.push('White-label option', 'Custom development', '24/7 dedicated support');
+  }
+  return features;
+}
+
 const fallbackPlans: Plan[] = [
   {
-    name: 'Starter',
-    price: '₦0',
-    period: 'forever',
-    desc: 'Perfect for trying out Carticom',
-    features: ['1 staff account', 'Up to 10 products', 'Basic storefront', 'Manual payments', 'Community support'],
+    name: 'Free Trial',
+    price: 'Free',
+    period: ' trial',
+    desc: 'Try Carticom free for 30 days. No payment required. Upgrade anytime to keep selling.',
+    features: ['25 products', '1 staff account', 'Payment processing', 'Order management', 'Inventory tracking'],
     cta: 'Get Started Free',
+    href: '/register',
+    popular: false,
+  },
+  {
+    name: 'Starter',
+    price: '₦5,000',
+    period: '/month',
+    desc: 'For individual sellers. AI features included, full analytics.',
+    features: ['100 products', '2 staff accounts', 'Payment processing', 'Order management', 'Inventory tracking'],
+    cta: 'Start Free Trial',
     href: '/register',
     popular: false,
   },
@@ -33,18 +84,28 @@ const fallbackPlans: Plan[] = [
     name: 'Growth',
     price: '₦15,000',
     period: '/month',
-    desc: 'For growing businesses',
-    features: ['5 staff accounts', 'Unlimited products', 'Custom domain', 'Escrow payments', 'AI assistant', 'Priority support', 'Analytics dashboard'],
-    cta: 'Start 14-Day Trial',
+    desc: 'For growing businesses. More products, staff, and priority support.',
+    features: ['500 products', '10 staff accounts', 'Payment processing', 'Custom domain', 'Order management', 'Inventory tracking', 'Advanced analytics', 'AI insights', 'Escrow protection', 'Priority support'],
+    cta: 'Start Free Trial',
     href: '/register',
     popular: true,
+  },
+  {
+    name: 'Business',
+    price: '₦25,000',
+    period: '/month',
+    desc: 'For established businesses. Custom domain, API access, dedicated support.',
+    features: ['3,000 products', '25 staff accounts', 'Payment processing', 'Custom domain', 'Order management', 'Inventory tracking', 'Advanced analytics', 'AI insights', 'Escrow protection', 'Priority support', 'Dedicated account manager', 'Custom integrations', 'SLA guarantee'],
+    cta: 'Contact Sales',
+    href: '/contact',
+    popular: false,
   },
   {
     name: 'Enterprise',
     price: 'Custom',
     period: '',
-    desc: 'For large-scale operations',
-    features: ['Unlimited staff', 'Dedicated account manager', 'Custom integrations', 'SLA guarantee', 'API access', 'Bulk operations', 'White-label option', 'On-premise available'],
+    desc: 'For large operations. Unlimited everything, dedicated manager, SLA, 24/7 support.',
+    features: ['Unlimited products', 'Unlimited staff', 'Custom domain', 'Order management', 'Inventory tracking', 'Advanced analytics', 'AI insights', 'Escrow protection', 'Priority support', 'Dedicated account manager', 'Custom integrations', 'SLA guarantee', 'White-label option', 'Custom development', '24/7 dedicated support'],
     cta: 'Contact Sales',
     href: '/contact',
     popular: false,
@@ -63,19 +124,20 @@ export default function PricingPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axiosInstance.get('/api/v1/super-admin/plans')
+    axiosInstance.get('/api/v1/subscriptions/plans')
       .then((res) => {
-        const data = res.data?.data;
+        const data: SubscriptionPlanDTO[] = res.data?.data;
         if (Array.isArray(data) && data.length > 0) {
-          setPlans(data.map((p: { name: string; price: number; description?: string; features?: Record<string, unknown> }) => ({
+          const sorted = [...data].sort((a, b) => (PLAN_ORDER[a.name] ?? 99) - (PLAN_ORDER[b.name] ?? 99));
+          setPlans(sorted.map((p) => ({
             name: p.name,
-            price: p.price === 0 ? '₦0' : `₦${p.price.toLocaleString()}`,
-            period: p.price === 0 ? 'forever' : '/month',
+            price: p.monthlyPrice === 0 ? 'Free' : formatPrice(p.monthlyPrice),
+            period: p.monthlyPrice === 0 ? ' trial' : '/month',
             desc: p.description || '',
-            features: p.features ? Object.keys(p.features) : [],
-            cta: p.price === 0 ? 'Get Started Free' : 'Start 14-Day Trial',
-            href: '/register',
-            popular: p.name.toLowerCase().includes('growth') || p.name.toLowerCase().includes('pro'),
+            features: generateFeatures(p),
+            cta: p.name === 'Enterprise' ? 'Contact Sales' : p.monthlyPrice === 0 ? 'Get Started Free' : 'Start Free Trial',
+            href: p.name === 'Enterprise' || p.name === 'Business' ? '/contact' : '/register',
+            popular: p.name === 'Growth',
           })));
         }
       })
@@ -95,7 +157,7 @@ export default function PricingPage() {
           <p className="text-lg text-gray-600 mt-4 max-w-2xl mx-auto">Start free, upgrade as you grow. No hidden fees, no surprise charges.</p>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5 max-w-7xl mx-auto">
           {plans.map((plan, i) => (
             <motion.div
               key={plan.name}
