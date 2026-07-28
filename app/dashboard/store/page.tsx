@@ -4,11 +4,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useAuthStore } from '@/features/auth/store/auth.store';
 import { useMyStores, useUpdateStore } from '@/features/onboarding/hooks/useOnboarding';
 import { LoadingState, EmptyState, ErrorState } from '@/components/dashboard/shared/StateComponents';
-import { Globe, Eye, Upload, ExternalLink, Check, ChevronDown, ChevronUp } from 'lucide-react';
+import { Globe, Eye, Upload, ExternalLink, Check, ChevronDown, ChevronUp, Copy } from 'lucide-react';
+import { showToast } from '@/lib/notifications/toast';
 import { getTemplateIcon, getTemplatesForCategory } from '@/features/templates/registry';
 import { BUSINESS_CATEGORIES } from '@/features/templates/types';
 import axiosInstance from '@/lib/axios';
-import { showToast } from '@/lib/notifications/toast';
 import { cn } from '@/lib/utils';
 
 export default function StorePage() {
@@ -94,20 +94,30 @@ export default function StorePage() {
             Manage your store settings and branding
           </p>
         </div>
-        <div className="flex gap-2">
-          {isPublished && (
-            <a
-              href={storefrontUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+          <div className="flex gap-2">
+            {isPublished && (
+              <a
+                href={storefrontUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg text-sm hover:bg-gray-50 dark:hover:bg-gray-800"
+              >
+                <Eye className="h-4 w-4" />
+                View Store
+              </a>
+            )}
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(storefrontUrl);
+                showToast('success', 'Store link copied!');
+              }}
               className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg text-sm hover:bg-gray-50 dark:hover:bg-gray-800"
             >
-              <Eye className="h-4 w-4" />
-              View Store
-            </a>
-          )}
-          <button
-            onClick={handleTogglePublish}
+              <Copy className="h-4 w-4" />
+              Copy Link
+            </button>
+            <button
+              onClick={handleTogglePublish}
             disabled={publishing}
             className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium ${
               isPublished

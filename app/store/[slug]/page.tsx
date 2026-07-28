@@ -8,6 +8,7 @@ import { LoadingState, ErrorState } from '@/components/dashboard/shared/StateCom
 import { getTemplateComponent, getTemplateByCategory } from '@/components/templates';
 import { extractErrorMessage } from '@/lib/axios';
 import { showToast } from '@/lib/notifications/toast';
+import { ShareButton } from '@/components/store/ShareButton';
 
 export default function StorePage() {
   const params = useParams();
@@ -71,13 +72,20 @@ export default function StorePage() {
 
   const templateSlug = store.template || getTemplateByCategory(store.businessCategory || '');
   const TemplateComponent = getTemplateComponent(templateSlug);
+  const storeUrl = typeof window !== 'undefined' ? window.location.href : `https://carticom.vercel.app/store/${slug}`;
 
   return (
-    <TemplateComponent
-      store={store}
-      products={products}
-      onAddToCart={handleAddToCart}
-      addingToCart={addingToCart}
-    />
+    <>
+      <TemplateComponent
+        store={store}
+        products={products}
+        onAddToCart={handleAddToCart}
+        addingToCart={addingToCart}
+      />
+      <ShareButton
+        url={storeUrl}
+        title={store.name}
+      />
+    </>
   );
 }
