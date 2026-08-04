@@ -15,19 +15,31 @@ const geistMono = Geist_Mono({
   subsets: ["latin"]});
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://carticom.ng"),
   title: "Carticom - Commerce Operating System for Africa",
   description: "Build, sell, manage and scale your business with Carticom. The all-in-one commerce platform for African businesses.",
   keywords: ["commerce", "africa", "ecommerce", "payments", "escrow", "ai", "business"],
   authors: [{ name: "Carticom" }],
+  icons: {
+    icon: "/icon.svg",
+    apple: "/icon.svg"},
   openGraph: {
     title: "Carticom - Commerce Operating System for Africa",
     description: "Build, sell, manage and scale your business with Carticom.",
     type: "website",
-    locale: "en_NG"},
+    locale: "en_NG",
+    url: "https://carticom.ng",
+    siteName: "Carticom",
+    images: [{
+      url: "https://carticom.ng/icon.svg",
+      width: 512,
+      height: 512,
+      alt: "Carticom"}]},
   twitter: {
     card: "summary_large_image",
     title: "Carticom - Commerce Operating System for Africa",
-    description: "Build, sell, manage and scale your business with Carticom."}};
+    description: "Build, sell, manage and scale your business with Carticom.",
+    images: ["https://carticom.ng/icon.svg"]}};
 
 export default function RootLayout({
   children}: Readonly<{
@@ -35,7 +47,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="en-NG"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
