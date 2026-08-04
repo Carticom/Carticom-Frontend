@@ -17,24 +17,26 @@ export default function StorefrontLayout({
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
-  const [storeId, setStoreId] = useState<string | null>(() =>
-    typeof window !== 'undefined'
-      ? new URLSearchParams(window.location.search).get('store')
-      : null
-  );
+  const storeId = typeof window !== 'undefined'
+    ? new URLSearchParams(window.location.search).get('store')
+    : null;
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
 
   useEffect(() => {
-    const storeIdFromUrl = new URLSearchParams(window.location.search).get('store');
-    setStoreId(storeIdFromUrl || null);
-    if (storeIdFromUrl) {
-      cartApi.get(storeIdFromUrl).then((res) => {
-        if (res.data.data?.items) setCartCount(res.data.data.items.length);
-      }).catch(() => {});
-    } else {
-      setCartCount(0);
-    }
-  }, [pathname]);
+    let cancelled = false;
+    const load = async () => {
+      try {
+        const res = storeId ? await cartApi.get(storeId) : null;
+        if (cancelled) return;
+        setCartCount(res?.data.data?.items?.length ?? 0);
+      } catch {
+        if (cancelled) return;
+        setCartCount(0);
+      }
+    };
+    load();
+    return () => { cancelled = true; };
+  }, [storeId]);
 
   const isCheckoutPage = pathname?.startsWith('/storefront/checkout');
   const isPreviewPage = pathname?.startsWith('/store/preview/');
