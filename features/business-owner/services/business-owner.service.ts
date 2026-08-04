@@ -1,13 +1,5 @@
 import axiosInstance, { extractErrorMessage } from '@/lib/axios';
-import type {
-  BusinessOwnerDashboardDTO,
-  AnalyticsResponseDTO,
-  WalletResponseDTO,
-  WalletTransactionResponseDTO,
-  WithdrawalResponseDTO,
-  SettlementResponseDTO,
-  RefundResponse,
-} from '../types';
+import type { BusinessOwnerDashboardDTO, AnalyticsResponseDTO, WalletResponseDTO, WalletTransactionResponseDTO, WithdrawalResponseDTO } from '../types';
 
 class BusinessOwnerService {
   async getDashboard(): Promise<BusinessOwnerDashboardDTO> {

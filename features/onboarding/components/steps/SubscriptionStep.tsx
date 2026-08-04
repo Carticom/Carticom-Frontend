@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Crown, Check, Zap } from 'lucide-react';
@@ -22,7 +22,7 @@ export function SubscriptionStep({ onNext, onBack }: SubscriptionStepProps) {
           Choose Your Plan
         </h2>
         <p className="text-gray-600 dark:text-gray-400">
-          Start free and upgrade when you're ready
+          Start free and upgrade when you&apos;re ready
         </p>
       </div>
 

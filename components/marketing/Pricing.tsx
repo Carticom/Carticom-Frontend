@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check, ArrowRight, Sparkles, Zap, Loader2, AlertCircle } from 'lucide-react';
@@ -37,15 +37,14 @@ const PLAN_ORDER: Record<string, number> = {
   'Starter': 1,
   'Growth': 2,
   'Business': 3,
-  'Enterprise': 4,
-};
+  'Enterprise': 4};
 
 function formatPrice(amount: number): string {
   if (amount === 0) return 'Free';
   return `₦${amount.toLocaleString()}`;
 }
 
-function generateFeatures(dto: SubscriptionPlanDTO, yearly: boolean): string[] {
+function generateFeatures(dto: SubscriptionPlanDTO, _yearly: boolean): string[] {
   const features: string[] = [];
 
   const productLimit = dto.productLimit >= 99999 ? 'Unlimited products' : `Up to ${dto.productLimit.toLocaleString()} products`;
@@ -84,8 +83,7 @@ function generateFeatures(dto: SubscriptionPlanDTO, yearly: boolean): string[] {
 
 function ToggleSwitch({
   isYearly,
-  onToggle,
-}: {
+  onToggle}: {
   isYearly: boolean;
   onToggle: () => void;
 }) {
@@ -138,8 +136,7 @@ export function Pricing() {
       const res = await axiosInstance.get('/api/v1/subscriptions/plans');
       return res.data?.data ?? [];
     },
-    staleTime: 5 * 60_000,
-  });
+    staleTime: 5 * 60_000});
 
   const sortedPlans = useMemo(() => {
     if (!plans) return [];
@@ -166,8 +163,7 @@ export function Pricing() {
         features: generateFeatures(dto, isYearly),
         cta: isEnterprise ? 'Contact Sales' : dto.monthlyPrice === 0 ? 'Get Started Free' : 'Start Free Trial',
         popular: dto.name === 'Growth',
-        save,
-      };
+        save};
     });
   }, [sortedPlans, isYearly]);
 

@@ -32,8 +32,7 @@ interface Plan {
 }
 
 const PLAN_ORDER: Record<string, number> = {
-  'Free Trial': 0, 'Starter': 1, 'Growth': 2, 'Business': 3, 'Enterprise': 4,
-};
+  'Free Trial': 0, 'Starter': 1, 'Growth': 2, 'Business': 3, 'Enterprise': 4};
 
 function formatPrice(amount: number): string {
   if (amount === 0) return 'Free';
@@ -72,8 +71,7 @@ const fallbackPlans: Plan[] = [
     features: ['25 products', '1 staff account', 'Payment processing', 'Order management', 'Inventory tracking'],
     cta: 'Get Started Free',
     href: '/register',
-    popular: false,
-  },
+    popular: false},
   {
     name: 'Starter',
     price: '₦5,000',
@@ -82,8 +80,7 @@ const fallbackPlans: Plan[] = [
     features: ['100 products', '2 staff accounts', 'Payment processing', 'Order management', 'Inventory tracking'],
     cta: 'Start Free Trial',
     href: '/register',
-    popular: false,
-  },
+    popular: false},
   {
     name: 'Growth',
     price: '₦15,000',
@@ -92,8 +89,7 @@ const fallbackPlans: Plan[] = [
     features: ['500 products', '10 staff accounts', 'Payment processing', 'Custom domain', 'Order management', 'Inventory tracking', 'Advanced analytics', 'AI insights', 'Escrow protection', 'Priority support'],
     cta: 'Start Free Trial',
     href: '/register',
-    popular: true,
-  },
+    popular: true},
   {
     name: 'Business',
     price: '₦25,000',
@@ -102,8 +98,7 @@ const fallbackPlans: Plan[] = [
     features: ['3,000 products', '25 staff accounts', 'Payment processing', 'Custom domain', 'Order management', 'Inventory tracking', 'Advanced analytics', 'AI insights', 'Escrow protection', 'Priority support', 'Dedicated account manager', 'Custom integrations', 'SLA guarantee'],
     cta: 'Start Free Trial',
     href: '/register',
-    popular: false,
-  },
+    popular: false},
   {
     name: 'Enterprise',
     price: '₦45,000',
@@ -112,8 +107,7 @@ const fallbackPlans: Plan[] = [
     features: ['Unlimited products', 'Unlimited staff', 'Custom domain', 'Order management', 'Inventory tracking', 'Advanced analytics', 'AI insights', 'Escrow protection', 'Priority support', 'Dedicated account manager', 'Custom integrations', 'SLA guarantee', 'White-label option', 'Custom development', '24/7 dedicated support'],
     cta: 'Start Free Trial',
     href: '/register',
-    popular: false,
-  },
+    popular: false},
 ];
 
 const faqs = [
@@ -126,7 +120,7 @@ const faqs = [
 
 export default function PricingPage() {
   const [plans, setPlans] = useState<Plan[]>(fallbackPlans);
-  const [loading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
   const [yearly, setYearly] = useState(false);
 
   useEffect(() => {
@@ -143,8 +137,7 @@ export default function PricingPage() {
             features: generateFeatures(p),
             cta: p.monthlyPrice === 0 ? 'Get Started Free' : 'Start Free Trial',
             href: '/register',
-            popular: p.name === 'Growth',
-          })));
+            popular: p.name === 'Growth'})));
         }
       })
       .catch(() => {})

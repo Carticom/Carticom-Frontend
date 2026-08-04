@@ -8,13 +8,11 @@ import { AuthGate } from "@/components/auth/AuthGate";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+  subsets: ["latin"]});
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+  subsets: ["latin"]});
 
 export const metadata: Metadata = {
   title: "Carticom - Commerce Operating System for Africa",
@@ -25,18 +23,14 @@ export const metadata: Metadata = {
     title: "Carticom - Commerce Operating System for Africa",
     description: "Build, sell, manage and scale your business with Carticom.",
     type: "website",
-    locale: "en_NG",
-  },
+    locale: "en_NG"},
   twitter: {
     card: "summary_large_image",
     title: "Carticom - Commerce Operating System for Africa",
-    description: "Build, sell, manage and scale your business with Carticom.",
-  },
-};
+    description: "Build, sell, manage and scale your business with Carticom."}};
 
 export default function RootLayout({
-  children,
-}: Readonly<{
+  children}: Readonly<{
   children: React.ReactNode;
 }>) {
   return (

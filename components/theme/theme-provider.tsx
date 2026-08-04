@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, useSyncExternalStore } from 'react';
 
 type Theme = 'light' | 'dark';
 
@@ -12,19 +12,21 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>('light');
-  const [mounted, setMounted] = useState(false);
+const subscribeToClientState = () => () => {};
 
-  useEffect(() => {
-    setMounted(true);
-    const stored = localStorage.getItem('carticom-theme') as Theme | null;
-    if (stored) {
-      setThemeState(stored);
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setThemeState('dark');
-    }
-  }, []);
+function getStoredTheme(): Theme {
+  const stored = localStorage.getItem('carticom-theme') as Theme | null;
+  if (stored === 'light' || stored === 'dark') return stored;
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  const mounted = useSyncExternalStore(subscribeToClientState, () => true, () => false);
+  const [theme, setThemeState] = useState<Theme>('light');
+
+  if (mounted && theme === 'light' && typeof window !== 'undefined' && localStorage.getItem('carticom-theme') !== null) {
+    setThemeState(getStoredTheme());
+  }
 
   useEffect(() => {
     if (mounted) {

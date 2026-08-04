@@ -8,15 +8,13 @@ import type {
   CreateShippingMethodDto,
   UpdateShippingMethodDto,
   ShippingRateRequest,
-  ShippingRateResponse,
-} from '@/features/dashboard/types/shipping.types';
+  ShippingRateResponse} from '@/features/dashboard/types/shipping.types';
 
 export class ShippingRepository extends BaseRepository<ShippingZoneDto, CreateShippingZoneDto, UpdateShippingZoneDto> {
   constructor() {
     super({
       base: '/api/v1/shipping/zones',
-      byId: (id) => `/api/v1/shipping/zones/${id}`,
-    });
+      byId: (id) => `/api/v1/shipping/zones/${id}`});
   }
 
   async getZones(): Promise<ShippingZoneDto[]> {

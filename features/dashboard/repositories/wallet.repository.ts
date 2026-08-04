@@ -1,13 +1,12 @@
 import { BaseRepository } from '@/lib/dal/repository';
-import type { WalletDto, CreateWalletDto, UpdateWalletDto, WalletTransactionDto, CreateWalletTransactionDto } from '@/features/dashboard/types/wallet.types';
+import type { WalletDto, CreateWalletDto, UpdateWalletDto, WalletTransactionDto } from '@/features/dashboard/types/wallet.types';
 import type { QueryParams } from '@/lib/dal/types';
 
 export class WalletRepository extends BaseRepository<WalletDto, CreateWalletDto, UpdateWalletDto> {
   constructor() {
     super({
       base: '/api/v1/wallet',
-      byId: (id) => `/api/v1/wallet/${id}`,
-    });
+      byId: (id) => `/api/v1/wallet/${id}`});
   }
 
   async getWallet() {

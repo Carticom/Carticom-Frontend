@@ -19,8 +19,7 @@ export function Dialog({
   children,
   title,
   description,
-  className,
-}: DialogProps) {
+  className}: DialogProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
 
   const handleKeyDown = useCallback(
@@ -86,8 +85,7 @@ export function Dialog({
 
 export function DialogFooter({
   children,
-  className,
-}: {
+  className}: {
   children: React.ReactNode;
   className?: string;
 }) {

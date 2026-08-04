@@ -8,43 +8,35 @@ const sections = [
   {
     icon: Shield,
     title: 'Information We Collect',
-    content: 'We collect information you provide directly to us, including your name, email address, phone number, business name, and payment information when you create an account or use our services. We also automatically collect certain information about your device, browsing actions, and usage patterns when you interact with our platform. This includes IP addresses, browser type, operating system, referring URLs, and pages viewed.',
-  },
+    content: 'We collect information you provide directly to us, including your name, email address, phone number, business name, and payment information when you create an account or use our services. We also automatically collect certain information about your device, browsing actions, and usage patterns when you interact with our platform. This includes IP addresses, browser type, operating system, referring URLs, and pages viewed.'},
   {
     icon: Database,
     title: 'How We Use Your Information',
-    content: 'We use the information we collect to provide, maintain, and improve our services, process transactions, send you technical notices and support messages, respond to your comments and inquiries, and communicate with you about products, services, and events. We may also use the information to monitor and analyze trends, usage, and activities in connection with our services.',
-  },
+    content: 'We use the information we collect to provide, maintain, and improve our services, process transactions, send you technical notices and support messages, respond to your comments and inquiries, and communicate with you about products, services, and events. We may also use the information to monitor and analyze trends, usage, and activities in connection with our services.'},
   {
     icon: Eye,
     title: 'Information Sharing',
-    content: 'We do not sell your personal information. We may share your information with third-party service providers who perform services on our behalf, such as payment processing, data analysis, email delivery, hosting services, and customer service. These providers are contractually obligated to protect your information and may only use it for the purposes we specify.',
-  },
+    content: 'We do not sell your personal information. We may share your information with third-party service providers who perform services on our behalf, such as payment processing, data analysis, email delivery, hosting services, and customer service. These providers are contractually obligated to protect your information and may only use it for the purposes we specify.'},
   {
     icon: Lock,
     title: 'Data Security',
-    content: 'We implement appropriate technical and organizational security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. These include encryption at rest and in transit, regular security audits, access controls, and secure data centers located in reliable jurisdictions. However, no method of transmission over the Internet is 100% secure.',
-  },
+    content: 'We implement appropriate technical and organizational security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. These include encryption at rest and in transit, regular security audits, access controls, and secure data centers located in reliable jurisdictions. However, no method of transmission over the Internet is 100% secure.'},
   {
     icon: UserCheck,
     title: 'Your Rights',
-    content: 'Depending on your location, you may have the right to access, correct, update, or request deletion of your personal information. You may also have the right to object to or restrict certain processing of your data, and the right to data portability. To exercise these rights, please contact us at privacy@carticom.app. We will respond to your request within 30 days.',
-  },
+    content: 'Depending on your location, you may have the right to access, correct, update, or request deletion of your personal information. You may also have the right to object to or restrict certain processing of your data, and the right to data portability. To exercise these rights, please contact us at privacy@carticom.app. We will respond to your request within 30 days.'},
   {
     icon: Mail,
     title: 'Communications',
-    content: 'We may send you promotional communications about our services. You can opt out of these at any time by following the unsubscribe instructions in the communication or by adjusting your account settings. We will continue to send you non-promotional service-related messages regarding your account and transactions.',
-  },
+    content: 'We may send you promotional communications about our services. You can opt out of these at any time by following the unsubscribe instructions in the communication or by adjusting your account settings. We will continue to send you non-promotional service-related messages regarding your account and transactions.'},
   {
     icon: Globe,
     title: 'International Data Transfers',
-    content: 'Your information may be transferred to and processed in countries other than your own. We ensure appropriate safeguards are in place through standard contractual clauses and data processing agreements to protect your information in accordance with applicable data protection laws.',
-  },
+    content: 'Your information may be transferred to and processed in countries other than your own. We ensure appropriate safeguards are in place through standard contractual clauses and data processing agreements to protect your information in accordance with applicable data protection laws.'},
   {
     icon: FileText,
     title: 'Changes to This Policy',
-    content: 'We may update this Privacy Policy from time to time. We will notify you of any material changes by posting the new policy on this page and updating the "Last Updated" date. We encourage you to review this policy periodically for any updates.',
-  },
+    content: 'We may update this Privacy Policy from time to time. We will notify you of any material changes by posting the new policy on this page and updating the "Last Updated" date. We encourage you to review this policy periodically for any updates.'},
 ];
 
 export default function PrivacyPage() {

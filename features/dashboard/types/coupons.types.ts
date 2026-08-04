@@ -42,5 +42,4 @@ export interface ValidateCouponResponse {
 
 export enum CouponType {
   PERCENTAGE = 'PERCENTAGE',
-  FIXED = 'FIXED',
-}
+  FIXED = 'FIXED'}

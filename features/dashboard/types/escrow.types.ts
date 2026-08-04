@@ -35,5 +35,4 @@ export enum EscrowStatus {
   HELD = 'HELD',
   RELEASED = 'RELEASED',
   DISPUTED = 'DISPUTED',
-  REFUNDED = 'REFUNDED',
-}
+  REFUNDED = 'REFUNDED'}

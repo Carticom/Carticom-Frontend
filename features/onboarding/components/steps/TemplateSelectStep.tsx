@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Check, Sparkles, ArrowRight } from 'lucide-react';
-import { TEMPLATES, getTemplatesForCategory, getTemplateIcon } from '@/features/templates/registry';
+import { TEMPLATES, getTemplatesForCategory, TEMPLATE_ICON_MAP } from '@/features/templates/registry';
+import { Store } from 'lucide-react';
 import type { TemplateConfig } from '@/features/templates/types';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -16,7 +17,7 @@ interface TemplateSelectStepProps {
 }
 
 function TemplateCard({ template, selected, onSelect }: { template: TemplateConfig; selected: boolean; onSelect: () => void }) {
-  const Icon = getTemplateIcon(template.id);
+  const Icon = TEMPLATE_ICON_MAP[template.id] ?? Store;
   return (
     <motion.button
       type="button"

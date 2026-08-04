@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+
 import { motion } from 'framer-motion';
 import { Store } from 'lucide-react';
 
@@ -26,7 +26,7 @@ export function GreetingSection({ userName, businessName }: GreetingSectionProps
           <span>Manage your store</span>
         </div>
       )}
-      <p className="text-sm text-gray-500 dark:text-gray-400">Here's what's happening with your business today.</p>
+      <p className="text-sm text-gray-500 dark:text-gray-400">Here&apos;s what&apos;s happening with your business today.</p>
     </motion.div>
   );
 }

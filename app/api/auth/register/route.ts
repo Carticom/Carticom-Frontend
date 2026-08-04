@@ -17,9 +17,7 @@ export async function POST(request: NextRequest) {
       body,
       {
         headers: {
-          'Content-Type': 'application/json',
-        },
-      }
+          'Content-Type': 'application/json'}}
     );
 
     return NextResponse.json(response.data, { status: response.status });
@@ -31,8 +29,7 @@ export async function POST(request: NextRequest) {
           message: error.response?.data?.message || 'Registration failed',
           data: error.response?.data?.data || {},
           errorCode: error.response?.data?.errorCode || 'UNKNOWN_ERROR',
-          timestamp: Date.now(),
-        },
+          timestamp: Date.now()},
         { status: error.response?.status || 500 }
       );
     }
@@ -43,8 +40,7 @@ export async function POST(request: NextRequest) {
         message: 'An unexpected error occurred',
         data: {},
         errorCode: 'INTERNAL_SERVER_ERROR',
-        timestamp: Date.now(),
-      },
+        timestamp: Date.now()},
       { status: 500 }
     );
   }

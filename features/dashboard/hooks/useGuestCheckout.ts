@@ -12,10 +12,8 @@ export function useGuestCheckout() {
     },
     onError: (error: Error) => {
       showToast('error', 'Checkout failed', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }
 
 export function useTrackGuestOrder(reference: string | undefined | null) {
@@ -26,6 +24,5 @@ export function useTrackGuestOrder(reference: string | undefined | null) {
       return guestCheckoutRepository.track(reference);
     },
     enabled: !!reference,
-    retry: 1,
-  });
+    retry: 1});
 }

@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Container } from '@/components/common/Container';
-import { LifeBuoy, MessageCircle, Mail, Search, HelpCircle, BookOpen, MessagesSquare, Phone } from 'lucide-react';
+import { LifeBuoy, MessageCircle, Mail, Search, BookOpen, MessagesSquare, Phone } from 'lucide-react';
 
 const helpCategories = [
   { icon: BookOpen, title: 'Getting Started', description: 'New to Carticom? Start here to learn the basics.', articles: '12 articles' },

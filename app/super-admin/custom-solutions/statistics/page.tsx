@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { FileText, Clock, CheckCircle, XCircle } from 'lucide-react';
+import { FileText, CheckCircle, XCircle } from 'lucide-react';
 import { LoadingState, ErrorState } from '@/components/dashboard/shared/StateComponents';
 import { customSolutionsService } from '@/features/custom-solutions/services/custom-solutions.service';
 import { CustomSolutionStatus } from '@/features/custom-solutions/types';
@@ -23,8 +23,7 @@ const statusConfig: { key: keyof typeof CustomSolutionStatus; label: string; col
 export default function CustomSolutionsStatisticsPage() {
   const { data: stats, isLoading, error, refetch } = useQuery({
     queryKey: ['super-admin', 'custom-solutions', 'statistics'],
-    queryFn: () => customSolutionsService.adminGetStatistics(),
-  });
+    queryFn: () => customSolutionsService.adminGetStatistics()});
 
   if (isLoading) return <LoadingState message="Loading statistics..." />;
   if (error) return <ErrorState title="Failed to load statistics" onRetry={refetch} />;

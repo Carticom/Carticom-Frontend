@@ -10,8 +10,7 @@ export class CustomersRepository extends BaseRepository<CustomerDto, CreateCusto
   constructor() {
     super({
       base: '/api/v1/customers',
-      byId: (id) => `/api/v1/customers/${id}`,
-    });
+      byId: (id) => `/api/v1/customers/${id}`});
   }
 
   async getByStore(storeId: string, params?: QueryParams) {

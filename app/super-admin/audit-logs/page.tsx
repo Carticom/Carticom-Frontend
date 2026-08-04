@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import axiosInstance from '@/lib/axios';
+import { superAdminRepository } from '@/features/admin/repositories/admin.repository';
 import { LoadingState, EmptyState, ErrorState } from '@/components/dashboard/shared/StateComponents';
 
 interface AuditLog {
@@ -20,10 +20,9 @@ export default function SuperAdminAuditLogsPage() {
   const { data: logs, isLoading, error, refetch } = useQuery({
     queryKey: ['super-admin', 'audit-logs'],
     queryFn: async () => {
-      const res = await axiosInstance.get('/api/v1/super-admin/audit-logs');
-      return (res.data.data?.content ?? []) as AuditLog[];
-    },
-  });
+      const page = await superAdminRepository.getAuditLogs<AuditLog>();
+      return page?.content ?? [];
+    }});
 
   if (isLoading) return <LoadingState message="Loading audit logs..." />;
   if (error) return <ErrorState onRetry={() => refetch()} />;

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';

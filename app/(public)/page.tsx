@@ -21,14 +21,11 @@ export const metadata: Metadata = {
     description: 'Build, sell, manage and scale your business with Carticom.',
     type: 'website',
     locale: 'en_NG',
-    siteName: 'Carticom',
-  },
+    siteName: 'Carticom'},
   twitter: {
     card: 'summary_large_image',
     title: 'Carticom - Commerce Operating System for Africa',
-    description: 'Build, sell, manage and scale your business with Carticom.',
-  },
-};
+    description: 'Build, sell, manage and scale your business with Carticom.'}};
 
 export default function Home() {
   return (

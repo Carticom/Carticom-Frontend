@@ -11,8 +11,7 @@ export class ReviewsRepository extends BaseRepository<ReviewDto, CreateReviewDto
     super({
       base: '/api/v1/reviews',
       update: (id) => `/api/v1/reviews/${id}`,
-      delete: (id) => `/api/v1/reviews/${id}`,
-    });
+      delete: (id) => `/api/v1/reviews/${id}`});
   }
 
   async getByProduct(productId: string, params?: QueryParams) {

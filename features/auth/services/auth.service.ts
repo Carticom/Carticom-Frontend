@@ -3,17 +3,7 @@
 // ============================================================
 
 import axiosInstance, { extractErrorMessage } from '@/lib/axios';
-import type {
-  RegisterBusinessOwnerDto,
-  LoginDto,
-  ForgotPasswordDto,
-  ResetPasswordDto,
-  VerifyEmailDto,
-  AuthResponse,
-  UserDto,
-  ApiResponse,
-  BackendAuthData,
-} from '../types';
+import type { RegisterBusinessOwnerDto, LoginDto, ForgotPasswordDto, VerifyEmailDto, AuthResponse, UserDto, ApiResponse, BackendAuthData } from '../types';
 import { AccountStatus } from '../types';
 
 const AUTH_ENDPOINTS = {
@@ -25,8 +15,7 @@ const AUTH_ENDPOINTS = {
   RESET_PASSWORD: '/api/v1/auth/reset-password',
   VERIFY_EMAIL: '/api/v1/auth/verify-email',
   ME: '/api/v1/auth/me',
-  UPDATE_PROFILE: '/api/v1/auth/profile',
-} as const;
+  UPDATE_PROFILE: '/api/v1/auth/profile'} as const;
 
 // ─── Service Class ───────────────────────────────────────────
 
@@ -58,15 +47,12 @@ class AuthService {
             status: AccountStatus.ACTIVE, // Default to ACTIVE
             emailVerified: false, // Default
             createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-          },
+            updatedAt: new Date().toISOString()},
           tokens: {
             accessToken: backendData.accessToken,
             refreshToken: backendData.refreshToken,
             expiresIn: backendData.expiresIn,
-            tokenType: backendData.tokenType || 'Bearer',
-          },
-        };
+            tokenType: backendData.tokenType || 'Bearer'}};
         
         return authResponse;
       }
@@ -104,15 +90,12 @@ class AuthService {
             status: AccountStatus.ACTIVE, // Default to ACTIVE
             emailVerified: false, // Default
             createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-          },
+            updatedAt: new Date().toISOString()},
           tokens: {
             accessToken: backendData.accessToken,
             refreshToken: backendData.refreshToken,
             expiresIn: backendData.expiresIn,
-            tokenType: backendData.tokenType || 'Bearer',
-          },
-        };
+            tokenType: backendData.tokenType || 'Bearer'}};
         
         return authResponse;
       }
@@ -137,15 +120,18 @@ class AuthService {
 
   // ─── Refresh Token ─────────────────────────────────────────
 
-  async refreshToken(refreshToken?: string): Promise<{ accessToken: string }> {
+  async refreshToken(refreshToken?: string): Promise<{
+    accessToken: string;
+    refreshToken?: string;
+  }> {
     try {
       const response = await axiosInstance.post<
-        ApiResponse<{ accessToken: string }>
+        ApiResponse<{ accessToken: string; refreshToken?: string }>
       >(AUTH_ENDPOINTS.REFRESH, refreshToken ? { refreshToken } : undefined);
       if (!response.data?.data?.accessToken) {
         throw new Error('No access token in refresh response');
       }
-      return response.data.data as { accessToken: string };
+      return response.data.data;
     } catch (error) {
       throw new Error(extractErrorMessage(error));
     }

@@ -2,7 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { couponsRepository } from '@/features/dashboard/repositories/coupons.repository';
-import type { CouponDto, CreateCouponDto, UpdateCouponDto, ValidateCouponDto } from '@/features/dashboard/types/coupons.types';
+import type { CreateCouponDto, UpdateCouponDto, ValidateCouponDto } from '@/features/dashboard/types/coupons.types';
 import { queryKeys } from '@/lib/dal/query-keys';
 import { showToast } from '@/lib/notifications/toast';
 
@@ -13,8 +13,7 @@ export function useCoupons(storeId?: string | null) {
       const result = await couponsRepository.list({ page: 1, limit: 100 }, { storeId: storeId ?? '' });
       return result.data;
     },
-    enabled: !!storeId,
-  });
+    enabled: !!storeId});
 }
 
 export function useCoupon(id: string | undefined | null) {
@@ -24,8 +23,7 @@ export function useCoupon(id: string | undefined | null) {
       if (!id) throw new Error('Coupon ID is required');
       return couponsRepository.getById(id);
     },
-    enabled: !!id,
-  });
+    enabled: !!id});
 }
 
 export function useCreateCoupon() {
@@ -41,10 +39,8 @@ export function useCreateCoupon() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to create coupon', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }
 
 export function useUpdateCoupon() {
@@ -61,10 +57,8 @@ export function useUpdateCoupon() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to update coupon', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }
 
 export function useDeleteCoupon() {
@@ -80,16 +74,13 @@ export function useDeleteCoupon() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to delete coupon', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }
 
 export function useValidateCoupon() {
   return useMutation({
     mutationFn: async (dto: ValidateCouponDto) => {
       return couponsRepository.validate(dto);
-    },
-  });
+    }});
 }

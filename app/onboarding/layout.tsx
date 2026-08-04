@@ -3,12 +3,10 @@ import { OnboardingShell } from '@/features/onboarding/components/OnboardingShel
 
 export const metadata: Metadata = {
   title: 'Business Setup | Carticom',
-  description: 'Complete your business setup',
-};
+  description: 'Complete your business setup'};
 
 export default function OnboardingLayout({
-  children,
-}: {
+  children}: {
   children: React.ReactNode;
 }) {
   return <OnboardingShell>{children}</OnboardingShell>;

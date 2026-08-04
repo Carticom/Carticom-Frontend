@@ -6,7 +6,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { paymentsRepository } from '@/features/dashboard/repositories/payments.repository';
-import type { PaymentDto, CreatePaymentDto, UpdatePaymentDto } from '@/features/dashboard/types/payments.types';
+import type { CreatePaymentDto, UpdatePaymentDto } from '@/features/dashboard/types/payments.types';
 import { queryKeys } from '@/lib/dal/query-keys';
 import { showToast } from '@/lib/notifications/toast';
 
@@ -19,8 +19,7 @@ export function usePayments(storeId: string, params?: { page?: number; limit?: n
       const result = await paymentsRepository.list(params);
       return result.data;
     },
-    enabled: !!storeId,
-  });
+    enabled: !!storeId});
 }
 
 // ─── Use Payment By ID ────────────────────────────────────────
@@ -32,8 +31,7 @@ export function usePayment(id: string | undefined | null) {
       if (!id) throw new Error('Payment ID is required');
       return paymentsRepository.getById(id);
     },
-    enabled: !!id,
-  });
+    enabled: !!id});
 }
 
 // ─── Use Payments By Order ────────────────────────────────────
@@ -44,8 +42,7 @@ export function usePaymentsByOrder(orderId: string) {
     queryFn: async () => {
       return paymentsRepository.getByOrder(orderId);
     },
-    enabled: !!orderId,
-  });
+    enabled: !!orderId});
 }
 
 // ─── Use Create Payment ───────────────────────────────────────
@@ -63,10 +60,8 @@ export function useCreatePayment() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to initiate payment', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }
 
 // ─── Use Update Payment ───────────────────────────────────────
@@ -85,8 +80,6 @@ export function useUpdatePayment() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to update payment', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }

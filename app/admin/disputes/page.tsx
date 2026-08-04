@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import axiosInstance from '@/lib/axios';
+import { adminRepository } from '@/features/admin/repositories/admin.repository';
 import { LoadingState, ErrorState, EmptyState } from '@/components/dashboard/shared/StateComponents';
 import { Button } from '@/components/ui/button';
 import { CheckCircle } from 'lucide-react';
@@ -10,20 +10,27 @@ import { CheckCircle } from 'lucide-react';
 const statusBadge: Record<string, string> = {
   OPEN: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
   RESOLVED: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
-  DISMISSED: 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400',
-};
+  DISMISSED: 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400'};
 
 function formatCurrency(amount: number): string {
   return new Intl.NumberFormat('en-NG', {
     style: 'currency',
     currency: 'NGN',
     minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
+    maximumFractionDigits: 0}).format(amount);
 }
 
 function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString('en-NG', { year: 'numeric', month: 'short', day: 'numeric' });
+}
+
+interface Dispute {
+  id: string;
+  orderId: string;
+  customerName: string;
+  amount: number;
+  status: string;
+  createdAt: string;
 }
 
 export default function AdminDisputesPage() {
@@ -33,14 +40,13 @@ export default function AdminDisputesPage() {
   const { data: disputes, isLoading, error, refetch } = useQuery({
     queryKey: ['admin', 'disputes'],
     queryFn: async () => {
-      const res = await axiosInstance.get('/api/v1/admin/disputes');
-      return res.data.data ?? [];
-    },
-  });
+      const page = await adminRepository.getDisputes<Dispute>();
+      return page?.content ?? [];
+    }});
 
   const resolveMutation = useMutation({
     mutationFn: async (id: string) => {
-      await axiosInstance.post(`/api/v1/admin/disputes/${id}/resolve`);
+      await adminRepository.resolveDispute(id);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin', 'disputes'] });
@@ -48,8 +54,7 @@ export default function AdminDisputesPage() {
     },
     onError: () => {
       setResolvingId(null);
-    },
-  });
+    }});
 
   if (isLoading) return <LoadingState message="Loading disputes..." />;
   if (error) return <ErrorState onRetry={() => refetch()} />;

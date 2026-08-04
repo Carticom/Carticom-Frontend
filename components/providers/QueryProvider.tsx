@@ -4,8 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 
 export function QueryProvider({
-  children,
-}: Readonly<{
+  children}: Readonly<{
   children: React.ReactNode;
 }>) {
   const [queryClient] = useState(
@@ -18,10 +17,7 @@ export function QueryProvider({
             retry: 1,
             refetchOnWindowFocus: true,
             refetchOnReconnect: true,
-            refetchOnMount: true,
-          },
-        },
-      })
+            refetchOnMount: true}}})
   );
 
   return (

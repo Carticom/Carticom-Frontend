@@ -1,8 +1,9 @@
 'use client';
 
-import React from 'react';
+
 import { motion } from 'framer-motion';
 import { Code, ShoppingCart, Smartphone, Network, Workflow, Building2, ArrowRight, Sparkles } from 'lucide-react';
+import Link from 'next/link';
 import { Container } from '@/components/common/Container';
 import { Button } from '@/components/ui/button';
 
@@ -47,8 +48,8 @@ export function CustomSolutions() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="text-lg text-gray-600 mb-8"
             >
-              Off-the-shelf software doesn't always fit. Tell us what you need — a customer app, vendor portal,
-              custom POS, or full ERP — and we'll build it on the Carticom platform.
+              Off-the-shelf software doesn&apos;t always fit. Tell us what you need — a customer app, vendor portal,
+              custom POS, or full ERP — and we&apos;ll build it on the Carticom platform.
             </motion.p>
 
             <motion.ul
@@ -79,10 +80,10 @@ export function CustomSolutions() {
               transition={{ duration: 0.5, delay: 0.4 }}
             >
               <Button size="lg" className="gap-2 bg-purple-600 hover:bg-purple-700" asChild>
-                <a href="/dashboard/custom-solutions/new">
+                <Link href="/dashboard/custom-solutions/new">
                   Submit Your Request
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                </a>
+                </Link>
               </Button>
             </motion.div>
           </div>

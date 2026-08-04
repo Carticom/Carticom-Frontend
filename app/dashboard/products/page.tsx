@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import Image from 'next/image';
 import { useCurrentStoreId } from '@/hooks/useCurrentStore';
 import { useProductsByStore, useDeleteProduct, useCreateProduct } from '@/features/dashboard/hooks/useProducts';
 import { LoadingState, EmptyState, ErrorState } from '@/components/dashboard/shared/StateComponents';
@@ -15,8 +16,7 @@ const productSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   description: z.string().optional(),
   price: z.number().positive('Price must be positive'),
-  quantity: z.number().int().nonnegative('Quantity must be 0 or more'),
-});
+  quantity: z.number().int().nonnegative('Quantity must be 0 or more')});
 
 type ProductFormData = z.infer<typeof productSchema>;
 
@@ -33,8 +33,7 @@ function statusBadgeClasses(status: ProductStatus) {
     [ProductStatus.ACTIVE]: 'text-green-600 bg-green-50',
     [ProductStatus.DRAFT]: 'text-gray-600 bg-gray-50',
     [ProductStatus.ARCHIVED]: 'text-yellow-600 bg-yellow-50',
-    [ProductStatus.OUT_OF_STOCK]: 'text-red-600 bg-red-50',
-  };
+    [ProductStatus.OUT_OF_STOCK]: 'text-red-600 bg-red-50'};
   return map[status] ?? 'text-gray-600 bg-gray-50';
 }
 
@@ -50,11 +49,9 @@ export default function ProductsPage() {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting },
-  } = useForm<ProductFormData>({
+    formState: { errors, isSubmitting }} = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
-    defaultValues: { name: '', description: '', price: 0, quantity: 0 },
-  });
+    defaultValues: { name: '', description: '', price: 0, quantity: 0 }});
 
   const onSubmit = useCallback(async (data: ProductFormData) => {
     if (!storeId) return;
@@ -64,8 +61,7 @@ export default function ProductsPage() {
         name: data.name,
         description: data.description ?? '',
         price: data.price,
-        inventory: { quantity: data.quantity, trackQuantity: true, allowBackorder: false },
-      });
+        inventory: { quantity: data.quantity, trackQuantity: true, allowBackorder: false }});
       reset();
       setShowForm(false);
       refetch();
@@ -172,7 +168,7 @@ export default function ProductsPage() {
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-3">
                         {product.images?.[0] ? (
-                          <img src={product.images[0]} alt={product.name} className="w-10 h-10 rounded-lg object-cover bg-gray-100" />
+                          <div className="relative w-10 h-10 rounded-lg overflow-hidden"><Image src={product.images[0]} alt={product.name} fill unoptimized className="object-cover bg-gray-100" /></div>
                         ) : (
                           <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-gray-400 text-xs">N/A</div>
                         )}

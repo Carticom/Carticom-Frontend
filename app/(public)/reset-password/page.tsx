@@ -29,23 +29,19 @@ function ResetPasswordForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<ResetPasswordSchema>({
+    formState: { errors, isSubmitting }} = useForm<ResetPasswordSchema>({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
       email: '',
       token,
-      newPassword: '',
-    },
-  });
+      newPassword: ''}});
 
   const onSubmit = async (data: ResetPasswordSchema) => {
     setServerError(null);
     const result = await resetPassword({
       email: data.email,
       token: data.token,
-      newPassword: data.newPassword,
-    });
+      newPassword: data.newPassword});
 
     if (result.success) {
       setIsSuccess(true);

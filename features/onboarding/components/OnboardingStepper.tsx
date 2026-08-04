@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+
 import { ChevronLeft, ChevronRight, Eye } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -17,8 +17,7 @@ export function OnboardingStepper({
   totalSteps,
   onNext,
   onBack,
-  onPreview,
-}: OnboardingStepperProps) {
+  onPreview}: OnboardingStepperProps) {
   const progress = ((currentStep + 1) / totalSteps) * 100;
 
   return (

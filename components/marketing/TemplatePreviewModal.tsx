@@ -25,8 +25,7 @@ const SECTION_LABELS: Record<string, { label: string; desc: string }> = {
   categories: { label: 'Categories', desc: 'Browse by category' },
   instagram: { label: 'Social Feed', desc: 'Instagram integration' },
   faq: { label: 'FAQ', desc: 'Frequently asked questions' },
-  newsletter: { label: 'Newsletter', desc: 'Email signup form' },
-};
+  newsletter: { label: 'Newsletter', desc: 'Email signup form' }};
 
 const EFFECT_LABELS: Record<string, string> = {
   'gradient-mesh': 'Gradient Mesh',
@@ -37,15 +36,13 @@ const EFFECT_LABELS: Record<string, string> = {
   playful: 'Playful',
   natural: 'Natural',
   vibrant: 'Vibrant',
-  craft: 'Artisanal',
-};
+  craft: 'Artisanal'};
 
 const ANIMATION_LABELS: Record<string, string> = {
   luxury: 'Luxury (Slow, elegant)',
   energetic: 'Energetic (Fast, dynamic)',
   calm: 'Calm (Gentle, relaxed)',
-  bold: 'Bold (Dramatic, strong)',
-};
+  bold: 'Bold (Dramatic, strong)'};
 
 export function TemplatePreviewModal({ template, open, onClose }: TemplatePreviewModalProps) {
   if (!template) return null;

@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Building2, Globe, Users, Package, DollarSign, Clock, Loader2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+
 import { LoadingState, ErrorState } from '@/components/dashboard/shared/StateComponents';
 import { customSolutionsService } from '@/features/custom-solutions/services/custom-solutions.service';
 import { CustomSolutionStatus } from '@/features/custom-solutions/types';
@@ -35,12 +35,10 @@ const statusColors: Record<string, string> = {
   [CustomSolutionStatus.TESTING]: 'bg-teal-100 text-teal-800 dark:bg-teal-900/30 dark:text-teal-400',
   [CustomSolutionStatus.DEPLOYED]: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400',
   [CustomSolutionStatus.COMPLETED]: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
-  [CustomSolutionStatus.REJECTED]: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
-};
+  [CustomSolutionStatus.REJECTED]: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'};
 
 export default function SuperAdminCustomSolutionDetailPage() {
   const params = useParams();
-  const router = useRouter();
   const queryClient = useQueryClient();
   const id = params.id as string;
 
@@ -52,8 +50,7 @@ export default function SuperAdminCustomSolutionDetailPage() {
   const { data: req, isLoading, error, refetch } = useQuery({
     queryKey: ['super-admin', 'custom-solutions', id],
     queryFn: () => customSolutionsService.getById(id),
-    enabled: !!id,
-  });
+    enabled: !!id});
 
   const statusMutation = useMutation({
     mutationFn: ({ status, note: n }: UpdateStatusDto) =>
@@ -62,8 +59,7 @@ export default function SuperAdminCustomSolutionDetailPage() {
       queryClient.invalidateQueries({ queryKey: ['super-admin', 'custom-solutions'] });
       refetch();
       setNote('');
-    },
-  });
+    }});
 
   const quotationMutation = useMutation({
     mutationFn: (dto: QuotationDto) =>
@@ -74,8 +70,7 @@ export default function SuperAdminCustomSolutionDetailPage() {
       setQuotationAmount('');
       setQuotationNote('');
       setQuotationFile(null);
-    },
-  });
+    }});
 
   if (isLoading) return <LoadingState message="Loading custom solution..." />;
   if (error) return <ErrorState title="Failed to load custom solution" onRetry={refetch} />;

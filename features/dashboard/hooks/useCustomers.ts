@@ -6,7 +6,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { customersRepository } from '@/features/dashboard/repositories/customers.repository';
-import type { CustomerDto, CreateCustomerDto, UpdateCustomerDto } from '@/features/dashboard/types/customers.types';
+import type { CreateCustomerDto, UpdateCustomerDto } from '@/features/dashboard/types/customers.types';
 import { queryKeys } from '@/lib/dal/query-keys';
 import { showToast } from '@/lib/notifications/toast';
 
@@ -18,8 +18,7 @@ export function useCustomers(storeId: string, params?: { page?: number; limit?: 
     queryFn: async () => {
       return customersRepository.getByStore(storeId, params);
     },
-    enabled: !!storeId,
-  });
+    enabled: !!storeId});
 }
 
 // ─── Use Customer By ID ───────────────────────────────────────
@@ -31,8 +30,7 @@ export function useCustomer(id: string | undefined | null) {
       if (!id) throw new Error('Customer ID is required');
       return customersRepository.getById(id);
     },
-    enabled: !!id,
-  });
+    enabled: !!id});
 }
 
 // ─── Use Create Customer ──────────────────────────────────────
@@ -50,10 +48,8 @@ export function useCreateCustomer() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to create customer', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }
 
 // ─── Use Update Customer ──────────────────────────────────────
@@ -72,10 +68,8 @@ export function useUpdateCustomer() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to update customer', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }
 
 // ─── Use Delete Customer ──────────────────────────────────────
@@ -93,8 +87,6 @@ export function useDeleteCustomer() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to delete customer', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }

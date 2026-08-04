@@ -9,22 +9,19 @@ export enum UserRole {
   BUSINESS_OWNER = 'BUSINESS_OWNER',
   STAFF = 'STAFF',
   ADMIN = 'ADMIN',
-  SUPER_ADMIN = 'SUPER_ADMIN',
-}
+  SUPER_ADMIN = 'SUPER_ADMIN'}
 
 export enum AccountStatus {
   PENDING = 'PENDING',
   ACTIVE = 'ACTIVE',
   SUSPENDED = 'SUSPENDED',
-  DISABLED = 'DISABLED',
-}
+  DISABLED = 'DISABLED'}
 
 export enum EmailVerificationStatus {
   PENDING = 'PENDING',
   VERIFIED = 'VERIFIED',
   EXPIRED = 'EXPIRED',
-  INVALID_TOKEN = 'INVALID_TOKEN',
-}
+  INVALID_TOKEN = 'INVALID_TOKEN'}
 
 // ─── DTOs ────────────────────────────────────────────────────
 

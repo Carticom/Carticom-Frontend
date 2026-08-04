@@ -1,6 +1,6 @@
 'use client';
 
-import { AlertTriangle, Crown, RefreshCw } from 'lucide-react';
+import { AlertTriangle, Crown } from 'lucide-react';
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
 import { useCurrentStoreId } from '@/hooks/useCurrentStore';
@@ -9,7 +9,7 @@ import { axiosInstance } from '@/lib/axios';
 export function SubscriptionBanner() {
   const { storeId } = useCurrentStoreId();
 
-  const { data: sub } = useQuery({
+  const { data: sub, dataUpdatedAt: now } = useQuery({
     queryKey: ['store-subscription', storeId],
     queryFn: async () => {
       if (!storeId) return null;
@@ -17,8 +17,7 @@ export function SubscriptionBanner() {
       return res.data?.data ?? null;
     },
     enabled: !!storeId,
-    refetchInterval: 300_000,
-  });
+    refetchInterval: 300_000});
 
   if (!sub) return null;
 
@@ -53,7 +52,7 @@ export function SubscriptionBanner() {
   }
 
   if (planName === 'Free Trial' && endDate) {
-    const daysLeft = Math.ceil((endDate - Date.now()) / (1000 * 60 * 60 * 24));
+    const daysLeft = Math.ceil((endDate - now) / (1000 * 60 * 60 * 24));
     if (daysLeft <= 7 && daysLeft > 0) {
       return (
         <div className="bg-blue-50 border-b border-blue-200 dark:bg-blue-950/40 dark:border-blue-900/50">

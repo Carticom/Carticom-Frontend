@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ShoppingBag, ArrowRight, Home, Star, Sofa, Lightbulb, PaintBucket, ChevronRight, Truck, Shield, RefreshCw } from 'lucide-react';
+import { ShoppingBag, ArrowRight, Home, Sofa, Lightbulb, PaintBucket, ChevronRight, Truck, Shield, RefreshCw } from 'lucide-react';
 import type { StoreDto, ProductDto } from '@/features/onboarding/types';
 import { Button } from '@/components/ui/button';
 
@@ -148,7 +148,7 @@ function StorySection() {
             <p className="text-[#b45309] text-xs tracking-[0.25em] uppercase font-medium">Our Philosophy</p>
             <h2 className="text-4xl font-light text-[#1c0f06]" style={{ fontFamily: "'DM Serif Display', serif" }}>Every Home Tells a Story</h2>
             <div className="w-12 h-0.5 bg-[#b45309]" />
-            <p className="text-gray-600 leading-relaxed">We believe your home should be a reflection of who you are. That's why we curate pieces that blend timeless craftsmanship with modern comfort, sourced from artisans around the world.</p>
+            <p className="text-gray-600 leading-relaxed">We believe your home should be a reflection of who you are. That&apos;s why we curate pieces that blend timeless craftsmanship with modern comfort, sourced from artisans around the world.</p>
             <p className="text-gray-500 leading-relaxed">From handwoven textiles in Ghana to hand-carved wooden furniture in Nigeria, each piece brings a unique story into your home.</p>
             <Link href="#" className="inline-flex items-center gap-2 text-[#b45309] font-medium border-b border-[#b45309]/30 pb-1 hover:border-[#b45309] transition-colors">Read Our Story <ChevronRight className="h-4 w-4" /></Link>
           </FadeIn>

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+
 import { motion } from 'framer-motion';
 import { Star, Quote } from 'lucide-react';
 import { Container } from '@/components/common/Container';
@@ -11,36 +11,31 @@ const testimonials = [
     author: 'Chidi Okafor',
     role: 'CEO, TechStyle NG',
     avatar: 'CO',
-    rating: 5,
-  },
+    rating: 5},
   {
     quote: 'The AI automation for WhatsApp is a game-changer. We handle 10x more customer inquiries without hiring additional support staff.',
     author: 'Emeka Nwosu',
     role: 'Operations Manager, QuickMart',
     avatar: 'EN',
-    rating: 5,
-  },
+    rating: 5},
   {
     quote: 'Finally, a platform that understands the African market. The payment integrations with Paystack and Flutterwave work flawlessly.',
     author: 'Fatima Ibrahim',
     role: 'E-commerce Director, ShopNaija',
     avatar: 'FI',
-    rating: 5,
-  },
+    rating: 5},
   {
     quote: 'The analytics dashboard helps us make data-driven decisions. We can see exactly what products are trending and optimize our inventory.',
     author: 'Oluwaseun Adeyemi',
     role: 'Head of Sales, GadgetWorld',
     avatar: 'OA',
-    rating: 5,
-  },
+    rating: 5},
   {
     quote: 'Carticom support is exceptional. They helped us migrate from our old platform in just 3 days with zero downtime.',
     author: 'Ngozi Eze',
     role: 'CTO, FreshFoods',
     avatar: 'NE',
-    rating: 5,
-  },
+    rating: 5},
 ];
 
 export function Testimonials() {

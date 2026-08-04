@@ -6,7 +6,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { categoriesRepository } from '@/features/dashboard/repositories/categories.repository';
-import type { CategoryDto, CreateCategoryDto, UpdateCategoryDto } from '@/features/dashboard/types/categories.types';
+import type { CreateCategoryDto, UpdateCategoryDto } from '@/features/dashboard/types/categories.types';
 import { queryKeys } from '@/lib/dal/query-keys';
 import { showToast } from '@/lib/notifications/toast';
 
@@ -19,8 +19,7 @@ export function useCategories(storeId: string, params?: { page?: number; limit?:
       const result = await categoriesRepository.list(params);
       return result.data;
     },
-    enabled: !!storeId,
-  });
+    enabled: !!storeId});
 }
 
 // ─── Use Category By ID ────────────────────────────────────────
@@ -32,8 +31,7 @@ export function useCategory(id: string | undefined | null) {
       if (!id) throw new Error('Category ID is required');
       return categoriesRepository.getById(id);
     },
-    enabled: !!id,
-  });
+    enabled: !!id});
 }
 
 // ─── Use Categories By Store ───────────────────────────────────
@@ -44,8 +42,7 @@ export function useCategoriesByStore(storeId: string) {
     queryFn: async () => {
       return categoriesRepository.getByStore(storeId);
     },
-    enabled: !!storeId,
-  });
+    enabled: !!storeId});
 }
 
 // ─── Use Create Category ───────────────────────────────────────
@@ -63,10 +60,8 @@ export function useCreateCategory() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to create category', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }
 
 // ─── Use Update Category ───────────────────────────────────────
@@ -85,10 +80,8 @@ export function useUpdateCategory() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to update category', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }
 
 // ─── Use Delete Category ───────────────────────────────────────
@@ -106,8 +99,6 @@ export function useDeleteCategory() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to delete category', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }

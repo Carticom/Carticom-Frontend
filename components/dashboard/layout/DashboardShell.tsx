@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Sidebar, MobileToggle, SidebarCollapsedButton } from './Sidebar';
+import { Sidebar } from './Sidebar';
 import { TopNavbar } from './TopNavbar';
 import { DashboardFooter } from './DashboardFooter';
 import { SubscriptionBanner } from '@/components/dashboard/subscription/SubscriptionBanner';

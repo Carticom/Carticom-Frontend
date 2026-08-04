@@ -2,15 +2,11 @@
 
 import { useCurrentStoreId } from '@/hooks/useCurrentStore';
 import { useOrdersByStatus } from '@/features/dashboard/hooks/useOrders';
-import { LoadingState, ErrorState, EmptyState } from '@/components/dashboard/shared/StateComponents';
+import { LoadingState, ErrorState } from '@/components/dashboard/shared/StateComponents';
 import { OrderStatus } from '@/features/dashboard/types/orders.types';
 import { Package, ShoppingCart, Clock, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-
-function formatCurrency(amount: number) {
-  return new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 0 }).format(amount);
-}
 
 const quickLinks = [
   { label: 'View Orders', href: '/staff/orders', description: 'Manage and track orders' },

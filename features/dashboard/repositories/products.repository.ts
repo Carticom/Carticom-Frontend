@@ -10,8 +10,7 @@ export class ProductsRepository extends BaseRepository<ProductDto, CreateProduct
   constructor() {
     super({
       base: '/api/v1/products',
-      byId: (id) => `/api/v1/products/${id}`,
-    });
+      byId: (id) => `/api/v1/products/${id}`});
   }
 
   async getByStore(storeId: string, params?: QueryParams) {

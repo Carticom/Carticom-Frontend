@@ -8,8 +8,7 @@ import { showToast } from '@/lib/notifications/toast';
 // ─── Query Keys ────────────────────────────────────────────────
 
 const variantsKeys = {
-  all: (productId: string) => ['variants', productId] as const,
-};
+  all: (productId: string) => ['variants', productId] as const};
 
 // ─── Use Product Variants ───────────────────────────────────────
 
@@ -20,8 +19,7 @@ export function useProductVariants(productId: string | undefined | null) {
       if (!productId) throw new Error('Product ID is required');
       return variantsRepository.getByProduct(productId);
     },
-    enabled: !!productId,
-  });
+    enabled: !!productId});
 }
 
 // ─── Use Create Variant ─────────────────────────────────────────
@@ -39,10 +37,8 @@ export function useCreateVariant() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to create variant', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }
 
 // ─── Use Update Variant ─────────────────────────────────────────
@@ -60,10 +56,8 @@ export function useUpdateVariant() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to update variant', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }
 
 // ─── Use Delete Variant ─────────────────────────────────────────
@@ -81,8 +75,6 @@ export function useDeleteVariant() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to delete variant', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }

@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, createElement } from 'react';
 import { useParams } from 'next/navigation';
 import { storefrontApi, cartApi } from '@/features/onboarding/services/onboarding.service';
 import type { StoreDto, ProductDto } from '@/features/onboarding/types';
 import { LoadingState, ErrorState } from '@/components/dashboard/shared/StateComponents';
-import { getTemplateComponent, getTemplateByCategory } from '@/components/templates';
+import { TEMPLATE_MAP, TEMPLATE_COMPONENT_FALLBACK, getTemplateByCategory } from '@/components/templates';
 import { extractErrorMessage } from '@/lib/axios';
 import { showToast } from '@/lib/notifications/toast';
 import { ShareButton } from '@/components/store/ShareButton';
@@ -19,38 +19,47 @@ export default function StorePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [addingToCart, setAddingToCart] = useState<string | null>(null);
-
-  const fetchData = useCallback(async () => {
-    if (!slug) return;
-    setLoading(true);
-    setError(null);
-    try {
-      const storeRes = await storefrontApi.getStoreBySlug(slug);
-      if (!storeRes.data.data) throw new Error('Store not found');
-      const storeData = storeRes.data.data;
-      setStore(storeData);
-
-      const productsRes = await storefrontApi.getStoreProducts(slug);
-      if (productsRes.data.data) {
-        setProducts(Array.isArray(productsRes.data.data) ? productsRes.data.data : []);
-      }
-    } catch (err) {
-      const msg = extractErrorMessage(err);
-      if (msg.includes('not found')) {
-        setError('Store not found. The link may be incorrect.');
-      } else if (msg.includes('permission')) {
-        setError('You do not have permission to view this store.');
-      } else {
-        setError(msg || 'Failed to load store. Please try again.');
-      }
-    } finally {
-      setLoading(false);
-    }
-  }, [slug]);
+  const [retryKey, setRetryKey] = useState(0);
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    if (!slug) return;
+    let cancelled = false;
+    const load = async () => {
+      try {
+        const storeRes = await storefrontApi.getStoreBySlug(slug);
+        if (cancelled) return;
+        if (!storeRes.data.data) throw new Error('Store not found');
+        const storeData = storeRes.data.data;
+        setStore(storeData);
+
+        const productsRes = await storefrontApi.getStoreProducts(slug);
+        if (cancelled) return;
+        if (productsRes.data.data) {
+          setProducts(Array.isArray(productsRes.data.data) ? productsRes.data.data : []);
+        }
+      } catch (err) {
+        if (cancelled) return;
+        const msg = extractErrorMessage(err);
+        if (msg.includes('not found')) {
+          setError('Store not found. The link may be incorrect.');
+        } else if (msg.includes('permission')) {
+          setError('You do not have permission to view this store.');
+        } else {
+          setError(msg || 'Failed to load store. Please try again.');
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    };
+    load();
+    return () => { cancelled = true; };
+  }, [slug, retryKey]);
+
+  const handleRetry = () => {
+    setLoading(true);
+    setError(null);
+    setRetryKey((k) => k + 1);
+  };
 
   const handleAddToCart = async (productId: string) => {
     if (!store) return;
@@ -67,21 +76,20 @@ export default function StorePage() {
   };
 
   if (loading) return <LoadingState message="Loading store..." />;
-  if (error) return <ErrorState title="Error loading store" description={error} onRetry={fetchData} />;
+  if (error) return <ErrorState title="Error loading store" description={error} onRetry={handleRetry} />;
   if (!store) return <ErrorState title="Store not found" description="We couldn't find a store with that address." />;
 
   const templateSlug = store.template || getTemplateByCategory(store.businessCategory || '');
-  const TemplateComponent = getTemplateComponent(templateSlug);
   const storeUrl = typeof window !== 'undefined' ? window.location.href : `https://carticom.vercel.app/store/${slug}`;
 
   return (
     <>
-      <TemplateComponent
-        store={store}
-        products={products}
-        onAddToCart={handleAddToCart}
-        addingToCart={addingToCart}
-      />
+      {createElement(TEMPLATE_MAP[templateSlug] ?? TEMPLATE_COMPONENT_FALLBACK, {
+        store,
+        products,
+        onAddToCart: handleAddToCart,
+        addingToCart,
+      })}
       <ShareButton
         url={storeUrl}
         title={store.name}

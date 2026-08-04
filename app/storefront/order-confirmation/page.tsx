@@ -13,15 +13,12 @@ function ConfirmationContent() {
   const searchParams = useSearchParams();
   const orderId = searchParams.get('id');
   const [order, setOrder] = useState<OrderDto | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(() => !!orderId);
+  const [error, setError] = useState<string | null>(() =>
+    orderId ? null : 'No order ID provided');
 
   useEffect(() => {
-    if (!orderId) {
-      setError('No order ID provided');
-      setLoading(false);
-      return;
-    }
+    if (!orderId) return;
     checkoutApi.getOrderById(orderId)
       .then((res) => {
         if (res.data.data) setOrder(res.data.data);

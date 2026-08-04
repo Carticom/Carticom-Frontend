@@ -49,7 +49,7 @@ export function OnboardingWizard() {
     if (currentStep > 0) {
       setCurrentStep((s) => s - 1);
     }
-  }, []);
+  }, [currentStep]);
 
   const finish = useCallback(() => {
     router.push('/dashboard');

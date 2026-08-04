@@ -23,13 +23,10 @@ export default function ForgotPasswordPage() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<ForgotPasswordSchema>({
+    formState: { errors, isSubmitting }} = useForm<ForgotPasswordSchema>({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
-      email: '',
-    },
-  });
+      email: ''}});
 
   const onSubmit = async (data: ForgotPasswordSchema) => {
     setServerError(null);
@@ -60,11 +57,11 @@ export default function ForgotPasswordPage() {
             Check your email
           </h2>
           <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-            We've sent a password reset link to your email. Please check
+            We&apos;ve sent a password reset link to your email. Please check
             your inbox and follow the instructions.
           </p>
           <p className="mt-4 text-xs text-gray-400 dark:text-gray-500">
-            Didn't receive the email? Check your spam folder or{' '}
+            Didn&apos;t receive the email? Check your spam folder or{' '}
             <button
               type="button"
               onClick={() => setIsSuccess(false)}

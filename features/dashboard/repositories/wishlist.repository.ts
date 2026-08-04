@@ -4,8 +4,7 @@ import type { WishlistItemDto } from '@/features/dashboard/types/wishlist.types'
 class WishlistRepository extends BaseRepository<WishlistItemDto> {
   constructor() {
     super({
-      base: '/api/v1/wishlist',
-    });
+      base: '/api/v1/wishlist'});
   }
 
   async getAll(): Promise<WishlistItemDto[]> {

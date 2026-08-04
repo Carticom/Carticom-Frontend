@@ -3,8 +3,7 @@ export enum AddressLabel {
   OFFICE = 'OFFICE',
   BILLING = 'BILLING',
   SHIPPING = 'SHIPPING',
-  OTHER = 'OTHER',
-}
+  OTHER = 'OTHER'}
 
 export interface AddressDto {
   id: string;
@@ -33,4 +32,4 @@ export interface CreateAddressDto {
   isDefault?: boolean;
 }
 
-export interface UpdateAddressDto extends Partial<CreateAddressDto> {}
+export type UpdateAddressDto = Partial<CreateAddressDto>;

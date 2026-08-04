@@ -3,6 +3,8 @@
 import { useEffect, useState, useRef } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/features/auth/store/auth.store';
+import { useSessionMonitor } from '@/features/auth/hooks/useAuth';
+import { useClearStoreOnLogout } from '@/store/current-store';
 import { Loader2 } from 'lucide-react';
 
 const ROLE_DASHBOARD_MAP: Record<string, string> = {
@@ -10,8 +12,7 @@ const ROLE_DASHBOARD_MAP: Record<string, string> = {
   ADMIN: '/admin/dashboard',
   BUSINESS_OWNER: '/dashboard',
   STAFF: '/staff/dashboard',
-  CUSTOMER: '/storefront',
-};
+  CUSTOMER: '/storefront'};
 
 const PUBLIC_ROUTES = ['/', '/login', '/register', '/forgot-password', '/reset-password', '/verify-email'];
 
@@ -24,10 +25,13 @@ export function AuthGate({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const user = useAuthStore((s) => s.user);
-  const accessToken = useAuthStore((s) => s.accessToken);
   const initialize = useAuthStore((s) => s.initialize);
   const [ready, setReady] = useState(false);
   const initRef = useRef(false);
+
+  // C10: mount session idle monitor + H7: clear store on logout
+  useSessionMonitor();
+  useClearStoreOnLogout();
 
   useEffect(() => {
     if (initRef.current) return;

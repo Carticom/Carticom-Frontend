@@ -1,10 +1,10 @@
 'use client';
 
-import React from 'react';
+
 import { motion } from 'framer-motion';
-import { BarChart3 } from 'lucide-react';
+
 import type { ChartDataPoint, ChartConfig } from '@/types/dashboard';
-import { cn } from '@/lib/utils';
+
 
 interface ChartSectionProps {
   config: ChartConfig;

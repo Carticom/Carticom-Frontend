@@ -20,8 +20,7 @@ interface RoleGuardProps {
 export function RoleGuard({
   children,
   allowedRoles,
-  fallback,
-}: RoleGuardProps) {
+  fallback}: RoleGuardProps) {
   const user = useAuthStore((state) => state.user);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
@@ -89,8 +88,7 @@ export function usePermission(allowedRoles: UserRole[]): {
 
   return {
     hasPermission: allowedRoles.includes(userRole as UserRole),
-    userRole,
-  };
+    userRole};
 }
 
 // ─── Role Constants ─────────────────────────────────────────

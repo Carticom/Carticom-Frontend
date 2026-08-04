@@ -9,16 +9,14 @@ const PERIOD_MAP: Record<string, string> = {
   'Today': 'today',
   '7 Days': '7d',
   '30 Days': '30d',
-  '12 Months': '12m',
-};
+  '12 Months': '12m'};
 
 function formatCurrency(amount: number): string {
   return new Intl.NumberFormat('en-NG', {
     style: 'currency',
     currency: 'NGN',
     minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
+    maximumFractionDigits: 0}).format(amount);
 }
 
 function formatPercent(value: number): string {

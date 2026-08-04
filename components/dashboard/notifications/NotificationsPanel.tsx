@@ -3,9 +3,9 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bell, X, Check, BellRing } from 'lucide-react';
+import { Bell, X, BellRing } from 'lucide-react';
 import type { NotificationItem } from '@/types/dashboard';
-import { cn } from '@/lib/utils';
+
 
 interface NotificationsPanelProps {
   notifications: NotificationItem[];
@@ -18,8 +18,7 @@ const TYPE_ICONS: Record<string, { icon: React.ElementType; color: string }> = {
   escrow: { icon: () => null, color: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400' },
   subscription: { icon: () => null, color: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' },
   system: { icon: () => null, color: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400' },
-  alert: { icon: () => null, color: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' },
-};
+  alert: { icon: () => null, color: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' }};
 
 function formatTimeAgo(timestamp: string) {
   const diff = Date.now() - new Date(timestamp).getTime();

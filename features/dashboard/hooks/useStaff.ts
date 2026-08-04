@@ -6,7 +6,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { staffRepository } from '@/features/dashboard/repositories/staff.repository';
-import type { StaffDto, CreateStaffDto, UpdateStaffDto } from '@/features/dashboard/types/staff.types';
+import type { UpdateStaffDto } from '@/features/dashboard/types/staff.types';
 import { queryKeys } from '@/lib/dal/query-keys';
 import { showToast } from '@/lib/notifications/toast';
 
@@ -18,8 +18,7 @@ export function useStaff(storeId: string, params?: { page?: number; limit?: numb
     queryFn: async () => {
       return staffRepository.getByStore(storeId, params);
     },
-    enabled: !!storeId,
-  });
+    enabled: !!storeId});
 }
 
 // ─── Use Staff By ID ──────────────────────────────────────────
@@ -31,8 +30,7 @@ export function useStaffMember(id: string | undefined | null) {
       if (!id) throw new Error('Staff ID is required');
       return staffRepository.getById(id);
     },
-    enabled: !!id,
-  });
+    enabled: !!id});
 }
 
 // ─── Use Invite Staff ─────────────────────────────────────────
@@ -51,10 +49,8 @@ export function useInviteStaff() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to send invitation', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }
 
 // ─── Use Update Staff ─────────────────────────────────────────
@@ -73,10 +69,8 @@ export function useUpdateStaff() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to update staff', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }
 
 // ─── Use Delete Staff ─────────────────────────────────────────
@@ -94,8 +88,6 @@ export function useDeleteStaff() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to remove staff', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }

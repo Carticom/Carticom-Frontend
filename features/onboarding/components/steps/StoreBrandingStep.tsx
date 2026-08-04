@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -19,28 +19,25 @@ interface StoreBrandingStepProps {
   onStoreCreated: (store: StoreDto) => void;
 }
 
-export function StoreBrandingStep({ onNext, onBack, storeId, onStoreCreated }: StoreBrandingStepProps) {
+export function StoreBrandingStep({ onNext, onBack, storeId }: StoreBrandingStepProps) {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const updateStore = useUpdateStore();
 
   const {
     register,
     handleSubmit,
-    watch,
-    formState: { errors, isSubmitting },
-  } = useForm<StoreBrandingFormData>({
+    control,
+    formState: { errors, isSubmitting }} = useForm<StoreBrandingFormData>({
     resolver: zodResolver(storeBrandingSchema),
     defaultValues: {
       storeName: '',
       slug: '',
       themeColor: '#3B82F6',
       storeVisibility: true,
-      maintenanceMode: false,
-    },
-  });
+      maintenanceMode: false}});
 
-  const watchStoreName = watch('storeName');
-  const watchThemeColor = watch('themeColor');
+  const watchStoreName = useWatch({ control, name: 'storeName', defaultValue: '' });
+  const watchThemeColor = useWatch({ control, name: 'themeColor', defaultValue: '#3B82F6' });
 
   // Auto-generate slug from store name
   const autoSlug = watchStoreName
@@ -60,9 +57,7 @@ export function StoreBrandingStep({ onNext, onBack, storeId, onStoreCreated }: S
       await updateStore.mutateAsync({
         id: storeId,
         data: {
-          name: data.storeName,
-        },
-      });
+          name: data.storeName}});
 
       onNext();
     } catch (err) {
@@ -82,7 +77,7 @@ export function StoreBrandingStep({ onNext, onBack, storeId, onStoreCreated }: S
           Store Branding
         </h2>
         <p className="text-gray-600 dark:text-gray-400">
-          Customize your store's appearance
+          Customize your store&apos;s appearance
         </p>
       </div>
 

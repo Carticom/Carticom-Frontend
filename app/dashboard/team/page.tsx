@@ -12,22 +12,19 @@ const roleColors: Record<StaffRole, string> = {
   [StaffRole.ADMIN]: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400',
   [StaffRole.MANAGER]: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
   [StaffRole.STAFF]: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
-  [StaffRole.VIEWER]: 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400',
-};
+  [StaffRole.VIEWER]: 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400'};
 
 const statusColors: Record<StaffStatus, string> = {
   [StaffStatus.PENDING]: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
   [StaffStatus.ACTIVE]: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
   [StaffStatus.SUSPENDED]: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
-  [StaffStatus.DEACTIVATED]: 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400',
-};
+  [StaffStatus.DEACTIVATED]: 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400'};
 
 const roleDescriptions: Record<string, string> = {
   [StaffRole.ADMIN]: 'Full access to all features',
   [StaffRole.MANAGER]: 'Can manage products, orders, and staff',
   [StaffRole.STAFF]: 'Can view orders and customers',
-  [StaffRole.VIEWER]: 'Can respond to customer inquiries',
-};
+  [StaffRole.VIEWER]: 'Can respond to customer inquiries'};
 
 export default function StaffPage() {
   const { storeId } = useCurrentStoreId();
@@ -46,8 +43,7 @@ export default function StaffPage() {
       onSuccess: () => {
         setInviteEmail('');
         setShowInvite(false);
-      },
-    });
+      }});
   };
 
   const handleDelete = (staff: StaffDto) => {
@@ -112,8 +108,7 @@ export default function StaffPage() {
             description="Invite your team to collaborate."
             action={{
               label: 'Invite Staff',
-              onClick: () => setShowInvite(true),
-            }}
+              onClick: () => setShowInvite(true)}}
           />
         ) : (
           <div className="overflow-x-auto">

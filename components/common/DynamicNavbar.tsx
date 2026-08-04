@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useSyncExternalStore } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -14,24 +14,21 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+  DropdownMenuTrigger} from '@/components/ui/dropdown-menu';
 import { Avatar } from '@/components/ui/avatar';
 import { usePathname } from 'next/navigation';
 
+const subscribeToClientState = () => () => {};
+
 export function DynamicNavbar() {
   const pathname = usePathname();
-  const [isClient, setIsClient] = useState(false);
+  const isClient = useSyncExternalStore(subscribeToClientState, () => true, () => false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const user = useAuthStore((state) => state.user);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const logout = useAuthStore((state) => state.logout);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -100,16 +97,14 @@ export function DynamicNavbar() {
       { href: '/storefront/orders', label: 'Orders' },
       { href: '/storefront/wishlist', label: 'Wishlist' },
       { href: '/storefront/support', label: 'Support' },
-    ],
-  };
+    ]};
 
   const roleRedirectMap: Record<string, string> = {
     SUPER_ADMIN: '/super-admin/dashboard',
     ADMIN: '/admin/dashboard',
     BUSINESS_OWNER: '/dashboard',
     STAFF: '/staff/dashboard',
-    CUSTOMER: '/storefront',
-  };
+    CUSTOMER: '/storefront'};
 
   const navLinks = isAuthenticated
     ? roleNavLinks[user?.role ?? ''] ?? roleNavLinks.BUSINESS_OWNER

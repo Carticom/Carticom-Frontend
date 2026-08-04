@@ -34,5 +34,4 @@ export interface UpdateCustomerDto extends Partial<CreateCustomerDto> {
 export enum CustomerStatus {
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE',
-  BLOCKED = 'BLOCKED',
-}
+  BLOCKED = 'BLOCKED'}

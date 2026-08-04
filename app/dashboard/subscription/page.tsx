@@ -11,24 +11,21 @@ const planLabels: Record<SubscriptionPlan, string> = {
   [SubscriptionPlan.STARTER]: 'Starter',
   [SubscriptionPlan.GROWTH]: 'Growth',
   [SubscriptionPlan.BUSINESS]: 'Business',
-  [SubscriptionPlan.ENTERPRISE]: 'Enterprise',
-};
+  [SubscriptionPlan.ENTERPRISE]: 'Enterprise'};
 
 const planDescriptions: Record<SubscriptionPlan, string> = {
   [SubscriptionPlan.FREE_TRIAL]: '30-day free trial with basic features',
   [SubscriptionPlan.STARTER]: 'Basic features for small businesses',
   [SubscriptionPlan.GROWTH]: 'Advanced features for growing businesses',
   [SubscriptionPlan.BUSINESS]: 'Full features for established businesses',
-  [SubscriptionPlan.ENTERPRISE]: 'Enterprise-grade solution with everything included',
-};
+  [SubscriptionPlan.ENTERPRISE]: 'Enterprise-grade solution with everything included'};
 
 const statusColors: Record<SubscriptionStatus, string> = {
   [SubscriptionStatus.ACTIVE]: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
   [SubscriptionStatus.CANCELLED]: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
   [SubscriptionStatus.EXPIRED]: 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400',
   [SubscriptionStatus.PAST_DUE]: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
-  [SubscriptionStatus.READ_ONLY]: 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400',
-};
+  [SubscriptionStatus.READ_ONLY]: 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400'};
 
 const planOrder = [SubscriptionPlan.FREE_TRIAL, SubscriptionPlan.STARTER, SubscriptionPlan.GROWTH, SubscriptionPlan.BUSINESS, SubscriptionPlan.ENTERPRISE];
 

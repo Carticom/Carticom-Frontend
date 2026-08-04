@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import axiosInstance from '@/lib/axios';
+import { superAdminRepository } from '@/features/admin/repositories/admin.repository';
 import { LoadingState, EmptyState, ErrorState } from '@/components/dashboard/shared/StateComponents';
 
 interface Setting {
@@ -12,11 +12,7 @@ interface Setting {
 export default function SuperAdminSettingsPage() {
   const { data: settings, isLoading, error, refetch } = useQuery({
     queryKey: ['super-admin', 'settings'],
-    queryFn: async () => {
-      const res = await axiosInstance.get('/api/v1/super-admin/settings');
-      return (res.data.data ?? []) as Setting[];
-    },
-  });
+    queryFn: () => superAdminRepository.getSettings<Setting>()});
 
   if (isLoading) return <LoadingState message="Loading settings..." />;
   if (error) return <ErrorState onRetry={() => refetch()} />;

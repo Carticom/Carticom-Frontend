@@ -43,8 +43,7 @@ export enum CustomSolutionStatus {
   TESTING = 'TESTING',
   DEPLOYED = 'DEPLOYED',
   COMPLETED = 'COMPLETED',
-  REJECTED = 'REJECTED',
-}
+  REJECTED = 'REJECTED'}
 
 export const SERVICE_OPTIONS = [
   'Customer App',

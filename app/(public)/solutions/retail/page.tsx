@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Store, ShoppingBag, Users, BarChart3, ArrowRight, CheckCircle, CreditCard, Package, Tag } from 'lucide-react';
+import { ShoppingBag, Users, BarChart3, ArrowRight, CheckCircle, Package } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 

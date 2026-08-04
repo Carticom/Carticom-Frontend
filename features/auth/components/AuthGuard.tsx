@@ -4,7 +4,7 @@
 
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useAuthStore } from '../store/auth.store';
 import type { GuardProps } from '../types';
@@ -16,16 +16,13 @@ interface AuthGuardProps extends GuardProps {
 
 export function AuthGuard({
   children,
-  redirectTo = '/login',
-}: AuthGuardProps) {
+  redirectTo = '/login'}: AuthGuardProps) {
   const router = useRouter();
   const pathname = usePathname();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const [redirecting, setRedirecting] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated) {
-      setRedirecting(true);
       const returnUrl = encodeURIComponent(pathname);
       router.push(`${redirectTo}?returnUrl=${returnUrl}`);
     }
@@ -59,8 +56,7 @@ interface PublicOnlyGuardProps extends GuardProps {
 
 export function PublicOnlyGuard({
   children,
-  redirectTo = '/dashboard',
-}: PublicOnlyGuardProps) {
+  redirectTo = '/dashboard'}: PublicOnlyGuardProps) {
   const router = useRouter();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 

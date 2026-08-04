@@ -1,6 +1,7 @@
 'use client';
 
 import { useCurrentStoreId } from '@/hooks/useCurrentStore';
+import Image from 'next/image';
 import { useCustomers } from '@/features/dashboard/hooks/useCustomers';
 import { LoadingState, EmptyState, ErrorState } from '@/components/dashboard/shared/StateComponents';
 import type { CustomerDto } from '@/features/dashboard/types/customers.types';
@@ -66,7 +67,7 @@ export default function CustomersPage() {
                   <td className="py-3 px-4">
                     <div className="flex items-center gap-3">
                       {customer.avatarUrl ? (
-                        <img src={customer.avatarUrl} alt={`${customer.firstName} ${customer.lastName}`} className="w-8 h-8 rounded-full object-cover bg-gray-100 dark:bg-gray-800" />
+                        <div className="relative w-8 h-8 rounded-full overflow-hidden"><Image src={customer.avatarUrl} alt={`${customer.firstName} ${customer.lastName}`} fill unoptimized className="object-cover bg-gray-100 dark:bg-gray-800" /></div>
                       ) : (
                         <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 text-xs font-medium">
                           {customer.firstName.charAt(0)}{customer.lastName.charAt(0)}

@@ -7,8 +7,7 @@ export class OrdersRepository extends BaseRepository<OrderDto, CreateOrderDto, U
   constructor() {
     super({
       base: '/api/v1/orders',
-      byId: (id) => `/api/v1/orders/${id}`,
-    });
+      byId: (id) => `/api/v1/orders/${id}`});
   }
 
   async getByStore(storeId: string, params?: QueryParams) {

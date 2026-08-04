@@ -12,8 +12,7 @@ import { cn } from '@/lib/utils';
 const METHOD_TYPE_LABELS: Record<ShippingMethodType, string> = {
   FREE: 'Free Shipping',
   FLAT: 'Flat Rate',
-  PER_ITEM: 'Per Item',
-};
+  PER_ITEM: 'Per Item'};
 
 function formatCurrency(amount: number) {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
@@ -81,8 +80,7 @@ export default function ShippingPage() {
       const data: CreateShippingZoneDto = {
         name: zoneForm.name,
         countries: zoneForm.countries,
-        regions: regionsInput ? regionsInput.split(',').map(r => r.trim()).filter(Boolean) : undefined,
-      };
+        regions: regionsInput ? regionsInput.split(',').map(r => r.trim()).filter(Boolean) : undefined};
       if (isEdit) {
         await updateZone.mutateAsync({ id: zoneModal.edit!.id, data: data as UpdateShippingZoneDto });
       } else {

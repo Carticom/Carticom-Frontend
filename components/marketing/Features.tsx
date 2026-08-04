@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+
 import { motion } from 'framer-motion';
-import { Store, CreditCard, Shield, Bot, BarChart3, Package, Truck, Headphones } from 'lucide-react';
+import { Store, CreditCard, Bot, BarChart3, Package, Truck, Headphones } from 'lucide-react';
 import { Container } from '@/components/common/Container';
 import { Button } from '@/components/ui/button';
 
@@ -11,44 +11,37 @@ const features = [
     icon: Store,
     title: 'Store Management',
     description: 'Build and customize your online store with drag-and-drop tools. Manage products, inventory, and orders from a single dashboard.',
-    color: 'blue',
-  },
+    color: 'blue'},
   {
     icon: CreditCard,
     title: 'Payments',
     description: 'Accept payments via Paystack, Flutterwave, and bank transfers. Support for cards, mobile money, and USSD across Africa.',
-    color: 'green',
-  },
+    color: 'green'},
   {
     icon: Bot,
     title: 'AI Automation',
     description: 'Automate customer support, order tracking, and marketing via WhatsApp. Let AI handle routine tasks while you focus on growth.',
-    color: 'indigo',
-  },
+    color: 'indigo'},
   {
     icon: BarChart3,
     title: 'Analytics Dashboard',
     description: 'Real-time insights into sales, customer behavior, and revenue. Make data-driven decisions with beautiful visualizations.',
-    color: 'orange',
-  },
+    color: 'orange'},
   {
     icon: Package,
     title: 'Inventory Management',
     description: 'Track stock levels, set low-stock alerts, and manage warehouses. Never oversell or run out of popular items again.',
-    color: 'pink',
-  },
+    color: 'pink'},
   {
     icon: Truck,
     title: 'Logistics Integration',
     description: 'Connect with top delivery services across Africa. Automated shipping labels, tracking, and delivery confirmations.',
-    color: 'cyan',
-  },
+    color: 'cyan'},
   {
     icon: Headphones,
     title: '24/7 Support',
     description: 'Get help whenever you need it. Our dedicated support team is available around the clock via chat, email, and phone.',
-    color: 'red',
-  },
+    color: 'red'},
 ];
 
 const colorClasses: Record<string, { bg: string; text: string; border: string }> = {
@@ -59,8 +52,7 @@ const colorClasses: Record<string, { bg: string; text: string; border: string }>
   orange: { bg: 'bg-orange-50', text: 'text-orange-600', border: 'group-hover:border-orange-200' },
   pink: { bg: 'bg-pink-50', text: 'text-pink-600', border: 'group-hover:border-pink-200' },
   cyan: { bg: 'bg-cyan-50', text: 'text-cyan-600', border: 'group-hover:border-cyan-200' },
-  red: { bg: 'bg-red-50', text: 'text-red-600', border: 'group-hover:border-red-200' },
-};
+  red: { bg: 'bg-red-50', text: 'text-red-600', border: 'group-hover:border-red-200' }};
 
 export function Features() {
   return (

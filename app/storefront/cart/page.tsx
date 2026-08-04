@@ -1,52 +1,59 @@
 'use client';
 
-import React, { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Trash2, Minus, Plus, ShoppingBag, ArrowLeft } from 'lucide-react';
+import { Trash2, Minus, Plus, ShoppingBag } from 'lucide-react';
 import { cartApi } from '@/features/onboarding/services/onboarding.service';
 import type { CartDto, CartItemDto } from '@/features/onboarding/types';
 import { Button } from '@/components/ui/button';
 import { LoadingState, EmptyState, ErrorState } from '@/components/dashboard/shared/StateComponents';
-import { cn } from '@/lib/utils';
+
 import { toast } from 'sonner';
 
 export default function CartPage() {
   const router = useRouter();
   const [cart, setCart] = useState<CartDto | null>(null);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [updatingItems, setUpdatingItems] = useState<Set<string>>(new Set());
+  const [retryKey, setRetryKey] = useState(0);
 
   // storeId comes from URL query param ?store=<id> set on add-to-cart
   const [searchParams] = useState(() => new URLSearchParams(
     typeof window !== 'undefined' ? window.location.search : ''
   ));
   const storeId = searchParams.get('store');
-
-  const fetchCart = useCallback(async () => {
-    if (!storeId) {
-      setLoading(false);
-      return;
-    }
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await cartApi.get(storeId);
-      if (!res.data.data) throw new Error('Cart is empty');
-      setCart(res.data.data);
-    } catch {
-      setError('Failed to load your cart. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  }, [storeId]);
+  const hasStoreId = !!storeId;
+  const [loading, setLoading] = useState(hasStoreId);
 
   useEffect(() => {
-    fetchCart();
-  }, [fetchCart]);
+    if (!hasStoreId) return;
+    let cancelled = false;
+    const load = async () => {
+      try {
+        const res = await cartApi.get(storeId as string);
+        if (cancelled) return;
+        if (!res.data.data) throw new Error('Cart is empty');
+        setCart(res.data.data);
+      } catch {
+        if (cancelled) return;
+        setError('Failed to load your cart. Please try again.');
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    };
+    load();
+    return () => { cancelled = true; };
+  }, [hasStoreId, storeId, retryKey]);
 
-  const storeIdToUse = cart?.storeId || '';
+  const handleRetry = () => {
+    setLoading(true);
+    setError(null);
+    setRetryKey((k) => k + 1);
+  };
+
+  const storeIdToUse = cart?.storeId || storeId || '';
 
   const handleUpdateQuantity = async (productId: string, newQuantity: number) => {
     if (!storeIdToUse || newQuantity < 1) return;
@@ -78,7 +85,7 @@ export default function CartPage() {
 
   if (loading) return <LoadingState message="Loading cart..." />;
 
-  if (error) return <ErrorState title="Error loading cart" description={error} onRetry={fetchCart} />;
+  if (error) return <ErrorState title="Error loading cart" description={error} onRetry={handleRetry} />;
 
   if (!cart || !cart.items || cart.items.length === 0) {
     return (
@@ -88,8 +95,7 @@ export default function CartPage() {
         description="Looks like you haven't added anything yet. Browse a store to find products!"
         action={{
           label: 'Browse Stores',
-          onClick: () => router.push('/storefront'),
-        }}
+          onClick: () => router.push('/storefront')}}
       />
     );
   }
@@ -98,8 +104,7 @@ export default function CartPage() {
     new Intl.NumberFormat('en-NG', {
       style: 'currency',
       currency: cart.currency || 'NGN',
-      minimumFractionDigits: 2,
-    }).format(price);
+      minimumFractionDigits: 2}).format(price);
 
   return (
     <div className="space-y-6 py-4">
@@ -118,9 +123,9 @@ export default function CartPage() {
             key={item.productId}
             className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-4 flex items-center gap-4"
           >
-            <div className="flex-shrink-0 w-14 h-14 rounded-lg bg-gray-100 dark:bg-gray-800 overflow-hidden">
+            <div className="flex-shrink-0 relative w-14 h-14 rounded-lg bg-gray-100 dark:bg-gray-800 overflow-hidden">
               {item.productImage ? (
-                <img src={item.productImage} alt={item.productName || 'Product'} className="w-full h-full object-cover" />
+                <Image src={item.productImage} alt={item.productName || 'Product'} fill unoptimized className="object-cover" />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">No img</div>
               )}
@@ -191,13 +196,16 @@ export default function CartPage() {
         <Button
           size="lg"
           className="w-full mt-6"
-          onClick={() => router.push('/storefront/checkout')}
+          onClick={() => router.push(
+            storeIdToUse
+              ? `/storefront/checkout?store=${storeIdToUse}`
+              : '/storefront/checkout')}
         >
           Proceed to Checkout
         </Button>
 
         <Link
-          href={storeIdToUse ? `/store/${storeIdToUse}` : '/storefront'}
+          href="/storefront"
           className="block text-center text-sm text-blue-600 hover:text-blue-500 mt-4 transition-colors"
         >
           Continue Shopping

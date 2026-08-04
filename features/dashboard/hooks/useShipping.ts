@@ -7,15 +7,13 @@ import type {
   UpdateShippingZoneDto,
   CreateShippingMethodDto,
   UpdateShippingMethodDto,
-  ShippingRateRequest,
-} from '@/features/dashboard/types/shipping.types';
+  ShippingRateRequest} from '@/features/dashboard/types/shipping.types';
 import { showToast } from '@/lib/notifications/toast';
 
 export function useShippingZones() {
   return useQuery({
     queryKey: ['shipping', 'zones'],
-    queryFn: () => shippingRepository.getZones(),
-  });
+    queryFn: () => shippingRepository.getZones()});
 }
 
 export function useCreateZone() {
@@ -29,10 +27,8 @@ export function useCreateZone() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to create shipping zone', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }
 
 export function useUpdateZone() {
@@ -47,10 +43,8 @@ export function useUpdateZone() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to update shipping zone', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }
 
 export function useDeleteZone() {
@@ -64,18 +58,15 @@ export function useDeleteZone() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to delete shipping zone', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }
 
 export function useShippingMethods(zoneId: string | null) {
   return useQuery({
     queryKey: ['shipping', 'zones', zoneId, 'methods'],
     queryFn: () => shippingRepository.getMethods(zoneId!),
-    enabled: !!zoneId,
-  });
+    enabled: !!zoneId});
 }
 
 export function useCreateMethod() {
@@ -90,10 +81,8 @@ export function useCreateMethod() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to create shipping method', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }
 
 export function useUpdateMethod() {
@@ -108,10 +97,8 @@ export function useUpdateMethod() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to update shipping method', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }
 
 export function useDeleteMethod() {
@@ -126,10 +113,8 @@ export function useDeleteMethod() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to delete shipping method', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }
 
 export function useCalculateRates() {
@@ -137,8 +122,6 @@ export function useCalculateRates() {
     mutationFn: (request: ShippingRateRequest) => shippingRepository.calculateRates(request),
     onError: (error: Error) => {
       showToast('error', 'Failed to calculate rates', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }

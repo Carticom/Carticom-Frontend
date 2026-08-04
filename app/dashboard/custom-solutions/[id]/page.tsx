@@ -19,8 +19,7 @@ const statusColors: Record<string, string> = {
   [CustomSolutionStatus.TESTING]: 'bg-teal-100 text-teal-800 dark:bg-teal-900/30 dark:text-teal-400',
   [CustomSolutionStatus.DEPLOYED]: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400',
   [CustomSolutionStatus.COMPLETED]: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
-  [CustomSolutionStatus.REJECTED]: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
-};
+  [CustomSolutionStatus.REJECTED]: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'};
 
 export default function CustomSolutionDetailPage() {
   const params = useParams();
@@ -29,8 +28,7 @@ export default function CustomSolutionDetailPage() {
   const { data: req, isLoading, error, refetch } = useQuery({
     queryKey: ['custom-solutions', id],
     queryFn: () => customSolutionsService.getById(id),
-    enabled: !!id,
-  });
+    enabled: !!id});
 
   if (isLoading) return <LoadingState message="Loading custom solution..." />;
   if (error) return <ErrorState title="Failed to load custom solution" onRetry={refetch} />;

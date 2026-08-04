@@ -11,8 +11,7 @@ import { Button } from '@/components/ui/button';
 const statusColors: Record<CategoryStatus, string> = {
   [CategoryStatus.ACTIVE]: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
   [CategoryStatus.INACTIVE]: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
-  [CategoryStatus.ARCHIVED]: 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400',
-};
+  [CategoryStatus.ARCHIVED]: 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400'};
 
 export default function CategoriesPage() {
   const { storeId } = useCurrentStoreId();
@@ -32,8 +31,7 @@ export default function CategoriesPage() {
         setName('');
         setDescription('');
         setShowForm(false);
-      },
-    });
+      }});
   };
 
   const handleDelete = (cat: CategoryDto) => {
@@ -93,8 +91,7 @@ export default function CategoriesPage() {
             description="Create your first category to organize products."
             action={{
               label: 'Add Category',
-              onClick: () => setShowForm(true),
-            }}
+              onClick: () => setShowForm(true)}}
           />
         ) : (
           <div className="overflow-x-auto">

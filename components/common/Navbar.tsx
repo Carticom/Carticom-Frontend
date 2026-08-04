@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ShoppingCart, ChevronDown, Zap, Globe, Shield, TrendingUp } from 'lucide-react';
+import { Menu, X, ShoppingCart, ChevronDown, Zap, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Container } from './Container';
 
@@ -17,8 +17,7 @@ const navLinks = [
       { href: '/solutions/ecommerce', label: 'E-commerce', icon: ShoppingCart },
       { href: '/solutions/global', label: 'Global Sales', icon: Globe },
       { href: '/solutions/payments', label: 'Payments', icon: Zap },
-    ],
-  },
+    ]},
   { href: '/pricing', label: 'Pricing' },
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
@@ -30,10 +29,8 @@ const dropdownVariants = {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { duration: 0.2, ease: [0.16, 1, 0.3, 1] as const },
-  },
-  exit: { opacity: 0, y: -8, scale: 0.95, transition: { duration: 0.15 } },
-};
+    transition: { duration: 0.2, ease: [0.16, 1, 0.3, 1] as const }},
+  exit: { opacity: 0, y: -8, scale: 0.95, transition: { duration: 0.15 } }};
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -118,8 +115,7 @@ export function Navbar() {
                       {hasSubmenu && (
                         <motion.div
                           animate={{
-                            rotate: activeDropdown === link.href ? 180 : 0,
-                          }}
+                            rotate: activeDropdown === link.href ? 180 : 0}}
                           transition={{ duration: 0.2 }}
                         >
                           <ChevronDown className="h-4 w-4 text-gray-400 group-hover/link:text-blue-500" />

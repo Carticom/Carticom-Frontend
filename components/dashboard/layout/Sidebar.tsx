@@ -18,8 +18,6 @@ import { useAuthStore } from '@/features/auth/store/auth.store';
 import { UserRole } from '@/features/auth/types';
 import { cn } from '@/lib/utils';
 
-interface Child { id: string; label: string; href: string; }
-
 const OWNER_ITEMS = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
   { id: 'store', label: 'Store', icon: Store, href: '/dashboard/store' },
@@ -99,8 +97,7 @@ const NAV_GROUPS: Record<string, { label: string; keys: string[] }[]> = {
   [UserRole.SUPER_ADMIN]: [
     { label: 'Menu', keys: ['dashboard', 'users', 'stores', 'plans', 'subscriptions', 'settings'] },
     { label: 'Manage', keys: ['custom-solutions', 'waitlist', 'payments', 'audit'] },
-  ],
-};
+  ]};
 
 function getNavGroups(role: string | undefined) {
   return NAV_GROUPS[role || UserRole.BUSINESS_OWNER] || NAV_GROUPS[UserRole.BUSINESS_OWNER];
@@ -181,8 +178,7 @@ export function Sidebar({ isCollapsed, onToggleCollapse, isMobileOpen, onMobileC
           const res = await axiosInstance.get(endpoint);
           return res.data.data;
         },
-        staleTime: 1000 * 60 * 5,
-      });
+        staleTime: 1000 * 60 * 5});
     }
   }, [queryClient, role]);
 

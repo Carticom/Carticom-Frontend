@@ -44,13 +44,11 @@ export enum SubscriptionPlan {
   STARTER = 'STARTER',
   GROWTH = 'GROWTH',
   BUSINESS = 'BUSINESS',
-  ENTERPRISE = 'ENTERPRISE',
-}
+  ENTERPRISE = 'ENTERPRISE'}
 
 export enum SubscriptionStatus {
   ACTIVE = 'ACTIVE',
   CANCELLED = 'CANCELLED',
   EXPIRED = 'EXPIRED',
   PAST_DUE = 'PAST_DUE',
-  READ_ONLY = 'READ_ONLY',
-}
+  READ_ONLY = 'READ_ONLY'}

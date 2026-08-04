@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { Check, ArrowRight, Loader2, Sparkles } from 'lucide-react';
+import { Check, ArrowRight, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -33,8 +33,7 @@ interface Plan {
 }
 
 const PLAN_ORDER: Record<string, number> = {
-  'Free Trial': 0, 'Starter': 1, 'Growth': 2, 'Business': 3, 'Enterprise': 4,
-};
+  'Free Trial': 0, 'Starter': 1, 'Growth': 2, 'Business': 3, 'Enterprise': 4};
 
 function formatPrice(amount: number): string {
   if (amount === 0) return 'Free';
@@ -73,8 +72,7 @@ export function PricingSection() {
       const res = await axiosInstance.get('/api/v1/subscriptions/plans');
       return res.data?.data ?? [];
     },
-    staleTime: 5 * 60_000,
-  });
+    staleTime: 5 * 60_000});
 
   const displayPlans: Plan[] = useMemo(() => {
     if (!plans) return [];
@@ -89,8 +87,7 @@ export function PricingSection() {
         desc: dto.description,
         features: generateFeatures(dto, yearly),
         cta: dto.monthlyPrice === 0 ? 'Get Started Free' : 'Start Free Trial',
-        popular: dto.name === 'Growth',
-      };
+        popular: dto.name === 'Growth'};
     });
   }, [plans, yearly]);
 

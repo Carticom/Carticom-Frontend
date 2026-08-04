@@ -18,4 +18,4 @@ export interface CreateVariantDto {
   isActive?: boolean;
 }
 
-export interface UpdateVariantDto extends Partial<CreateVariantDto> {}
+export type UpdateVariantDto = Partial<CreateVariantDto>;

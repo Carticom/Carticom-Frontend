@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import axiosInstance from '@/lib/axios';
+import { superAdminRepository } from '@/features/admin/repositories/admin.repository';
 import { LoadingState, EmptyState, ErrorState } from '@/components/dashboard/shared/StateComponents';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogFooter } from '@/components/ui/dialog';
@@ -33,8 +33,7 @@ function statusBadge(status: string) {
   const map: Record<string, string> = {
     ACTIVE: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
     INACTIVE: 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400',
-    ARCHIVED: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
-  };
+    ARCHIVED: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'};
   return map[status] ?? 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400';
 }
 
@@ -46,8 +45,7 @@ const emptyForm = {
   maxStaff: 1,
   customDomain: false,
   features: '',
-  status: 'ACTIVE',
-};
+  status: 'ACTIVE'};
 
 export default function SuperAdminPlansPage() {
   const queryClient = useQueryClient();
@@ -57,11 +55,7 @@ export default function SuperAdminPlansPage() {
 
   const { data: plans, isLoading, error, refetch } = useQuery({
     queryKey: ['super-admin', 'plans'],
-    queryFn: async () => {
-      const res = await axiosInstance.get('/api/v1/super-admin/plans');
-      return (res.data.data ?? []) as Plan[];
-    },
-  });
+    queryFn: () => superAdminRepository.getPlans<Plan>()});
 
   const saveMutation = useMutation({
     mutationFn: async () => {
@@ -73,12 +67,11 @@ export default function SuperAdminPlansPage() {
         maxStaff: form.maxStaff,
         customDomain: form.customDomain,
         features: form.features.split(',').map((f) => f.trim()).filter(Boolean),
-        status: form.status,
-      };
+        status: form.status};
       if (editingPlan) {
-        await axiosInstance.put(`/api/v1/super-admin/plans/${editingPlan.id}`, payload);
+        await superAdminRepository.updatePlan<Plan>(editingPlan.id, payload);
       } else {
-        await axiosInstance.post('/api/v1/super-admin/plans', payload);
+        await superAdminRepository.createPlan<Plan>(payload);
       }
     },
     onSuccess: () => {
@@ -88,12 +81,11 @@ export default function SuperAdminPlansPage() {
     },
     onError: (err) => {
       showToast('error', err instanceof Error ? err.message : 'Operation failed');
-    },
-  });
+    }});
 
   const deleteMutation = useMutation({
     mutationFn: async (planId: string) => {
-      await axiosInstance.delete(`/api/v1/super-admin/plans/${planId}`);
+      await superAdminRepository.deletePlan(planId);
     },
     onSuccess: () => {
       showToast('success', 'Plan deleted');
@@ -101,8 +93,7 @@ export default function SuperAdminPlansPage() {
     },
     onError: (err) => {
       showToast('error', err instanceof Error ? err.message : 'Failed to delete plan');
-    },
-  });
+    }});
 
   const handleClose = () => {
     setShowModal(false);
@@ -120,8 +111,7 @@ export default function SuperAdminPlansPage() {
       maxStaff: plan.maxStaff || 1,
       customDomain: plan.customDomain || false,
       features: (plan.features ?? []).join(', '),
-      status: plan.status || 'ACTIVE',
-    });
+      status: plan.status || 'ACTIVE'});
     setShowModal(true);
   };
 

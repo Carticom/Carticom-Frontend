@@ -4,8 +4,7 @@ import type {
   CreateCustomSolutionDto,
   CustomSolutionStatistics,
   UpdateStatusDto,
-  QuotationDto,
-} from '../types';
+  QuotationDto} from '../types';
 
 const ENDPOINTS = {
   SUBMIT: '/api/v1/custom-solutions',
@@ -14,8 +13,7 @@ const ENDPOINTS = {
   ADMIN_LIST: '/api/v1/admin/custom-solutions',
   ADMIN_STATISTICS: '/api/v1/admin/custom-solutions/statistics',
   ADMIN_STATUS: (id: string) => `/api/v1/admin/custom-solutions/${id}/status`,
-  ADMIN_QUOTATION: (id: string) => `/api/v1/admin/custom-solutions/${id}/quotation`,
-} as const;
+  ADMIN_QUOTATION: (id: string) => `/api/v1/admin/custom-solutions/${id}/quotation`} as const;
 
 class CustomSolutionsService {
   async submit(dto: CreateCustomSolutionDto): Promise<CustomSolutionDto> {
@@ -81,8 +79,7 @@ class CustomSolutionsService {
         formData.append('file', dto.file);
       }
       const response = await axiosInstance.post(ENDPOINTS.ADMIN_QUOTATION(id), formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
+        headers: { 'Content-Type': 'multipart/form-data' }});
       return response.data?.data ?? response.data;
     } catch (error) {
       throw new Error(extractErrorMessage(error));

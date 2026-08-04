@@ -37,5 +37,4 @@ export interface UpdateCategoryDto extends Partial<CreateCategoryDto> {
 export enum CategoryStatus {
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE',
-  ARCHIVED = 'ARCHIVED',
-}
+  ARCHIVED = 'ARCHIVED'}

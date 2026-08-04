@@ -3,7 +3,7 @@
 import { useMemo } from 'react';
 import { usePayments } from '@/features/dashboard/hooks/usePayments';
 import { useCurrentStoreId } from '@/hooks/useCurrentStore';
-import { LoadingState, ErrorState, EmptyState } from '@/components/dashboard/shared/StateComponents';
+import { LoadingState, ErrorState } from '@/components/dashboard/shared/StateComponents';
 import type { PaymentDto } from '@/features/dashboard/types/payments.types';
 import { PaymentStatus } from '@/features/dashboard/types/payments.types';
 
@@ -12,23 +12,20 @@ function formatCurrency(amount: number): string {
     style: 'currency',
     currency: 'NGN',
     minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
+    maximumFractionDigits: 0}).format(amount);
 }
 
 function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString('en-NG', {
     day: '2-digit',
     month: 'short',
-    year: 'numeric',
-  });
+    year: 'numeric'});
 }
 
 function formatTime(dateStr: string): string {
   return new Date(dateStr).toLocaleTimeString('en-NG', {
     hour: '2-digit',
-    minute: '2-digit',
-  });
+    minute: '2-digit'});
 }
 
 const STATUS_STYLES: Record<string, string> = {
@@ -37,8 +34,7 @@ const STATUS_STYLES: Record<string, string> = {
   [PaymentStatus.PENDING]: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
   [PaymentStatus.PROCESSING]: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
   [PaymentStatus.REFUNDED]: 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400',
-  [PaymentStatus.PARTIALLY_REFUNDED]: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400',
-};
+  [PaymentStatus.PARTIALLY_REFUNDED]: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400'};
 
 function StatusBadge({ status }: { status: string }) {
   return (
@@ -64,8 +60,7 @@ export default function PaymentsPage() {
       successful: sumByStatus(payments, PaymentStatus.SUCCESSFUL),
       failed: sumByStatus(payments, PaymentStatus.FAILED),
       pending: sumByStatus(payments, PaymentStatus.PENDING, PaymentStatus.PROCESSING),
-      refunded: sumByStatus(payments, PaymentStatus.REFUNDED, PaymentStatus.PARTIALLY_REFUNDED),
-    };
+      refunded: sumByStatus(payments, PaymentStatus.REFUNDED, PaymentStatus.PARTIALLY_REFUNDED)};
   }, [payments]);
 
   if (isLoading || !storeId) {

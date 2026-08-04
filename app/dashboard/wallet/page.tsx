@@ -10,23 +10,20 @@ function formatCurrency(amount: number): string {
     style: 'currency',
     currency: 'NGN',
     minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
+    maximumFractionDigits: 0}).format(amount);
 }
 
 function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString('en-NG', {
     day: '2-digit',
     month: 'short',
-    year: 'numeric',
-  });
+    year: 'numeric'});
 }
 
 function formatTime(dateStr: string): string {
   return new Date(dateStr).toLocaleTimeString('en-NG', {
     hour: '2-digit',
-    minute: '2-digit',
-  });
+    minute: '2-digit'});
 }
 
 const TYPE_STYLES: Record<string, string> = {
@@ -34,16 +31,14 @@ const TYPE_STYLES: Record<string, string> = {
   [WalletTransactionType.DEBIT]: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
   [WalletTransactionType.WITHDRAWAL]: 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400',
   [WalletTransactionType.REFUND]: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
-  [WalletTransactionType.FEE]: 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400',
-};
+  [WalletTransactionType.FEE]: 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400'};
 
 const TYPE_ICON: Record<string, string> = {
   [WalletTransactionType.CREDIT]: '+',
   [WalletTransactionType.DEBIT]: '-',
   [WalletTransactionType.WITHDRAWAL]: '-',
   [WalletTransactionType.REFUND]: '+',
-  [WalletTransactionType.FEE]: '-',
-};
+  [WalletTransactionType.FEE]: '-'};
 
 function TypeBadge({ type }: { type: string }) {
   return (
@@ -58,15 +53,13 @@ export default function WalletPage() {
     data: wallet,
     isLoading: walletLoading,
     error: walletError,
-    refetch: refetchWallet,
-  } = useWallet();
+    refetch: refetchWallet} = useWallet();
 
   const {
     data: transactions,
     isLoading: txLoading,
     error: txError,
-    refetch: refetchTx,
-  } = useWalletTransactions();
+    refetch: refetchTx} = useWalletTransactions();
 
   const isLoading = walletLoading || txLoading;
   const error = walletError || txError;

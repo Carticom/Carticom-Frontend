@@ -5,8 +5,7 @@ export class CouponsRepository extends BaseRepository<CouponDto, CreateCouponDto
   constructor() {
     super({
       base: '/api/v1/coupons',
-      byId: (id) => `/api/v1/coupons/${id}`,
-    });
+      byId: (id) => `/api/v1/coupons/${id}`});
   }
 
   async validate(dto: ValidateCouponDto): Promise<ValidateCouponResponse> {

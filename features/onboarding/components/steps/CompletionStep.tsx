@@ -1,9 +1,9 @@
 'use client';
 
-import React from 'react';
+
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { CheckCircle, Store, Share2, ExternalLink } from 'lucide-react';
+import { CheckCircle, Store, ExternalLink } from 'lucide-react';
 
 interface CompletionStepProps {
   onComplete: () => void;

@@ -7,8 +7,7 @@ import { showToast } from '@/lib/notifications/toast';
 export function useWishlist() {
   return useQuery({
     queryKey: ['wishlist'],
-    queryFn: () => wishlistRepository.getAll(),
-  });
+    queryFn: () => wishlistRepository.getAll()});
 }
 
 export function useAddToWishlist() {
@@ -24,10 +23,8 @@ export function useAddToWishlist() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to add to wishlist', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }
 
 export function useRemoveFromWishlist() {
@@ -43,8 +40,6 @@ export function useRemoveFromWishlist() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to remove from wishlist', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }

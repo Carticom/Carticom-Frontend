@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import axiosInstance from '@/lib/axios';
+import { superAdminRepository } from '@/features/admin/repositories/admin.repository';
 import { LoadingState, EmptyState, ErrorState } from '@/components/dashboard/shared/StateComponents';
 import { Button } from '@/components/ui/button';
 import { Search, Filter } from 'lucide-react';
@@ -27,8 +27,7 @@ function roleBadge(role: string) {
     SUPER_ADMIN: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
     ADMIN: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400',
     BUSINESS_OWNER: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
-    STAFF: 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400',
-  };
+    STAFF: 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400'};
   return map[role] ?? 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400';
 }
 
@@ -47,31 +46,24 @@ export default function SuperAdminUsersPage() {
 
   const { data: page, isLoading, error, refetch } = useQuery({
     queryKey: ['super-admin', 'users'],
-    queryFn: async () => {
-      const res = await axiosInstance.get('/api/v1/super-admin/users');
-      return res.data.data as { content: User[]; totalElements: number; totalPages: number };
-    },
-  });
-
-  const users = page?.content ?? [];
+    queryFn: () => superAdminRepository.getUsers<User>()});
 
   const toggleMutation = useMutation({
     mutationFn: async ({ id, action }: { id: string; action: 'suspend' | 'activate' }) => {
-      await axiosInstance.post(`/api/v1/super-admin/users/${id}/${action}`);
+      await superAdminRepository.updateUserStatus(id, action);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['super-admin', 'users'] });
-    },
-  });
+    }});
 
   const filtered = useMemo(() => {
-    return users.filter((u) => {
+    return (page?.content ?? []).filter((u) => {
       const matchesSearch = (u.fullName ?? '').toLowerCase().includes(search.toLowerCase()) ||
         (u.email ?? '').toLowerCase().includes(search.toLowerCase());
       const matchesRole = roleFilter === 'ALL' || u.role === roleFilter;
       return matchesSearch && matchesRole;
     });
-  }, [users, search, roleFilter]);
+  }, [page, search, roleFilter]);
 
   if (isLoading) return <LoadingState message="Loading users..." />;
   if (error) return <ErrorState onRetry={() => refetch()} />;

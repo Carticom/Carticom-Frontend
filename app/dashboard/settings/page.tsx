@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useCurrentStoreId } from '@/hooks/useCurrentStore';
 import { useSettings, useUpdateSettings } from '@/features/dashboard/hooks/useSettings';
+import type { SettingsDto } from '@/features/dashboard/types/settings.types';
 import { LoadingState, ErrorState } from '@/components/dashboard/shared/StateComponents';
-import { showToast } from '@/lib/notifications/toast';
+
 
 const SECTIONS = [
   'Business', 'Account', 'Security', 'Notifications',
@@ -20,20 +21,20 @@ export default function SettingsPage() {
   const [activeSection, setActiveSection] = useState<Section>('Business');
 
   const [businessName, setBusinessName] = useState('');
-  const [description, setDescription] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [address, setAddress] = useState('');
 
-  useEffect(() => {
+  const [syncedSettings, setSyncedSettings] = useState<SettingsDto | undefined>(undefined);
+  if (settings !== syncedSettings) {
+    setSyncedSettings(settings);
     if (settings?.business) {
       setBusinessName(settings.business.businessName ?? '');
-      setDescription(settings.business.address ?? '');
       setPhone(settings.business.phone ?? '');
       setEmail(settings.business.email ?? '');
       setAddress(settings.business.address ?? '');
     }
-  }, [settings]);
+  }
 
   const handleSaveBusiness = () => {
     if (!storeId) return;
@@ -44,10 +45,7 @@ export default function SettingsPage() {
           businessName,
           email,
           phone,
-          address,
-        },
-      },
-    });
+          address}}});
   };
 
   if (storeLoading || isLoading) {

@@ -67,8 +67,7 @@ const KNOWN_COLORS: Record<string, string> = {
   peach: '#FFDAB9',
   apricot: '#FBCEB1',
   mauve: '#E0B0FF',
-  taupe: '#483C32',
-};
+  taupe: '#483C32'};
 
 function isColorValue(value: string): string | null {
   if (COLOR_VALUE_REGEX.test(value)) return value;

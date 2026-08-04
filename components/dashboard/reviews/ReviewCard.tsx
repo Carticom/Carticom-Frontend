@@ -61,8 +61,7 @@ export function ReviewCard({ review, isAuthor, onUpdate, onDelete, isUpdating, i
     onUpdate(review.id, {
       rating: editRating,
       title: editTitle || undefined,
-      content: editContent,
-    });
+      content: editContent});
     setIsEditing(false);
   };
 
@@ -76,8 +75,7 @@ export function ReviewCard({ review, isAuthor, onUpdate, onDelete, isUpdating, i
   const formattedDate = new Date(review.createdAt).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'short',
-    day: 'numeric',
-  });
+    day: 'numeric'});
 
   if (isEditing) {
     return (

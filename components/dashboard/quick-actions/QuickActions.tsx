@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import type { QuickAction } from '@/types/dashboard';
@@ -12,8 +12,7 @@ const COLOR_MAP: Record<string, string> = {
   purple: 'from-purple-500 to-purple-600 dark:from-purple-600 dark:to-purple-700',
   orange: 'from-orange-500 to-orange-600 dark:from-orange-600 dark:to-orange-700',
   cyan: 'from-cyan-500 to-cyan-600 dark:from-cyan-600 dark:to-cyan-700',
-  red: 'from-red-500 to-red-600 dark:from-red-600 dark:to-red-700',
-};
+  red: 'from-red-500 to-red-600 dark:from-red-600 dark:to-red-700'};
 
 interface QuickActionsProps {
   actions: QuickAction[];

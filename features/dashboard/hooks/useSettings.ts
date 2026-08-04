@@ -7,7 +7,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axiosInstance from '@/lib/axios';
 import { settingsRepository } from '@/features/dashboard/repositories/settings.repository';
-import type { SettingsDto, UpdateSettingsDto } from '@/features/dashboard/types/settings.types';
+import type { UpdateSettingsDto } from '@/features/dashboard/types/settings.types';
 import { queryKeys } from '@/lib/dal/query-keys';
 import { showToast } from '@/lib/notifications/toast';
 
@@ -19,8 +19,7 @@ export function useSettings(storeId: string) {
     queryFn: async () => {
       return settingsRepository.getByStore(storeId);
     },
-    enabled: !!storeId,
-  });
+    enabled: !!storeId});
 }
 
 // ─── Use Update Settings ──────────────────────────────────────
@@ -38,8 +37,6 @@ export function useUpdateSettings() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to update settings', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }

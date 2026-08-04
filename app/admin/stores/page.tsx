@@ -1,21 +1,29 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import axiosInstance from '@/lib/axios';
+import { adminRepository } from '@/features/admin/repositories/admin.repository';
 import { LoadingState, ErrorState, EmptyState } from '@/components/dashboard/shared/StateComponents';
 
 function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString('en-NG', { year: 'numeric', month: 'short', day: 'numeric' });
 }
 
+interface Store {
+  id: string;
+  name: string;
+  ownerName: string;
+  status: string;
+  productsCount: number;
+  createdAt: string;
+}
+
 export default function AdminStoresPage() {
   const { data: stores, isLoading, error, refetch } = useQuery({
     queryKey: ['admin', 'stores'],
     queryFn: async () => {
-      const res = await axiosInstance.get('/api/v1/admin/stores');
-      return res.data.data ?? [];
-    },
-  });
+      const page = await adminRepository.getStores<Store>();
+      return page?.content ?? [];
+    }});
 
   if (isLoading) return <LoadingState message="Loading stores..." />;
   if (error) return <ErrorState onRetry={() => refetch()} />;

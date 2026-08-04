@@ -1,7 +1,7 @@
 'use client';
 
-import { useRef, useState, useMemo } from 'react';
-import Image from 'next/image';
+import { useRef, useMemo } from 'react';
+
 import Link from 'next/link';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import {
@@ -47,8 +47,7 @@ const BADGE_DATA: Record<string, { icon: typeof Shield; label: string }[]> = {
   HOME_LIVING: [{ icon: Truck, label: 'Free Delivery' }, { icon: RotateCcw, label: '30-Day Returns' }, { icon: Shield, label: 'Quality Assured' }],
   SPORTS_FITNESS: [{ icon: Truck, label: 'Free Shipping' }, { icon: RotateCcw, label: 'Easy Returns' }, { icon: Shield, label: 'Durable Guarantee' }],
   BOOKS_MEDIA: [{ icon: Truck, label: 'Free Shipping' }, { icon: Shield, label: 'Satisfaction Guarantee' }, { icon: RotateCcw, label: 'Easy Returns' }],
-  ARTS_CRAFTS: [{ icon: Truck, label: 'Hand-Delivered' }, { icon: Heart, label: 'Handmade with Love' }, { icon: Shield, label: 'Satisfaction Guaranteed' }],
-};
+  ARTS_CRAFTS: [{ icon: Truck, label: 'Hand-Delivered' }, { icon: Heart, label: 'Handmade with Love' }, { icon: Shield, label: 'Satisfaction Guaranteed' }]};
 
 const HERO_OVERLAYS: Record<string, string> = {
   'gradient-mesh': 'bg-gradient-to-br from-transparent via-white/5 to-transparent',
@@ -59,22 +58,19 @@ const HERO_OVERLAYS: Record<string, string> = {
   playful: 'bg-gradient-to-br from-white/5 via-transparent to-white/10',
   natural: 'bg-gradient-to-t from-black/10 via-transparent to-black/5',
   vibrant: 'bg-gradient-to-br from-white/10 via-transparent to-white/5',
-  craft: 'bg-gradient-to-t from-black/20 via-transparent to-transparent',
-};
+  craft: 'bg-gradient-to-t from-black/20 via-transparent to-transparent'};
 
 const CARD_STYLES: Record<string, string> = {
   glass: 'backdrop-blur-xl bg-white/10 border border-white/20',
   elevated: 'shadow-xl shadow-black/10 bg-white',
   bordered: 'border-2 bg-white',
   minimal: 'bg-white',
-  rounded: 'bg-white shadow-md',
-};
+  rounded: 'bg-white shadow-md'};
 
 const BTN_STYLES: Record<string, string> = {
   pill: 'rounded-full',
   sharp: 'rounded-lg',
-  soft: 'rounded-xl',
-};
+  soft: 'rounded-xl'};
 
 function HeroDynamic({ store, template }: { store: StoreDto; template: TemplateConfig }) {
   const ref = useRef(null);
@@ -335,8 +331,7 @@ export function DynamicStorefront({ store, products, onAddToCart, addingToCart }
     showcase: <ShowcaseDynamic key="showcase" products={products} onAddToCart={onAddToCart} addingToCart={addingToCart} template={template} />,
     storytelling: <StorytellingDynamic key="storytelling" template={template} />,
     testimonials: <TestimonialsDynamic key="testimonials" template={template} />,
-    newsletter: <NewsletterDynamic key="newsletter" template={template} />,
-  };
+    newsletter: <NewsletterDynamic key="newsletter" template={template} />};
 
   return (
     <div className="min-h-screen" style={{ fontFamily: template.typography.bodyFont }}>

@@ -3,10 +3,10 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ShoppingBag, ArrowRight, Leaf, Heart, Star, Sparkles, Sun, Droplets, ChevronRight, Truck, Shield } from 'lucide-react';
+import { ShoppingBag, ArrowRight, Leaf, Star, Sun, Droplets, ChevronRight, Truck } from 'lucide-react';
 import type { StoreDto, ProductDto } from '@/features/onboarding/types';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+
 
 function FadeIn({ children, delay = 0, className }: { children: React.ReactNode; delay?: number; className?: string }) {
   return (
@@ -102,7 +102,7 @@ function ShowcaseSection({ products, onAddToCart, addingToCart }: { products: Pr
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         <FadeIn className="text-center mb-12">
           <p className="text-[#4a7c3f] text-xs tracking-[0.2em] uppercase mb-3 font-medium">Fresh Picks</p>
-          <h2 className="text-3xl md:text-4xl font-light text-[#1a2e15]" style={{ fontFamily: "'Instrument Serif', serif" }}>Today's Selection</h2>
+          <h2 className="text-3xl md:text-4xl font-light text-[#1a2e15]" style={{ fontFamily: "'Instrument Serif', serif" }}>Today&apos;s Selection</h2>
         </FadeIn>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {products.slice(0, 8).map((product, i) => (

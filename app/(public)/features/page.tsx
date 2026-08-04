@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+
 import { motion } from 'framer-motion';
 import {
   Store,
@@ -28,8 +28,7 @@ import {
   Sparkles,
   CheckCircle,
   Layers,
-  Palette,
-} from 'lucide-react';
+  Palette} from 'lucide-react';
 import { Container } from '@/components/common/Container';
 import { Button } from '@/components/ui/button';
 
@@ -38,9 +37,7 @@ const fadeUp = {
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] as const },
-  }),
-};
+    transition: { duration: 0.6, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] as const }})};
 
 const categories = [
   {
@@ -51,40 +48,33 @@ const categories = [
         icon: Store,
         title: 'Store Builder',
         description: 'Drag-and-drop store builder with customizable themes. Launch a beautiful online store in minutes without any coding.',
-        color: 'blue',
-      },
+        color: 'blue'},
       {
         icon: Palette,
         title: 'Custom Themes',
         description: 'Choose from professionally designed themes or create your own. Full control over colors, fonts, and layout.',
-        color: 'purple',
-      },
+        color: 'purple'},
       {
         icon: Package,
         title: 'Inventory Management',
         description: 'Track stock levels across multiple warehouses. Set low-stock alerts and manage variants, bundles, and digital products.',
-        color: 'pink',
-      },
+        color: 'pink'},
       {
         icon: Layers,
         title: 'Product Categories',
         description: 'Organize products with unlimited categories, subcategories, and tags. Advanced filtering for better discoverability.',
-        color: 'orange',
-      },
+        color: 'orange'},
       {
         icon: ShoppingCart,
         title: 'Multi-channel Selling',
         description: 'Sell on WhatsApp, Instagram, Facebook, and your custom storefront. Manage all channels from one dashboard.',
-        color: 'cyan',
-      },
+        color: 'cyan'},
       {
         icon: Search,
         title: 'SEO Optimization',
         description: 'Built-in SEO tools, meta tags, sitemaps, and structured data. Get found by customers searching on Google.',
-        color: 'green',
-      },
-    ],
-  },
+        color: 'green'},
+    ]},
   {
     title: 'Payments & Finance',
     subtitle: 'Accept payments and manage your finances',
@@ -93,40 +83,33 @@ const categories = [
         icon: CreditCard,
         title: 'Payment Gateway',
         description: 'Accept payments via Paystack, Flutterwave, bank transfers, cards, mobile money, and USSD across Africa.',
-        color: 'green',
-      },
+        color: 'green'},
       {
         icon: Wallet,
         title: 'Carticom Wallet',
         description: 'Built-in digital wallet for instant settlements, withdrawals, and balance management. No more waiting for payouts.',
-        color: 'blue',
-      },
+        color: 'blue'},
       {
         icon: Shield,
         title: 'Escrow Service',
         description: 'Secure payment protection for high-value transactions. Funds are released only when both parties are satisfied.',
-        color: 'indigo',
-      },
+        color: 'indigo'},
       {
         icon: RefreshCw,
         title: 'Recurring Billing',
         description: 'Set up subscriptions, installment plans, and recurring invoices. Automate billing for SaaS and membership businesses.',
-        color: 'orange',
-      },
+        color: 'orange'},
       {
         icon: FileText,
         title: 'Invoicing',
         description: 'Generate professional invoices, receipts, and credit notes. Send automated billing reminders and track payments.',
-        color: 'red',
-      },
+        color: 'red'},
       {
         icon: TrendingUp,
         title: 'Multi-currency',
         description: 'Display prices in NGN, USD, GBP, EUR, and more. Accept payments in any currency with automatic conversion.',
-        color: 'cyan',
-      },
-    ],
-  },
+        color: 'cyan'},
+    ]},
   {
     title: 'AI & Automation',
     subtitle: 'Work smarter with intelligent automation',
@@ -135,40 +118,33 @@ const categories = [
         icon: Bot,
         title: 'AI Chatbot',
         description: '24/7 AI-powered customer support via WhatsApp and web chat. Handles FAQs, order tracking, and returns automatically.',
-        color: 'indigo',
-      },
+        color: 'indigo'},
       {
         icon: MessageSquare,
         title: 'WhatsApp Integration',
         description: 'Sell and provide support directly on WhatsApp. Send order updates, promotions, and abandoned cart reminders.',
-        color: 'green',
-      },
+        color: 'green'},
       {
         icon: Zap,
         title: 'Smart Automation',
         description: 'Automate repetitive tasks: order processing, inventory updates, email marketing, and customer follow-ups.',
-        color: 'amber',
-      },
+        color: 'amber'},
       {
         icon: BarChart3,
         title: 'Predictive Analytics',
         description: 'AI-powered sales forecasts, demand predictions, and customer insights. Make data-driven decisions confidently.',
-        color: 'blue',
-      },
+        color: 'blue'},
       {
         icon: Users,
         title: 'Customer Insights',
         description: 'Deep customer profiles with purchase history, preferences, and behavior patterns. Segment and target effectively.',
-        color: 'pink',
-      },
+        color: 'pink'},
       {
         icon: Bell,
         title: 'Smart Notifications',
         description: 'Intelligent alerts for low stock, unusual activity, payment failures, and key business milestones.',
-        color: 'purple',
-      },
-    ],
-  },
+        color: 'purple'},
+    ]},
   {
     title: 'Operations & Growth',
     subtitle: 'Scale your business with powerful tools',
@@ -177,40 +153,33 @@ const categories = [
         icon: Truck,
         title: 'Logistics Integration',
         description: 'Connect with top delivery services across Africa. Automated shipping labels, real-time tracking, and delivery confirmations.',
-        color: 'cyan',
-      },
+        color: 'cyan'},
       {
         icon: Globe,
         title: 'Global Reach',
         description: 'Sell to customers across 45+ countries. Localized checkout, regional payment methods, and international shipping.',
-        color: 'blue',
-      },
+        color: 'blue'},
       {
         icon: Smartphone,
         title: 'Mobile App',
         description: 'Manage your business on the go with our mobile app. Real-time notifications, order management, and analytics.',
-        color: 'orange',
-      },
+        color: 'orange'},
       {
         icon: Lock,
         title: 'Bank-grade Security',
         description: 'PCI-DSS compliant, end-to-end encryption, and fraud detection. Your data and transactions are always protected.',
-        color: 'red',
-      },
+        color: 'red'},
       {
         icon: Users,
         title: 'Team Management',
         description: 'Add team members with role-based permissions. Collaborate on orders, inventory, and customer support.',
-        color: 'green',
-      },
+        color: 'green'},
       {
         icon: Headphones,
         title: '24/7 Support',
         description: 'Dedicated support team available around the clock via chat, email, and phone. We help you succeed.',
-        color: 'purple',
-      },
-    ],
-  },
+        color: 'purple'},
+    ]},
 ];
 
 const colorMap: Record<string, { bg: string; text: string; border: string; gradient: string }> = {
@@ -222,8 +191,7 @@ const colorMap: Record<string, { bg: string; text: string; border: string; gradi
   cyan: { bg: 'bg-cyan-50', text: 'text-cyan-600', border: 'group-hover:border-cyan-200', gradient: 'from-cyan-600 to-teal-500' },
   red: { bg: 'bg-red-50', text: 'text-red-600', border: 'group-hover:border-red-200', gradient: 'from-red-600 to-rose-500' },
   purple: { bg: 'bg-purple-50', text: 'text-purple-600', border: 'group-hover:border-purple-200', gradient: 'from-purple-600 to-indigo-500' },
-  amber: { bg: 'bg-amber-50', text: 'text-amber-600', border: 'group-hover:border-amber-200', gradient: 'from-amber-600 to-yellow-500' },
-};
+  amber: { bg: 'bg-amber-50', text: 'text-amber-600', border: 'group-hover:border-amber-200', gradient: 'from-amber-600 to-yellow-500' }};
 
 const stats = [
   { number: '50K+', label: 'Active Sellers', icon: Users },

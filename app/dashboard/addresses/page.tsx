@@ -17,8 +17,7 @@ const LABEL_CONFIG: Record<AddressLabel, { icon: React.ElementType; color: strin
   [AddressLabel.OFFICE]: { icon: Briefcase, color: 'text-purple-600 bg-purple-100 dark:bg-purple-900/30 dark:text-purple-400' },
   [AddressLabel.BILLING]: { icon: MapPin, color: 'text-green-600 bg-green-100 dark:bg-green-900/30 dark:text-green-400' },
   [AddressLabel.SHIPPING]: { icon: MapPin, color: 'text-orange-600 bg-orange-100 dark:bg-orange-900/30 dark:text-orange-400' },
-  [AddressLabel.OTHER]: { icon: MapPin, color: 'text-gray-600 bg-gray-100 dark:bg-gray-900/30 dark:text-gray-400' },
-};
+  [AddressLabel.OTHER]: { icon: MapPin, color: 'text-gray-600 bg-gray-100 dark:bg-gray-900/30 dark:text-gray-400' }};
 
 const LABEL_OPTIONS = [
   { value: AddressLabel.HOME, label: 'Home' },
@@ -38,8 +37,7 @@ function emptyForm(): CreateAddressDto {
     state: '',
     country: '',
     zipCode: '',
-    isDefault: false,
-  };
+    isDefault: false};
 }
 
 export default function AddressesPage() {
@@ -71,8 +69,7 @@ export default function AddressesPage() {
       state: address.state,
       country: address.country,
       zipCode: address.zipCode || '',
-      isDefault: address.isDefault,
-    });
+      isDefault: address.isDefault});
     setDialogOpen(true);
   }
 

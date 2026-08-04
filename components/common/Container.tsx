@@ -11,14 +11,12 @@ const sizeClasses = {
   md: 'max-w-5xl',
   lg: 'max-w-7xl',
   xl: 'max-w-[80rem]',
-  full: 'max-w-full',
-};
+  full: 'max-w-full'};
 
 export function Container({
   children,
   className = '',
-  size = 'lg',
-}: ContainerProps) {
+  size = 'lg'}: ContainerProps) {
   return (
     <div className={`mx-auto w-full px-4 sm:px-6 lg:px-8 ${sizeClasses[size]} ${className}`}>
       {children}

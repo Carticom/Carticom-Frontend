@@ -63,8 +63,7 @@ export function ProductReviews({ productId, productName }: ProductReviewsProps) 
           setRating(0);
           setContent('');
           setTitle('');
-        },
-      }
+        }}
     );
   };
 

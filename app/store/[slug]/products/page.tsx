@@ -1,6 +1,7 @@
 'use client';
 
-import { Suspense, useState, useEffect, useCallback } from 'react';
+import { Suspense, useState, useEffect } from 'react';
+import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { Search, SlidersHorizontal, Grid3X3, List, ShoppingBag } from 'lucide-react';
@@ -22,25 +23,36 @@ function StoreProductsContent() {
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState<'name' | 'price-asc' | 'price-desc' | 'newest'>('name');
   const [view, setView] = useState<'grid' | 'list'>('grid');
+  const [retryKey, setRetryKey] = useState(0);
 
-  const fetchData = useCallback(async () => {
+  useEffect(() => {
+    let cancelled = false;
+    const load = async () => {
+      try {
+        const storeRes = await storefrontApi.getStoreBySlug(slug);
+        if (cancelled) return;
+        if (!storeRes.data.data) { if (!cancelled) { setError('Store not found'); setLoading(false); } return; }
+        const storeData = storeRes.data.data;
+        setStore(storeData);
+        const prodRes = await productApi.getActiveByStore(storeData.id);
+        if (cancelled) return;
+        setProducts(prodRes.data.data || []);
+      } catch {
+        if (cancelled) return;
+        setError('Failed to load store products');
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    };
+    load();
+    return () => { cancelled = true; };
+  }, [slug, retryKey]);
+
+  const handleRetry = () => {
     setLoading(true);
     setError(null);
-    try {
-      const storeRes = await storefrontApi.getStoreBySlug(slug);
-      if (!storeRes.data.data) { setError('Store not found'); setLoading(false); return; }
-      const storeData = storeRes.data.data;
-      setStore(storeData);
-      const prodRes = await productApi.getActiveByStore(storeData.id);
-      setProducts(prodRes.data.data || []);
-    } catch {
-      setError('Failed to load store products');
-    } finally {
-      setLoading(false);
-    }
-  }, [slug]);
-
-  useEffect(() => { fetchData(); }, [fetchData]);
+    setRetryKey((k) => k + 1);
+  };
 
   const filtered = products
     .filter((p) => !search || p.name.toLowerCase().includes(search.toLowerCase()))
@@ -65,7 +77,7 @@ function StoreProductsContent() {
     new Intl.NumberFormat('en-NG', { style: 'currency', currency, minimumFractionDigits: 2 }).format(price);
 
   if (loading) return <LoadingState message="Loading store..." />;
-  if (error) return <ErrorState title="Error" description={error} onRetry={fetchData} />;
+  if (error) return <ErrorState title="Error" description={error} onRetry={handleRetry} />;
   if (!store) return null;
 
   return (
@@ -117,7 +129,7 @@ function StoreProductsContent() {
               <Link href={`/storefront/products/${product.id}`} className="block">
                 <div className="aspect-square bg-gray-100 dark:bg-gray-800 relative overflow-hidden">
                   {product.imageUrl ? (
-                    <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                    <Image src={product.imageUrl} alt={product.name} fill unoptimized className="object-cover group-hover:scale-105 transition-transform duration-300" />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm">{product.name[0]}</div>
                   )}
@@ -145,9 +157,9 @@ function StoreProductsContent() {
           {filtered.map((product) => (
             <div key={product.id} className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-4 flex items-center gap-4">
               <Link href={`/storefront/products/${product.id}`} className="shrink-0">
-                <div className="w-16 h-16 rounded-lg bg-gray-100 dark:bg-gray-800 overflow-hidden">
+                <div className="relative w-16 h-16 rounded-lg bg-gray-100 dark:bg-gray-800 overflow-hidden">
                   {product.imageUrl ? (
-                    <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover" />
+                    <Image src={product.imageUrl} alt={product.name} fill unoptimized className="object-cover" />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-gray-400">{product.name[0]}</div>
                   )}

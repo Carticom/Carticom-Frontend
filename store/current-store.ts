@@ -18,15 +18,12 @@ export const useCurrentStore = create<CurrentStoreState>()(
       },
       clearCurrentStore: () => {
         set({ storeId: null, storeName: null });
-      },
-    }),
+      }}),
     {
       name: 'carticom-current-store',
       partialize: (state) => ({
         storeId: state.storeId,
-        storeName: state.storeName,
-      }),
-    }
+        storeName: state.storeName})}
   )
 );
 

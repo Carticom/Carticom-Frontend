@@ -2,8 +2,8 @@
 
 import { motion } from 'framer-motion';
 import { Store, UtensilsCrossed, Shirt, Pill, Smartphone, Sparkles, PackageSearch, Wrench, Briefcase, ArrowRight } from 'lucide-react';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+
+
 import { cn } from '@/lib/utils';
 
 const SOLUTIONS = [

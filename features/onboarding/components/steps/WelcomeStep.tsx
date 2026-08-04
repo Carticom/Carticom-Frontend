@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Store, Zap, Shield } from 'lucide-react';
@@ -27,7 +27,7 @@ export function WelcomeStep({ onNext, onSkip }: WelcomeStepProps) {
           Welcome to Carticom! 🎉
         </h2>
         <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-          We're excited to help you launch your online business. This quick setup will take about 5 minutes and will get you ready to start selling.
+          We&apos;re excited to help you launch your online business. This quick setup will take about 5 minutes and will get you ready to start selling.
         </p>
       </div>
 

@@ -6,8 +6,7 @@ import {
   useProductVariants,
   useCreateVariant,
   useUpdateVariant,
-  useDeleteVariant,
-} from '@/features/dashboard/hooks/useVariants';
+  useDeleteVariant} from '@/features/dashboard/hooks/useVariants';
 import type { ProductVariantDto, CreateVariantDto, UpdateVariantDto } from '@/features/dashboard/types/variants.types';
 import { LoadingState, EmptyState, ErrorState } from '@/components/dashboard/shared/StateComponents';
 import { Breadcrumb } from '@/components/dashboard/shared/Breadcrumb';
@@ -34,8 +33,7 @@ function toDto(data: VariantFormData): CreateVariantDto {
     value: data.value.trim(),
     price: data.price ? Number(data.price) : undefined,
     stock: Number(data.stock),
-    sku: data.sku.trim(),
-  };
+    sku: data.sku.trim()};
 }
 
 export default function ProductVariantsPage() {
@@ -66,8 +64,7 @@ export default function ProductVariantsPage() {
       value: variant.value,
       price: variant.price?.toString() ?? '',
       stock: variant.stock.toString(),
-      sku: variant.sku,
-    });
+      sku: variant.sku});
     setDialogOpen(true);
   }, []);
 
@@ -89,8 +86,7 @@ export default function ProductVariantsPage() {
         await updateVariant.mutateAsync({
           productId,
           id: editingVariant.id,
-          data: toDto(form) as UpdateVariantDto,
-        });
+          data: toDto(form) as UpdateVariantDto});
       } else {
         await createVariant.mutateAsync({ productId, data: toDto(form) });
       }

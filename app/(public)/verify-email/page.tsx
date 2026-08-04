@@ -23,18 +23,14 @@ type VerificationState =
 function VerifyEmailContent() {
   const searchParams = useSearchParams();
   const token = searchParams.get('token') ?? '';
-  const [state, setState] = useState<VerificationState>({
-    status: 'LOADING',
-  });
+  const [state, setState] = useState<VerificationState>(() =>
+    token
+      ? { status: 'LOADING' }
+      : { status: EmailVerificationStatus.INVALID_TOKEN, error: 'No verification token provided' }
+  );
 
   useEffect(() => {
-    if (!token) {
-      setState({
-        status: EmailVerificationStatus.INVALID_TOKEN,
-        error: 'No verification token provided',
-      });
-      return;
-    }
+    if (!token) return;
 
     const verifyEmail = async () => {
       try {
@@ -51,8 +47,7 @@ function VerifyEmailContent() {
         } else {
           setState({
             status: EmailVerificationStatus.INVALID_TOKEN,
-            error: message,
-          });
+            error: message});
         }
         authToasts.verifyEmailError(message);
       }
@@ -127,8 +122,7 @@ function VerifyEmailContent() {
               } catch {
                 setState({
                   status: 'ERROR',
-                  message: 'Failed to resend verification email.',
-                });
+                  message: 'Failed to resend verification email.'});
               }
             }}
             className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 transition-all duration-300 hover:from-blue-700 hover:to-cyan-700"

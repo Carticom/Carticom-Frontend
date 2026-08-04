@@ -1,10 +1,10 @@
 'use client';
 
-import React from 'react';
+
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Globe, Check } from 'lucide-react';
+
+import { Globe } from 'lucide-react';
 import type { StoreDto } from '@/features/onboarding/types';
 
 interface StoreSetupStepProps {

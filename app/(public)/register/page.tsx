@@ -24,8 +24,7 @@ export default function RegisterPage() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<RegisterBusinessOwnerSchema>({
+    formState: { errors, isSubmitting }} = useForm<RegisterBusinessOwnerSchema>({
     resolver: zodResolver(registerBusinessOwnerSchema),
     defaultValues: {
       fullName: '',
@@ -33,9 +32,7 @@ export default function RegisterPage() {
       email: '',
       phone: '',
       password: '',
-      confirmPassword: '',
-    },
-  });
+      confirmPassword: ''}});
 
   const onSubmit = async (data: RegisterBusinessOwnerSchema) => {
     setServerError(null);
@@ -44,8 +41,7 @@ export default function RegisterPage() {
       businessName: data.businessName,
       email: data.email,
       phone: data.phone,
-      password: data.password,
-    });
+      password: data.password});
 
     if (result.success) {
       authToasts.registerSuccess();

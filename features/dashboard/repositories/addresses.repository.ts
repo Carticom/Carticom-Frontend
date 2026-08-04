@@ -5,8 +5,7 @@ export class AddressesRepository extends BaseRepository<AddressDto, CreateAddres
   constructor() {
     super({
       base: '/api/v1/addresses',
-      byId: (id) => `/api/v1/addresses/${id}`,
-    });
+      byId: (id) => `/api/v1/addresses/${id}`});
   }
 
   async setDefault(id: string): Promise<AddressDto> {

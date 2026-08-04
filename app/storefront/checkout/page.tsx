@@ -1,6 +1,6 @@
 'use client';
 
-import React, { Suspense, useEffect, useState, useCallback } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ArrowLeft, Loader2, ShoppingBag, Tag, Truck, Package, CreditCard, Building2, Smartphone } from 'lucide-react';
 import { cartApi, checkoutApi, storefrontApi } from '@/features/onboarding/services/onboarding.service';
@@ -26,10 +26,11 @@ function CheckoutPageContent() {
   const searchParams = useSearchParams();
   const storeSlug = searchParams.get('store');
   const [cart, setCart] = useState<CartDto | null>(null);
-  const [store, setStore] = useState<StoreDto | null>(null);
+  const [, setStore] = useState<StoreDto | null>(null);
   const [loadingCart, setLoadingCart] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [retryKey, setRetryKey] = useState(0);
   const [deliveryMethod, setDeliveryMethod] = useState<'PICKUP' | 'LOCAL_DELIVERY' | 'INTERSTATE_DELIVERY'>('LOCAL_DELIVERY');
   const [paymentMethod, setPaymentMethod] = useState<'CARD' | 'BANK_TRANSFER' | 'MOBILE_MONEY'>('CARD');
   const [couponCode, setCouponCode] = useState('');
@@ -41,30 +42,37 @@ function CheckoutPageContent() {
     phone: '',
     address: '',
     city: '',
-    state: '',
-  });
-
-  const fetchCart = useCallback(async () => {
-    setLoadingCart(true);
-    setError(null);
-    try {
-      const res = await cartApi.get(storeSlug || '');
-      if (!res.data.data) throw new Error('Cart is empty');
-      setCart(res.data.data);
-      if (storeSlug) {
-        const storeRes = await storefrontApi.getStoreBySlug(storeSlug);
-        setStore(storeRes.data.data || null);
-      }
-    } catch {
-      setError('Unable to load your order. Please try again.');
-    } finally {
-      setLoadingCart(false);
-    }
-  }, [storeSlug]);
+    state: ''});
 
   useEffect(() => {
-    fetchCart();
-  }, [fetchCart]);
+    let cancelled = false;
+    const load = async () => {
+      try {
+        const res = await cartApi.get(storeSlug || '');
+        if (cancelled) return;
+        if (!res.data.data) throw new Error('Cart is empty');
+        setCart(res.data.data);
+        if (storeSlug) {
+          const storeRes = await storefrontApi.getStoreBySlug(storeSlug);
+          if (cancelled) return;
+          setStore(storeRes.data.data || null);
+        }
+      } catch {
+        if (cancelled) return;
+        setError('Unable to load your order. Please try again.');
+      } finally {
+        if (!cancelled) setLoadingCart(false);
+      }
+    };
+    load();
+    return () => { cancelled = true; };
+  }, [storeSlug, retryKey]);
+
+  const handleRetry = () => {
+    setLoadingCart(true);
+    setError(null);
+    setRetryKey((k) => k + 1);
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -95,8 +103,7 @@ function CheckoutPageContent() {
         deliveryMethod,
         paymentMethod,
         notes: notes || undefined,
-        couponCode: couponCode || undefined,
-      };
+        couponCode: couponCode || undefined};
 
       if (deliveryMethod !== 'PICKUP') {
         payload.shippingAddress = {
@@ -105,8 +112,7 @@ function CheckoutPageContent() {
           address: customer.address,
           city: customer.city,
           state: customer.state,
-          country: 'NG',
-        };
+          country: 'NG'};
       }
 
       const res = await checkoutApi.checkout(cart.storeId, payload);
@@ -126,7 +132,7 @@ function CheckoutPageContent() {
 
   if (loadingCart) return <LoadingState message="Preparing checkout..." />;
 
-  if (error) return <ErrorState title="Checkout unavailable" description={error} onRetry={fetchCart} />;
+  if (error) return <ErrorState title="Checkout unavailable" description={error} onRetry={handleRetry} />;
 
   if (!cart || !cart.items || cart.items.length === 0) {
     return (
@@ -136,8 +142,7 @@ function CheckoutPageContent() {
         description="Your cart is empty. Add some items before checking out."
         action={{
           label: 'Browse Stores',
-          onClick: () => router.push('/storefront'),
-        }}
+          onClick: () => router.push('/storefront')}}
       />
     );
   }
@@ -146,8 +151,7 @@ function CheckoutPageContent() {
     new Intl.NumberFormat('en-NG', {
       style: 'currency',
       currency: cart.currency || 'NGN',
-      minimumFractionDigits: 2,
-    }).format(price);
+      minimumFractionDigits: 2}).format(price);
 
   return (
     <div className="space-y-6 py-4 max-w-3xl mx-auto">

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+
 import { motion } from 'framer-motion';
 import { Bot, MessageSquare, Zap, ArrowRight, Sparkles } from 'lucide-react';
 import { Container } from '@/components/common/Container';
@@ -67,7 +67,7 @@ export function AI() {
                       <Bot className="h-4 w-4 text-indigo-600" aria-hidden="true" />
                     </div>
                     <div className="bg-indigo-50 rounded-2xl rounded-tl-none px-4 py-2">
-                      <p className="text-sm text-gray-700">I've updated the delivery address to 15 Victoria Island, Lagos. You'll receive a confirmation SMS shortly.</p>
+                      <p className="text-sm text-gray-700">I&apos;ve updated the delivery address to 15 Victoria Island, Lagos. You&apos;ll receive a confirmation SMS shortly.</p>
                     </div>
                   </div>
                 </div>

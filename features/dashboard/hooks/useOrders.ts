@@ -2,7 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { ordersRepository } from '@/features/dashboard/repositories/orders.repository';
-import type { OrderDto, CreateOrderDto } from '@/features/dashboard/types/orders.types';
+import type { CreateOrderDto } from '@/features/dashboard/types/orders.types';
 import { queryKeys } from '@/lib/dal/query-keys';
 import { showToast } from '@/lib/notifications/toast';
 
@@ -12,8 +12,7 @@ export function useOrders(storeId: string, params?: { page?: number; limit?: num
     queryFn: async () => {
       return ordersRepository.getByStore(storeId, params);
     },
-    enabled: !!storeId,
-  });
+    enabled: !!storeId});
 }
 
 export function useOrder(id: string | undefined | null) {
@@ -23,8 +22,7 @@ export function useOrder(id: string | undefined | null) {
       if (!id) throw new Error('Order ID is required');
       return ordersRepository.getById(id);
     },
-    enabled: !!id,
-  });
+    enabled: !!id});
 }
 
 export function useOrdersByStatus(storeId: string, status: string) {
@@ -33,8 +31,7 @@ export function useOrdersByStatus(storeId: string, status: string) {
     queryFn: async () => {
       return ordersRepository.getByStatus(storeId, status);
     },
-    enabled: !!storeId && !!status,
-  });
+    enabled: !!storeId && !!status});
 }
 
 export function useCreateOrder() {
@@ -50,10 +47,8 @@ export function useCreateOrder() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to create order', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }
 
 export function useUpdateOrderStatus() {
@@ -70,8 +65,6 @@ export function useUpdateOrderStatus() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to update order', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+
 import { motion } from 'framer-motion';
 import { Store, Package, ShoppingCart, BarChart3, ArrowRight, CheckCircle, Layers, Tag, RefreshCw, Globe } from 'lucide-react';
 import { Container } from '@/components/common/Container';
@@ -11,26 +11,22 @@ const features = [
     icon: Store,
     title: 'Drag-and-Drop Store Builder',
     description: 'Launch a beautiful online store in minutes with our intuitive builder. Customise themes, layouts, and branding with zero coding required.',
-    color: 'blue',
-  },
+    color: 'blue'},
   {
     icon: Package,
     title: 'Product Management',
     description: 'Add unlimited products with variants, images, descriptions, and pricing. Organise collections, set categories, and bulk-import from spreadsheets.',
-    color: 'green',
-  },
+    color: 'green'},
   {
     icon: ShoppingCart,
     title: 'Smart Inventory Tracking',
     description: 'Monitor stock levels in real time, set low-stock alerts, and manage multiple warehouse locations. Never miss a sale due to overselling.',
-    color: 'indigo',
-  },
+    color: 'indigo'},
   {
     icon: BarChart3,
     title: 'Sales & Revenue Analytics',
     description: 'Track performance with live dashboards. See top-selling products, revenue trends, customer acquisition channels, and conversion rates.',
-    color: 'orange',
-  },
+    color: 'orange'},
 ];
 
 const benefits = [
@@ -139,8 +135,7 @@ export default function EcommercePage() {
                 blue: 'bg-blue-50 text-blue-600',
                 green: 'bg-green-50 text-green-600',
                 indigo: 'bg-indigo-50 text-indigo-600',
-                orange: 'bg-orange-50 text-orange-600',
-              };
+                orange: 'bg-orange-50 text-orange-600'};
               return (
                 <motion.div
                   key={feature.title}

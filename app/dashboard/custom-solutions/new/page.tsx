@@ -32,15 +32,13 @@ export default function NewCustomSolutionPage() {
     budget: '',
     timeline: '',
     services: [],
-    additionalRequirements: '',
-  });
+    additionalRequirements: ''});
 
   const mutation = useMutation({
     mutationFn: (dto: CreateCustomSolutionDto) => customSolutionsService.submit(dto),
     onSuccess: () => {
       router.push('/dashboard/custom-solutions');
-    },
-  });
+    }});
 
   const update = <K extends keyof CreateCustomSolutionDto>(key: K, value: CreateCustomSolutionDto[K]) => {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -51,8 +49,7 @@ export default function NewCustomSolutionPage() {
       ...prev,
       services: prev.services.includes(service)
         ? prev.services.filter((s) => s !== service)
-        : [...prev.services, service],
-    }));
+        : [...prev.services, service]}));
   };
 
   const handleSubmit = (e: React.FormEvent) => {

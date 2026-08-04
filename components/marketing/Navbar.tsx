@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ChevronDown, ArrowRight } from 'lucide-react';
+import { Menu, X, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuthStore } from '@/features/auth/store/auth.store';
 import { cn } from '@/lib/utils';
@@ -18,8 +18,7 @@ const NAV_LINKS = [
       { href: '/solutions/retail', label: 'Retail & POS' },
       { href: '/solutions/restaurants', label: 'Restaurants' },
       { href: '/solutions/services', label: 'Service Businesses' },
-    ],
-  },
+    ]},
   { href: '/pricing', label: 'Pricing' },
   { href: '/docs', label: 'Developers' },
   { href: '/about', label: 'About' },

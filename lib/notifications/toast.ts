@@ -60,8 +60,7 @@ export function showToast(
     position: options?.position,
     onDismiss: options?.onDismiss,
     id: options?.id,
-    important: options?.important,
-  };
+    important: options?.important};
 
   if (options?.action) {
     sonnerOptions.action = options.action;
@@ -138,8 +137,7 @@ export function showPromiseToast<T = unknown>(
     error: messages.error,
     duration: options?.duration ?? 5000,
     closeButton: options?.closeButton ?? true,
-    position: options?.position,
-  });
+    position: options?.position});
 }
 
 // ─── Convenience Methods ─────────────────────────────────────
@@ -164,175 +162,141 @@ export const toastLoading = (message: string, options?: ToastOptions) =>
 export const notificationToasts = {
   created: (entityName: string) =>
     toastSuccess(`${entityName} created`, {
-      description: `The ${entityName.toLowerCase()} has been created successfully.`,
-    }),
+      description: `The ${entityName.toLowerCase()} has been created successfully.`}),
 
   updated: (entityName: string) =>
     toastSuccess(`${entityName} updated`, {
-      description: `The ${entityName.toLowerCase()} has been updated successfully.`,
-    }),
+      description: `The ${entityName.toLowerCase()} has been updated successfully.`}),
 
   deleted: (entityName: string) =>
     toastSuccess(`${entityName} deleted`, {
-      description: `The ${entityName.toLowerCase()} has been deleted successfully.`,
-    }),
+      description: `The ${entityName.toLowerCase()} has been deleted successfully.`}),
 
   createFailed: (entityName: string, error?: string) =>
     toastError(`Failed to create ${entityName.toLowerCase()}`, {
-      description: error || `An error occurred while creating the ${entityName.toLowerCase()}.`,
-    }),
+      description: error || `An error occurred while creating the ${entityName.toLowerCase()}.`}),
 
   updateFailed: (entityName: string, error?: string) =>
     toastError(`Failed to update ${entityName.toLowerCase()}`, {
-      description: error || `An error occurred while updating the ${entityName.toLowerCase()}.`,
-    }),
+      description: error || `An error occurred while updating the ${entityName.toLowerCase()}.`}),
 
   deleteFailed: (entityName: string, error?: string) =>
     toastError(`Failed to delete ${entityName.toLowerCase()}`, {
-      description: error || `An error occurred while deleting the ${entityName.toLowerCase()}.`,
-    }),
+      description: error || `An error occurred while deleting the ${entityName.toLowerCase()}.`}),
 
   networkError: () =>
     toastError('Network error', {
       description: 'Unable to connect to the server. Please check your internet connection.',
-      duration: 7000,
-    }),
+      duration: 7000}),
 
   serverError: () =>
     toastError('Server error', {
       description: 'Something went wrong on our end. Please try again later.',
-      duration: 7000,
-    }),
+      duration: 7000}),
 
   requestTimeout: () =>
     toastError('Request timed out', {
       description: 'The request took too long to complete. Please try again.',
-      duration: 6000,
-    }),
+      duration: 6000}),
 
   rateLimited: () =>
     toastWarning('Too many requests', {
       description: 'Please wait a moment before trying again.',
-      duration: 6000,
-    }),
+      duration: 6000}),
 
   dataRefreshed: () =>
     toastInfo('Data refreshed', {
       description: 'The latest data has been loaded.',
-      duration: 3000,
-    }),
+      duration: 3000}),
 
   changesSaved: () =>
     toastSuccess('Changes saved', {
-      description: 'Your changes have been saved successfully.',
-    }),
+      description: 'Your changes have been saved successfully.'}),
 
   changesDiscarded: () =>
     toastWarning('Changes discarded', {
-      description: 'Unsaved changes have been discarded.',
-    }),
+      description: 'Unsaved changes have been discarded.'}),
 
   uploadStarted: (fileName: string) =>
     toastLoading(`Uploading ${fileName}...`),
 
   uploadComplete: (fileName: string) =>
     toastSuccess('Upload complete', {
-      description: `${fileName} has been uploaded successfully.`,
-    }),
+      description: `${fileName} has been uploaded successfully.`}),
 
   uploadFailed: (fileName: string, error?: string) =>
     toastError('Upload failed', {
-      description: error || `Failed to upload ${fileName}. Please try again.`,
-    }),
+      description: error || `Failed to upload ${fileName}. Please try again.`}),
 
   validationError: (message: string) =>
     toastError('Validation error', {
       description: message,
-      duration: 6000,
-    }),
+      duration: 6000}),
 
   confirmAction: (message: string, onConfirm: () => void) =>
     toastWarning(message, {
       duration: 8000,
       action: {
         label: 'Confirm',
-        onClick: onConfirm as (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
-      },
+        onClick: onConfirm as (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void},
       cancel: {
-        label: 'Cancel',
-      },
-    }),
-};
+        label: 'Cancel'}})};
 
 // ─── Auth-Specific Toasts ──────────────────────────────────
 
 export const authToasts = {
   loginSuccess: () =>
     toastSuccess('Welcome back!', {
-      description: 'You have been logged in successfully.',
-    }),
+      description: 'You have been logged in successfully.'}),
 
   loginError: (message: string) =>
     toastError('Login failed', {
-      description: message || 'Invalid credentials. Please try again.',
-    }),
+      description: message || 'Invalid credentials. Please try again.'}),
 
   registerSuccess: () =>
     toastSuccess('Account created!', {
-      description: 'Your business account has been created successfully.',
-    }),
+      description: 'Your business account has been created successfully.'}),
 
   registerError: (message: string) =>
     toastError('Registration failed', {
-      description: message || 'Please check your information and try again.',
-    }),
+      description: message || 'Please check your information and try again.'}),
 
   logoutSuccess: () =>
     toastInfo('Logged out', {
-      description: 'You have been logged out successfully.',
-    }),
+      description: 'You have been logged out successfully.'}),
 
   forgotPasswordSuccess: () =>
     toastSuccess('Reset link sent!', {
-      description: 'Please check your email for the reset link.',
-    }),
+      description: 'Please check your email for the reset link.'}),
 
   forgotPasswordError: (message: string) =>
     toastError('Failed to send reset email', {
-      description: message || 'Please try again later.',
-    }),
+      description: message || 'Please try again later.'}),
 
   resetPasswordSuccess: () =>
     toastSuccess('Password reset!', {
-      description: 'Your password has been reset successfully.',
-    }),
+      description: 'Your password has been reset successfully.'}),
 
   resetPasswordError: (message: string) =>
     toastError('Password reset failed', {
-      description: message || 'Please try again.',
-    }),
+      description: message || 'Please try again.'}),
 
   verifyEmailSuccess: () =>
     toastSuccess('Email verified!', {
-      description: 'Your email has been verified successfully.',
-    }),
+      description: 'Your email has been verified successfully.'}),
 
   verifyEmailError: (message: string) =>
     toastError('Verification failed', {
-      description: message || 'The verification link is invalid or expired.',
-    }),
+      description: message || 'The verification link is invalid or expired.'}),
 
   sessionExpired: () =>
     toastWarning('Session expired', {
       description: 'Please login again to continue.',
-      duration: 7000,
-    }),
+      duration: 7000}),
 
   networkError: () =>
     toastError('Network error', {
       description: 'Unable to connect to the server. Please check your internet connection.',
-      duration: 7000,
-    }),
-};
+      duration: 7000})};
 
 export default showToast;

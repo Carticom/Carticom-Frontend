@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import axiosInstance from '@/lib/axios';
+import { notificationsRepository } from '@/features/dashboard/repositories/notifications.repository';
 import type { NotificationItem } from '@/types/dashboard';
 import { LoadingState, EmptyState, ErrorState } from '@/components/dashboard/shared/StateComponents';
 import { Bell, Check } from 'lucide-react';
@@ -13,8 +13,7 @@ const TYPE_STYLES: Record<string, string> = {
   escrow: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400',
   subscription: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400',
   system: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400',
-  alert: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
-};
+  alert: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'};
 
 function formatTimeAgo(timestamp: string) {
   const diff = Date.now() - new Date(timestamp).getTime();
@@ -65,11 +64,7 @@ function NotificationRow({ item }: { item: NotificationItem }) {
 export default function NotificationsPage() {
   const { data: notifications, isLoading, error, refetch } = useQuery<NotificationItem[]>({
     queryKey: ['notifications'],
-    queryFn: async () => {
-      const res = await axiosInstance.get('/api/v1/notifications');
-      return res.data.data ?? [];
-    },
-  });
+    queryFn: () => notificationsRepository.getNotifications<NotificationItem>()});
 
   if (isLoading) {
     return (

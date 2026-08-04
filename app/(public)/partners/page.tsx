@@ -9,26 +9,22 @@ const partnerTypes = [
     icon: Building2,
     title: 'Enterprise Partners',
     description: 'Large organizations that integrate Carticom into their operations or distribute our solutions to their clients.',
-    benefits: ['Co-marketing opportunities', 'Priority support', 'Revenue sharing', 'Joint product development'],
-  },
+    benefits: ['Co-marketing opportunities', 'Priority support', 'Revenue sharing', 'Joint product development']},
   {
     icon: Store,
     title: 'Agency Partners',
     description: 'Digital agencies that build and manage Carticom stores for their clients.',
-    benefits: ['White-label options', 'Commission structure', 'Training resources', 'Dedicated account manager'],
-  },
+    benefits: ['White-label options', 'Commission structure', 'Training resources', 'Dedicated account manager']},
   {
     icon: GitBranch,
     title: 'Technology Partners',
     description: 'SaaS companies and platforms that integrate with Carticom via our API.',
-    benefits: ['API access', 'Integration support', 'Joint go-to-market', 'Technical documentation'],
-  },
+    benefits: ['API access', 'Integration support', 'Joint go-to-market', 'Technical documentation']},
   {
     icon: GraduationCap,
     title: 'Education Partners',
     description: 'Educational institutions and training organizations teaching digital commerce skills.',
-    benefits: ['Student accounts', 'Curriculum resources', 'Certification programs', 'Guest lectures'],
-  },
+    benefits: ['Student accounts', 'Curriculum resources', 'Certification programs', 'Guest lectures']},
 ];
 
 const stats = [

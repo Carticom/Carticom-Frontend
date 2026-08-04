@@ -11,7 +11,9 @@ const LazyBooksStorefront = dynamic(() => import('./BooksStorefront').then(m => 
 const LazyArtsStorefront = dynamic(() => import('./ArtsStorefront').then(m => ({ default: m.ArtsStorefront })), { ssr: false });
 const LazyDynamicStorefront = dynamic(() => import('./DynamicStorefront').then(m => ({ default: m.DynamicStorefront })), { ssr: false });
 
-const TEMPLATE_MAP: Record<string, React.ComponentType<{ store: StoreDto; products: ProductDto[]; onAddToCart: (id: string) => void; addingToCart: string | null }>> = {
+export type StorefrontTemplateProps = { store: StoreDto; products: ProductDto[]; onAddToCart: (id: string) => void; addingToCart: string | null };
+
+export const TEMPLATE_MAP: Record<string, React.ComponentType<StorefrontTemplateProps>> = {
   'fashion-luxury': LazyFashionStorefront,
   'electronics-tech': LazyElectronicsStorefront,
   'food-beverage': LazyFoodStorefront,
@@ -27,13 +29,14 @@ const TEMPLATE_MAP: Record<string, React.ComponentType<{ store: StoreDto; produc
   'home-nest': LazyDynamicStorefront,
   'sports-stride': LazyDynamicStorefront,
   'books-folio': LazyDynamicStorefront,
-  'arts-studio': LazyDynamicStorefront,
-};
+  'arts-studio': LazyDynamicStorefront};
 
 export function getTemplateComponent(slug: string | undefined) {
   if (slug && TEMPLATE_MAP[slug]) return TEMPLATE_MAP[slug];
   return LazyFashionStorefront;
 }
+
+export const TEMPLATE_COMPONENT_FALLBACK: React.ComponentType<StorefrontTemplateProps> = LazyFashionStorefront;
 
 export function getTemplateByCategory(category: string) {
   const map: Record<string, string> = {
@@ -44,8 +47,7 @@ export function getTemplateByCategory(category: string) {
     HOME_LIVING: 'home-living',
     SPORTS_FITNESS: 'sports-fitness',
     BOOKS_MEDIA: 'books-media',
-    ARTS_CRAFTS: 'arts-crafts',
-  };
+    ARTS_CRAFTS: 'arts-crafts'};
   const normalized = category.toUpperCase().replace(/[\s&]+/g, '_');
   return map[normalized] || 'fashion-luxury';
 }

@@ -5,8 +5,8 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
+
+
 import { motion } from 'framer-motion';
 
 interface AuthLayoutProps {
@@ -21,8 +21,7 @@ export function AuthLayout({
   children,
   title,
   subtitle,
-  hideSocialProof = false,
-}: AuthLayoutProps) {
+  hideSocialProof = false}: AuthLayoutProps) {
   return (
     <div className="flex min-h-screen bg-white dark:bg-gray-950">
       {/* Left Panel - Form */}
@@ -77,8 +76,7 @@ export function AuthLayout({
               style={{
                 backgroundImage:
                   "radial-gradient(circle, #fff 1.5px, transparent 1.5px)",
-                backgroundSize: "40px 40px",
-              }}
+                backgroundSize: "40px 40px"}}
             />
           </div>
 

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+
 import { motion } from 'framer-motion';
 import { Globe, DollarSign, Truck, Shield, ArrowRight, CheckCircle, MapPin, Banknote, Clock, RefreshCw } from 'lucide-react';
 import { Container } from '@/components/common/Container';
@@ -11,26 +11,22 @@ const features = [
     icon: Globe,
     title: 'Cross-Border Commerce',
     description: 'Sell to customers in 45+ African countries and beyond. Handle international orders, duties, and compliance automatically.',
-    color: 'emerald',
-  },
+    color: 'emerald'},
   {
     icon: DollarSign,
     title: 'Multi-Currency Support',
     description: 'Price products in NGN, USD, GBP, EUR, and accept payments in your customers preferred currency with real-time conversion.',
-    color: 'blue',
-  },
+    color: 'blue'},
   {
     icon: Truck,
     title: 'Global Logistics Network',
     description: 'Connect with international and local carriers. Automated shipping labels, tracking, and last-mile delivery across borders.',
-    color: 'amber',
-  },
+    color: 'amber'},
   {
     icon: Shield,
     title: 'Trade & Payment Protection',
     description: 'Built-in escrow for high-value cross-border transactions. Fraud detection, dispute resolution, and buyer/seller protection.',
-    color: 'purple',
-  },
+    color: 'purple'},
 ];
 
 const benefits = [
@@ -137,8 +133,7 @@ export default function GlobalSalesPage() {
                 emerald: 'bg-emerald-50 text-emerald-600',
                 blue: 'bg-blue-50 text-blue-600',
                 amber: 'bg-amber-50 text-amber-600',
-                purple: 'bg-purple-50 text-purple-600',
-              };
+                purple: 'bg-purple-50 text-purple-600'};
               return (
                 <motion.div
                   key={feature.title}

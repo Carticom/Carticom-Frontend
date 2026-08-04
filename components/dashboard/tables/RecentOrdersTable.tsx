@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Eye } from 'lucide-react';
@@ -12,8 +12,7 @@ const STATUS_STYLES: Record<string, string> = {
   processing: 'bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400',
   completed: 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400',
   cancelled: 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400',
-  refunded: 'bg-gray-50 text-gray-700 dark:bg-gray-800 dark:text-gray-400',
-};
+  refunded: 'bg-gray-50 text-gray-700 dark:bg-gray-800 dark:text-gray-400'};
 
 function formatCurrency(amount: number, currency: string) {
   return new Intl.NumberFormat('en-NG', { style: 'currency', currency }).format(amount);

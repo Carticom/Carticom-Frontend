@@ -40,12 +40,10 @@ export enum StaffRole {
   ADMIN = 'ADMIN',
   MANAGER = 'MANAGER',
   STAFF = 'STAFF',
-  VIEWER = 'VIEWER',
-}
+  VIEWER = 'VIEWER'}
 
 export enum StaffStatus {
   PENDING = 'PENDING',
   ACTIVE = 'ACTIVE',
   SUSPENDED = 'SUSPENDED',
-  DEACTIVATED = 'DEACTIVATED',
-}
+  DEACTIVATED = 'DEACTIVATED'}

@@ -17,8 +17,7 @@ export const queryKeys = {
     all: ['auth'] as const,
     me: () => [...queryKeys.auth.all, 'me'] as const,
     session: () => [...queryKeys.auth.all, 'session'] as const,
-    profile: () => [...queryKeys.auth.all, 'profile'] as const,
-  },
+    profile: () => [...queryKeys.auth.all, 'profile'] as const},
 
   // ─── Products ─────────────────────────────────────────────
   products: {
@@ -28,8 +27,7 @@ export const queryKeys = {
       [...queryKeys.products.lists(), filters] as const,
     byId: (id: string) => [...queryKeys.products.all, id] as const,
     byCategory: (categoryId: string) =>
-      [...queryKeys.products.all, 'category', categoryId] as const,
-  },
+      [...queryKeys.products.all, 'category', categoryId] as const},
 
   // ─── Orders ────────────────────────────────────────────────
   orders: {
@@ -39,8 +37,7 @@ export const queryKeys = {
       [...queryKeys.orders.lists(), filters] as const,
     byId: (id: string) => [...queryKeys.orders.all, id] as const,
     byStatus: (status: string) =>
-      [...queryKeys.orders.all, 'status', status] as const,
-  },
+      [...queryKeys.orders.all, 'status', status] as const},
 
   // ─── Customers ────────────────────────────────────────────
   customers: {
@@ -48,8 +45,7 @@ export const queryKeys = {
     lists: () => [...queryKeys.customers.all, 'list'] as const,
     list: (filters: Record<string, unknown>) =>
       [...queryKeys.customers.lists(), filters] as const,
-    byId: (id: string) => [...queryKeys.customers.all, id] as const,
-  },
+    byId: (id: string) => [...queryKeys.customers.all, id] as const},
 
   // ─── Inventory ────────────────────────────────────────────
   inventory: {
@@ -58,8 +54,7 @@ export const queryKeys = {
     list: (filters: Record<string, unknown>) =>
       [...queryKeys.inventory.lists(), filters] as const,
     byId: (id: string) => [...queryKeys.inventory.all, id] as const,
-    lowStock: () => [...queryKeys.inventory.all, 'low-stock'] as const,
-  },
+    lowStock: () => [...queryKeys.inventory.all, 'low-stock'] as const},
 
   // ─── Payments / Transactions ──────────────────────────────
   transactions: {
@@ -67,8 +62,7 @@ export const queryKeys = {
     lists: () => [...queryKeys.transactions.all, 'list'] as const,
     list: (filters: Record<string, unknown>) =>
       [...queryKeys.transactions.lists(), filters] as const,
-    byId: (id: string) => [...queryKeys.transactions.all, id] as const,
-  },
+    byId: (id: string) => [...queryKeys.transactions.all, id] as const},
 
   // ─── Escrow ───────────────────────────────────────────────
   escrow: {
@@ -79,8 +73,7 @@ export const queryKeys = {
     byId: (id: string) => [...queryKeys.escrow.all, id] as const,
     balance: () => [...queryKeys.escrow.all, 'balance'] as const,
     transactions: (escrowId: string) =>
-      [...queryKeys.escrow.byId(escrowId), 'transactions'] as const,
-  },
+      [...queryKeys.escrow.byId(escrowId), 'transactions'] as const},
 
   // ─── Disputes ──────────────────────────────────────────────
   disputes: {
@@ -88,8 +81,7 @@ export const queryKeys = {
     lists: () => [...queryKeys.disputes.all, 'list'] as const,
     list: (filters: Record<string, unknown>) =>
       [...queryKeys.disputes.lists(), filters] as const,
-    byId: (id: string) => [...queryKeys.disputes.all, id] as const,
-  },
+    byId: (id: string) => [...queryKeys.disputes.all, id] as const},
 
   // ─── Analytics ─────────────────────────────────────────────
   analytics: {
@@ -102,32 +94,28 @@ export const queryKeys = {
     customers: (period: string) =>
       [...queryKeys.analytics.all, 'customers', period] as const,
     revenue: (period: string) =>
-      [...queryKeys.analytics.all, 'revenue', period] as const,
-  },
+      [...queryKeys.analytics.all, 'revenue', period] as const},
 
   // ─── Notifications ─────────────────────────────────────────
   notifications: {
     all: ['notifications'] as const,
     list: (filters: Record<string, unknown>) =>
       [...queryKeys.notifications.all, 'list', filters] as const,
-    unreadCount: () => [...queryKeys.notifications.all, 'unread-count'] as const,
-  },
+    unreadCount: () => [...queryKeys.notifications.all, 'unread-count'] as const},
 
   // ─── Settings ─────────────────────────────────────────────
   settings: {
     all: ['settings'] as const,
     business: () => [...queryKeys.settings.all, 'business'] as const,
     preferences: () => [...queryKeys.settings.all, 'preferences'] as const,
-    team: () => [...queryKeys.settings.all, 'team'] as const,
-  },
+    team: () => [...queryKeys.settings.all, 'team'] as const},
 
   // ─── Files / Uploads ──────────────────────────────────────
   files: {
     all: ['files'] as const,
     byId: (id: string) => [...queryKeys.files.all, id] as const,
     byEntity: (entityType: string, entityId: string) =>
-      [...queryKeys.files.all, entityType, entityId] as const,
-  },
+      [...queryKeys.files.all, entityType, entityId] as const},
 
   // ─── Staff / Team ─────────────────────────────────────────
   staff: {
@@ -136,28 +124,24 @@ export const queryKeys = {
     list: (filters: Record<string, unknown>) =>
       [...queryKeys.staff.lists(), filters] as const,
     byId: (id: string) => [...queryKeys.staff.all, id] as const,
-    roles: () => [...queryKeys.staff.all, 'roles'] as const,
-  },
+    roles: () => [...queryKeys.staff.all, 'roles'] as const},
 
   // ─── AI ────────────────────────────────────────────────────
   ai: {
     all: ['ai'] as const,
-    byStore: (storeId: string) => [...queryKeys.ai.all, 'store', storeId] as const,
-  },
+    byStore: (storeId: string) => [...queryKeys.ai.all, 'store', storeId] as const},
 
   // ─── Subscription ─────────────────────────────────────────
   subscription: {
     all: ['subscription'] as const,
-    byStore: (storeId: string) => ['subscription', 'store', storeId] as const,
-  },
+    byStore: (storeId: string) => ['subscription', 'store', storeId] as const},
 
   // ─── Wallet ───────────────────────────────────────────────
   wallet: {
     all: ['wallet'] as const,
     byStore: (storeId: string) => ['wallet', 'store', storeId] as const,
     transactions: (storeId: string, params?: Record<string, unknown>) =>
-      ['wallet', storeId, 'transactions', params] as const,
-  },
+      ['wallet', storeId, 'transactions', params] as const},
 
   // ─── Addresses ───────────────────────────────────────────
   addresses: {
@@ -165,8 +149,7 @@ export const queryKeys = {
     lists: () => [...queryKeys.addresses.all, 'list'] as const,
     list: (filters: Record<string, unknown>) =>
       [...queryKeys.addresses.lists(), filters] as const,
-    byId: (id: string) => [...queryKeys.addresses.all, id] as const,
-  },
+    byId: (id: string) => [...queryKeys.addresses.all, id] as const},
 
   // ─── Generic Helper ──────────────────────────────────────
   // Use for any domain not yet covered by the above factories
@@ -175,8 +158,6 @@ export const queryKeys = {
     lists: (domain: string) => [domain, 'list'] as const,
     list: (domain: string, filters: Record<string, unknown>) =>
       [domain, 'list', filters] as const,
-    byId: (domain: string, id: string) => [domain, id] as const,
-  },
-} as const;
+    byId: (domain: string, id: string) => [domain, id] as const}} as const;
 
 export default queryKeys;

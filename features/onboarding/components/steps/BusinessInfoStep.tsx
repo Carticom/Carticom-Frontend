@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -28,8 +28,7 @@ export function BusinessInfoStep({ onNext, onBack, initialData, onSave }: Busine
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<BusinessInfoFormData>({
+    formState: { errors, isSubmitting }} = useForm<BusinessInfoFormData>({
     resolver: zodResolver(businessInfoSchema),
     defaultValues: initialData ?? {
       businessName: '',
@@ -37,9 +36,7 @@ export function BusinessInfoStep({ onNext, onBack, initialData, onSave }: Busine
       phone: '',
       email: '',
       address: '',
-      description: '',
-    },
-  });
+      description: ''}});
 
   const onSubmit = async (data: BusinessInfoFormData) => {
     setSubmitError(null);
@@ -47,8 +44,7 @@ export function BusinessInfoStep({ onNext, onBack, initialData, onSave }: Busine
       onSave(data);
       await createStore.mutateAsync({
         name: data.businessName,
-        description: data.description || undefined,
-      });
+        description: data.description || undefined});
       onNext();
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Failed to save. Please try again.';

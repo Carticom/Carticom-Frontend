@@ -4,8 +4,7 @@ import { useEffect } from 'react';
 
 export default function DashboardErrorBoundary({
   error,
-  reset,
-}: {
+  reset}: {
   error: Error & { digest?: string };
   reset: () => void;
 }) {

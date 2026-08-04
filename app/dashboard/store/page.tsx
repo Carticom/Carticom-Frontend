@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
+import Image from 'next/image';
 import { useAuthStore } from '@/features/auth/store/auth.store';
 import { useMyStores, useUpdateStore } from '@/features/onboarding/hooks/useOnboarding';
 import { LoadingState, EmptyState, ErrorState } from '@/components/dashboard/shared/StateComponents';
-import { Globe, Eye, Upload, ExternalLink, Check, ChevronDown, ChevronUp, Copy } from 'lucide-react';
+import { Globe, Eye, Upload, ExternalLink, Check, ChevronDown, Copy } from 'lucide-react';
 import { showToast } from '@/lib/notifications/toast';
 import { getTemplateIcon, getTemplatesForCategory } from '@/features/templates/registry';
 import { BUSINESS_CATEGORIES } from '@/features/templates/types';
@@ -24,12 +25,14 @@ export default function StorePage() {
   const [editing, setEditing] = useState(false);
   const [publishing, setPublishing] = useState(false);
 
-  useEffect(() => {
+  const [syncedStore, setSyncedStore] = useState<typeof store>(null);
+  if (store !== syncedStore) {
+    setSyncedStore(store);
     if (store) {
       setName(store.name ?? '');
       setDescription(store.description ?? '');
     }
-  }, [store]);
+  }
 
   const handleSave = () => {
     if (!store) return;
@@ -46,8 +49,7 @@ export default function StorePage() {
       const formData = new FormData();
       formData.append('file', file);
       await axiosInstance.post(`/api/v1/stores/${store.id}/logo`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
+        headers: { 'Content-Type': 'multipart/form-data' }});
       showToast('success', 'Logo uploaded successfully');
       refetch();
     } catch {
@@ -218,9 +220,9 @@ export default function StorePage() {
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Logo</label>
               <div className="mt-2 flex items-start gap-4">
-                <div className="w-24 h-24 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center overflow-hidden shrink-0">
+                <div className="relative w-24 h-24 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center overflow-hidden shrink-0">
                   {store.logoUrl ? (
-                    <img src={store.logoUrl} alt="Store logo" className="w-full h-full object-cover" />
+                    <Image src={store.logoUrl} alt="Store logo" fill unoptimized className="object-cover" />
                   ) : (
                     <span className="text-xs text-gray-500">No logo</span>
                   )}
@@ -247,8 +249,8 @@ export default function StorePage() {
             {store.bannerUrl && (
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Banner</label>
-                <div className="mt-1 w-full h-24 rounded-lg border border-gray-300 dark:border-gray-700 overflow-hidden">
-                  <img src={store.bannerUrl} alt="Store banner" className="w-full h-full object-cover" />
+                <div className="mt-1 relative w-full h-24 rounded-lg border border-gray-300 dark:border-gray-700 overflow-hidden">
+                  <Image src={store.bannerUrl} alt="Store banner" fill unoptimized className="object-cover" />
                 </div>
               </div>
             )}

@@ -4,14 +4,13 @@
 
 import { BaseRepository } from '@/lib/dal/repository';
 import type { AnalyticsDto, CreateAnalyticsDto } from '@/features/dashboard/types/analytics.types';
-import type { QueryParams } from '@/lib/dal/types';
+
 
 export class AnalyticsRepository extends BaseRepository<AnalyticsDto, CreateAnalyticsDto, never> {
   constructor() {
     super({
       base: '/api/v1/analytics',
-      byId: (id) => `/api/v1/analytics/${id}`,
-    });
+      byId: (id) => `/api/v1/analytics/${id}`});
   }
 
   async getByStore(storeId: string, period?: string) {

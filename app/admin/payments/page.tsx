@@ -1,23 +1,21 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import axiosInstance from '@/lib/axios';
+import { adminRepository } from '@/features/admin/repositories/admin.repository';
 import { LoadingState, ErrorState, EmptyState } from '@/components/dashboard/shared/StateComponents';
 
 const statusStyles: Record<string, string> = {
   SUCCESSFUL: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
   FAILED: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
   PENDING: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
-  REFUNDED: 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400',
-};
+  REFUNDED: 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400'};
 
 function formatCurrency(amount: number): string {
   return new Intl.NumberFormat('en-NG', {
     style: 'currency',
     currency: 'NGN',
     minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
+    maximumFractionDigits: 0}).format(amount);
 }
 
 function formatDate(dateStr: string): string {
@@ -28,14 +26,23 @@ function formatTime(dateStr: string): string {
   return new Date(dateStr).toLocaleTimeString('en-NG', { hour: '2-digit', minute: '2-digit' });
 }
 
+interface Payment {
+  id: string;
+  reference: string;
+  customerName: string;
+  amount: number;
+  method: string;
+  status: string;
+  createdAt: string;
+}
+
 export default function AdminPaymentsPage() {
   const { data: payments, isLoading, error, refetch } = useQuery({
     queryKey: ['admin', 'payments'],
     queryFn: async () => {
-      const res = await axiosInstance.get('/api/v1/admin/payments');
-      return res.data.data ?? [];
-    },
-  });
+      const page = await adminRepository.getPayments<Payment>();
+      return page?.content ?? [];
+    }});
 
   if (isLoading) return <LoadingState message="Loading payments..." />;
   if (error) return <ErrorState onRetry={() => refetch()} />;

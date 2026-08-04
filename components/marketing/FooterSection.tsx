@@ -39,8 +39,7 @@ const FOOTER_LINKS = {
     { label: 'Cookie Policy', href: '/legal/cookies' },
     { label: 'GDPR', href: '/legal/gdpr' },
     { label: 'Security', href: '/features' },
-  ],
-};
+  ]};
 
 export function FooterSection() {
   return (

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ArrowRight, Play, Store, ShoppingBag, Package, CreditCard, TrendingUp, Building2, Users } from 'lucide-react';
+import { ArrowRight, Play, Store, ShoppingBag, Package, CreditCard, Building2, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { TEMPLATES, getTemplateIcon } from '@/features/templates/registry';
 import type { TemplateConfig } from '@/features/templates/types';
@@ -11,8 +11,7 @@ import { TemplatePreviewModal } from './TemplatePreviewModal';
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 30 },
-  animate: { opacity: 1, y: 0, transition: { duration: 0.7, delay, ease: [0.25, 0.1, 0.25, 1] as const } },
-});
+  animate: { opacity: 1, y: 0, transition: { duration: 0.7, delay, ease: [0.25, 0.1, 0.25, 1] as const } }});
 
 const FLOATING_ITEMS = [
   { icon: Store, label: 'Store', color: 'from-blue-500 to-blue-600', x: '-10%', y: '15%', delay: 0.3 },

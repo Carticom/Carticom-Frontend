@@ -1,13 +1,13 @@
 'use client';
 
-import { useRef, useState, useEffect, useMemo } from 'react';
+import { useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { ShoppingBag, ArrowRight, Star, Plus, Heart, Camera, ChevronRight, Sparkles, Shield, Truck, RotateCcw, Gem } from 'lucide-react';
 import type { StoreDto, ProductDto } from '@/features/onboarding/types';
 import { Button } from '@/components/ui/button';
-import { useRouter } from 'next/navigation';
+
 import { cn } from '@/lib/utils';
 
 interface FashionStorefrontProps {
@@ -16,22 +16,6 @@ interface FashionStorefrontProps {
   onAddToCart: (productId: string) => void;
   addingToCart: string | null;
 }
-
-const COLORS = {
-  gold: '#c9a84c',
-  darkGold: '#a8892e',
-  cream: '#faf8f5',
-  navy: '#1a1a2e',
-  charcoal: '#2d2d3d',
-  lightGold: 'rgba(201, 168, 76, 0.08)',
-  glass: 'rgba(255, 255, 255, 0.08)',
-  glassBorder: 'rgba(201, 168, 76, 0.12)',
-};
-
-const shimmer = {
-  hidden: { backgroundPosition: '200% 0' },
-  visible: { backgroundPosition: '-200% 0' },
-};
 
 function LiquidGlassCard({ children, className, delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
   return (
@@ -75,8 +59,7 @@ function HeroSection({ store }: { store: StoreDto }) {
               height: 300 + i * 200,
               background: `radial-gradient(circle, rgba(201,168,76,${0.02 - i * 0.005}) 0%, transparent 70%)`,
               top: `${30 + i * 15}%`,
-              left: `${10 + i * 20}%`,
-            }}
+              left: `${10 + i * 20}%`}}
             animate={{ scale: [1, 1.05, 1], opacity: [0.3, 0.5, 0.3] }}
             transition={{ duration: 8 + i * 2, repeat: Infinity, ease: 'easeInOut' }}
           />
@@ -181,7 +164,7 @@ function HeroSection({ store }: { store: StoreDto }) {
                 <div className="absolute bottom-6 left-6 right-6 z-20">
                   <LiquidGlassCard className="p-4 !bg-white/10">
                     <p className="text-white/80 text-sm font-light">
-                      "Luxury is in each detail."
+                      &quot;Luxury is in each detail.&quot;
                     </p>
                     <p className="text-[#c9a84c] text-xs mt-1 tracking-widest uppercase">— Maison Collection</p>
                   </LiquidGlassCard>
@@ -203,7 +186,7 @@ function ShowcaseSection({ products, onAddToCart, addingToCart }: {
   const formatPrice = (price: number, currency: string) =>
     new Intl.NumberFormat('en-NG', { style: 'currency', currency: currency || 'NGN', minimumFractionDigits: 2 }).format(price);
 
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [, setActiveIndex] = useState(0);
   const displayProducts = products.slice(0, 6);
 
   return (
@@ -366,23 +349,19 @@ function ValuesSection() {
     {
       icon: Gem,
       title: 'Exceptional Quality',
-      description: 'Every item is meticulously crafted using premium materials sourced from the world\'s finest suppliers.',
-    },
+      description: 'Every item is meticulously crafted using premium materials sourced from the world\'s finest suppliers.'},
     {
       icon: Truck,
       title: 'White-Glove Delivery',
-      description: 'Complimentary express shipping with tracking, signature upon delivery, and elegant unboxing experience.',
-    },
+      description: 'Complimentary express shipping with tracking, signature upon delivery, and elegant unboxing experience.'},
     {
       icon: Shield,
       title: 'Authenticity Guaranteed',
-      description: 'Every purchase includes a certificate of authenticity. Our experts verify each piece before it ships.',
-    },
+      description: 'Every purchase includes a certificate of authenticity. Our experts verify each piece before it ships.'},
     {
       icon: RotateCcw,
       title: 'Hassle-Free Returns',
-      description: 'Extended 30-day return window with complimentary pickup. Your satisfaction is our standard.',
-    },
+      description: 'Extended 30-day return window with complimentary pickup. Your satisfaction is our standard.'},
   ];
 
   return (

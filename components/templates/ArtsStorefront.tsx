@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ShoppingBag, ArrowRight, Palette, Star, Heart, Sparkles, Scissors, Brush, Camera, ChevronRight, Users, Globe, Award } from 'lucide-react';
+import { ShoppingBag, ArrowRight, Palette, Heart, Sparkles, Scissors, Brush, Camera, ChevronRight, Users, Globe, Award } from 'lucide-react';
 import type { StoreDto, ProductDto } from '@/features/onboarding/types';
 import { Button } from '@/components/ui/button';
 
@@ -64,7 +64,7 @@ function HeroSection({ store }: { store: StoreDto }) {
                 <div className="w-full h-full bg-gradient-to-br from-[#8b5e3c] to-[#2d1b0e] flex items-center justify-center"><Palette className="h-24 w-24 text-white/15" /></div>
               )}
               <div className="absolute bottom-6 left-6 right-6 z-20 p-4 bg-white/10 backdrop-blur-sm border border-white/10">
-                <p className="text-white text-sm font-light italic" style={{ fontFamily: "'Fraunces', serif" }}>"Every piece tells a story of heritage and craftsmanship."</p>
+                <p className="text-white text-sm font-light italic" style={{ fontFamily: "'Fraunces', serif" }}>&quot;Every piece tells a story of heritage and craftsmanship.&quot;</p>
               </div>
             </div>
           </FadeIn>
@@ -89,7 +89,7 @@ function StorySection() {
             <h2 className="text-4xl font-light text-[#2d1b0e]" style={{ fontFamily: "'Fraunces', serif" }}>Celebrating African Craftsmanship</h2>
             <div className="w-12 h-0.5 bg-[#8b5e3c]" />
             <p className="text-gray-600 leading-relaxed">We connect you with master artisans from across Africa — from beadworkers in Lagos to ceramicists in Nairobi. Every item is handmade, one of a kind, and steeped in cultural heritage.</p>
-            <p className="text-gray-500 leading-relaxed">By supporting our artisans, you're preserving traditional crafts, empowering local communities, and bringing home a piece of Africa's soul.</p>
+            <p className="text-gray-500 leading-relaxed">By supporting our artisans, you&apos;re preserving traditional crafts, empowering local communities, and bringing home a piece of Africa&apos;s soul.</p>
             <Link href="#" className="inline-flex items-center gap-2 text-[#8b5e3c] font-medium border-b border-[#8b5e3c]/30 pb-1 hover:border-[#8b5e3c] transition-colors">
               Meet Our Artisans <ChevronRight className="h-4 w-4" />
             </Link>

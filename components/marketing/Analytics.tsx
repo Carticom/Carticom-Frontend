@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+
 import { motion } from 'framer-motion';
 import { BarChart3, TrendingUp, Users, DollarSign, ArrowRight } from 'lucide-react';
 import { Container } from '@/components/common/Container';

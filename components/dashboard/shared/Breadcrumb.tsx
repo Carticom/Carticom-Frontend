@@ -1,8 +1,7 @@
 'use client';
 
-import React from 'react';
+
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { ChevronRight, Home } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -17,7 +16,6 @@ interface BreadcrumbProps {
 }
 
 export function Breadcrumb({ items, className }: BreadcrumbProps) {
-  const pathname = usePathname();
 
   return (
     <nav className={cn('flex items-center text-sm', className)} aria-label="Breadcrumb">

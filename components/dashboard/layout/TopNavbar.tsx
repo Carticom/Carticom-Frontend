@@ -5,8 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Search, Bell, ChevronDown, User, Settings, LogOut,
-} from 'lucide-react';
+  Search, Bell, ChevronDown, User, Settings, LogOut} from 'lucide-react';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { cn } from '@/lib/utils';
 import { MobileToggle } from './Sidebar';

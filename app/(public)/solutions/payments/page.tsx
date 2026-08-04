@@ -1,8 +1,8 @@
 'use client';
 
-import React from 'react';
+
 import { motion } from 'framer-motion';
-import { CreditCard, Smartphone, Shield, Zap, ArrowRight, CheckCircle, Banknote, QrCode, Receipt, RefreshCw } from 'lucide-react';
+import { CreditCard, Smartphone, Shield, Zap, ArrowRight, CheckCircle, Banknote, QrCode, Receipt } from 'lucide-react';
 import { Container } from '@/components/common/Container';
 import { Button } from '@/components/ui/button';
 
@@ -11,26 +11,22 @@ const features = [
     icon: CreditCard,
     title: 'Paystack & Flutterwave Integration',
     description: 'Accept payments from the leading African payment gateways. Seamless checkout with cards, bank transfers, and digital wallets.',
-    color: 'purple',
-  },
+    color: 'purple'},
   {
     icon: Smartphone,
     title: 'Mobile Money & USSD',
     description: 'Tap into the mobile-first market with MTN MoMo, Airtel Money, M-Pesa, and USSD codes. No internet? No problem.',
-    color: 'amber',
-  },
+    color: 'amber'},
   {
     icon: Shield,
     title: 'Escrow & Payment Protection',
     description: 'Built-in escrow for high-value transactions. Funds are held securely until both parties are satisfied. Fraud protection included.',
-    color: 'blue',
-  },
+    color: 'blue'},
   {
     icon: Zap,
     title: 'Instant Settlements & Payouts',
     description: 'Get paid faster with instant settlements. Withdraw to your bank account, mobile wallet, or prefered payment method in real time.',
-    color: 'green',
-  },
+    color: 'green'},
 ];
 
 const benefits = [
@@ -137,8 +133,7 @@ export default function PaymentsPage() {
                 purple: 'bg-purple-50 text-purple-600',
                 amber: 'bg-amber-50 text-amber-600',
                 blue: 'bg-blue-50 text-blue-600',
-                green: 'bg-green-50 text-green-600',
-              };
+                green: 'bg-green-50 text-green-600'};
               return (
                 <motion.div
                   key={feature.title}

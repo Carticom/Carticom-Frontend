@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Share2, Check, MessageCircle, Link as LinkIcon } from 'lucide-react';
+import { Share2, Check, MessageCircle, LinkIcon } from 'lucide-react';
 
 interface ShareButtonProps {
   url: string;

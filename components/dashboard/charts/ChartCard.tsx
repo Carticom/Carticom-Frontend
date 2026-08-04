@@ -3,8 +3,7 @@
 import React, { useState } from 'react';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  AreaChart, Area,
-} from 'recharts';
+  AreaChart, Area} from 'recharts';
 
 interface ChartCardProps {
   title: string;
@@ -31,10 +30,8 @@ const defaultTooltip = {
     border: '1px solid #e5e7eb',
     borderRadius: '8px',
     boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
-    fontSize: '13px',
-  },
-  labelStyle: { fontWeight: 600, color: '#111827' },
-};
+    fontSize: '13px'},
+  labelStyle: { fontWeight: 600, color: '#111827' }};
 
 function SalesBarChartInner({ data }: { data: { name: string; sales: number; revenue: number }[] }) {
   return (

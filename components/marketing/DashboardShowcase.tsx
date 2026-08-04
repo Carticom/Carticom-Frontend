@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { Monitor, Smartphone, Tablet, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
-import { cn } from '@/lib/utils';
+
 
 export function DashboardShowcase() {
   return (

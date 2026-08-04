@@ -11,8 +11,7 @@ export class StaffRepository extends BaseRepository<StaffDto, CreateStaffDto, Up
   constructor() {
     super({
       base: '/api/v1/staff',
-      byId: (id) => `/api/v1/staff/${id}`,
-    });
+      byId: (id) => `/api/v1/staff/${id}`});
   }
 
   async getByStore(storeId: string, params?: QueryParams) {

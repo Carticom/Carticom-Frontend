@@ -53,5 +53,4 @@ export enum AIStatus {
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE',
   ERROR = 'ERROR',
-  PENDING = 'PENDING',
-}
+  PENDING = 'PENDING'}

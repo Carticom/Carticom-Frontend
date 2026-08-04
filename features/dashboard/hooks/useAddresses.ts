@@ -2,7 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { addressesRepository } from '@/features/dashboard/repositories/addresses.repository';
-import type { AddressDto, CreateAddressDto, UpdateAddressDto } from '@/features/dashboard/types/addresses.types';
+import type { CreateAddressDto, UpdateAddressDto } from '@/features/dashboard/types/addresses.types';
 import { queryKeys } from '@/lib/dal/query-keys';
 import { showToast } from '@/lib/notifications/toast';
 
@@ -12,8 +12,7 @@ export function useAddresses() {
     queryFn: async () => {
       const result = await addressesRepository.list({ page: 0, limit: 100 });
       return result.data;
-    },
-  });
+    }});
 }
 
 export function useAddress(id: string | undefined | null) {
@@ -23,8 +22,7 @@ export function useAddress(id: string | undefined | null) {
       if (!id) throw new Error('Address ID is required');
       return addressesRepository.getById(id);
     },
-    enabled: !!id,
-  });
+    enabled: !!id});
 }
 
 export function useCreateAddress() {
@@ -40,10 +38,8 @@ export function useCreateAddress() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to create address', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }
 
 export function useUpdateAddress() {
@@ -60,10 +56,8 @@ export function useUpdateAddress() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to update address', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }
 
 export function useDeleteAddress() {
@@ -79,10 +73,8 @@ export function useDeleteAddress() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to delete address', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }
 
 export function useSetDefaultAddress() {
@@ -98,8 +90,6 @@ export function useSetDefaultAddress() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to set default address', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }

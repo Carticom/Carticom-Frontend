@@ -1,18 +1,8 @@
 "use client";
 
-import React from "react";
+
 import { motion } from "framer-motion";
-import {
-  ArrowRight,
-  Play,
-  Store,
-  CreditCard,
-  Shield,
-  Bot,
-  TrendingUp,
-  Zap,
-  Globe,
-} from "lucide-react";
+import { ArrowRight, Play, Store, CreditCard, Bot, TrendingUp, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/common/Container";
 
@@ -24,10 +14,7 @@ const fadeUpVariants = {
     transition: {
       duration: 0.6,
       delay,
-      ease: [0.16, 1, 0.3, 1] as const,
-    },
-  }),
-};
+      ease: [0.16, 1, 0.3, 1] as const}})};
 
 const cardVariants = {
   hidden: { opacity: 0, y: 20, scale: 0.9 },
@@ -38,14 +25,10 @@ const cardVariants = {
     transition: {
       duration: 0.6,
       delay: custom,
-      ease: [0.16, 1, 0.3, 1] as const,
-    },
-  }),
+      ease: [0.16, 1, 0.3, 1] as const}}),
   hover: {
     y: -8,
-    transition: { duration: 0.3 },
-  },
-};
+    transition: { duration: 0.3 }}};
 
 const floatingCards = [
   {
@@ -56,8 +39,7 @@ const floatingCards = [
     color: "from-blue-500 to-blue-600",
     bg: "bg-blue-50",
     iconColor: "text-blue-600",
-    borderColor: "border-blue-200/50",
-  },
+    borderColor: "border-blue-200/50"},
   {
     icon: CreditCard,
     title: "Smart Payments",
@@ -66,8 +48,7 @@ const floatingCards = [
     color: "from-emerald-500 to-emerald-600",
     bg: "bg-emerald-50",
     iconColor: "text-emerald-600",
-    borderColor: "border-emerald-200/50",
-  },
+    borderColor: "border-emerald-200/50"},
   {
     icon: Bot,
     title: "AI Assistant",
@@ -76,8 +57,7 @@ const floatingCards = [
     color: "from-amber-500 to-amber-600",
     bg: "bg-amber-50",
     iconColor: "text-amber-600",
-    borderColor: "border-amber-200/50",
-  },
+    borderColor: "border-amber-200/50"},
 ];
 
 const statsBadges = [
@@ -108,8 +88,7 @@ export function Hero() {
           style={{
             backgroundImage:
               "radial-gradient(circle, #1e40af 1.5px, transparent 1.5px)",
-            backgroundSize: "60px 60px",
-          }}
+            backgroundSize: "60px 60px"}}
         />
       </div>
 
@@ -333,8 +312,7 @@ export function Hero() {
                 transition={{
                   duration: 1.5,
                   repeat: Infinity,
-                  delay: i * 0.2,
-                }}
+                  delay: i * 0.2}}
                 className="h-1 w-1 rounded-full bg-gray-300"
               />
             ))}

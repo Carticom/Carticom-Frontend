@@ -6,7 +6,7 @@ import { ArrowLeft, ArrowRight, Check, CreditCard, ExternalLink, Loader2, Shoppi
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { LoadingState, ErrorState } from '@/components/dashboard/shared/StateComponents';
+
 import { useGuestCheckout } from '@/features/dashboard/hooks/useGuestCheckout';
 import type { GuestCheckoutRequest } from '@/features/dashboard/types/guest-checkout.types';
 
@@ -38,8 +38,7 @@ function GuestCheckoutPageContent() {
   const [phone, setPhone] = useState('');
   const [couponCode, setCouponCode] = useState('');
   const [shipping, setShipping] = useState<ShippingForm>({
-    fullName: '', street: '', city: '', state: '', country: '', zipCode: '',
-  });
+    fullName: '', street: '', city: '', state: '', country: '', zipCode: ''});
   const [result, setResult] = useState<{
     orderNumber: string;
     reference: string;
@@ -79,7 +78,6 @@ function GuestCheckoutPageContent() {
   }, [step, email, phone, shipping, items]);
 
   const canGoNext = stepValid();
-  const isLastStep = step === STEPS.length - 1;
 
   const nextStep = () => {
     if (step === 2 && canGoNext) {
@@ -88,13 +86,11 @@ function GuestCheckoutPageContent() {
         items: items.filter(i => i.productId.trim().length > 0).map(i => ({
           productId: i.productId,
           quantity: i.quantity,
-          ...(i.variantId ? { variantId: i.variantId } : {}),
-        })),
+          ...(i.variantId ? { variantId: i.variantId } : {})})),
         email,
         phone,
         shippingAddress: shipping,
-        ...(couponCode.trim() ? { couponCode: couponCode.trim() } : {}),
-      };
+        ...(couponCode.trim() ? { couponCode: couponCode.trim() } : {})};
 
       submitCheckout(payload, {
         onSuccess: (data) => {
@@ -102,11 +98,9 @@ function GuestCheckoutPageContent() {
             orderNumber: data.orderNumber,
             reference: data.reference,
             total: data.total,
-            paymentUrl: data.paymentUrl,
-          });
+            paymentUrl: data.paymentUrl});
           setStep(3);
-        },
-      });
+        }});
       return;
     }
     setStep(prev => Math.min(prev + 1, STEPS.length - 1));
@@ -120,8 +114,7 @@ function GuestCheckoutPageContent() {
     new Intl.NumberFormat('en-NG', {
       style: 'currency',
       currency: 'NGN',
-      minimumFractionDigits: 2,
-    }).format(price);
+      minimumFractionDigits: 2}).format(price);
 
   if (!storeId) {
     return (
@@ -197,7 +190,7 @@ function GuestCheckoutPageContent() {
                 Contact Information
               </h2>
               <p className="text-sm text-gray-500 dark:text-gray-400">
-                We'll use these details to send your order confirmation.
+                We&apos;ll use these details to send your order confirmation.
               </p>
               <div className="space-y-4">
                 <div className="space-y-2">
@@ -319,7 +312,7 @@ function GuestCheckoutPageContent() {
                 Order Items
               </h2>
               <p className="text-sm text-gray-500 dark:text-gray-400">
-                Add the products you'd like to purchase.
+                Add the products you&apos;d like to purchase.
               </p>
 
               <div className="space-y-3">

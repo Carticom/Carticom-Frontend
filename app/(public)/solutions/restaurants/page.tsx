@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { UtensilsCrossed, ShoppingBag, Clock, BarChart3, ArrowRight, CheckCircle, Smartphone, Users, CreditCard } from 'lucide-react';
+import { Clock, BarChart3, ArrowRight, CheckCircle, Smartphone, Users } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 

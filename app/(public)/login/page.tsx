@@ -22,7 +22,6 @@ import type { LoginSchema } from '@/features/auth/schemas';
 
 function LoginForm() {
   const { login } = useAuth();
-  const user = useAuthStore((state) => state.user);
   const router = useRouter();
   const searchParams = useSearchParams();
   const [showPassword, setShowPassword] = useState(false);
@@ -33,21 +32,17 @@ function LoginForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<LoginSchema>({
+    formState: { errors, isSubmitting }} = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: '',
-      password: '',
-    },
-  });
+      password: ''}});
 
   const onSubmit = async (data: LoginSchema) => {
     setServerError(null);
     const result = await login({
       email: data.email,
-      password: data.password,
-    });
+      password: data.password});
 
     if (result.success) {
       authToasts.loginSuccess();
@@ -63,8 +58,7 @@ function LoginForm() {
         ADMIN: '/admin/dashboard',
         BUSINESS_OWNER: '/dashboard',
         STAFF: '/staff/dashboard',
-        CUSTOMER: '/storefront',
-      };
+        CUSTOMER: '/storefront'};
       const currentUser = useAuthStore.getState().user;
       const redirect = roleRedirectMap[currentUser?.role ?? ''] ?? '/dashboard';
       router.push(redirect);
@@ -215,13 +209,15 @@ function LoginForm() {
         type="button"
         onClick={async () => {
           try {
-            const res = await axiosInstance.get('/api/v1/auth/oauth/url');
+            const res = await axiosInstance.get('/api/v1/auth/oauth/google/url');
             const url = res.data?.data?.url ?? res.data?.url;
+            const state = res.data?.data?.state ?? res.data?.state;
             if (url) {
+              sessionStorage.setItem('carticom-oauth-state', state ?? '');
               window.location.href = url;
             }
           } catch {
-            window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
+            window.location.href = `${process.env.NEXT_PUBLIC_APP_URL}/login?oauth=error`;
           }
         }}
         className="flex w-full items-center justify-center gap-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
@@ -232,7 +228,7 @@ function LoginForm() {
 
       {/* Register Link */}
       <p className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
-        Don't have an account?{' '}
+        Don&apos;t have an account?{' '}
         <Link
           href="/register"
           className="font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400"

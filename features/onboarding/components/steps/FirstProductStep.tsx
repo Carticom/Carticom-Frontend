@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -26,16 +26,13 @@ export function FirstProductStep({ onNext, onBack, storeId, onProductCreated }: 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<FirstProductFormData>({
+    formState: { errors, isSubmitting }} = useForm<FirstProductFormData>({
     resolver: zodResolver(firstProductSchema),
     defaultValues: {
       name: '',
       description: '',
       price: '',
-      quantity: '',
-    },
-  });
+      quantity: ''}});
 
   const onSubmit = async (data: FirstProductFormData) => {
     setSubmitError(null);
@@ -49,8 +46,7 @@ export function FirstProductStep({ onNext, onBack, storeId, onProductCreated }: 
         name: data.name,
         description: data.description || undefined,
         price: Number(data.price),
-        quantity: Number(data.quantity),
-      });
+        quantity: Number(data.quantity)});
 
       if (product?.id) {
         onProductCreated(product.id);

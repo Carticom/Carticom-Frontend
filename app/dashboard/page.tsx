@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState, useEffect, lazy } from 'react';
+import { useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -10,7 +10,7 @@ import { KpiGrid, type KpiCardData } from '@/components/dashboard/cards/KpiCards
 import { LoadingState, ErrorState } from '@/components/dashboard/shared/StateComponents';
 import { StaggerGrid, StaggerItem, FadeIn } from '@/components/ui/motion';
 import { CountUp } from '@/components/ui/count-up';
-import { DollarSign, ShoppingCart, Shield, TrendingUp, Eye, Loader2, ArrowRight, BarChart3 } from 'lucide-react';
+import { DollarSign, ShoppingCart, Shield, TrendingUp, Loader2, ArrowRight, BarChart3 } from 'lucide-react';
 import type { RecentOrder } from '@/types/dashboard';
 import type { OrderSummaryDTO } from '@/features/business-owner/types';
 import { cn } from '@/lib/utils';
@@ -18,24 +18,19 @@ import { EmptyState } from '@/components/ui/empty-state';
 import { Button } from '@/components/ui/button';
 
 const SalesBarChart = dynamic(() => import('@/components/dashboard/charts/ChartCard').then(m => ({ default: m.SalesBarChart })), {
-  loading: () => <ChartSkeleton />,
-});
+  loading: () => <ChartSkeleton />});
 
 const RevenueLineChart = dynamic(() => import('@/components/dashboard/charts/ChartCard').then(m => ({ default: m.RevenueLineChart })), {
-  loading: () => <ChartSkeleton />,
-});
+  loading: () => <ChartSkeleton />});
 
 const TargetProgressCard = dynamic(() => import('@/components/dashboard/charts/ChartCard').then(m => ({ default: m.TargetProgressCard })), {
-  loading: () => <ChartSkeleton />,
-});
+  loading: () => <ChartSkeleton />});
 
 const DemographicCard = dynamic(() => import('@/components/dashboard/charts/ChartCard').then(m => ({ default: m.DemographicCard })), {
-  loading: () => <ChartSkeleton />,
-});
+  loading: () => <ChartSkeleton />});
 
 const RecentOrdersCard = dynamic(() => import('@/components/dashboard/charts/ChartCard').then(m => ({ default: m.RecentOrdersCard })), {
-  loading: () => <ChartSkeleton />,
-});
+  loading: () => <ChartSkeleton />});
 
 function ChartSkeleton() {
   return (
@@ -54,8 +49,7 @@ function toRecentOrder(o: OrderSummaryDTO): RecentOrder {
     currency: o.currency || 'NGN',
     status: (o.status?.toLowerCase() ?? 'pending') as RecentOrder['status'],
     items: o.items,
-    date: o.createdAt,
-  };
+    date: o.createdAt};
 }
 
 const STATUS_STYLES: Record<string, string> = {
@@ -63,25 +57,26 @@ const STATUS_STYLES: Record<string, string> = {
   processing: 'bg-blue-50 text-blue-600',
   completed: 'bg-emerald-50 text-emerald-600',
   cancelled: 'bg-red-50 text-red-600',
-  refunded: 'bg-muted text-muted-foreground',
-};
+  refunded: 'bg-muted text-muted-foreground'};
 
 function formatCurrency(amount: number): string {
   return amount.toLocaleString('en-NG', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+
+function greetingForHour(): string {
+  const hour = new Date().getHours();
+  if (hour < 12) return 'Good Morning';
+  if (hour < 17) return 'Good Afternoon';
+  return 'Good Evening';
 }
 
 export default function DashboardPage() {
   const user = useAuthStore((state) => state.user);
   const { data: dashboard, isLoading, error, refetch } = useBusinessOwnerDashboard();
   const { data: analytics } = useBusinessOwnerAnalytics('monthly');
-  const [greeting, setGreeting] = useState('Hello');
+  const [greeting] = useState(greetingForHour);
 
-  useEffect(() => {
-    const hour = new Date().getHours();
-    if (hour < 12) setGreeting('Good Morning');
-    else if (hour < 17) setGreeting('Good Afternoon');
-    else setGreeting('Good Evening');
-  }, []);
+  const orders = useMemo(() => (dashboard?.recentOrders ?? []).map(toRecentOrder), [dashboard?.recentOrders]);
 
   if (isLoading) {
     return <LoadingState message="Loading your dashboard..." />;
@@ -101,7 +96,6 @@ export default function DashboardPage() {
 
   const firstName = user?.fullName?.split(' ')[0] || 'User';
   const businessName = user?.businessName || 'Welcome to Carticom';
-  const orders = useMemo(() => (dashboard.recentOrders ?? []).map(toRecentOrder), [dashboard.recentOrders]);
 
   const kpiCards: KpiCardData[] = [
     {
@@ -110,32 +104,28 @@ export default function DashboardPage() {
       value: `₦${formatCurrency(dashboard.availableRevenue)}`,
       change: '+12.5%',
       changeType: 'positive',
-      icon: DollarSign,
-    },
+      icon: DollarSign},
     {
       id: 'pending-orders',
       label: 'Pending Orders',
       value: String(dashboard.pendingOrders ?? 0),
       change: dashboard.pendingOrders > 0 ? '+3 this week' : 'No change',
       changeType: 'neutral',
-      icon: ShoppingCart,
-    },
+      icon: ShoppingCart},
     {
       id: 'lifetime-revenue',
       label: 'Lifetime Revenue',
       value: `₦${formatCurrency(dashboard.lifetimeRevenue)}`,
       change: '+8.1%',
       changeType: 'positive',
-      icon: TrendingUp,
-    },
+      icon: TrendingUp},
     {
       id: 'trust-score',
       label: 'Trust Score',
       value: String(dashboard.trustScore ?? 0),
       change: dashboard.activeDisputes > 0 ? `${dashboard.activeDisputes} active disputes` : 'No disputes',
       changeType: dashboard.activeDisputes === 0 ? 'positive' : 'negative',
-      icon: Shield,
-    },
+      icon: Shield},
   ];
 
   return (
@@ -160,8 +150,7 @@ export default function DashboardPage() {
               <SalesBarChart data={analytics.map((a) => ({
                 name: a.period,
                 sales: a.orders,
-                revenue: a.revenue,
-              }))} />
+                revenue: a.revenue}))} />
             ) : (
               <div className="rounded-xl border border-gray-200 bg-white p-8 flex flex-col items-center justify-center text-center">
                 <BarChart3 className="h-10 w-10 text-gray-300 mb-3" />
@@ -183,8 +172,7 @@ export default function DashboardPage() {
               <RevenueLineChart data={analytics.map((a) => ({
                 name: a.period,
                 revenue: a.revenue,
-                orders: a.orders,
-              }))} />
+                orders: a.orders}))} />
             ) : (
               <div className="rounded-xl border border-gray-200 bg-white p-8 flex flex-col items-center justify-center text-center">
                 <BarChart3 className="h-10 w-10 text-gray-300 mb-3" />

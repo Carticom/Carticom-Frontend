@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import axiosInstance from '@/lib/axios';
+import { adminRepository } from '@/features/admin/repositories/admin.repository';
 import { LoadingState, ErrorState, EmptyState } from '@/components/dashboard/shared/StateComponents';
 import { TrendingUp, ShoppingCart, Users, Store } from 'lucide-react';
 
@@ -17,8 +17,7 @@ function formatCurrency(amount: number): string {
     style: 'currency',
     currency: 'NGN',
     minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
+    maximumFractionDigits: 0}).format(amount);
 }
 
 function formatPercent(value: number): string {
@@ -27,22 +26,30 @@ function formatPercent(value: number): string {
   return `${sign}${value.toFixed(1)}%`;
 }
 
+interface AnalyticsMetrics {
+  totalRevenue?: number;
+  totalOrders?: number;
+  activeUsers?: number;
+  activeStores?: number;
+}
+
+interface AnalyticsData {
+  metrics?: AnalyticsMetrics;
+  topStores?: { name: string; revenue: number; orders: number; growth: number }[];
+}
+
 export default function AdminAnalyticsPage() {
   const [period, setPeriod] = useState('30d');
 
   const { data: analytics, isLoading, error, refetch } = useQuery({
     queryKey: ['admin', 'analytics', period],
-    queryFn: async () => {
-      const res = await axiosInstance.get('/api/v1/admin/analytics/overview', { params: { period } });
-      return res.data.data ?? {};
-    },
-  });
+    queryFn: () => adminRepository.getAnalyticsOverview<AnalyticsData>(period)});
 
   if (isLoading) return <LoadingState message="Loading analytics..." />;
   if (error) return <ErrorState onRetry={() => refetch()} />;
   if (!analytics?.metrics) return <EmptyState title="No analytics data" description="Analytics will appear once there is platform activity." />;
 
-  const { metrics, topStores } = analytics;
+  const { metrics = {}, topStores = [] } = analytics ?? {};
 
   const summaryCards = [
     { label: 'Total Revenue', value: formatCurrency(metrics.totalRevenue ?? 0), icon: TrendingUp, color: 'text-green-600' },

@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import axiosInstance from '@/lib/axios';
+import { adminRepository } from '@/features/admin/repositories/admin.repository';
 import { LoadingState, ErrorState } from '@/components/dashboard/shared/StateComponents';
 import { Users, Store, ShoppingCart, TrendingUp } from 'lucide-react';
 
@@ -10,18 +10,13 @@ function formatCurrency(amount: number): string {
     style: 'currency',
     currency: 'NGN',
     minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
+    maximumFractionDigits: 0}).format(amount);
 }
 
 export default function AdminDashboardPage() {
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ['admin', 'dashboard'],
-    queryFn: async () => {
-      const res = await axiosInstance.get('/api/v1/admin/dashboard');
-      return res.data.data ?? {};
-    },
-  });
+    queryFn: () => adminRepository.getDashboard<Record<string, number>>()});
 
   if (isLoading) return <LoadingState message="Loading dashboard..." />;
   if (error) return <ErrorState onRetry={() => refetch()} />;

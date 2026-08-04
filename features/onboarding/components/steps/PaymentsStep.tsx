@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { CreditCard, CheckCircle } from 'lucide-react';
@@ -22,7 +22,7 @@ export function PaymentsStep({ onNext, onBack }: PaymentsStepProps) {
           Payment Setup
         </h2>
         <p className="text-gray-600 dark:text-gray-400">
-          Configure how you'll receive payments
+          Configure how you&apos;ll receive payments
         </p>
       </div>
 

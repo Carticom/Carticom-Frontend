@@ -31,8 +31,7 @@ interface GiftSubscriptionModalProps {
 
 export function GiftSubscriptionModal({
   open,
-  onOpenChange,
-}: GiftSubscriptionModalProps) {
+  onOpenChange}: GiftSubscriptionModalProps) {
   const queryClient = useQueryClient();
   const [selectedStoreId, setSelectedStoreId] = useState('');
   const [selectedPlanId, setSelectedPlanId] = useState('');
@@ -45,8 +44,7 @@ export function GiftSubscriptionModal({
       const res = await axiosInstance.get('/api/v1/super-admin/stores?size=200');
       return (res.data.data?.content ?? []) as Store[];
     },
-    enabled: open,
-  });
+    enabled: open});
 
   const { data: plans } = useQuery({
     queryKey: ['super-admin', 'plans', 'all'],
@@ -54,16 +52,14 @@ export function GiftSubscriptionModal({
       const res = await axiosInstance.get('/api/v1/super-admin/plans');
       return (res.data.data ?? []) as Plan[];
     },
-    enabled: open,
-  });
+    enabled: open});
 
   const giveawayMutation = useMutation({
     mutationFn: async () => {
       await axiosInstance.post('/api/v1/super-admin/subscriptions/giveaway', {
         storeId: selectedStoreId,
         planId: selectedPlanId,
-        durationDays,
-      });
+        durationDays});
     },
     onSuccess: () => {
       showToast('success', 'Complimentary subscription granted successfully');
@@ -74,8 +70,7 @@ export function GiftSubscriptionModal({
       const message =
         error instanceof Error ? error.message : 'Failed to grant subscription';
       showToast('error', message);
-    },
-  });
+    }});
 
   const handleClose = () => {
     setSelectedStoreId('');

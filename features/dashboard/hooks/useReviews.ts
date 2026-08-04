@@ -17,8 +17,7 @@ export function useProductReviews(productId: string) {
     queryFn: async () => {
       return reviewsRepository.getByProduct(productId);
     },
-    enabled: !!productId,
-  });
+    enabled: !!productId});
 }
 
 // ─── Use Create Review ─────────────────────────────────────────
@@ -36,10 +35,8 @@ export function useCreateReview() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to submit review', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }
 
 // ─── Use Update Review ─────────────────────────────────────────
@@ -57,10 +54,8 @@ export function useUpdateReview() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to update review', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }
 
 // ─── Use Delete Review ─────────────────────────────────────────
@@ -78,8 +73,6 @@ export function useDeleteReview() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to delete review', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }

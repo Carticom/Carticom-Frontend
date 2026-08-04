@@ -6,7 +6,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { subscriptionRepository } from '@/features/dashboard/repositories/subscription.repository';
-import type { SubscriptionDto, UpdateSubscriptionDto } from '@/features/dashboard/types/subscription.types';
+
 import { queryKeys } from '@/lib/dal/query-keys';
 import { showToast } from '@/lib/notifications/toast';
 
@@ -18,8 +18,7 @@ export function useSubscription(storeId: string) {
     queryFn: async () => {
       return subscriptionRepository.getByStore(storeId);
     },
-    enabled: !!storeId,
-  });
+    enabled: !!storeId});
 }
 
 // ─── Use Cancel Subscription ──────────────────────────────────
@@ -37,8 +36,6 @@ export function useCancelSubscription() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to cancel subscription', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }

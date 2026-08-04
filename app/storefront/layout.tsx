@@ -11,21 +11,28 @@ import { useAuthStore } from '@/features/auth/store/auth.store';
 import { cartApi } from '@/features/onboarding/services/onboarding.service';
 
 export default function StorefrontLayout({
-  children,
-}: {
+  children}: {
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
+  const [storeId, setStoreId] = useState<string | null>(() =>
+    typeof window !== 'undefined'
+      ? new URLSearchParams(window.location.search).get('store')
+      : null
+  );
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
 
   useEffect(() => {
-    const storeId = new URLSearchParams(window.location.search).get('store');
-    if (storeId) {
-      cartApi.get(storeId).then((res) => {
+    const storeIdFromUrl = new URLSearchParams(window.location.search).get('store');
+    setStoreId(storeIdFromUrl || null);
+    if (storeIdFromUrl) {
+      cartApi.get(storeIdFromUrl).then((res) => {
         if (res.data.data?.items) setCartCount(res.data.data.items.length);
       }).catch(() => {});
+    } else {
+      setCartCount(0);
     }
   }, [pathname]);
 
@@ -91,7 +98,7 @@ export default function StorefrontLayout({
 
             <div className="flex items-center gap-3">
               <Link
-                href="/storefront/cart"
+                href={storeId ? `/storefront/cart?store=${storeId}` : '/storefront/cart'}
                 className="relative p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                 aria-label="Shopping cart"
               >

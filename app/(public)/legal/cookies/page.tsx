@@ -8,38 +8,31 @@ const sections = [
   {
     icon: Info,
     title: 'What Are Cookies?',
-    content: 'Cookies are small text files stored on your device by your web browser when you visit a website. They help websites remember your preferences, login status, and browsing behavior. Cookies are widely used to make websites work more efficiently and provide valuable information to website owners.',
-  },
+    content: 'Cookies are small text files stored on your device by your web browser when you visit a website. They help websites remember your preferences, login status, and browsing behavior. Cookies are widely used to make websites work more efficiently and provide valuable information to website owners.'},
   {
     icon: Sliders,
     title: 'Strictly Necessary Cookies',
-    content: 'These cookies are essential for the proper functioning of our platform. They enable core functionality such as security, network management, and account authentication. Without these cookies, our services cannot function properly. These cookies do not collect any personally identifiable information and are set automatically when you use our platform.',
-  },
+    content: 'These cookies are essential for the proper functioning of our platform. They enable core functionality such as security, network management, and account authentication. Without these cookies, our services cannot function properly. These cookies do not collect any personally identifiable information and are set automatically when you use our platform.'},
   {
     icon: BarChart3,
     title: 'Analytics Cookies',
-    content: 'We use analytics cookies to understand how visitors interact with our platform, measure the effectiveness of our marketing campaigns, and improve our services. These cookies collect aggregated information about page visits, time spent on pages, and navigation patterns. We use tools like Google Analytics and Mixpanel for this purpose.',
-  },
+    content: 'We use analytics cookies to understand how visitors interact with our platform, measure the effectiveness of our marketing campaigns, and improve our services. These cookies collect aggregated information about page visits, time spent on pages, and navigation patterns. We use tools like Google Analytics and Mixpanel for this purpose.'},
   {
     icon: Target,
     title: 'Marketing Cookies',
-    content: 'Marketing cookies are used to track visitors across websites to display relevant advertisements that are tailored to your interests. These cookies may be set by our advertising partners through our platform. They help us measure the effectiveness of our advertising campaigns and limit the number of times you see an ad.',
-  },
+    content: 'Marketing cookies are used to track visitors across websites to display relevant advertisements that are tailored to your interests. These cookies may be set by our advertising partners through our platform. They help us measure the effectiveness of our advertising campaigns and limit the number of times you see an ad.'},
   {
     icon: Settings,
     title: 'Managing Cookies',
-    content: 'You can control and manage cookies in your browser settings. Most browsers allow you to block or delete cookies, and you can set preferences for specific websites. However, please note that disabling certain cookies may affect the functionality of our platform. You can also use our cookie consent banner to customize your preferences when you first visit our site.',
-  },
+    content: 'You can control and manage cookies in your browser settings. Most browsers allow you to block or delete cookies, and you can set preferences for specific websites. However, please note that disabling certain cookies may affect the functionality of our platform. You can also use our cookie consent banner to customize your preferences when you first visit our site.'},
   {
     icon: Shield,
     title: 'Third-Party Cookies',
-    content: 'Some cookies are placed by third-party services that appear on our platform. These may include payment processors like Paystack and Stripe, analytics providers, and social media platforms. We do not control these third-party cookies. We recommend reviewing the privacy and cookie policies of these third parties for more information.',
-  },
+    content: 'Some cookies are placed by third-party services that appear on our platform. These may include payment processors like Paystack and Stripe, analytics providers, and social media platforms. We do not control these third-party cookies. We recommend reviewing the privacy and cookie policies of these third parties for more information.'},
   {
     icon: XCircle,
     title: 'How to Disable Cookies',
-    content: 'To disable cookies, follow the instructions provided by your browser: Chrome (Settings > Privacy and Security > Cookies), Firefox (Options > Privacy & Security > Cookies and Site Data), Safari (Preferences > Privacy > Cookies), or Edge (Settings > Site permissions > Cookies). On mobile devices, check your browser settings for similar options.',
-  },
+    content: 'To disable cookies, follow the instructions provided by your browser: Chrome (Settings > Privacy and Security > Cookies), Firefox (Options > Privacy & Security > Cookies and Site Data), Safari (Preferences > Privacy > Cookies), or Edge (Settings > Site permissions > Cookies). On mobile devices, check your browser settings for similar options.'},
 ];
 
 export default function CookiesPage() {

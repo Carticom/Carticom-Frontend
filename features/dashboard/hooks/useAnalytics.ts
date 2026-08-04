@@ -23,9 +23,6 @@ export function useAnalytics(storeId: string, period?: string) {
         ? conversionData.reduce((s, r) => s + (r.conversionRate || 0), 0) / conversionData.length
         : 0;
 
-      const trendPoints = (data: { period: string; value?: number }[], key: string) =>
-        data.map((d) => ({ date: d.period, value: d[key as keyof typeof d] as number || 0 }));
-
       return {
         id: '',
         storeId,
@@ -36,21 +33,17 @@ export function useAnalytics(storeId: string, period?: string) {
           customers: totalCustomers,
           products: 0,
           conversionRate: avgConversion,
-          averageOrderValue: totalOrders > 0 ? totalRevenue / totalOrders : 0,
-        },
+          averageOrderValue: totalOrders > 0 ? totalRevenue / totalOrders : 0},
         trends: {
           revenue: revenueData.map((r) => ({ date: r.period, value: r.revenue || 0 })),
           orders: ordersData.map((r) => ({ date: r.period, value: r.orders || 0 })),
-          customers: customersData.map((r) => ({ date: r.period, value: r.customers || 0 })),
-        },
+          customers: customersData.map((r) => ({ date: r.period, value: r.customers || 0 }))},
         topProducts: [],
         topCategories: [],
         metadata: {},
-        createdAt: new Date().toISOString(),
-      };
+        createdAt: new Date().toISOString()};
     },
-    enabled: !!storeId,
-  });
+    enabled: !!storeId});
 }
 
 export function useDashboardAnalytics(storeId: string) {

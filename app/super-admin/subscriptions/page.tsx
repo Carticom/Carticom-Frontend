@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import axiosInstance from '@/lib/axios';
+import { superAdminRepository } from '@/features/admin/repositories/admin.repository';
 import { LoadingState, EmptyState, ErrorState } from '@/components/dashboard/shared/StateComponents';
 import { Button } from '@/components/ui/button';
 import { Gift } from 'lucide-react';
@@ -27,8 +27,7 @@ function statusBadge(status: string) {
     EXPIRED: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
     CANCELLED: 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400',
     PENDING: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400',
-    TRIAL: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
-  };
+    TRIAL: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'};
   return map[status] ?? 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400';
 }
 
@@ -38,10 +37,9 @@ export default function SuperAdminSubscriptionsPage() {
   const { data: subscriptions, isLoading, error, refetch } = useQuery({
     queryKey: ['super-admin', 'subscriptions'],
     queryFn: async () => {
-      const res = await axiosInstance.get('/api/v1/super-admin/subscriptions');
-      return (res.data.data?.content ?? []) as Subscription[];
-    },
-  });
+      const page = await superAdminRepository.getSubscriptions<Subscription>();
+      return page?.content ?? [];
+    }});
 
   if (isLoading) return <LoadingState message="Loading subscriptions..." />;
   if (error) return <ErrorState onRetry={() => refetch()} />;

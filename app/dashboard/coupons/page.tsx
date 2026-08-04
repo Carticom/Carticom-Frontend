@@ -27,8 +27,7 @@ function defaultForm(): CreateCouponDto {
     minOrderAmount: undefined,
     maxUsageCount: undefined,
     expiresAt: undefined,
-    isActive: true,
-  };
+    isActive: true};
 }
 
 export default function CouponsPage() {
@@ -59,8 +58,7 @@ export default function CouponsPage() {
       minOrderAmount: coupon.minOrderAmount,
       maxUsageCount: coupon.maxUsageCount,
       expiresAt: coupon.expiresAt ? coupon.expiresAt.split('T')[0] : undefined,
-      isActive: coupon.isActive,
-    });
+      isActive: coupon.isActive});
     setFormError(null);
     setShowForm(true);
   }
