@@ -5,6 +5,7 @@ import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { QueryProvider } from "@/components/providers/QueryProvider";
 import { AuthGate } from "@/components/auth/AuthGate";
+import { Analytics } from "@/components/analytics/Analytics";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -56,6 +57,7 @@ export default function RootLayout({
             <AuthGate>
               {children}
             </AuthGate>
+            <Analytics />
             <Toaster
               position="top-right"
               richColors
