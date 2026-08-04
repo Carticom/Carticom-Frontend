@@ -8,6 +8,8 @@ import type {
   CreateStoreDto,
   UpdateStoreDto,
   StoreDto,
+  StorePaymentConfigDto,
+  SavePaymentCredentialsDto,
   CreateProductDto,
   ProductDto,
   WalletDto,
@@ -42,6 +44,17 @@ export const storeApi = {
   updateStatus: (id: string, status: string) =>
     axiosInstance.patch<ApiResponse<StoreDto>>(
       `${API_PREFIX}/stores/${id}/status?status=${status}`
+    ),
+
+  getPaymentConfig: (id: string) =>
+    axiosInstance.get<ApiResponse<StorePaymentConfigDto>>(
+      `${API_PREFIX}/stores/${id}/payment-config`
+    ),
+
+  savePaymentCredentials: (id: string, data: SavePaymentCredentialsDto) =>
+    axiosInstance.put<ApiResponse<StorePaymentConfigDto>>(
+      `${API_PREFIX}/stores/${id}/payment-config/credentials`,
+      data
     )};
 
 // ─── Product API ──────────────────────────────────────────────

@@ -154,8 +154,11 @@ export default function DashboardPage() {
             ) : (
               <div className="rounded-xl border border-gray-200 bg-white p-8 flex flex-col items-center justify-center text-center">
                 <BarChart3 className="h-10 w-10 text-gray-300 mb-3" />
-                <p className="text-sm text-gray-500 font-medium">Sales data coming soon</p>
-                <p className="text-xs text-gray-400 mt-1">Monthly analytics will appear here once you start selling</p>
+                <p className="text-sm text-gray-500 font-medium">No sales yet</p>
+                <p className="text-xs text-gray-400 mt-1 mb-4">Your monthly sales chart will appear here after your first order</p>
+                <Button asChild variant="outline" size="sm">
+                  <Link href="/storefront">View your storefront</Link>
+                </Button>
               </div>
             )}
           </div>
@@ -176,8 +179,11 @@ export default function DashboardPage() {
             ) : (
               <div className="rounded-xl border border-gray-200 bg-white p-8 flex flex-col items-center justify-center text-center">
                 <BarChart3 className="h-10 w-10 text-gray-300 mb-3" />
-                <p className="text-sm text-gray-500 font-medium">Revenue data coming soon</p>
-                <p className="text-xs text-gray-400 mt-1">Monthly revenue trends will appear here once you start selling</p>
+                <p className="text-sm text-gray-500 font-medium">No revenue yet</p>
+                <p className="text-xs text-gray-400 mt-1 mb-4">Revenue trends will appear here once your first payment is completed</p>
+                <Button asChild variant="outline" size="sm">
+                  <Link href="/dashboard/products">Add your first product</Link>
+                </Button>
               </div>
             )}
           </div>

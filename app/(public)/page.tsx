@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { Navbar } from '@/components/marketing/Navbar';
 import { HeroSection } from '@/components/marketing/HeroSection';
 import { FeaturesSection } from '@/components/marketing/FeaturesSection';
 import { WhyCarticom } from '@/components/marketing/WhyCarticom';
@@ -30,7 +29,6 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <main className="flex-1">
-      <Navbar />
       <HeroSection />
       <FeaturesSection />
       <WhyCarticom />

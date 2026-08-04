@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 import { usePayments } from '@/features/dashboard/hooks/usePayments';
 import { useCurrentStoreId } from '@/hooks/useCurrentStore';
 import { LoadingState, ErrorState } from '@/components/dashboard/shared/StateComponents';
+import { ProviderConnect } from '@/components/dashboard/payments/ProviderConnect';
 import type { PaymentDto } from '@/features/dashboard/types/payments.types';
 import { PaymentStatus } from '@/features/dashboard/types/payments.types';
 
@@ -89,17 +90,7 @@ export default function PaymentsPage() {
       </div>
 
       {/* Payment Methods */}
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Payment Methods</h2>
-        <div className="space-y-3">
-          {['Paystack', 'Flutterwave'].map((method) => (
-            <div key={method} className="flex items-center justify-between p-3 border border-gray-200 dark:border-gray-700 rounded-lg">
-              <span className="text-sm font-medium text-gray-900 dark:text-white">{method}</span>
-              <span className="text-xs px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full">Not Connected</span>
-            </div>
-          ))}
-        </div>
-      </div>
+      <ProviderConnect storeId={storeId} />
 
       {/* Transactions */}
       <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">

@@ -34,6 +34,10 @@ const sections = [
     title: 'International Data Transfers',
     content: 'Your information may be transferred to and processed in countries other than your own. We ensure appropriate safeguards are in place through standard contractual clauses and data processing agreements to protect your information in accordance with applicable data protection laws.'},
   {
+    icon: Shield,
+    title: 'Compliance with Nigerian Data Protection Law',
+    content: 'As a platform serving businesses across Africa and headquartered in Nigeria, Carticom processes personal data in line with the Nigeria Data Protection Act 2023 (NDPA) and the Nigeria Data Protection Regulation (NDPR). We act as a data controller for the account information you provide, and as a data processor for order and customer data you manage through your store. Our processors and third-party service providers are bound by data processing agreements that meet NDPA/NDPR and GDPR standards. Individuals in Nigeria may lodge a complaint with the Nigeria Data Protection Commission (NDPC) in addition to exercising the rights described above.'},
+  {
     icon: FileText,
     title: 'Changes to This Policy',
     content: 'We may update this Privacy Policy from time to time. We will notify you of any material changes by posting the new policy on this page and updating the "Last Updated" date. We encourage you to review this policy periodically for any updates.'},
@@ -94,11 +98,11 @@ export default function PrivacyPage() {
             If you have any questions about this Privacy Policy, please contact our Data Protection Officer.
           </p>
           <a
-            href="mailto:privacy@carticom.app"
+            href="mailto:privacy@carticom.ng"
             className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
           >
             <Mail className="w-4 h-4" />
-            privacy@carticom.app
+            privacy@carticom.ng
           </a>
         </motion.div>
       </Container>

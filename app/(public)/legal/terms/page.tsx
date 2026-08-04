@@ -16,7 +16,7 @@ const sections = [
   {
     icon: CreditCard,
     title: 'Payments & Fees',
-    content: 'Carticom charges transaction fees for processing payments through our platform. All fees are clearly displayed before you confirm a transaction. We use third-party payment processors to handle payments securely. You agree to pay all fees associated with your use of the platform. Fees are non-refundable except as explicitly stated in our refund policy. Currency conversion fees may apply for cross-border transactions.'},
+    content: 'Carticom does not charge commission on sales. Merchants pay only the fees charged by their chosen payment processor (such as Paystack or Flutterwave) plus the subscription fee for their Carticom plan, which is clearly displayed before you subscribe. All fees are non-refundable except as explicitly stated in our refund policy. Currency conversion fees may apply for cross-border transactions processed by the payment provider.'},
   {
     icon: AlertTriangle,
     title: 'Prohibited Activities',
@@ -24,7 +24,7 @@ const sections = [
   {
     icon: Scale,
     title: 'Dispute Resolution',
-    content: 'Carticom provides an escrow-based dispute resolution system to mediate conflicts between buyers and sellers. If a dispute arises, both parties agree to first attempt to resolve it through our internal dispute resolution process. If the dispute cannot be resolved internally, it shall be settled by binding arbitration in accordance with Nigerian law. The arbitration shall be conducted in English in Lagos, Nigeria.'},
+    content: 'If a dispute arises between you and another user or between you and Carticom, both parties agree to first attempt to resolve it through our support process. If the dispute cannot be resolved informally, it shall be settled by binding arbitration in accordance with Nigerian law, conducted in English in Lagos, Nigeria. Nothing in this section limits either party\'s right to seek injunctive or equitable relief.'},
   {
     icon: Ban,
     title: 'Termination',
@@ -91,11 +91,11 @@ export default function TermsPage() {
           <h2 className="text-xl font-semibold text-gray-900 mb-3">Questions About These Terms?</h2>
           <p className="text-gray-600 mb-4">Contact our legal team for clarification on any of our terms.</p>
           <a
-            href="mailto:legal@carticom.app"
+            href="mailto:legal@carticom.ng"
             className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
           >
             <FileText className="w-4 h-4" />
-            legal@carticom.app
+            legal@carticom.ng
           </a>
         </motion.div>
       </Container>

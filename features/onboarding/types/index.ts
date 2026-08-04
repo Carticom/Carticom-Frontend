@@ -38,6 +38,29 @@ export interface StoreDto {
   updatedAt: string;
 }
 
+// ─── Store Payment Config (merchant-connect) ─────────────────
+
+export interface StorePaymentConfigDto {
+  storeId: string;
+  virtualAccountNumber?: string;
+  virtualAccountName?: string;
+  virtualBankName?: string;
+  virtualAccountProvider?: string;
+  paystackConnected: boolean;
+  flutterwaveConnected: boolean;
+  activeProvider?: string;
+  paystackPublicKeyMasked?: string;
+  connectedAt?: string;
+}
+
+export interface SavePaymentCredentialsDto {
+  paystackSecretKey?: string;
+  paystackPublicKey?: string;
+  flutterwaveSecretKey?: string;
+  flutterwaveVerifyHash?: string;
+  activeProvider?: string;
+}
+
 export interface StoreDirectoryItem {
   id: string;
   name: string;
