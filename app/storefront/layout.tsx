@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ShoppingCart, Menu, X, Store } from 'lucide-react';
+import { ShoppingCart, User, Menu, X, Store } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Container } from '@/components/common/Container';
 import { cn } from '@/lib/utils';
@@ -112,6 +112,14 @@ export default function StorefrontLayout({
                 )}
               </Link>
 
+              <Link
+                href="/storefront/profile"
+                className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                aria-label="My account"
+              >
+                <User className="h-5 w-5" />
+              </Link>
+
               {isAuthenticated ? (
                 <Button variant="outline" size="sm" asChild>
                   <Link href="/dashboard">Dashboard</Link>
@@ -172,10 +180,10 @@ export default function StorefrontLayout({
               <Link href="/contact" className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
                 Contact
               </Link>
-              <Link href="/privacy" className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
+              <Link href="/legal/privacy" className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
                 Privacy
               </Link>
-              <Link href="/terms" className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
+              <Link href="/legal/terms" className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
                 Terms
               </Link>
             </div>
