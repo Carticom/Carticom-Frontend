@@ -56,7 +56,7 @@ export default function RegisterPage() {
   return (
     <AuthLayout
       title="Create your business account"
-      subtitle="Start your 14-day free trial. No credit card required."
+      subtitle="Start your 30-day free trial. No credit card required."
     >
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
         {/* Server Error */}

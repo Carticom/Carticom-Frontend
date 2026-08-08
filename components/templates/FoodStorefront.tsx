@@ -146,7 +146,7 @@ function StorySection() {
             <div className="w-12 h-0.5 bg-[#4a7c3f]" />
             <p className="text-gray-600 leading-relaxed">We partner directly with smallholder farms across Nigeria, Ghana, and Kenya to bring you the freshest organic produce. Every item is harvested at peak ripeness and delivered within 24 hours.</p>
             <p className="text-gray-500 leading-relaxed">Our commitment to sustainable agriculture means you get better-tasting food while supporting farming communities and protecting the environment.</p>
-            <Link href="#" className="inline-flex items-center gap-2 text-[#4a7c3f] font-medium border-b border-[#4a7c3f]/30 pb-1 hover:border-[#4a7c3f] transition-colors">
+            <Link href="/contact" className="inline-flex items-center gap-2 text-[#4a7c3f] font-medium border-b border-[#4a7c3f]/30 pb-1 hover:border-[#4a7c3f] transition-colors">
               Meet Our Farmers <ChevronRight className="h-4 w-4" />
             </Link>
           </FadeIn>

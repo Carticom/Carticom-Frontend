@@ -313,7 +313,7 @@ export function Pricing() {
                       }`}
                       asChild
                     >
-                      <a href={plan.name === 'Enterprise' ? 'mailto:sales@carticom.ng' : '#get-started'}>
+                      <a href={plan.name === 'Enterprise' ? 'mailto:sales@carticom.com' : '#get-started'}>
                         {plan.cta}
                         <ArrowRight className="h-3.5 w-3.5 ml-1" aria-hidden="true" />
                       </a>
@@ -348,11 +348,11 @@ export function Pricing() {
           className="mt-12 text-center"
         >
           <p className="text-sm text-gray-500">
-            All paid plans include a 14-day free trial. No credit card required.
+            All paid plans include a 30-day free trial. No credit card required.
           </p>
           <p className="text-sm text-gray-500 mt-1">
             Need a custom plan?{' '}
-            <a href="mailto:sales@carticom.ng" className="text-blue-600 hover:underline font-medium">
+            <a href="mailto:sales@carticom.com" className="text-blue-600 hover:underline font-medium">
               Contact our sales team
             </a>
           </p>

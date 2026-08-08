@@ -120,7 +120,7 @@ export default function PartnersPage() {
             Let us discuss how we can work together to drive commerce growth across Africa.
           </p>
           <a
-            href="mailto:partners@carticom.app"
+            href="mailto:partners@carticom.com"
             className="inline-flex items-center gap-2 px-6 py-3 bg-white text-blue-700 rounded-xl font-medium hover:bg-blue-50 transition-colors"
           >
             <ArrowRight className="w-4 h-4" />

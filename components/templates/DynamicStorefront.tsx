@@ -215,7 +215,7 @@ function ShowcaseDynamic({ products, onAddToCart, addingToCart, template }: {
 
         <FadeIn>
           <div className="text-center mt-14">
-            <Link href="#" className="inline-flex items-center gap-2 font-medium pb-1 hover:opacity-70 transition-opacity"
+            <Link href="/storefront" className="inline-flex items-center gap-2 font-medium pb-1 hover:opacity-70 transition-opacity"
               style={{ color: template.colors.text, borderBottomColor: template.colors.primary, borderBottomWidth: 1 }}>
               View All Products <ArrowRight className="h-4 w-4" />
             </Link>
@@ -252,7 +252,7 @@ function StorytellingDynamic({ template }: { template: TemplateConfig }) {
                 We believe in sustainable practices, ethical sourcing, and building lasting relationships
                 with our customers and community.
               </p>
-              <Link href="#" className="inline-flex items-center gap-2 text-sm font-medium"
+              <Link href="/contact" className="inline-flex items-center gap-2 text-sm font-medium"
                 style={{ color: template.colors.primary }}>
                 Read More <ChevronRight className="h-4 w-4" />
               </Link>

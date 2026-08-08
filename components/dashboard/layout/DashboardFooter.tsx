@@ -8,9 +8,9 @@ export function DashboardFooter() {
         <div className="flex items-center gap-4">
           <span>Version 1.0.0</span>
           <span className="hidden sm:inline">|</span>
-          <Link href="/privacy" className="hover:text-gray-700 dark:hover:text-gray-200">Privacy</Link>
-          <Link href="/terms" className="hover:text-gray-700 dark:hover:text-gray-200">Terms</Link>
-          <Link href="/support" className="hover:text-gray-700 dark:hover:text-gray-200">Support</Link>
+          <Link href="/legal/privacy" className="hover:text-gray-700 dark:hover:text-gray-200">Privacy</Link>
+          <Link href="/legal/terms" className="hover:text-gray-700 dark:hover:text-gray-200">Terms</Link>
+          <Link href="/dashboard/support" className="hover:text-gray-700 dark:hover:text-gray-200">Support</Link>
         </div>
       </div>
     </footer>

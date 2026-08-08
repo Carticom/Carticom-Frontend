@@ -276,7 +276,7 @@ function ShowcaseSection({ products, onAddToCart, addingToCart }: {
           className="text-center mt-14"
         >
           <Link
-            href="#"
+            href="/storefront"
             className="inline-flex items-center gap-2 text-[#1a1a2e] font-medium border-b border-[#1a1a2e] pb-1 hover:text-[#c9a84c] hover:border-[#c9a84c] transition-colors"
           >
             View All Products
@@ -331,7 +331,7 @@ function StorytellingSection() {
               of trust, fair wages, and shared passion for exceptional quality.
             </p>
             <Link
-              href="#"
+              href="/contact"
               className="inline-flex items-center gap-2 text-[#c9a84c] font-medium border-b border-[rgba(201,168,76,0.3)] pb-1 hover:border-[#c9a84c] transition-colors"
             >
               Discover Our Story

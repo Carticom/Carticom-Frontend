@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = "https://carticom.ng";
+  const base = "https://carticom.vercel.app";
   const now = new Date();
 
   const staticRoutes = [
@@ -19,16 +19,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/careers",
     "/press",
     "/partners",
-    "/solutions/storefront",
-    "/solutions/inventory",
+    "/solutions/ecommerce",
+    "/solutions/restaurants",
+    "/solutions/retail",
+    "/solutions/services",
     "/solutions/payments",
-    "/solutions/ai",
-    "/solutions/marketing",
-    "/solutions/finance",
+    "/solutions/global",
     "/legal/privacy",
     "/legal/terms",
     "/legal/cookies",
-    "/legal/refunds",
+    "/legal/gdpr",
   ];
 
   return staticRoutes.map((route) => ({

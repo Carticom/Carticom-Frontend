@@ -426,7 +426,7 @@ export default function FeaturesPage() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto"
             >
-              Join 50,000+ African businesses already using Carticom. Start your 14-day free trial today. No credit card required.
+              Join 50,000+ African businesses already using Carticom. Start your 30-day free trial today. No credit card required.
             </motion.p>
 
             <motion.div
@@ -443,7 +443,7 @@ export default function FeaturesPage() {
                 </a>
               </Button>
               <Button size="lg" variant="outline" className="w-full sm:w-auto gap-2 h-14 px-8 text-base bg-transparent border-white text-white hover:bg-white/10 rounded-2xl" asChild>
-                <a href="mailto:sales@carticom.ng">
+                <a href="mailto:sales@carticom.com">
                   Contact Sales
                 </a>
               </Button>
@@ -456,7 +456,7 @@ export default function FeaturesPage() {
               transition={{ duration: 0.5, delay: 0.4 }}
               className="flex flex-wrap items-center justify-center gap-6 text-sm text-blue-100"
             >
-              {['No credit card required', '14-day free trial', 'Cancel anytime', '24/7 support'].map((item) => (
+              {['No credit card required', '30-day free trial', 'Cancel anytime', '24/7 support'].map((item) => (
                 <div key={item} className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4" />
                   <span>{item}</span>

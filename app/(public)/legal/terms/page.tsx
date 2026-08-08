@@ -91,11 +91,11 @@ export default function TermsPage() {
           <h2 className="text-xl font-semibold text-gray-900 mb-3">Questions About These Terms?</h2>
           <p className="text-gray-600 mb-4">Contact our legal team for clarification on any of our terms.</p>
           <a
-            href="mailto:legal@carticom.ng"
+            href="mailto:legal@carticom.com"
             className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
           >
             <FileText className="w-4 h-4" />
-            legal@carticom.ng
+            legal@carticom.com
           </a>
         </motion.div>
       </Container>

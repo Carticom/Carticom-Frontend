@@ -106,11 +106,11 @@ export default function PressPage() {
             For press and media inquiries, please reach out to our communications team.
           </p>
           <a
-            href="mailto:press@carticom.app"
+            href="mailto:press@carticom.com"
             className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition-colors"
           >
             <Mail className="w-4 h-4" />
-            press@carticom.app
+            press@carticom.com
           </a>
         </motion.div>
       </Container>

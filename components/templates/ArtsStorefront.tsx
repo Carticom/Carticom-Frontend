@@ -90,7 +90,7 @@ function StorySection() {
             <div className="w-12 h-0.5 bg-[#8b5e3c]" />
             <p className="text-gray-600 leading-relaxed">We connect you with master artisans from across Africa — from beadworkers in Lagos to ceramicists in Nairobi. Every item is handmade, one of a kind, and steeped in cultural heritage.</p>
             <p className="text-gray-500 leading-relaxed">By supporting our artisans, you&apos;re preserving traditional crafts, empowering local communities, and bringing home a piece of Africa&apos;s soul.</p>
-            <Link href="#" className="inline-flex items-center gap-2 text-[#8b5e3c] font-medium border-b border-[#8b5e3c]/30 pb-1 hover:border-[#8b5e3c] transition-colors">
+            <Link href="/contact" className="inline-flex items-center gap-2 text-[#8b5e3c] font-medium border-b border-[#8b5e3c]/30 pb-1 hover:border-[#8b5e3c] transition-colors">
               Meet Our Artisans <ChevronRight className="h-4 w-4" />
             </Link>
           </FadeIn>

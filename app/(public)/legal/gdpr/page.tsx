@@ -93,11 +93,11 @@ export default function GdprPage() {
             To exercise your GDPR rights or for any data protection inquiries, contact our Data Protection Officer.
           </p>
           <a
-            href="mailto:dpo@carticom.app"
+            href="mailto:dpo@carticom.com"
             className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
           >
             <ShieldCheck className="w-4 h-4" />
-            dpo@carticom.app
+            dpo@carticom.com
           </a>
         </motion.div>
       </Container>

@@ -275,7 +275,7 @@ export default function AboutPage() {
             </h2>
             <p className="mt-4 text-lg text-gray-600">
               Join 50,000+ merchants across Africa who trust Carticom to power their commerce. Start
-              your 14-day free trial today — no credit card required.
+              your 30-day free trial today — no credit card required.
             </p>
             <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Button

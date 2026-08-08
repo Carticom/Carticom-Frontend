@@ -51,11 +51,9 @@ const ADMIN_ITEMS = [
   { id: 'orders', label: 'Orders', icon: ShoppingCart, href: '/admin/orders' },
   { id: 'payments', label: 'Payments', icon: DollarSign, href: '/admin/payments' },
   { id: 'disputes', label: 'Disputes', icon: Shield, href: '/admin/disputes' },
-  { id: 'settlements', label: 'Settlements', icon: CreditCard, href: '/admin/settlements' },
+  { id: 'disputes', label: 'Disputes', icon: Shield, href: '/admin/disputes' },
   { id: 'analytics', label: 'Analytics', icon: BarChart3, href: '/admin/analytics' },
   { id: 'subscriptions', label: 'Subscriptions', icon: Crown, href: '/admin/subscriptions' },
-  { id: 'wallets', label: 'Wallets', icon: Wallet, href: '/admin/wallets' },
-  { id: 'audit', label: 'Audit Logs', icon: Headphones, href: '/admin/audit-logs' },
 ];
 
 const SUPER_ADMIN_ITEMS = [
@@ -66,7 +64,6 @@ const SUPER_ADMIN_ITEMS = [
   { id: 'subscriptions', label: 'Subscriptions', icon: DollarSign, href: '/super-admin/subscriptions' },
   { id: 'settings', label: 'Settings', icon: Settings, href: '/super-admin/settings' },
   { id: 'custom-solutions', label: 'Custom Solutions', icon: Package, href: '/super-admin/custom-solutions' },
-  { id: 'waitlist', label: 'Waitlist', icon: Users, href: '/super-admin/waitlist' },
   { id: 'payments', label: 'Payments', icon: CreditCard, href: '/super-admin/payments' },
   { id: 'audit', label: 'Audit Logs', icon: Headphones, href: '/super-admin/audit-logs' },
 ];
@@ -91,12 +88,12 @@ const NAV_GROUPS: Record<string, { label: string; keys: string[] }[]> = {
     { label: 'Menu', keys: ['dashboard', 'orders', 'products', 'customers', 'categories'] },
   ],
   [UserRole.ADMIN]: [
-    { label: 'Menu', keys: ['dashboard', 'users', 'stores', 'orders', 'payments', 'disputes', 'settlements'] },
-    { label: 'Insights', keys: ['analytics', 'subscriptions', 'wallets', 'audit'] },
+    { label: 'Menu', keys: ['dashboard', 'users', 'stores', 'orders', 'payments', 'disputes'] },
+    { label: 'Insights', keys: ['analytics', 'subscriptions'] },
   ],
   [UserRole.SUPER_ADMIN]: [
     { label: 'Menu', keys: ['dashboard', 'users', 'stores', 'plans', 'subscriptions', 'settings'] },
-    { label: 'Manage', keys: ['custom-solutions', 'waitlist', 'payments', 'audit'] },
+    { label: 'Manage', keys: ['custom-solutions', 'payments', 'audit'] },
   ]};
 
 function getNavGroups(role: string | undefined) {

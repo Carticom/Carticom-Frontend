@@ -79,7 +79,7 @@ export function AIStep({ onNext, onBack }: AIStepProps) {
 
         <div className="p-4 rounded-lg border border-blue-200 dark:border-blue-900 bg-blue-50 dark:bg-blue-900/20">
           <p className="text-sm text-blue-800 dark:text-blue-300">
-            💡 <strong>Tip:</strong> Carticom AI is available on Pro and Enterprise plans. You can try it free for 14 days!
+            💡 <strong>Tip:</strong> Carticom AI is available on Pro and Enterprise plans. You can try it free for 30 days!
           </p>
         </div>
       </div>

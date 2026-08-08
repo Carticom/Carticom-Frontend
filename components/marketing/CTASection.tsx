@@ -52,7 +52,7 @@ export function CTASection() {
             </Button>
           </div>
 
-          <p className="text-xs text-blue-700/80">Free 14-day trial · No credit card · Cancel anytime</p>
+          <p className="text-xs text-blue-700/80">Free 30-day trial · No credit card · Cancel anytime</p>
         </motion.div>
       </div>
     </section>

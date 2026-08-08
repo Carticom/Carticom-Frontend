@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
@@ -31,7 +32,6 @@ const FOOTER_LINKS = {
     { label: 'SDKs', href: '/docs' },
     { label: 'Webhooks', href: '/docs' },
     { label: 'Changelog', href: '/docs' },
-    { label: 'Status', href: '#' },
   ],
   Legal: [
     { label: 'Privacy Policy', href: '/legal/privacy' },
@@ -42,6 +42,7 @@ const FOOTER_LINKS = {
   ]};
 
 export function FooterSection() {
+  const [newsletterMessage, setNewsletterMessage] = useState('');
   return (
     <footer className="bg-gray-900 border-t border-gray-800">
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-16">
@@ -85,12 +86,17 @@ export function FooterSection() {
             <Link href="/legal/terms" className="hover:text-gray-400">Terms</Link>
             <Link href="/legal/cookies" className="hover:text-gray-400">Cookies</Link>
           </div>
-          <form onSubmit={(e) => { e.preventDefault(); alert('Newsletter subscription coming soon!'); }} className="flex items-center gap-2">
-            <input type="email" placeholder="Join newsletter" className="px-3 py-2 rounded-lg bg-gray-800 border border-gray-700 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-blue-500 w-40" required />
-            <button type="submit" className="px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium">
-              <ArrowRight className="h-4 w-4" />
-            </button>
-          </form>
+          <div className="flex flex-col items-center gap-2">
+            <form onSubmit={(e) => { e.preventDefault(); setNewsletterMessage('Newsletter subscription coming soon — stay tuned!'); }} className="flex items-center gap-2">
+              <input type="email" placeholder="Join newsletter" className="px-3 py-2 rounded-lg bg-gray-800 border border-gray-700 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-blue-500 w-40" required />
+              <button type="submit" className="px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium">
+                <ArrowRight className="h-4 w-4" />
+              </button>
+            </form>
+            {newsletterMessage && (
+              <p className="text-xs text-gray-500">{newsletterMessage}</p>
+            )}
+          </div>
         </div>
       </div>
     </footer>

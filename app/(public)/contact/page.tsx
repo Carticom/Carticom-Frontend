@@ -6,7 +6,7 @@ import { Mail, Phone, MapPin, MessageSquare, Send, Sparkles } from 'lucide-react
 import { Button } from '@/components/ui/button';
 
 const channels = [
-  { icon: Mail, label: 'Email', value: 'hello@carticom.ng', href: 'mailto:hello@carticom.ng' },
+  { icon: Mail, label: 'Email', value: 'hello@carticom.com', href: 'mailto:hello@carticom.com' },
   { icon: MessageSquare, label: 'Live Chat', value: 'Available 24/7', href: '#' },
   { icon: Phone, label: 'Phone', value: '+234 800 000 0000', href: 'tel:+2348000000000' },
   { icon: MapPin, label: 'Office', value: 'Lagos, Nigeria', href: '#' },

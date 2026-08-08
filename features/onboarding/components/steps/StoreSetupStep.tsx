@@ -16,7 +16,7 @@ interface StoreSetupStepProps {
 }
 
 export function StoreSetupStep({ onNext, onBack, store }: StoreSetupStepProps) {
-  const storeUrl = store?.slug ? `carticom.app/store/${store.slug}` : 'Store URL will be generated after creation';
+  const storeUrl = store?.slug ? `carticom.vercel.app/store/${store.slug}` : 'Store URL will be generated after creation';
 
   return (
     <motion.div

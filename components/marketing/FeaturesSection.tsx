@@ -76,10 +76,30 @@ function FeatureCard({ feature, index }: { feature: typeof FEATURES[0]; index: n
         </div>
       </div>
       <div className={cn(isReversed && 'lg:order-1')}>
-        <div className={cn('aspect-[4/3] rounded-3xl border-2', feature.borderColor, feature.bgColor, 'flex items-center justify-center shadow-sm')}>
-          <div className="text-center p-8">
-            <feature.icon className="h-12 w-12 text-gray-300 mx-auto mb-3" />
-            <p className="text-sm text-gray-400">{feature.title} screenshot placeholder</p>
+        <div className={cn('aspect-[4/3] rounded-3xl border-2 overflow-hidden', feature.borderColor, feature.bgColor, 'shadow-sm')}>
+          <div className="flex h-full flex-col">
+            <div className="flex items-center gap-1.5 border-b border-white/70 bg-white/70 px-4 py-3">
+              <span className="h-2.5 w-2.5 rounded-full bg-gray-200" />
+              <span className="h-2.5 w-2.5 rounded-full bg-gray-200" />
+              <span className="h-2.5 w-2.5 rounded-full bg-gray-200" />
+              <span className="ml-3 text-xs font-medium text-gray-500 truncate">{feature.title}</span>
+            </div>
+            <div className="flex flex-1 flex-col justify-center gap-4 p-6">
+              <feature.icon className={cn('h-10 w-10 self-center', feature.color.includes('blue') ? 'text-blue-300' : feature.color.includes('amber') ? 'text-amber-300' : feature.color.includes('violet') ? 'text-violet-300' : feature.color.includes('rose') ? 'text-rose-300' : feature.color.includes('cyan') ? 'text-cyan-300' : feature.color.includes('purple') ? 'text-purple-300' : feature.color.includes('orange') ? 'text-orange-300' : 'text-gray-300')} />
+              <div className="grid grid-cols-3 gap-2">
+                {[0, 1, 2].map((i) => (
+                  <div key={i} className="rounded-lg bg-white/80 h-14 flex items-end p-2">
+                    <div className={cn('w-full h-6 rounded-sm bg-gradient-to-t opacity-80', feature.color)} style={{ height: `${[70, 45, 90][i]}%` }} />
+                  </div>
+                ))}
+              </div>
+              <div className="space-y-2">
+                {[90, 65, 80].map((w, i) => (
+                  <div key={i} className="h-2 rounded-full bg-white/80" style={{ width: `${w}%` }} />
+                ))}
+              </div>
+              <div className={cn('mx-auto h-1 w-2/3 rounded-full bg-gradient-to-r opacity-70', feature.color)} />
+            </div>
           </div>
         </div>
       </div>

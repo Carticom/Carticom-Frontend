@@ -87,11 +87,11 @@ export default function CookiesPage() {
           <h2 className="text-xl font-semibold text-gray-900 mb-3">Cookie Preferences</h2>
           <p className="text-gray-600 mb-4">You can update your cookie preferences at any time through your account settings.</p>
           <a
-            href="mailto:privacy@carticom.app"
+            href="mailto:privacy@carticom.com"
             className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
           >
             <Cookie className="w-4 h-4" />
-            privacy@carticom.app
+            privacy@carticom.com
           </a>
         </motion.div>
       </Container>

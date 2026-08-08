@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/dashboard", "/storefront", "/store/", "/guest-checkout"],
     },
-    sitemap: "https://carticom.ng/sitemap.xml",
+    sitemap: "https://carticom.vercel.app/sitemap.xml",
   };
 }

@@ -3,7 +3,6 @@
 import { motion } from 'framer-motion';
 import { Container } from '@/components/common/Container';
 import { BookOpen, Code, Terminal, Server, Layers, Lock, Zap, Globe } from 'lucide-react';
-import Link from 'next/link';
 
 const docsCategories = [
   {
@@ -100,12 +99,9 @@ export default function DocsPage() {
               <ul className="space-y-2">
                 {category.links.map((link) => (
                   <li key={link}>
-                    <Link
-                      href="#"
-                      className="text-sm text-blue-600 hover:text-blue-700 hover:underline"
-                    >
-                      {link}
-                    </Link>
+                    <span className="text-sm text-gray-400 cursor-default">
+                      {link} — coming soon
+                    </span>
                   </li>
                 ))}
               </ul>

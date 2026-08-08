@@ -294,7 +294,7 @@ export default function EcommercePage() {
                 </a>
               </Button>
               <Button size="lg" variant="outline" className="gap-2 px-8 py-4 text-lg bg-transparent border-white text-white hover:bg-white/10 rounded-2xl" asChild>
-                <a href="mailto:sales@carticom.ng">
+                <a href="mailto:sales@carticom.com">
                   Talk to Sales
                 </a>
               </Button>
@@ -306,7 +306,7 @@ export default function EcommercePage() {
               transition={{ duration: 0.5, delay: 0.4 }}
               className="flex flex-wrap items-center justify-center gap-6 text-sm text-blue-100 mt-10"
             >
-              {['No credit card required', '14-day free trial', 'Cancel anytime', '24/7 support'].map((item) => (
+              {['No credit card required', '30-day free trial', 'Cancel anytime', '24/7 support'].map((item) => (
                 <div key={item} className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4" aria-hidden="true" />
                   <span>{item}</span>

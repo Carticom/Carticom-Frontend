@@ -83,20 +83,18 @@ export function DynamicNavbar() {
       { href: '/admin/users', label: 'Users' },
       { href: '/admin/stores', label: 'Stores' },
       { href: '/admin/subscriptions', label: 'Subscriptions' },
-      { href: '/admin/reports', label: 'Reports' },
+      { href: '/admin/analytics', label: 'Analytics' },
     ],
     SUPER_ADMIN: [
       { href: '/super-admin/dashboard', label: 'Dashboard' },
       { href: '/super-admin/users', label: 'Users' },
       { href: '/super-admin/stores', label: 'Stores' },
-      { href: '/super-admin/platforms', label: 'Platforms' },
-      { href: '/super-admin/logs', label: 'Logs' },
+      { href: '/super-admin/plans', label: 'Plans' },
+      { href: '/super-admin/audit-logs', label: 'Audit Logs' },
     ],
     CUSTOMER: [
       { href: '/storefront', label: 'My Storefront' },
       { href: '/storefront/orders', label: 'Orders' },
-      { href: '/storefront/wishlist', label: 'Wishlist' },
-      { href: '/storefront/support', label: 'Support' },
     ]};
 
   const roleRedirectMap: Record<string, string> = {
@@ -204,36 +202,24 @@ export function DynamicNavbar() {
                     {user?.role === 'STAFF' && (
                       <>
                         <DropdownMenuItem asChild>
-                          <Link href="/staff/profile">My Profile</Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                          <Link href="/staff/support">Support</Link>
+                          <Link href="/staff/dashboard">My Dashboard</Link>
                         </DropdownMenuItem>
                       </>
                     )}
                     {user?.role === 'ADMIN' && (
                       <>
                         <DropdownMenuItem asChild>
-                          <Link href="/admin/profile">My Profile</Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                          <Link href="/admin/settings">Platform Settings</Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                          <Link href="/admin/support">Support</Link>
+                          <Link href="/admin/dashboard">My Dashboard</Link>
                         </DropdownMenuItem>
                       </>
                     )}
                     {user?.role === 'SUPER_ADMIN' && (
                       <>
                         <DropdownMenuItem asChild>
-                          <Link href="/super-admin/profile">My Profile</Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
                           <Link href="/super-admin/settings">System Settings</Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild>
-                          <Link href="/super-admin/logs">Audit Logs</Link>
+                          <Link href="/super-admin/audit-logs">Audit Logs</Link>
                         </DropdownMenuItem>
                       </>
                     )}
@@ -318,18 +304,18 @@ export function DynamicNavbar() {
                         </Link>
                       )}
                       {user?.role === 'STAFF' && (
-                        <Link href="/staff/profile" className="text-center text-sm font-medium text-gray-700 hover:text-gray-900 px-4 py-3 rounded-xl hover:bg-gray-50 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
-                          My Profile
+                        <Link href="/staff/dashboard" className="text-center text-sm font-medium text-gray-700 hover:text-gray-900 px-4 py-3 rounded-xl hover:bg-gray-50 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
+                          My Dashboard
                         </Link>
                       )}
                       {user?.role === 'ADMIN' && (
-                        <Link href="/admin/profile" className="text-center text-sm font-medium text-gray-700 hover:text-gray-900 px-4 py-3 rounded-xl hover:bg-gray-50 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
-                          My Profile
+                        <Link href="/admin/dashboard" className="text-center text-sm font-medium text-gray-700 hover:text-gray-900 px-4 py-3 rounded-xl hover:bg-gray-50 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
+                          My Dashboard
                         </Link>
                       )}
                       {user?.role === 'SUPER_ADMIN' && (
-                        <Link href="/super-admin/profile" className="text-center text-sm font-medium text-gray-700 hover:text-gray-900 px-4 py-3 rounded-xl hover:bg-gray-50 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
-                          My Profile
+                        <Link href="/super-admin/settings" className="text-center text-sm font-medium text-gray-700 hover:text-gray-900 px-4 py-3 rounded-xl hover:bg-gray-50 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
+                          System Settings
                         </Link>
                       )}
                       {user?.role === 'CUSTOMER' && (

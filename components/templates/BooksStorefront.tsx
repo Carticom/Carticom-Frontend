@@ -117,7 +117,7 @@ function ShowcaseSection({ products, onAddToCart, addingToCart }: { products: Pr
           ))}
         </div>
         <FadeIn className="text-center mt-12">
-          <Link href="#" className="inline-flex items-center gap-2 text-[#1c1917] font-medium border-b border-[#1c1917] pb-1 hover:text-gray-600 hover:border-gray-400 transition-colors">
+          <Link href="/storefront" className="inline-flex items-center gap-2 text-[#1c1917] font-medium border-b border-[#1c1917] pb-1 hover:text-gray-600 hover:border-gray-400 transition-colors">
             Browse All Titles <ArrowRight className="h-4 w-4" />
           </Link>
         </FadeIn>

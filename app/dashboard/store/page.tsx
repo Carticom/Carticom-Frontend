@@ -22,15 +22,19 @@ export default function StorePage() {
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [editing, setEditing] = useState(false);
+const [editing, setEditing] = useState(false);
   const [publishing, setPublishing] = useState(false);
+  const [seoTitle, setSeoTitle] = useState('');
+  const [seoDesc, setSeoDesc] = useState('');
 
   const [syncedStore, setSyncedStore] = useState<typeof store>(null);
   if (store !== syncedStore) {
     setSyncedStore(store);
-    if (store) {
+if (store) {
       setName(store.name ?? '');
       setDescription(store.description ?? '');
+      setSeoTitle(store.name ?? '');
+      setSeoDesc(store.description ?? '');
     }
   }
 
@@ -323,23 +327,47 @@ export default function StorePage() {
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">SEO & Preview</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4">
-              <div>
+<div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">SEO Title</label>
-                <input type="text" defaultValue={store.name} className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white" placeholder="Store SEO title" />
+                <input
+                  type="text"
+                  value={seoTitle}
+                  onChange={(e) => setSeoTitle(e.target.value)}
+                  maxLength={60}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  placeholder="Store SEO title"
+                />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">SEO Description</label>
-                <textarea className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white" rows={3} placeholder="Store SEO description" defaultValue={store.description ?? ''} />
+                <textarea
+                  value={seoDesc}
+                  onChange={(e) => setSeoDesc(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  rows={3}
+                  placeholder="Store SEO description"
+                />
               </div>
-              <button className="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">
-                Save SEO
-              </button>
+              <div>
+                <button
+                  type="button"
+                  disabled
+                  title="Search engine metadata publishing is coming soon — your store name and description are used automatically."
+                  className="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Save SEO
+                </button>
+                <p className="text-xs text-gray-500 mt-2">
+                  Your storefront already publishes your store name and description for search engines. Full SEO
+                  customization is coming soon.
+                </p>
+              </div>
             </div>
             <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800/50">
               <p className="text-xs font-medium text-gray-500 uppercase mb-2">Google Preview</p>
-              <p className="text-sm text-blue-700 dark:text-blue-400 truncate">{store.name} — Carticom</p>
+              <p className="text-sm text-blue-700 dark:text-blue-400 truncate">{seoTitle || store.name} — Carticom</p>
               <p className="text-xs text-green-700 dark:text-green-400 truncate">{storefrontUrl}</p>
-              <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 line-clamp-2">{store.description || 'Shop on Carticom'}</p>
+              <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 line-clamp-2">{seoDesc || store.description || 'Shop on Carticom'}</p>
             </div>
           </div>
         </div>

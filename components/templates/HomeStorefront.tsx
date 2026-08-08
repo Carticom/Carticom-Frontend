@@ -150,7 +150,7 @@ function StorySection() {
             <div className="w-12 h-0.5 bg-[#b45309]" />
             <p className="text-gray-600 leading-relaxed">We believe your home should be a reflection of who you are. That&apos;s why we curate pieces that blend timeless craftsmanship with modern comfort, sourced from artisans around the world.</p>
             <p className="text-gray-500 leading-relaxed">From handwoven textiles in Ghana to hand-carved wooden furniture in Nigeria, each piece brings a unique story into your home.</p>
-            <Link href="#" className="inline-flex items-center gap-2 text-[#b45309] font-medium border-b border-[#b45309]/30 pb-1 hover:border-[#b45309] transition-colors">Read Our Story <ChevronRight className="h-4 w-4" /></Link>
+            <Link href="/contact" className="inline-flex items-center gap-2 text-[#b45309] font-medium border-b border-[#b45309]/30 pb-1 hover:border-[#b45309] transition-colors">Read Our Story <ChevronRight className="h-4 w-4" /></Link>
           </FadeIn>
         </div>
       </div>

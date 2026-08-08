@@ -24,7 +24,7 @@ const sections = [
   {
     icon: UserCheck,
     title: 'Your Rights',
-    content: 'Depending on your location, you may have the right to access, correct, update, or request deletion of your personal information. You may also have the right to object to or restrict certain processing of your data, and the right to data portability. To exercise these rights, please contact us at privacy@carticom.app. We will respond to your request within 30 days.'},
+    content: 'Depending on your location, you may have the right to access, correct, update, or request deletion of your personal information. You may also have the right to object to or restrict certain processing of your data, and the right to data portability. To exercise these rights, please contact us at privacy@carticom.com. We will respond to your request within 30 days.'},
   {
     icon: Mail,
     title: 'Communications',
@@ -98,11 +98,11 @@ export default function PrivacyPage() {
             If you have any questions about this Privacy Policy, please contact our Data Protection Officer.
           </p>
           <a
-            href="mailto:privacy@carticom.ng"
+            href="mailto:privacy@carticom.com"
             className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
           >
             <Mail className="w-4 h-4" />
-            privacy@carticom.ng
+            privacy@carticom.com
           </a>
         </motion.div>
       </Container>

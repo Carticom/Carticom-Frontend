@@ -17,7 +17,7 @@ const faqs = [
     answer: 'Yes! Our AI automation features allow you to sell, support customers, and track orders directly through WhatsApp Business. You can automate responses, send order updates, and even process payments via WhatsApp.'},
   {
     question: 'Is there a free trial?',
-    answer: 'Yes, all plans come with a 14-day free trial. No credit card is required to start. You can explore all features and decide which plan works best for your business before committing.'},
+    answer: 'Yes, all plans come with a 30-day free trial. No credit card is required to start. You can explore all features and decide which plan works best for your business before committing.'},
   {
     question: 'How do I migrate from my current platform?',
     answer: 'We offer free migration assistance for all new customers. Our team will help you transfer your products, customers, and order history from platforms like Shopify, WooCommerce, or custom solutions. Most migrations are completed within 3-5 business days.'},
@@ -130,7 +130,7 @@ export function FAQ() {
             Still have questions?
           </p>
           <a
-            href="mailto:support@carticom.ng"
+            href="mailto:support@carticom.com"
             className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
           >
             Contact our support team
