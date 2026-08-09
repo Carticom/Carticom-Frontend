@@ -1,5 +1,5 @@
 import axiosInstance, { extractErrorMessage } from '@/lib/axios';
-import type { BusinessOwnerDashboardDTO, AnalyticsResponseDTO, WalletResponseDTO, WalletTransactionResponseDTO, WithdrawalResponseDTO } from '../types';
+import type { BusinessOwnerDashboardDTO, AnalyticsResponseDTO, WalletResponseDTO, WalletTransactionResponseDTO, WithdrawalResponseDTO, SettlementDTO } from '../types';
 
 class BusinessOwnerService {
   async getDashboard(): Promise<BusinessOwnerDashboardDTO> {
@@ -117,6 +117,33 @@ class BusinessOwnerService {
     try {
       const response = await axiosInstance.get('/api/v1/merchant/trust');
       return response.data?.data ?? response.data;
+    } catch (error) {
+      throw new Error(extractErrorMessage(error));
+    }
+  }
+
+  async getSettlements(storeId: string, page = 0, size = 20): Promise<SettlementDTO[]> {
+    try {
+      const response = await axiosInstance.get(`/api/v1/settlements?storeId=${storeId}&page=${page}&size=${size}`);
+      return response.data?.data?.content ?? response.data?.data ?? response.data ?? [];
+    } catch (error) {
+      throw new Error(extractErrorMessage(error));
+    }
+  }
+
+  async releaseSettlement(orderId: string): Promise<SettlementDTO> {
+    try {
+      const response = await axiosInstance.post(`/api/v1/settlements/release/${orderId}`);
+      return response.data?.data ?? response.data;
+    } catch (error) {
+      throw new Error(extractErrorMessage(error));
+    }
+  }
+
+  async refundSettlement(orderId: string): Promise<SettlementDTO | null> {
+    try {
+      const response = await axiosInstance.post(`/api/v1/settlements/refund/${orderId}`);
+      return response.data?.data ?? response.data ?? null;
     } catch (error) {
       throw new Error(extractErrorMessage(error));
     }

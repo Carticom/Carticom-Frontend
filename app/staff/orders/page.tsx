@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { useCurrentStoreId } from '@/hooks/useCurrentStore';
 import { useOrders, useUpdateOrderStatus } from '@/features/dashboard/hooks/useOrders';
 import { useAuthStore } from '@/features/auth/store/auth.store';
@@ -145,7 +146,14 @@ export default function StaffOrdersPage() {
                   transition={{ delay: idx * 0.03 }}
                   className="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50"
                 >
-                  <td className="py-3 px-4 font-mono text-xs text-gray-900 dark:text-white">#{order.id.slice(0, 8)}</td>
+                  <td className="py-3 px-4">
+                    <Link
+                      href={`/staff/orders/${order.id}`}
+                      className="font-mono text-xs text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 hover:underline"
+                    >
+                      #{order.id.slice(0, 8)}
+                    </Link>
+                  </td>
                   <td className="py-3 px-4 text-gray-900 dark:text-white">{order.customerName}</td>
                   <td className="py-3 px-4 text-gray-600 dark:text-gray-400">{order.items.length}</td>
                   <td className="py-3 px-4 text-gray-900 dark:text-white font-medium">{formatCurrency(order.total)}</td>

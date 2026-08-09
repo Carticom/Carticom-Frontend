@@ -1,6 +1,7 @@
 'use client';
 
 import { useCurrentStoreId } from '@/hooks/useCurrentStore';
+import Link from 'next/link';
 import Image from 'next/image';
 import { useProductsByStore, useUpdateProduct } from '@/features/dashboard/hooks/useProducts';
 import { useAuthStore } from '@/features/auth/store/auth.store';
@@ -93,7 +94,14 @@ export default function StaffProductsPage() {
                         <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-400 text-xs">N/A</div>
                       )}
                       <div>
-                        <p className="font-medium text-gray-900 dark:text-white">{product.name}</p>
+                        <p className="font-medium">
+                          <Link
+                            href={`/staff/products/${product.id}`}
+                            className="text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 hover:underline"
+                          >
+                            {product.name}
+                          </Link>
+                        </p>
                         {product.categoryName && (
                           <p className="text-xs text-gray-500 dark:text-gray-400">{product.categoryName}</p>
                         )}

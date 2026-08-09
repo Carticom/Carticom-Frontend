@@ -127,6 +127,10 @@ class AdminRepository extends BaseRepository<
   async getAnalyticsOverview<T>(period: string): Promise<T> {
     return this.get<T>('/api/v1/admin/analytics/overview', { period });
   }
+
+  async getAdminSettlements<T>(): Promise<T> {
+    return this.get<T>('/api/v1/admin/settlements');
+  }
 }
 
 export const superAdminRepository = new SuperAdminRepository();

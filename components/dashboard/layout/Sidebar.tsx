@@ -26,6 +26,7 @@ const OWNER_ITEMS = [
   { id: 'orders', label: 'Orders', icon: ShoppingCart, href: '/dashboard/orders' },
   { id: 'customers', label: 'Customers', icon: Users, href: '/dashboard/customers' },
   { id: 'payments', label: 'Payments', icon: DollarSign, href: '/dashboard/payments' },
+  { id: 'settlements', label: 'Settlements', icon: Wallet, href: '/dashboard/settlements' },
   { id: 'wallet', label: 'Wallet', icon: Wallet, href: '/dashboard/wallet' },
   { id: 'subscription', label: 'Subscription', icon: Crown, href: '/dashboard/subscription' },
   { id: 'staff', label: 'Staff', icon: UserPlus, href: '/dashboard/team' },
@@ -50,6 +51,7 @@ const ADMIN_ITEMS = [
   { id: 'stores', label: 'Stores', icon: Store, href: '/admin/stores' },
   { id: 'orders', label: 'Orders', icon: ShoppingCart, href: '/admin/orders' },
   { id: 'payments', label: 'Payments', icon: DollarSign, href: '/admin/payments' },
+  { id: 'settlements', label: 'Settlements', icon: Wallet, href: '/admin/settlements' },
   { id: 'disputes', label: 'Disputes', icon: Shield, href: '/admin/disputes' },
   { id: 'disputes', label: 'Disputes', icon: Shield, href: '/admin/disputes' },
   { id: 'analytics', label: 'Analytics', icon: BarChart3, href: '/admin/analytics' },
@@ -62,6 +64,7 @@ const SUPER_ADMIN_ITEMS = [
   { id: 'stores', label: 'Stores', icon: Store, href: '/super-admin/stores' },
   { id: 'plans', label: 'Plans', icon: Crown, href: '/super-admin/plans' },
   { id: 'subscriptions', label: 'Subscriptions', icon: DollarSign, href: '/super-admin/subscriptions' },
+  { id: 'analytics', label: 'Analytics', icon: BarChart3, href: '/super-admin/analytics' },
   { id: 'settings', label: 'Settings', icon: Settings, href: '/super-admin/settings' },
   { id: 'custom-solutions', label: 'Custom Solutions', icon: Package, href: '/super-admin/custom-solutions' },
   { id: 'payments', label: 'Payments', icon: CreditCard, href: '/super-admin/payments' },
@@ -80,7 +83,7 @@ function getRoleItems(role: string | undefined) {
 
 const NAV_GROUPS: Record<string, { label: string; keys: string[] }[]> = {
   [UserRole.BUSINESS_OWNER]: [
-    { label: 'Menu', keys: ['dashboard', 'store', 'products', 'categories', 'orders', 'customers', 'payments', 'wallet'] },
+    { label: 'Menu', keys: ['dashboard', 'store', 'products', 'categories', 'orders', 'customers', 'payments', 'settlements', 'wallet'] },
     { label: 'Manage', keys: ['subscription', 'staff', 'custom-solutions', 'ai'] },
     { label: 'Insights', keys: ['analytics', 'settings', 'support'] },
   ],
@@ -88,11 +91,12 @@ const NAV_GROUPS: Record<string, { label: string; keys: string[] }[]> = {
     { label: 'Menu', keys: ['dashboard', 'orders', 'products', 'customers', 'categories'] },
   ],
   [UserRole.ADMIN]: [
-    { label: 'Menu', keys: ['dashboard', 'users', 'stores', 'orders', 'payments', 'disputes'] },
+    { label: 'Menu', keys: ['dashboard', 'users', 'stores', 'orders', 'payments', 'settlements', 'disputes'] },
     { label: 'Insights', keys: ['analytics', 'subscriptions'] },
   ],
   [UserRole.SUPER_ADMIN]: [
-    { label: 'Menu', keys: ['dashboard', 'users', 'stores', 'plans', 'subscriptions', 'settings'] },
+    { label: 'Menu', keys: ['dashboard', 'users', 'stores', 'plans', 'subscriptions'] },
+    { label: 'Insights', keys: ['analytics', 'settings'] },
     { label: 'Manage', keys: ['custom-solutions', 'payments', 'audit'] },
   ]};
 

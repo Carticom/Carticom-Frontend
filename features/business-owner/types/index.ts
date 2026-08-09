@@ -57,12 +57,22 @@ export interface WithdrawalResponseDTO {
   createdAt: string;
 }
 
-export interface SettlementResponseDTO {
+export type SettlementStatus = 'PENDING_SETTLEMENT' | 'SETTLED' | 'REFUNDED' | 'CANCELLED';
+
+export interface SettlementDTO {
   id: string;
   orderId: string;
+  storeId: string;
+  sellerId: string;
   amount: number;
-  status: string;
-  releasedAt: string;
+  commission: number;
+  sellerPayout: number;
+  provider?: string | null;
+  providerReference?: string | null;
+  status: SettlementStatus | string;
+  settledAt?: number | null;
+  notes?: string | null;
+  createdAt: string;
 }
 
 export interface RefundResponse {
