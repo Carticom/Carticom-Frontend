@@ -12,7 +12,7 @@ export default function SuperAdminLoading() {
           <SkeletonCard key={i} />
         ))}
       </div>
-      <div className="rounded-xl border bg-card">
+      <div className="rounded-2xl border bg-card">
         <SkeletonTable rows={6} />
       </div>
     </div>

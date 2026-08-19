@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useCurrentStoreId } from '@/hooks/useCurrentStore';
 import { useSettings, useUpdateSettings } from '@/features/dashboard/hooks/useSettings';
+import type { SettingsDto } from '@/features/dashboard/types/settings.types';
 import { LoadingState, ErrorState } from '@/components/dashboard/shared/StateComponents';
-import { showToast } from '@/lib/notifications/toast';
+
 
 const SECTIONS = [
   'Business', 'Account', 'Security', 'Notifications',
@@ -20,20 +21,20 @@ export default function SettingsPage() {
   const [activeSection, setActiveSection] = useState<Section>('Business');
 
   const [businessName, setBusinessName] = useState('');
-  const [description, setDescription] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [address, setAddress] = useState('');
 
-  useEffect(() => {
+  const [syncedSettings, setSyncedSettings] = useState<SettingsDto | undefined>(undefined);
+  if (settings !== syncedSettings) {
+    setSyncedSettings(settings);
     if (settings?.business) {
       setBusinessName(settings.business.businessName ?? '');
-      setDescription(settings.business.address ?? '');
       setPhone(settings.business.phone ?? '');
       setEmail(settings.business.email ?? '');
       setAddress(settings.business.address ?? '');
     }
-  }, [settings]);
+  }
 
   const handleSaveBusiness = () => {
     if (!storeId) return;
@@ -44,10 +45,7 @@ export default function SettingsPage() {
           businessName,
           email,
           phone,
-          address,
-        },
-      },
-    });
+          address}}});
   };
 
   if (storeLoading || isLoading) {
@@ -88,7 +86,7 @@ export default function SettingsPage() {
         {/* Settings Content */}
         <div className="lg:col-span-2 space-y-6">
           {activeSection === 'Business' && (
-            <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+            <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Business Information</h2>
               <div className="space-y-4">
                 <div>
@@ -145,7 +143,7 @@ export default function SettingsPage() {
           )}
 
           {activeSection === 'Account' && (
-            <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+            <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Account Settings</h2>
               <p className="text-sm text-gray-500 dark:text-gray-400">
                 Account preferences and email settings will appear here.
@@ -154,7 +152,7 @@ export default function SettingsPage() {
           )}
 
           {activeSection === 'Security' && (
-            <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+            <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Security</h2>
               <div className="space-y-4">
                 <div className="flex items-center justify-between p-3 border border-gray-200 dark:border-gray-700 rounded-lg">
@@ -186,7 +184,7 @@ export default function SettingsPage() {
           )}
 
           {activeSection === 'Notifications' && (
-            <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+            <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Notification Preferences</h2>
               <div className="space-y-4">
                 {([
@@ -215,7 +213,7 @@ export default function SettingsPage() {
           )}
 
           {activeSection === 'Payments' && (
-            <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+            <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Payment Settings</h2>
               <p className="text-sm text-gray-500 dark:text-gray-400">
                 Configure your payment methods, payout schedules, and payment gateway preferences.
@@ -224,7 +222,7 @@ export default function SettingsPage() {
           )}
 
           {activeSection === 'Integrations' && (
-            <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+            <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Integrations</h2>
               <p className="text-sm text-gray-500 dark:text-gray-400">
                 Connect your store with third-party tools and services.
@@ -233,7 +231,7 @@ export default function SettingsPage() {
           )}
 
           {activeSection === 'Branding' && (
-            <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+            <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Branding</h2>
               <p className="text-sm text-gray-500 dark:text-gray-400">
                 Customize your store appearance, logo, and brand colors.
@@ -242,7 +240,7 @@ export default function SettingsPage() {
           )}
 
           {activeSection === 'API Keys' && (
-            <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+            <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">API Keys</h2>
               <p className="text-sm text-gray-500 dark:text-gray-400">
                 Manage your API keys for third-party integrations and programmatic access.
@@ -251,7 +249,7 @@ export default function SettingsPage() {
           )}
 
           {activeSection === 'Danger Zone' && (
-            <div className="rounded-xl border border-red-200 dark:border-red-900/50 bg-white dark:bg-gray-900 p-6">
+            <div className="rounded-2xl border border-red-200 dark:border-red-900/50 bg-white dark:bg-gray-900 p-6">
               <h2 className="text-lg font-semibold text-red-600 dark:text-red-400 mb-4">Danger Zone</h2>
               <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
                 Irreversible and destructive actions. Proceed with caution.

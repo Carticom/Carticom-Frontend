@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+
 import { motion } from 'framer-motion';
 import {
   Store,
@@ -28,8 +28,7 @@ import {
   Sparkles,
   CheckCircle,
   Layers,
-  Palette,
-} from 'lucide-react';
+  Palette} from 'lucide-react';
 import { Container } from '@/components/common/Container';
 import { Button } from '@/components/ui/button';
 
@@ -38,9 +37,7 @@ const fadeUp = {
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] as const },
-  }),
-};
+    transition: { duration: 0.6, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] as const }})};
 
 const categories = [
   {
@@ -51,40 +48,33 @@ const categories = [
         icon: Store,
         title: 'Store Builder',
         description: 'Drag-and-drop store builder with customizable themes. Launch a beautiful online store in minutes without any coding.',
-        color: 'blue',
-      },
+        color: 'blue'},
       {
         icon: Palette,
         title: 'Custom Themes',
         description: 'Choose from professionally designed themes or create your own. Full control over colors, fonts, and layout.',
-        color: 'purple',
-      },
+        color: 'purple'},
       {
         icon: Package,
         title: 'Inventory Management',
         description: 'Track stock levels across multiple warehouses. Set low-stock alerts and manage variants, bundles, and digital products.',
-        color: 'pink',
-      },
+        color: 'pink'},
       {
         icon: Layers,
         title: 'Product Categories',
         description: 'Organize products with unlimited categories, subcategories, and tags. Advanced filtering for better discoverability.',
-        color: 'orange',
-      },
+        color: 'orange'},
       {
         icon: ShoppingCart,
         title: 'Multi-channel Selling',
         description: 'Sell on WhatsApp, Instagram, Facebook, and your custom storefront. Manage all channels from one dashboard.',
-        color: 'cyan',
-      },
+        color: 'cyan'},
       {
         icon: Search,
         title: 'SEO Optimization',
         description: 'Built-in SEO tools, meta tags, sitemaps, and structured data. Get found by customers searching on Google.',
-        color: 'green',
-      },
-    ],
-  },
+        color: 'green'},
+    ]},
   {
     title: 'Payments & Finance',
     subtitle: 'Accept payments and manage your finances',
@@ -93,40 +83,33 @@ const categories = [
         icon: CreditCard,
         title: 'Payment Gateway',
         description: 'Accept payments via Paystack, Flutterwave, bank transfers, cards, mobile money, and USSD across Africa.',
-        color: 'green',
-      },
+        color: 'green'},
       {
         icon: Wallet,
         title: 'Carticom Wallet',
         description: 'Built-in digital wallet for instant settlements, withdrawals, and balance management. No more waiting for payouts.',
-        color: 'blue',
-      },
+        color: 'blue'},
       {
         icon: Shield,
         title: 'Escrow Service',
         description: 'Secure payment protection for high-value transactions. Funds are released only when both parties are satisfied.',
-        color: 'indigo',
-      },
+        color: 'indigo'},
       {
         icon: RefreshCw,
         title: 'Recurring Billing',
         description: 'Set up subscriptions, installment plans, and recurring invoices. Automate billing for SaaS and membership businesses.',
-        color: 'orange',
-      },
+        color: 'orange'},
       {
         icon: FileText,
         title: 'Invoicing',
         description: 'Generate professional invoices, receipts, and credit notes. Send automated billing reminders and track payments.',
-        color: 'red',
-      },
+        color: 'red'},
       {
         icon: TrendingUp,
         title: 'Multi-currency',
         description: 'Display prices in NGN, USD, GBP, EUR, and more. Accept payments in any currency with automatic conversion.',
-        color: 'cyan',
-      },
-    ],
-  },
+        color: 'cyan'},
+    ]},
   {
     title: 'AI & Automation',
     subtitle: 'Work smarter with intelligent automation',
@@ -135,40 +118,33 @@ const categories = [
         icon: Bot,
         title: 'AI Chatbot',
         description: '24/7 AI-powered customer support via WhatsApp and web chat. Handles FAQs, order tracking, and returns automatically.',
-        color: 'indigo',
-      },
+        color: 'indigo'},
       {
         icon: MessageSquare,
         title: 'WhatsApp Integration',
         description: 'Sell and provide support directly on WhatsApp. Send order updates, promotions, and abandoned cart reminders.',
-        color: 'green',
-      },
+        color: 'green'},
       {
         icon: Zap,
         title: 'Smart Automation',
         description: 'Automate repetitive tasks: order processing, inventory updates, email marketing, and customer follow-ups.',
-        color: 'amber',
-      },
+        color: 'amber'},
       {
         icon: BarChart3,
         title: 'Predictive Analytics',
         description: 'AI-powered sales forecasts, demand predictions, and customer insights. Make data-driven decisions confidently.',
-        color: 'blue',
-      },
+        color: 'blue'},
       {
         icon: Users,
         title: 'Customer Insights',
         description: 'Deep customer profiles with purchase history, preferences, and behavior patterns. Segment and target effectively.',
-        color: 'pink',
-      },
+        color: 'pink'},
       {
         icon: Bell,
         title: 'Smart Notifications',
         description: 'Intelligent alerts for low stock, unusual activity, payment failures, and key business milestones.',
-        color: 'purple',
-      },
-    ],
-  },
+        color: 'purple'},
+    ]},
   {
     title: 'Operations & Growth',
     subtitle: 'Scale your business with powerful tools',
@@ -177,53 +153,45 @@ const categories = [
         icon: Truck,
         title: 'Logistics Integration',
         description: 'Connect with top delivery services across Africa. Automated shipping labels, real-time tracking, and delivery confirmations.',
-        color: 'cyan',
-      },
+        color: 'cyan'},
       {
         icon: Globe,
         title: 'Global Reach',
         description: 'Sell to customers across 45+ countries. Localized checkout, regional payment methods, and international shipping.',
-        color: 'blue',
-      },
+        color: 'blue'},
       {
         icon: Smartphone,
         title: 'Mobile App',
         description: 'Manage your business on the go with our mobile app. Real-time notifications, order management, and analytics.',
-        color: 'orange',
-      },
+        color: 'orange'},
       {
         icon: Lock,
         title: 'Bank-grade Security',
         description: 'PCI-DSS compliant, end-to-end encryption, and fraud detection. Your data and transactions are always protected.',
-        color: 'red',
-      },
+        color: 'red'},
       {
         icon: Users,
         title: 'Team Management',
         description: 'Add team members with role-based permissions. Collaborate on orders, inventory, and customer support.',
-        color: 'green',
-      },
+        color: 'green'},
       {
         icon: Headphones,
         title: '24/7 Support',
         description: 'Dedicated support team available around the clock via chat, email, and phone. We help you succeed.',
-        color: 'purple',
-      },
-    ],
-  },
+        color: 'purple'},
+    ]},
 ];
 
 const colorMap: Record<string, { bg: string; text: string; border: string; gradient: string }> = {
-  blue: { bg: 'bg-blue-50', text: 'text-blue-600', border: 'group-hover:border-blue-200', gradient: 'from-blue-600 to-cyan-500' },
-  green: { bg: 'bg-green-50', text: 'text-green-600', border: 'group-hover:border-green-200', gradient: 'from-green-600 to-emerald-500' },
+  blue: { bg: 'bg-blue-50', text: 'text-blue-600', border: 'group-hover:border-blue-200', gradient: 'from-blue-600 to-blue-600' },
+  green: { bg: 'bg-blue-50', text: 'text-blue-600', border: 'group-hover:border-blue-200', gradient: 'from-blue-600 to-blue-500' },
   indigo: { bg: 'bg-indigo-50', text: 'text-indigo-600', border: 'group-hover:border-indigo-200', gradient: 'from-indigo-600 to-purple-500' },
   orange: { bg: 'bg-orange-50', text: 'text-orange-600', border: 'group-hover:border-orange-200', gradient: 'from-orange-600 to-amber-500' },
   pink: { bg: 'bg-pink-50', text: 'text-pink-600', border: 'group-hover:border-pink-200', gradient: 'from-pink-600 to-rose-500' },
-  cyan: { bg: 'bg-cyan-50', text: 'text-cyan-600', border: 'group-hover:border-cyan-200', gradient: 'from-cyan-600 to-teal-500' },
+  cyan: { bg: 'bg-blue-50', text: 'text-blue-600', border: 'group-hover:border-blue-200', gradient: 'from-blue-600 to-blue-500' },
   red: { bg: 'bg-red-50', text: 'text-red-600', border: 'group-hover:border-red-200', gradient: 'from-red-600 to-rose-500' },
   purple: { bg: 'bg-purple-50', text: 'text-purple-600', border: 'group-hover:border-purple-200', gradient: 'from-purple-600 to-indigo-500' },
-  amber: { bg: 'bg-amber-50', text: 'text-amber-600', border: 'group-hover:border-amber-200', gradient: 'from-amber-600 to-yellow-500' },
-};
+  amber: { bg: 'bg-amber-50', text: 'text-amber-600', border: 'group-hover:border-amber-200', gradient: 'from-amber-600 to-yellow-500' }};
 
 const stats = [
   { number: '50K+', label: 'Active Sellers', icon: Users },
@@ -271,7 +239,7 @@ export default function FeaturesPage() {
             >
               Powerful features to
               <br />
-              <span className="bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600 bg-clip-text text-transparent">
                 grow your business
               </span>
             </motion.h1>
@@ -458,7 +426,7 @@ export default function FeaturesPage() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto"
             >
-              Join 50,000+ African businesses already using Carticom. Start your 14-day free trial today. No credit card required.
+              Join 50,000+ African businesses already using Carticom. Start your 30-day free trial today. No credit card required.
             </motion.p>
 
             <motion.div
@@ -475,7 +443,7 @@ export default function FeaturesPage() {
                 </a>
               </Button>
               <Button size="lg" variant="outline" className="w-full sm:w-auto gap-2 h-14 px-8 text-base bg-transparent border-white text-white hover:bg-white/10 rounded-2xl" asChild>
-                <a href="mailto:sales@carticom.ng">
+                <a href="mailto:sales@carticom.com">
                   Contact Sales
                 </a>
               </Button>
@@ -488,7 +456,7 @@ export default function FeaturesPage() {
               transition={{ duration: 0.5, delay: 0.4 }}
               className="flex flex-wrap items-center justify-center gap-6 text-sm text-blue-100"
             >
-              {['No credit card required', '14-day free trial', 'Cancel anytime', '24/7 support'].map((item) => (
+              {['No credit card required', '30-day free trial', 'Cancel anytime', '24/7 support'].map((item) => (
                 <div key={item} className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4" />
                   <span>{item}</span>

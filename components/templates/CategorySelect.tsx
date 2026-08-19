@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 import { TEMPLATES, getTemplateIcon } from '@/features/templates/registry';
 import { BUSINESS_CATEGORIES } from '@/features/templates/types';
 import { motion } from 'framer-motion';
-import type { BusinessCategory } from '@/features/templates/types';
+
 
 interface CategorySelectProps {
   value: string;

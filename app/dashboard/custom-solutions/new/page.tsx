@@ -32,15 +32,13 @@ export default function NewCustomSolutionPage() {
     budget: '',
     timeline: '',
     services: [],
-    additionalRequirements: '',
-  });
+    additionalRequirements: ''});
 
   const mutation = useMutation({
     mutationFn: (dto: CreateCustomSolutionDto) => customSolutionsService.submit(dto),
     onSuccess: () => {
       router.push('/dashboard/custom-solutions');
-    },
-  });
+    }});
 
   const update = <K extends keyof CreateCustomSolutionDto>(key: K, value: CreateCustomSolutionDto[K]) => {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -51,8 +49,7 @@ export default function NewCustomSolutionPage() {
       ...prev,
       services: prev.services.includes(service)
         ? prev.services.filter((s) => s !== service)
-        : [...prev.services, service],
-    }));
+        : [...prev.services, service]}));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -60,7 +57,7 @@ export default function NewCustomSolutionPage() {
     mutation.mutate(form);
   };
 
-  const inputClass = 'mt-1 block w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2.5 text-sm shadow-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white';
+  const inputClass = 'mt-1 block w-full rounded-2xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2.5 text-sm shadow-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white';
   const labelClass = 'block text-sm font-medium text-gray-700 dark:text-gray-300';
   const selectClass = inputClass;
 
@@ -81,7 +78,7 @@ export default function NewCustomSolutionPage() {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-8">
-        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 space-y-5">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 space-y-5">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Business Information</h2>
 
           <div>
@@ -159,7 +156,7 @@ export default function NewCustomSolutionPage() {
           </div>
         </div>
 
-        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 space-y-5">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 space-y-5">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Services Required</h2>
           <p className="text-sm text-gray-500">Select all services you need.</p>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -168,7 +165,7 @@ export default function NewCustomSolutionPage() {
                 key={service}
                 type="button"
                 onClick={() => toggleService(service)}
-                className={`px-4 py-2.5 rounded-xl border text-sm font-medium transition-all ${
+                className={`px-4 py-2.5 rounded-2xl border text-sm font-medium transition-all ${
                   form.services.includes(service)
                     ? 'bg-blue-50 border-blue-300 text-blue-700 dark:bg-blue-900/30 dark:border-blue-700 dark:text-blue-400'
                     : 'bg-white border-gray-200 text-gray-700 hover:border-blue-300 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300'
@@ -180,7 +177,7 @@ export default function NewCustomSolutionPage() {
           </div>
         </div>
 
-        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 space-y-5">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 space-y-5">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Additional Details</h2>
           <div>
             <label htmlFor="additionalRequirements" className={labelClass}>Additional Requirements</label>

@@ -13,13 +13,13 @@ export default function DashboardLoading() {
         ))}
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <div className="rounded-xl border bg-card p-5 h-72">
+        <div className="rounded-2xl border bg-card p-5 h-72">
           <div className="space-y-3">
             <SkeletonCard />
             <SkeletonCard />
           </div>
         </div>
-        <div className="rounded-xl border bg-card p-5 h-72">
+        <div className="rounded-2xl border bg-card p-5 h-72">
           <SkeletonCard />
         </div>
       </div>

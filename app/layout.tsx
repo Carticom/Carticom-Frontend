@@ -5,43 +5,50 @@ import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { QueryProvider } from "@/components/providers/QueryProvider";
 import { AuthGate } from "@/components/auth/AuthGate";
+import { Analytics } from "@/components/analytics/Analytics";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+  subsets: ["latin"]});
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+  subsets: ["latin"]});
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://carticom.vercel.app"),
   title: "Carticom - Commerce Operating System for Africa",
   description: "Build, sell, manage and scale your business with Carticom. The all-in-one commerce platform for African businesses.",
   keywords: ["commerce", "africa", "ecommerce", "payments", "escrow", "ai", "business"],
   authors: [{ name: "Carticom" }],
+  icons: {
+    icon: "/icon.svg",
+    apple: "/icon.svg"},
   openGraph: {
     title: "Carticom - Commerce Operating System for Africa",
     description: "Build, sell, manage and scale your business with Carticom.",
     type: "website",
     locale: "en_NG",
-  },
+    url: "https://carticom.vercel.app",
+    siteName: "Carticom",
+    images: [{
+      url: "https://carticom.vercel.app/icon.svg",
+      width: 512,
+      height: 512,
+      alt: "Carticom"}]},
   twitter: {
     card: "summary_large_image",
     title: "Carticom - Commerce Operating System for Africa",
     description: "Build, sell, manage and scale your business with Carticom.",
-  },
-};
+    images: ["https://carticom.vercel.app/icon.svg"]}};
 
 export default function RootLayout({
-  children,
-}: Readonly<{
+  children}: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <html
-      lang="en"
+      lang="en-NG"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
@@ -50,6 +57,7 @@ export default function RootLayout({
             <AuthGate>
               {children}
             </AuthGate>
+            <Analytics />
             <Toaster
               position="top-right"
               richColors

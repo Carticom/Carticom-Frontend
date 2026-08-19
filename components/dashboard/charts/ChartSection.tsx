@@ -1,10 +1,10 @@
 'use client';
 
-import React from 'react';
+
 import { motion } from 'framer-motion';
-import { BarChart3 } from 'lucide-react';
+
 import type { ChartDataPoint, ChartConfig } from '@/types/dashboard';
-import { cn } from '@/lib/utils';
+
 
 interface ChartSectionProps {
   config: ChartConfig;
@@ -14,7 +14,7 @@ interface ChartSectionProps {
 
 function Skeleton() {
   return (
-    <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+    <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
       <div className="h-5 w-32 bg-gray-100 dark:bg-gray-800 rounded animate-pulse mb-2" />
       <div className="h-48 bg-gray-50 dark:bg-gray-800/50 rounded-lg" />
     </div>
@@ -27,7 +27,7 @@ export function ChartCard({ config, data, isLoading }: ChartSectionProps) {
   const hasSecondary = data.some((d) => d.secondary !== undefined);
 
   return (
-    <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+    <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
       <div className="mb-4">
         <h3 className="text-base font-semibold text-gray-900 dark:text-white">{config.title}</h3>
         {config.description && <p className="text-xs text-gray-500 mt-1">{config.description}</p>}

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+
 import { motion } from 'framer-motion';
 import { Bot, MessageSquare, Zap, ArrowRight, Sparkles } from 'lucide-react';
 import { Container } from '@/components/common/Container';
@@ -28,8 +28,8 @@ export function AI() {
                     <p className="font-semibold text-gray-900">Carticom AI Assistant</p>
                     <p className="text-xs text-gray-500">Active now</p>
                   </div>
-                  <span className="ml-auto flex items-center gap-1 px-2 py-1 rounded-full bg-green-100 text-green-700 text-xs font-medium">
-                    <span className="h-1.5 w-1.5 rounded-full bg-green-500"></span>
+                  <span className="ml-auto flex items-center gap-1 px-2 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-medium">
+                    <span className="h-1.5 w-1.5 rounded-full bg-blue-500"></span>
                     Online
                   </span>
                 </div>
@@ -49,7 +49,7 @@ export function AI() {
                       <Bot className="h-4 w-4 text-indigo-600" aria-hidden="true" />
                     </div>
                     <div className="bg-indigo-50 rounded-2xl rounded-tl-none px-4 py-2">
-                      <p className="text-sm text-gray-700">Your order #12345 is out for delivery and will arrive today by 6 PM. Track it here: carticom.ng/track/12345</p>
+                      <p className="text-sm text-gray-700">Your order #12345 is out for delivery and will arrive today by 6 PM. Track it here: carticom.vercel.app/track/12345</p>
                     </div>
                   </div>
 
@@ -67,7 +67,7 @@ export function AI() {
                       <Bot className="h-4 w-4 text-indigo-600" aria-hidden="true" />
                     </div>
                     <div className="bg-indigo-50 rounded-2xl rounded-tl-none px-4 py-2">
-                      <p className="text-sm text-gray-700">I've updated the delivery address to 15 Victoria Island, Lagos. You'll receive a confirmation SMS shortly.</p>
+                      <p className="text-sm text-gray-700">I&apos;ve updated the delivery address to 15 Victoria Island, Lagos. You&apos;ll receive a confirmation SMS shortly.</p>
                     </div>
                   </div>
                 </div>

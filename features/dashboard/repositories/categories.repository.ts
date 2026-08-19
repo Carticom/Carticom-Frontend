@@ -10,8 +10,7 @@ export class CategoriesRepository extends BaseRepository<CategoryDto, CreateCate
   constructor() {
     super({
       base: '/api/v1/categories',
-      byId: (id) => `/api/v1/categories/${id}`,
-    });
+      byId: (id) => `/api/v1/categories/${id}`});
   }
 
   async getByStore(storeId: string, params?: QueryParams) {

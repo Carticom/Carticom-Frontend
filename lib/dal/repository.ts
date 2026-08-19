@@ -13,8 +13,7 @@ import type {
   DeleteInput,
   BulkDeleteInput,
   EndpointConfig,
-  ServiceOptions,
-} from './types';
+  ServiceOptions} from './types';
 
 // ─── Error Class ─────────────────────────────────────────────
 
@@ -36,13 +35,6 @@ export class RepositoryError extends Error {
     this.details = details;
   }
 }
-
-// ─── Type Helper ─────────────────────────────────────────────
-
-type OmitNever<T> = Pick<
-  T,
-  { [K in keyof T]: T[K] extends never ? never : K }[keyof T]
->;
 
 // ─── Build Query String ──────────────────────────────────────
 
@@ -103,13 +95,11 @@ export class BaseRepository<TEntity, TCreateDto = TEntity, TUpdateDto = TEntity>
       const url = `${this.config.base}${qs}`;
 
       const response = await axiosInstance.get<ApiResponse<TEntity[]>>(url, {
-        signal: options?.signal,
-      });
+        signal: options?.signal});
 
       return {
         data: (response.data.data ?? []) as TEntity[],
-        meta: response.data.meta,
-      };
+        meta: response.data.meta};
     } catch (error) {
       this.handleError(error, options);
     }
@@ -124,8 +114,7 @@ export class BaseRepository<TEntity, TCreateDto = TEntity, TUpdateDto = TEntity>
     try {
       const url = this.config.byId?.(id) ?? `${this.config.base}/${id}`;
       const response = await axiosInstance.get<ApiResponse<TEntity>>(url, {
-        signal: options?.signal,
-      });
+        signal: options?.signal});
       return response.data.data as TEntity;
     } catch (error) {
       this.handleError(error, options);
@@ -216,8 +205,7 @@ export class BaseRepository<TEntity, TCreateDto = TEntity, TUpdateDto = TEntity>
     try {
       await axiosInstance.delete(this.config.base, {
         data: { ids: input.ids, permanent: input.permanent },
-        signal: options?.signal,
-      });
+        signal: options?.signal});
     } catch (error) {
       this.handleError(error, options);
     }
@@ -283,7 +271,7 @@ export class BaseRepository<TEntity, TCreateDto = TEntity, TUpdateDto = TEntity>
 
   // ─── Error Handler ─────────────────────────────────────────
 
-  private handleError(error: unknown, options?: ServiceOptions): never {
+  private handleError(error: unknown, _options?: ServiceOptions): never {
     const message = extractErrorMessage(error);
     const code =
       (error as { code?: string }).code ?? 'UNKNOWN_ERROR';

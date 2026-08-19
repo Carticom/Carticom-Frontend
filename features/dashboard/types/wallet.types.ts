@@ -49,13 +49,11 @@ export interface CreateWalletTransactionDto {
 export enum WalletStatus {
   ACTIVE = 'ACTIVE',
   SUSPENDED = 'SUSPENDED',
-  CLOSED = 'CLOSED',
-}
+  CLOSED = 'CLOSED'}
 
 export enum WalletTransactionType {
   CREDIT = 'CREDIT',
   DEBIT = 'DEBIT',
   WITHDRAWAL = 'WITHDRAWAL',
   REFUND = 'REFUND',
-  FEE = 'FEE',
-}
+  FEE = 'FEE'}

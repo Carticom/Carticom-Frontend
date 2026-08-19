@@ -112,7 +112,7 @@ export default function CareersPage() {
             We are always looking for talented individuals. Send us your resume and we will keep you in mind for future opportunities.
           </p>
           <a
-            href="mailto:careers@carticom.app"
+            href="mailto:careers@carticom.com"
             className="inline-flex items-center gap-2 px-6 py-3 bg-white text-blue-700 rounded-xl font-medium hover:bg-blue-50 transition-colors"
           >
             <Briefcase className="w-4 h-4" />

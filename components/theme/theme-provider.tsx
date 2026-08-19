@@ -12,38 +12,35 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+function getStoredTheme(): Theme {
+  const stored = localStorage.getItem('carticom-theme') as Theme | null;
+  if (stored === 'light' || stored === 'dark') return stored;
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<Theme>('light');
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-    const stored = localStorage.getItem('carticom-theme') as Theme | null;
-    if (stored) {
-      setThemeState(stored);
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setThemeState('dark');
-    }
+    setThemeState(getStoredTheme());
   }, []);
 
   useEffect(() => {
-    if (mounted) {
-      localStorage.setItem('carticom-theme', theme);
-      document.documentElement.classList.toggle('dark', theme === 'dark');
-    }
-  }, [theme, mounted]);
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+  }, [theme]);
 
   const toggleTheme = () => {
-    setThemeState((prev) => (prev === 'light' ? 'dark' : 'light'));
+    setThemeState((prev) => {
+      const next = prev === 'light' ? 'dark' : 'light';
+      localStorage.setItem('carticom-theme', next);
+      return next;
+    });
   };
 
   const setTheme = (newTheme: Theme) => {
+    localStorage.setItem('carticom-theme', newTheme);
     setThemeState(newTheme);
   };
-
-  if (!mounted) {
-    return <>{children}</>;
-  }
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>

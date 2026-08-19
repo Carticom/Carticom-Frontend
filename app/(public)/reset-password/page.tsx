@@ -29,23 +29,19 @@ function ResetPasswordForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<ResetPasswordSchema>({
+    formState: { errors, isSubmitting }} = useForm<ResetPasswordSchema>({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
       email: '',
       token,
-      newPassword: '',
-    },
-  });
+      newPassword: ''}});
 
   const onSubmit = async (data: ResetPasswordSchema) => {
     setServerError(null);
     const result = await resetPassword({
       email: data.email,
       token: data.token,
-      newPassword: data.newPassword,
-    });
+      newPassword: data.newPassword});
 
     if (result.success) {
       setIsSuccess(true);
@@ -86,8 +82,8 @@ function ResetPasswordForm() {
   if (isSuccess) {
     return (
       <div className="text-center">
-        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-50 dark:bg-green-900/20">
-          <CheckCircle className="h-8 w-8 text-green-500" aria-hidden="true" />
+        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-blue-50 dark:bg-green-900/20">
+          <CheckCircle className="h-8 w-8 text-blue-500" aria-hidden="true" />
         </div>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
           Password Reset Successful
@@ -193,7 +189,7 @@ function ResetPasswordForm() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 transition-all duration-300 hover:from-blue-700 hover:to-cyan-700 hover:shadow-blue-500/40 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 transition-all duration-300 hover:from-blue-700 hover:to-blue-800 hover:shadow-blue-500/40 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {isSubmitting ? (
             <>

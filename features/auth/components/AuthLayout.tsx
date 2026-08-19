@@ -5,8 +5,8 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
+
+
 import { motion } from 'framer-motion';
 
 interface AuthLayoutProps {
@@ -21,8 +21,7 @@ export function AuthLayout({
   children,
   title,
   subtitle,
-  hideSocialProof = false,
-}: AuthLayoutProps) {
+  hideSocialProof = false}: AuthLayoutProps) {
   return (
     <div className="flex min-h-screen bg-white dark:bg-gray-950">
       {/* Left Panel - Form */}
@@ -70,15 +69,14 @@ export function AuthLayout({
       {/* Right Panel - Branding / Social Proof */}
       {!hideSocialProof && (
         <div className="relative hidden flex-1 lg:block">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-500">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-500 to-blue-600">
             {/* Pattern overlay */}
             <div
               className="absolute inset-0 opacity-10"
               style={{
                 backgroundImage:
                   "radial-gradient(circle, #fff 1.5px, transparent 1.5px)",
-                backgroundSize: "40px 40px",
-              }}
+                backgroundSize: "40px 40px"}}
             />
           </div>
 

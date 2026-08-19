@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, HelpCircle } from 'lucide-react';
 import { Container } from '@/components/common/Container';
@@ -8,32 +8,25 @@ import { Container } from '@/components/common/Container';
 const faqs = [
   {
     question: 'What is Carticom?',
-    answer: 'Carticom is a Commerce Operating System built specifically for African businesses. It combines store management, payments (Paystack, Flutterwave), AI automation via WhatsApp, and advanced analytics into one unified platform.',
-  },
+    answer: 'Carticom is a Commerce Operating System built specifically for African businesses. It combines store management, payments (Paystack, Flutterwave), AI automation via WhatsApp, and advanced analytics into one unified platform.'},
   {
     question: 'Which payment gateways are supported?',
-    answer: 'Carticom supports Paystack, Flutterwave, bank transfers, and mobile money. We also support card payments, USSD, and QR codes. Our platform is built to handle the unique payment preferences across all 54 African countries.',
-  },
+    answer: 'Carticom supports Paystack, Flutterwave, bank transfers, and mobile money. We also support card payments, USSD, and QR codes. Our platform is built to handle the unique payment preferences across all 54 African countries.'},
   {
     question: 'Can I use Carticom for WhatsApp commerce?',
-    answer: 'Yes! Our AI automation features allow you to sell, support customers, and track orders directly through WhatsApp Business. You can automate responses, send order updates, and even process payments via WhatsApp.',
-  },
+    answer: 'Yes! Our AI automation features allow you to sell, support customers, and track orders directly through WhatsApp Business. You can automate responses, send order updates, and even process payments via WhatsApp.'},
   {
     question: 'Is there a free trial?',
-    answer: 'Yes, all plans come with a 14-day free trial. No credit card is required to start. You can explore all features and decide which plan works best for your business before committing.',
-  },
+    answer: 'Yes, all plans come with a 30-day free trial. No credit card is required to start. You can explore all features and decide which plan works best for your business before committing.'},
   {
     question: 'How do I migrate from my current platform?',
-    answer: 'We offer free migration assistance for all new customers. Our team will help you transfer your products, customers, and order history from platforms like Shopify, WooCommerce, or custom solutions. Most migrations are completed within 3-5 business days.',
-  },
+    answer: 'We offer free migration assistance for all new customers. Our team will help you transfer your products, customers, and order history from platforms like Shopify, WooCommerce, or custom solutions. Most migrations are completed within 3-5 business days.'},
   {
     question: 'What kind of support do you offer?',
-    answer: 'All plans include email support. Growth plans and above get priority support with faster response times. Business and Enterprise plans include 24/7 phone support and a dedicated account manager. We also have extensive documentation and video tutorials.',
-  },
+    answer: 'All plans include email support. Growth plans and above get priority support with faster response times. Business and Enterprise plans include 24/7 phone support and a dedicated account manager. We also have extensive documentation and video tutorials.'},
   {
     question: 'Can I customize the platform for my business?',
-    answer: 'Absolutely. Business and Enterprise plans include API access, custom integrations, and white-label options. Our platform is built to be flexible and can adapt to your specific business needs, whether you\'re in retail, services, or digital products.',
-  },
+    answer: 'Absolutely. Business and Enterprise plans include API access, custom integrations, and white-label options. Our platform is built to be flexible and can adapt to your specific business needs, whether you\'re in retail, services, or digital products.'},
 ];
 
 function FAQItem({ faq, index }: { faq: typeof faqs[0]; index: number }) {
@@ -114,7 +107,7 @@ export function FAQ() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-lg text-gray-600"
           >
-            Everything you need to know about Carticom. Can't find the answer you're looking for? Contact our support team.
+            Everything you need to know about Carticom. Can&apos;t find the answer you&apos;re looking for? Contact our support team.
           </motion.p>
         </div>
 
@@ -137,7 +130,7 @@ export function FAQ() {
             Still have questions?
           </p>
           <a
-            href="mailto:support@carticom.ng"
+            href="mailto:support@carticom.com"
             className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
           >
             Contact our support team

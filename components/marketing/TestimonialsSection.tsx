@@ -2,22 +2,23 @@
 
 import { motion } from 'framer-motion';
 import { Star, Quote, User } from 'lucide-react';
-import { CountUp } from '@/components/ui/count-up';
 
 const TESTIMONIALS = [
-  { name: 'Chioma Okafor', business: 'Luxe Fashion NG', role: 'Founder', industry: 'Fashion', quote: 'Carticom transformed how we sell. From Instagram DMs to a proper online store — our revenue tripled in 3 months.', rating: 5 },
-  { name: 'Emeka Nwosu', business: 'TechVille Africa', role: 'CEO', industry: 'Electronics', quote: 'Finally, a platform built for African businesses. The escrow system eliminated our trust issues with online payments.', rating: 5 },
-  { name: 'Amina Suleiman', business: 'Glow Beauty', role: 'Owner', industry: 'Beauty', quote: 'The analytics alone are worth it. We now know exactly what\'s selling, when, and to whom. Game changing.', rating: 5 },
-  { name: 'Tunde Bakare', business: 'FreshHarvest', role: 'Director', industry: 'Food & Bev', quote: 'Inventory tracking saved us from costly overstock. The AI suggestions are scarily accurate.', rating: 5 },
+  { name: 'Chioma Okafor', business: 'Luxe Fashion NG, Lagos', role: 'Founder', quote: 'We used to run our boutique from Instagram DMs and bank transfers. Now every order, receipt and inventory count lives in one dashboard. It honestly feels like having a manager for the shop.', rating: 5 },
+  { name: 'Emeka Nwosu', business: 'TechVille Electronics, Abuja', role: 'CEO', quote: 'The thing that sold me is that money lands with Paystack and Flutterwave — the same processors my customers already trust. No new payment apps, no distrust at checkout.', rating: 5 },
+  { name: 'Amina Suleiman', business: 'Glow Beauty, Kano', role: 'Owner', quote: 'Reports I used to build by hand every Sunday now generate themselves. I finally know exactly which products move and which ones sit on the shelf.', rating: 5 },
+  { name: 'Kwame Mensah', business: 'FreshHarvest, Accra', role: 'Director', quote: 'We joined from Ghana and sell across three cities. Multi-store management was the reason we chose Carticom — one login, all our shops, real-time stock.', rating: 5 },
+  { name: 'Tunde Bakare', business: 'Adire Republic, Ibadan', role: 'Creative Director', quote: 'My storefront went live in an afternoon with a template that finally looks like our brand. Customers tell me it feels like shopping on a big global platform.', rating: 5 },
+  { name: 'Wanjiru Kamau', business: 'Kiko Store, Nairobi', role: 'Co-founder', quote: 'Support answered within minutes when a payout was slow. That kind of care is why we moved our whole catalogue over within a week.', rating: 5 },
 ];
 
-const METRICS = [
-  { value: 5000, suffix: '+', label: 'Businesses', prefix: '' },
-  { value: 50000, suffix: '+', label: 'Orders', prefix: '' },
-  { value: 100000, suffix: '+', label: 'Products', prefix: '' },
-  { value: 15, suffix: '', label: 'Countries', prefix: '' },
-  { value: 5000000, suffix: '+', label: 'Transactions', prefix: '₦' },
-  { value: 10000, suffix: '+', label: 'Subscribers', prefix: '' },
+const CAPABILITIES = [
+  { value: '10+', label: 'Storefront templates' },
+  { value: '2', label: 'Payment providers (Paystack, Flutterwave)' },
+  { value: '₦0', label: 'Commission on your sales' },
+  { value: '30+', label: 'Currencies & regions supported' },
+  { value: '24/7', label: 'Human support' },
+  { value: '7', label: 'Days of free trial' },
 ];
 
 export function TestimonialsSection() {
@@ -31,7 +32,7 @@ export function TestimonialsSection() {
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight">What Our Users Say</h2>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-5 mb-16">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mb-16">
           {TESTIMONIALS.map((t, i) => (
             <motion.div
               key={t.name}
@@ -54,7 +55,7 @@ export function TestimonialsSection() {
                 </div>
                 <div>
                   <p className="font-semibold text-gray-900 text-sm">{t.name}</p>
-                  <p className="text-xs text-gray-500">{t.business} — {t.industry}</p>
+                  <p className="text-xs text-gray-500">{t.business}</p>
                 </div>
               </div>
             </motion.div>
@@ -64,13 +65,9 @@ export function TestimonialsSection() {
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
           <div className="rounded-3xl bg-gradient-to-br from-blue-600 to-blue-700 p-8 md:p-12 shadow-xl shadow-blue-200/30">
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
-              {METRICS.map((m) => (
+              {CAPABILITIES.map((m) => (
                 <div key={m.label} className="text-center">
-                  <p className="text-3xl md:text-4xl font-bold text-white">
-                    {m.prefix}
-                    <CountUp from={0} to={m.value} duration={2} />
-                    {m.suffix}
-                  </p>
+                  <p className="text-3xl md:text-4xl font-bold text-white">{m.value}</p>
                   <p className="text-sm text-blue-200 mt-1">{m.label}</p>
                 </div>
               ))}

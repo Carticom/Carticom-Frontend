@@ -3,9 +3,9 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bell, X, Check, BellRing } from 'lucide-react';
+import { Bell, X, BellRing } from 'lucide-react';
 import type { NotificationItem } from '@/types/dashboard';
-import { cn } from '@/lib/utils';
+
 
 interface NotificationsPanelProps {
   notifications: NotificationItem[];
@@ -18,8 +18,7 @@ const TYPE_ICONS: Record<string, { icon: React.ElementType; color: string }> = {
   escrow: { icon: () => null, color: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400' },
   subscription: { icon: () => null, color: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' },
   system: { icon: () => null, color: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400' },
-  alert: { icon: () => null, color: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' },
-};
+  alert: { icon: () => null, color: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' }};
 
 function formatTimeAgo(timestamp: string) {
   const diff = Date.now() - new Date(timestamp).getTime();
@@ -60,7 +59,7 @@ export function NotificationsPanel({ notifications, isLoading }: NotificationsPa
 
   if (isLoading) {
     return (
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
         <div className="h-5 w-32 bg-gray-100 dark:bg-gray-800 rounded animate-pulse mb-4" />
         <div className="space-y-3">{Array.from({ length: 4 }).map((_, i) => <div key={i} className="h-16 bg-gray-100 dark:bg-gray-800 rounded animate-pulse" />)}</div>
       </div>
@@ -68,7 +67,7 @@ export function NotificationsPanel({ notifications, isLoading }: NotificationsPa
   }
 
   return (
-    <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
+    <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
       <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <h2 className="text-base font-semibold text-gray-900 dark:text-white">Recent Notifications</h2>

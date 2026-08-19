@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check, ArrowRight, Sparkles, Zap, Loader2, AlertCircle } from 'lucide-react';
@@ -37,15 +37,14 @@ const PLAN_ORDER: Record<string, number> = {
   'Starter': 1,
   'Growth': 2,
   'Business': 3,
-  'Enterprise': 4,
-};
+  'Enterprise': 4};
 
 function formatPrice(amount: number): string {
   if (amount === 0) return 'Free';
   return `₦${amount.toLocaleString()}`;
 }
 
-function generateFeatures(dto: SubscriptionPlanDTO, yearly: boolean): string[] {
+function generateFeatures(dto: SubscriptionPlanDTO, _yearly: boolean): string[] {
   const features: string[] = [];
 
   const productLimit = dto.productLimit >= 99999 ? 'Unlimited products' : `Up to ${dto.productLimit.toLocaleString()} products`;
@@ -84,8 +83,7 @@ function generateFeatures(dto: SubscriptionPlanDTO, yearly: boolean): string[] {
 
 function ToggleSwitch({
   isYearly,
-  onToggle,
-}: {
+  onToggle}: {
   isYearly: boolean;
   onToggle: () => void;
 }) {
@@ -121,7 +119,7 @@ function ToggleSwitch({
         }`}
       >
         Yearly
-        <span className="ml-1.5 inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
+        <span className="ml-1.5 inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">
           Save 17%
         </span>
       </span>
@@ -138,8 +136,7 @@ export function Pricing() {
       const res = await axiosInstance.get('/api/v1/subscriptions/plans');
       return res.data?.data ?? [];
     },
-    staleTime: 5 * 60_000,
-  });
+    staleTime: 5 * 60_000});
 
   const sortedPlans = useMemo(() => {
     if (!plans) return [];
@@ -166,8 +163,7 @@ export function Pricing() {
         features: generateFeatures(dto, isYearly),
         cta: isEnterprise ? 'Contact Sales' : dto.monthlyPrice === 0 ? 'Get Started Free' : 'Start Free Trial',
         popular: dto.name === 'Growth',
-        save,
-      };
+        save};
     });
   }, [sortedPlans, isYearly]);
 
@@ -272,7 +268,7 @@ export function Pricing() {
 
                     {plan.save && (
                       <div className="absolute -top-3.5 right-4">
-                        <span className="inline-flex items-center px-2 py-1 rounded-full bg-green-100 text-green-700 text-[10px] font-semibold">
+                        <span className="inline-flex items-center px-2 py-1 rounded-full bg-blue-100 text-blue-700 text-[10px] font-semibold">
                           {plan.save}
                         </span>
                       </div>
@@ -317,7 +313,7 @@ export function Pricing() {
                       }`}
                       asChild
                     >
-                      <a href={plan.name === 'Enterprise' ? 'mailto:sales@carticom.ng' : '#get-started'}>
+                      <a href={plan.name === 'Enterprise' ? 'mailto:sales@carticom.com' : '#get-started'}>
                         {plan.cta}
                         <ArrowRight className="h-3.5 w-3.5 ml-1" aria-hidden="true" />
                       </a>
@@ -327,7 +323,7 @@ export function Pricing() {
                       {plan.features.map((feature) => (
                         <li key={feature} className="flex items-start gap-2">
                           <Check className={`h-4 w-4 shrink-0 mt-0.5 ${
-                            plan.popular ? 'text-blue-200' : 'text-green-500'
+                            plan.popular ? 'text-blue-200' : 'text-blue-500'
                           }`} aria-hidden="true" />
                           <span className={`text-xs ${
                             plan.popular ? 'text-blue-50' : 'text-gray-600'
@@ -352,11 +348,11 @@ export function Pricing() {
           className="mt-12 text-center"
         >
           <p className="text-sm text-gray-500">
-            All paid plans include a 14-day free trial. No credit card required.
+            All paid plans include a 30-day free trial. No credit card required.
           </p>
           <p className="text-sm text-gray-500 mt-1">
             Need a custom plan?{' '}
-            <a href="mailto:sales@carticom.ng" className="text-blue-600 hover:underline font-medium">
+            <a href="mailto:sales@carticom.com" className="text-blue-600 hover:underline font-medium">
               Contact our sales team
             </a>
           </p>

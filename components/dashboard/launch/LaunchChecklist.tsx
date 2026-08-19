@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+
 import { CheckCircle2, Circle, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -21,7 +21,7 @@ export function LaunchChecklist({ items }: LaunchChecklistProps) {
   const progress = (completedCount / items.length) * 100;
 
   return (
-    <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+    <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
       <div className="mb-6">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
           Business Launch Progress
@@ -29,7 +29,7 @@ export function LaunchChecklist({ items }: LaunchChecklistProps) {
         <div className="flex items-center gap-3">
           <div className="flex-1 h-3 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-blue-600 to-cyan-600 transition-all duration-500"
+              className="h-full bg-gradient-to-r from-blue-600 to-blue-700 transition-all duration-500"
               style={{ width: `${progress}%` }}
             />
           </div>

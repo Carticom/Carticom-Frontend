@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import axiosInstance from '@/lib/axios';
+import { adminRepository } from '@/features/admin/repositories/admin.repository';
 import { LoadingState, ErrorState, EmptyState } from '@/components/dashboard/shared/StateComponents';
 
 const STATUS_FILTERS = [
@@ -23,20 +23,27 @@ const statusBadge: Record<string, string> = {
   SHIPPED: 'text-purple-600 bg-purple-50 dark:text-purple-400 dark:bg-purple-900/20',
   DELIVERED: 'text-emerald-600 bg-emerald-50 dark:text-emerald-400 dark:bg-emerald-900/20',
   CANCELLED: 'text-red-600 bg-red-50 dark:text-red-400 dark:bg-red-900/20',
-  REFUNDED: 'text-gray-600 bg-gray-50 dark:text-gray-400 dark:bg-gray-900/20',
-};
+  REFUNDED: 'text-gray-600 bg-gray-50 dark:text-gray-400 dark:bg-gray-900/20'};
 
 function formatCurrency(amount: number): string {
   return new Intl.NumberFormat('en-NG', {
     style: 'currency',
     currency: 'NGN',
     minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
+    maximumFractionDigits: 0}).format(amount);
 }
 
 function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString('en-NG', { year: 'numeric', month: 'short', day: 'numeric' });
+}
+
+interface Order {
+  id: string;
+  customerName: string;
+  storeName: string;
+  total: number;
+  status: string;
+  createdAt: string;
 }
 
 export default function AdminOrdersPage() {
@@ -45,17 +52,16 @@ export default function AdminOrdersPage() {
   const { data: orders, isLoading, error, refetch } = useQuery({
     queryKey: ['admin', 'orders', selectedStatus],
     queryFn: async () => {
-      const params = selectedStatus ? { status: selectedStatus } : {};
-      const res = await axiosInstance.get('/api/v1/admin/orders', { params });
-      return res.data.data ?? [];
-    },
-  });
+      const params = selectedStatus ? { status: selectedStatus } : undefined;
+      const page = await adminRepository.getOrders<Order>(params);
+      return page?.content ?? [];
+    }});
 
   if (isLoading) return <LoadingState message="Loading orders..." />;
   if (error) return <ErrorState onRetry={() => refetch()} />;
 
   const filtered = selectedStatus
-    ? (orders ?? []).filter((o: { status: string }) => o.status === selectedStatus)
+    ? (orders ?? []).filter((o) => o.status === selectedStatus)
     : (orders ?? []);
 
   if (!filtered.length) {
@@ -65,7 +71,7 @@ export default function AdminOrdersPage() {
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Orders</h1>
           <p className="text-gray-600 dark:text-gray-400 mt-2">Track and manage all platform orders</p>
         </div>
-        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
           <div className="flex gap-2 mb-4 flex-wrap">
             {STATUS_FILTERS.map((filter) => (
               <button
@@ -97,7 +103,7 @@ export default function AdminOrdersPage() {
         <p className="text-gray-600 dark:text-gray-400 mt-2">Track and manage all platform orders</p>
       </div>
 
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
         <div className="flex gap-2 mb-4 flex-wrap">
           {STATUS_FILTERS.map((filter) => (
             <button

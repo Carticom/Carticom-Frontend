@@ -6,15 +6,13 @@ import { usePathname } from 'next/navigation';
 const pageVariants = {
   initial: { opacity: 0, y: 8 },
   animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -8 },
-};
+  exit: { opacity: 0, y: -8 }};
 
 const pageTransition = {
   type: 'spring' as const,
   stiffness: 300,
   damping: 30,
-  mass: 0.8,
-};
+  mass: 0.8};
 
 export function PageTransition({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();

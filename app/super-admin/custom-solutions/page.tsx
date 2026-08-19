@@ -16,11 +16,10 @@ const statusColors: Record<string, string> = {
   [CustomSolutionStatus.NEGOTIATION]: 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400',
   [CustomSolutionStatus.APPROVED]: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
   [CustomSolutionStatus.DEVELOPMENT]: 'bg-cyan-100 text-cyan-800 dark:bg-cyan-900/30 dark:text-cyan-400',
-  [CustomSolutionStatus.TESTING]: 'bg-teal-100 text-teal-800 dark:bg-teal-900/30 dark:text-teal-400',
+  [CustomSolutionStatus.TESTING]: 'bg-brand-100 text-brand-800 dark:bg-brand-900/30 dark:text-brand-400',
   [CustomSolutionStatus.DEPLOYED]: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400',
   [CustomSolutionStatus.COMPLETED]: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
-  [CustomSolutionStatus.REJECTED]: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
-};
+  [CustomSolutionStatus.REJECTED]: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'};
 
 export default function SuperAdminCustomSolutionsPage() {
   const router = useRouter();
@@ -28,8 +27,7 @@ export default function SuperAdminCustomSolutionsPage() {
 
   const { data: requests, isLoading, error, refetch } = useQuery({
     queryKey: ['super-admin', 'custom-solutions', 'all'],
-    queryFn: () => customSolutionsService.adminListAll(),
-  });
+    queryFn: () => customSolutionsService.adminListAll()});
 
   if (isLoading) return <LoadingState message="Loading custom solutions..." />;
   if (error) return <ErrorState title="Failed to load custom solutions" onRetry={refetch} />;
@@ -57,7 +55,7 @@ export default function SuperAdminCustomSolutionsPage() {
           placeholder="Search by business name, industry, or country..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 pl-10 pr-4 py-2.5 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white"
+          className="w-full rounded-2xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 pl-10 pr-4 py-2.5 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white"
         />
       </div>
 
@@ -69,7 +67,7 @@ export default function SuperAdminCustomSolutionsPage() {
             <button
               key={req.id}
               onClick={() => router.push(`/super-admin/custom-solutions/${req.id}`)}
-              className="w-full text-left rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 hover:shadow-md transition-shadow"
+              className="w-full text-left rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 hover:shadow-md transition-shadow"
             >
               <div className="flex items-start justify-between">
                 <div>

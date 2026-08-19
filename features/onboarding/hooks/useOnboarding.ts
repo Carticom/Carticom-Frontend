@@ -8,16 +8,14 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   storeApi,
   productApi,
-  walletApi,
-} from '@/features/onboarding/services/onboarding.service';
+  walletApi} from '@/features/onboarding/services/onboarding.service';
 import { showToast } from '@/lib/notifications/toast';
 import type {
   CreateStoreDto,
   UpdateStoreDto,
   CreateProductDto,
   StoreDto,
-  ProductDto,
-} from '@/features/onboarding/types';
+  ProductDto} from '@/features/onboarding/types';
 
 // ─── Query Keys ──────────────────────────────────────────────
 
@@ -26,8 +24,7 @@ export const onboardingKeys = {
   storeById: (id: string) => ['stores', id] as const,
   products: ['products'] as const,
   productsByStore: (storeId: string) => ['products', 'store', storeId] as const,
-  wallet: ['wallet'] as const,
-};
+  wallet: ['wallet'] as const};
 
 // ─── Create Store ─────────────────────────────────────────────
 
@@ -44,10 +41,8 @@ export function useCreateStore() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to create store', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }
 
 // ─── Update Store ─────────────────────────────────────────────
@@ -65,10 +60,8 @@ export function useUpdateStore() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to update store', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }
 
 // ─── Get My Stores ────────────────────────────────────────────
@@ -76,8 +69,7 @@ export function useUpdateStore() {
 export function useMyStores() {
   return useQuery({
     queryKey: onboardingKeys.stores,
-    queryFn: () => storeApi.getMyStores().then((res) => res.data.data ?? []),
-  });
+    queryFn: () => storeApi.getMyStores().then((res) => res.data.data ?? [])});
 }
 
 // ─── Create Product ───────────────────────────────────────────
@@ -91,10 +83,8 @@ export function useCreateProduct() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to create product', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }
 
 // ─── Get Products by Store ────────────────────────────────────
@@ -104,8 +94,7 @@ export function useStoreProducts(storeId: string | undefined) {
     queryKey: onboardingKeys.productsByStore(storeId ?? ''),
     queryFn: () =>
       productApi.getByStore(storeId!).then((res) => res.data.data ?? []),
-    enabled: !!storeId,
-  });
+    enabled: !!storeId});
 }
 
 // ─── Wallet Balance ───────────────────────────────────────────
@@ -114,6 +103,5 @@ export function useWalletBalance() {
   return useQuery({
     queryKey: onboardingKeys.wallet,
     queryFn: () => walletApi.getBalance().then((res) => res.data.data),
-    retry: false,
-  });
+    retry: false});
 }

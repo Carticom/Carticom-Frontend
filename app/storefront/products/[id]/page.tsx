@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import Link from 'next/link';
 import Image from 'next/image';
 import { ShoppingCart, Minus, Plus, ArrowLeft, Package } from 'lucide-react';
 import { productApi, cartApi } from '@/features/onboarding/services/onboarding.service';
@@ -21,25 +22,34 @@ export default function ProductDetailPage() {
   const [error, setError] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [adding, setAdding] = useState(false);
-
-  const fetchProduct = useCallback(async () => {
-    if (!id) return;
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await productApi.getById(id);
-      if (!res.data.data) throw new Error('Product not found');
-      setProduct(res.data.data);
-    } catch {
-      setError('Failed to load product. It may have been removed.');
-    } finally {
-      setLoading(false);
-    }
-  }, [id]);
+  const [justAdded, setJustAdded] = useState(false);
+  const [retryKey, setRetryKey] = useState(0);
 
   useEffect(() => {
-    fetchProduct();
-  }, [fetchProduct]);
+    if (!id) return;
+    let cancelled = false;
+    const load = async () => {
+      try {
+        const res = await productApi.getById(id);
+        if (cancelled) return;
+        if (!res.data.data) throw new Error('Product not found');
+        setProduct(res.data.data);
+      } catch {
+        if (cancelled) return;
+        setError('Failed to load product. It may have been removed.');
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    };
+    load();
+    return () => { cancelled = true; };
+  }, [id, retryKey]);
+
+  const handleRetry = () => {
+    setLoading(true);
+    setError(null);
+    setRetryKey((k) => k + 1);
+  };
 
   const handleAddToCart = async () => {
     if (!product) return;
@@ -48,9 +58,9 @@ export default function ProductDetailPage() {
       await cartApi.add({
         storeId: product.storeId,
         productId: product.id,
-        quantity,
-      });
+        quantity});
       toast.success(`${product.name} added to cart!`);
+      setJustAdded(true);
     } catch {
       toast.error('Failed to add item to cart.');
     } finally {
@@ -60,7 +70,7 @@ export default function ProductDetailPage() {
 
   if (loading) return <LoadingState message="Loading product..." />;
 
-  if (error) return <ErrorState title="Product not found" description={error} onRetry={fetchProduct} />;
+  if (error) return <ErrorState title="Product not found" description={error} onRetry={handleRetry} />;
 
   if (!product) return <ErrorState title="Product not found" description="This product could not be found." />;
 
@@ -68,8 +78,7 @@ export default function ProductDetailPage() {
     new Intl.NumberFormat('en-NG', {
       style: 'currency',
       currency: product.currency || 'NGN',
-      minimumFractionDigits: 2,
-    }).format(price);
+      minimumFractionDigits: 2}).format(price);
 
   const productImages: string[] = [];
   if (product.imageUrl) productImages.push(product.imageUrl);
@@ -222,6 +231,15 @@ export default function ProductDetailPage() {
               </>
             )}
           </Button>
+
+          {justAdded && (
+            <Button variant="outline" size="lg" asChild>
+              <Link href={`/storefront/cart?store=${product.storeId}`}>
+                <ShoppingCart className="h-5 w-5 mr-2" />
+                View Cart
+              </Link>
+            </Button>
+          )}
         </div>
       </div>
     </div>

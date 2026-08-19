@@ -1,14 +1,15 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
+import Image from 'next/image';
 import { useAuthStore } from '@/features/auth/store/auth.store';
 import { useMyStores, useUpdateStore } from '@/features/onboarding/hooks/useOnboarding';
 import { LoadingState, EmptyState, ErrorState } from '@/components/dashboard/shared/StateComponents';
-import { Globe, Eye, Upload, ExternalLink, Check, ChevronDown, ChevronUp } from 'lucide-react';
+import { Globe, Eye, Upload, ExternalLink, Check, ChevronDown, Copy } from 'lucide-react';
+import { showToast } from '@/lib/notifications/toast';
 import { getTemplateIcon, getTemplatesForCategory } from '@/features/templates/registry';
 import { BUSINESS_CATEGORIES } from '@/features/templates/types';
 import axiosInstance from '@/lib/axios';
-import { showToast } from '@/lib/notifications/toast';
 import { cn } from '@/lib/utils';
 
 export default function StorePage() {
@@ -21,20 +22,26 @@ export default function StorePage() {
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [editing, setEditing] = useState(false);
+const [editing, setEditing] = useState(false);
   const [publishing, setPublishing] = useState(false);
+  const [seoTitle, setSeoTitle] = useState('');
+  const [seoDesc, setSeoDesc] = useState('');
 
-  useEffect(() => {
-    if (store) {
+  const [syncedStore, setSyncedStore] = useState<typeof store>(null);
+  if (store !== syncedStore) {
+    setSyncedStore(store);
+if (store) {
       setName(store.name ?? '');
       setDescription(store.description ?? '');
+      setSeoTitle(store.name ?? '');
+      setSeoDesc(store.description ?? '');
     }
-  }, [store]);
+  }
 
-  const handleSave = () => {
+const handleSave = () => {
     if (!store) return;
     updateStore.mutate(
-      { id: store.id, data: { name, description } },
+      { id: store.id, data: { storeName: name, description } },
       { onSuccess: () => setEditing(false) }
     );
   };
@@ -46,8 +53,7 @@ export default function StorePage() {
       const formData = new FormData();
       formData.append('file', file);
       await axiosInstance.post(`/api/v1/stores/${store.id}/logo`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
+        headers: { 'Content-Type': 'multipart/form-data' }});
       showToast('success', 'Logo uploaded successfully');
       refetch();
     } catch {
@@ -94,20 +100,30 @@ export default function StorePage() {
             Manage your store settings and branding
           </p>
         </div>
-        <div className="flex gap-2">
-          {isPublished && (
-            <a
-              href={storefrontUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+          <div className="flex gap-2">
+            {isPublished && (
+              <a
+                href={storefrontUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg text-sm hover:bg-gray-50 dark:hover:bg-gray-800"
+              >
+                <Eye className="h-4 w-4" />
+                View Store
+              </a>
+            )}
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(storefrontUrl);
+                showToast('success', 'Store link copied!');
+              }}
               className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg text-sm hover:bg-gray-50 dark:hover:bg-gray-800"
             >
-              <Eye className="h-4 w-4" />
-              View Store
-            </a>
-          )}
-          <button
-            onClick={handleTogglePublish}
+              <Copy className="h-4 w-4" />
+              Copy Link
+            </button>
+            <button
+              onClick={handleTogglePublish}
             disabled={publishing}
             className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium ${
               isPublished
@@ -122,7 +138,7 @@ export default function StorePage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Store Information</h2>
             <button
@@ -202,15 +218,15 @@ export default function StorePage() {
           )}
         </div>
 
-        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Branding</h2>
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Logo</label>
               <div className="mt-2 flex items-start gap-4">
-                <div className="w-24 h-24 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center overflow-hidden shrink-0">
+                <div className="relative w-24 h-24 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center overflow-hidden shrink-0">
                   {store.logoUrl ? (
-                    <img src={store.logoUrl} alt="Store logo" className="w-full h-full object-cover" />
+                    <Image src={store.logoUrl} alt="Store logo" fill unoptimized className="object-cover" />
                   ) : (
                     <span className="text-xs text-gray-500">No logo</span>
                   )}
@@ -237,8 +253,8 @@ export default function StorePage() {
             {store.bannerUrl && (
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Banner</label>
-                <div className="mt-1 w-full h-24 rounded-lg border border-gray-300 dark:border-gray-700 overflow-hidden">
-                  <img src={store.bannerUrl} alt="Store banner" className="w-full h-full object-cover" />
+                <div className="mt-1 relative w-full h-24 rounded-lg border border-gray-300 dark:border-gray-700 overflow-hidden">
+                  <Image src={store.bannerUrl} alt="Store banner" fill unoptimized className="object-cover" />
                 </div>
               </div>
             )}
@@ -250,14 +266,14 @@ export default function StorePage() {
         </div>
 
         {/* Template Selection */}
-        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Storefront Template</h2>
           <div className="space-y-4">
             {BUSINESS_CATEGORIES.map((cat) => {
               const catTemplates = getTemplatesForCategory(cat.value);
               if (catTemplates.length === 0) return null;
               return (
-                <details key={cat.value} className="group rounded-xl border border-gray-200 dark:border-gray-700 open:bg-gray-50 dark:open:bg-gray-800/50 transition-colors">
+                <details key={cat.value} className="group rounded-2xl border border-gray-200 dark:border-gray-700 open:bg-gray-50 dark:open:bg-gray-800/50 transition-colors">
                   <summary className="flex items-center justify-between px-4 py-3 cursor-pointer list-none text-sm font-semibold text-gray-900 dark:text-white">
                     <span className="capitalize">{cat.label.toLowerCase()}</span>
                     <ChevronDown className="h-4 w-4 text-gray-400 group-open:rotate-180 transition-transform" />
@@ -280,7 +296,7 @@ export default function StorePage() {
                           }}
                           disabled={updateStore.isPending}
                           className={cn(
-                            'relative flex flex-col items-center gap-2 p-3 rounded-xl border-2 text-center transition-all',
+                            'relative flex flex-col items-center gap-2 p-3 rounded-2xl border-2 text-center transition-all',
                             isActive
                               ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 shadow-sm'
                               : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-sm'
@@ -307,27 +323,51 @@ export default function StorePage() {
         </div>
 
         {/* SEO Settings */}
-        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 lg:col-span-2">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 lg:col-span-2">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">SEO & Preview</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4">
-              <div>
+<div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">SEO Title</label>
-                <input type="text" defaultValue={store.name} className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white" placeholder="Store SEO title" />
+                <input
+                  type="text"
+                  value={seoTitle}
+                  onChange={(e) => setSeoTitle(e.target.value)}
+                  maxLength={60}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  placeholder="Store SEO title"
+                />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">SEO Description</label>
-                <textarea className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white" rows={3} placeholder="Store SEO description" defaultValue={store.description ?? ''} />
+                <textarea
+                  value={seoDesc}
+                  onChange={(e) => setSeoDesc(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  rows={3}
+                  placeholder="Store SEO description"
+                />
               </div>
-              <button className="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">
-                Save SEO
-              </button>
+              <div>
+                <button
+                  type="button"
+                  disabled
+                  title="Search engine metadata publishing is coming soon — your store name and description are used automatically."
+                  className="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Save SEO
+                </button>
+                <p className="text-xs text-gray-500 mt-2">
+                  Your storefront already publishes your store name and description for search engines. Full SEO
+                  customization is coming soon.
+                </p>
+              </div>
             </div>
             <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800/50">
               <p className="text-xs font-medium text-gray-500 uppercase mb-2">Google Preview</p>
-              <p className="text-sm text-blue-700 dark:text-blue-400 truncate">{store.name} — Carticom</p>
+              <p className="text-sm text-blue-700 dark:text-blue-400 truncate">{seoTitle || store.name} — Carticom</p>
               <p className="text-xs text-green-700 dark:text-green-400 truncate">{storefrontUrl}</p>
-              <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 line-clamp-2">{store.description || 'Shop on Carticom'}</p>
+              <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 line-clamp-2">{seoDesc || store.description || 'Shop on Carticom'}</p>
             </div>
           </div>
         </div>

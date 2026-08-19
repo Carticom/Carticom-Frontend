@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -11,15 +11,17 @@ import { Textarea } from '@/components/ui/textarea';
 import { Building2, Upload, Loader2 } from 'lucide-react';
 import { businessInfoSchema, type BusinessInfoFormData } from '@/features/onboarding/schemas';
 import { useCreateStore } from '@/features/onboarding/hooks/useOnboarding';
+import type { StoreDto } from '@/features/onboarding/types';
 
 interface BusinessInfoStepProps {
   onNext: () => void;
   onBack: () => void;
   initialData?: BusinessInfoFormData;
   onSave: (data: BusinessInfoFormData) => void;
+  onStoreCreated: (store: StoreDto) => void;
 }
 
-export function BusinessInfoStep({ onNext, onBack, initialData, onSave }: BusinessInfoStepProps) {
+export function BusinessInfoStep({ onNext, onBack, initialData, onSave, onStoreCreated }: BusinessInfoStepProps) {
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [bannerFile, setBannerFile] = useState<File | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -28,8 +30,7 @@ export function BusinessInfoStep({ onNext, onBack, initialData, onSave }: Busine
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<BusinessInfoFormData>({
+    formState: { errors, isSubmitting }} = useForm<BusinessInfoFormData>({
     resolver: zodResolver(businessInfoSchema),
     defaultValues: initialData ?? {
       businessName: '',
@@ -37,18 +38,29 @@ export function BusinessInfoStep({ onNext, onBack, initialData, onSave }: Busine
       phone: '',
       email: '',
       address: '',
-      description: '',
-    },
-  });
+      description: ''}});
 
   const onSubmit = async (data: BusinessInfoFormData) => {
     setSubmitError(null);
     try {
       onSave(data);
-      await createStore.mutateAsync({
-        name: data.businessName,
+      const slug = data.businessName
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .trim()
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-');
+      const store = await createStore.mutateAsync({
+        storeName: data.businessName,
+        storeSlug: slug,
+        phone: data.phone,
         description: data.description || undefined,
-      });
+        businessCategory: data.businessCategory,
+        email: data.email || undefined,
+        address: data.address || undefined,
+        country: 'Nigeria',
+        currency: 'NGN'});
+      onStoreCreated(store);
       onNext();
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Failed to save. Please try again.';
@@ -174,7 +186,7 @@ export function BusinessInfoStep({ onNext, onBack, initialData, onSave }: Busine
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700"
+            className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
           >
             {isSubmitting ? (
               <>

@@ -1,5 +1,7 @@
 // ============================================================
 // CARTICOM AUTHENTICATION — Zustand State Store
+// Tokens live in memory only (NOT localStorage — C9).
+// Session restoration uses HttpOnly cookies set by the backend.
 // ============================================================
 
 import { create } from 'zustand';
@@ -8,18 +10,21 @@ import type { UserDto, AuthTokens } from '../types';
 import { setAccessToken, setRefreshTokenValue } from '@/lib/axios';
 import authService from '../services/auth.service';
 
-const setCookie = (name: string, value: string, maxAge: number) => {
-  document.cookie = `${name}=${value}; Path=/; Max-Age=${maxAge}; SameSite=Lax; Secure`;
-};
-
-const removeCookie = (name: string) => {
-  document.cookie = `${name}=; Path=/; Max-Age=0; SameSite=Lax`;
-};
-
 // ─── Constants ───────────────────────────────────────────────
 
 const SESSION_TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes idle timeout
 const STORAGE_KEY = 'carticom-auth';
+
+// ─── Session marker for middleware (role + expiry only — no tokens) ──
+
+const setSessionMarker = (role: string, expiresIn: number) => {
+  const payload = JSON.stringify({ role, exp: Date.now() + expiresIn * 1000 });
+  document.cookie = `carticom_session=${btoa(payload)}; Path=/; Max-Age=${expiresIn}; SameSite=Lax`;
+};
+
+const removeSessionMarker = () => {
+  document.cookie = 'carticom_session=; Path=/; Max-Age=0; SameSite=Lax';
+};
 
 // ─── State Interface ─────────────────────────────────────────
 
@@ -67,10 +72,7 @@ export const useAuthStore = create<AuthState>()(
         }
         setAccessToken(tokens.accessToken);
         setRefreshTokenValue(tokens.refreshToken ?? null);
-        setCookie('accessToken', tokens.accessToken, tokens.expiresIn);
-        if (tokens.refreshToken) {
-          setCookie('refreshToken', tokens.refreshToken, 7 * 24 * 60 * 60);
-        }
+        setSessionMarker(user.role, tokens.expiresIn);
         set({
           user,
           accessToken: tokens.accessToken,
@@ -78,16 +80,14 @@ export const useAuthStore = create<AuthState>()(
           expiresIn: tokens.expiresIn,
           isAuthenticated: true,
           isLoading: false,
-          lastActivity: Date.now(),
-        });
+          lastActivity: Date.now()});
       },
 
       // ─── Logout ───────────────────────────────────────────
       logout: () => {
         setAccessToken(null);
         setRefreshTokenValue(null);
-        removeCookie('accessToken');
-        removeCookie('refreshToken');
+        removeSessionMarker();
         set({
           user: null,
           accessToken: null,
@@ -95,8 +95,7 @@ export const useAuthStore = create<AuthState>()(
           expiresIn: null,
           isAuthenticated: false,
           isLoading: false,
-          lastActivity: null,
-        });
+          lastActivity: null});
       },
 
       // ─── Set User ─────────────────────────────────────────
@@ -116,8 +115,7 @@ export const useAuthStore = create<AuthState>()(
           accessToken: tokens.accessToken,
           refreshToken: tokens.refreshToken,
           expiresIn: tokens.expiresIn,
-          lastActivity: Date.now(),
-        });
+          lastActivity: Date.now()});
       },
 
       // ─── Set Loading ──────────────────────────────────────
@@ -143,10 +141,10 @@ export const useAuthStore = create<AuthState>()(
           return false;
         }
 
-        // Check token expiry
-        if (state.expiresIn) {
-          const tokenAge = Date.now() - (state.lastActivity - state.expiresIn * 1000);
-          if (tokenAge > state.expiresIn * 1000) {
+        // Check token expiry based on last activity
+        if (state.expiresIn && state.lastActivity) {
+          const elapsed = Date.now() - state.lastActivity;
+          if (elapsed > state.expiresIn * 1000) {
             get().logout();
             return false;
           }
@@ -166,31 +164,38 @@ export const useAuthStore = create<AuthState>()(
       initialize: async () => {
         try {
           const state = get();
-          if (!state?.accessToken) {
-            set({ isLoading: false, isAuthenticated: false });
-            return;
+          if (state?.accessToken) {
+            setAccessToken(state.accessToken);
+            try {
+              const user = await authService.getCurrentUser();
+              set({ user, isLoading: false, isAuthenticated: true });
+              return;
+            } catch {
+              // fall through to refresh
+            }
           }
 
-          setAccessToken(state.accessToken);
-
+          // No in-memory token (page reload): restore session via HttpOnly
+          // refresh cookie set by the backend.
           try {
-            const user = await authService.getCurrentUser();
-            set({ user, isLoading: false, isAuthenticated: true });
-            return;
-          } catch {
-            // Token invalid — try refresh
-          }
-
-          try {
-            const { accessToken: newToken } = await authService.refreshToken(state.refreshToken ?? undefined);
+            const { accessToken: newToken, refreshToken: newRefresh } =
+              await authService.refreshToken();
             if (newToken) {
               setAccessToken(newToken);
+              setRefreshTokenValue(newRefresh ?? null);
               const user = await authService.getCurrentUser();
-              set({ user, accessToken: newToken, isLoading: false, isAuthenticated: true });
+              set({
+                user,
+                accessToken: newToken,
+                refreshToken: newRefresh,
+                isAuthenticated: true,
+                isLoading: false,
+                lastActivity: Date.now()});
+              if (user?.role) setSessionMarker(user.role, 3600);
               return;
             }
           } catch {
-            // Refresh failed
+            // Refresh failed — not authenticated
           }
 
           get().logout();
@@ -199,31 +204,14 @@ export const useAuthStore = create<AuthState>()(
           get().logout();
           set({ isLoading: false });
         }
-      },
-    }),
+      }}),
     {
       name: STORAGE_KEY,
+      // CRITICAL (C9): never persist tokens — only the user profile,
+      // which contains no credentials an attacker can use.
       partialize: (state) => ({
         user: state.user,
-        accessToken: state.accessToken,
-        refreshToken: state.refreshToken,
-        expiresIn: state.expiresIn,
-        isAuthenticated: state.isAuthenticated,
-        lastActivity: state.lastActivity,
-      }),
-      onRehydrateStorage: () => {
-        return (state) => {
-          if (state?.accessToken) {
-            setAccessToken(state.accessToken);
-            setRefreshTokenValue(state.refreshToken ?? null);
-            setCookie('accessToken', state.accessToken, state.expiresIn ?? 3600);
-            if (state.refreshToken) {
-              setCookie('refreshToken', state.refreshToken, 7 * 24 * 60 * 60);
-            }
-          }
-        };
-      },
-    }
+        lastActivity: state.lastActivity})}
   )
 );
 

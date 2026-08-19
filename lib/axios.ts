@@ -5,8 +5,7 @@
 import axios, {
   AxiosError,
   AxiosResponse,
-  InternalAxiosRequestConfig,
-} from 'axios';
+  InternalAxiosRequestConfig} from 'axios';
 
 // ─── Types ───────────────────────────────────────────────────
 
@@ -18,7 +17,7 @@ interface FailedRequest {
 // ─── Constants ───────────────────────────────────────────────
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
-const REFRESH_ENDPOINT = '/auth/refresh';
+const REFRESH_ENDPOINT = '/api/v1/auth/refresh';
 
 // ─── State ───────────────────────────────────────────────────
 
@@ -65,8 +64,7 @@ export const axiosInstance = axios.create({
   timeout: 30_000,
   headers: {
     'Content-Type': 'application/json',
-    'Accept': 'application/json',
-  },
+    'Accept': 'application/json'},
   withCredentials: true, // For HTTP-only cookies
 });
 
@@ -121,15 +119,19 @@ axiosInstance.interceptors.response.use(
       try {
         const refreshToken = refreshTokenValue;
         const response = await axiosInstance.post<{
-          accessToken: string;
+          data?: { accessToken?: string; refreshToken?: string };
         }>(REFRESH_ENDPOINT, refreshToken ? { refreshToken } : undefined);
 
-        const newToken = response.data?.accessToken;
+        const payload = response.data?.data;
+        const newToken = payload?.accessToken;
         if (!newToken) {
           throw new Error('No access token in refresh response');
         }
 
         setAccessToken(newToken);
+        if (payload?.refreshToken) {
+          setRefreshTokenValue(payload.refreshToken);
+        }
         processQueue(null, newToken);
 
         if (originalRequest.headers) {
@@ -140,6 +142,13 @@ axiosInstance.interceptors.response.use(
       } catch (refreshError: unknown) {
         processQueue(refreshError, null);
         setAccessToken(null);
+        setRefreshTokenValue(null);
+
+        // Clear session marker so proxy/guard routes treat user as logged out
+        if (typeof document !== 'undefined') {
+          document.cookie =
+            'carticom_session=; Path=/; Max-Age=0; SameSite=Lax';
+        }
 
         // Redirect to login — avoid full page reload in SPA
         if (typeof window !== 'undefined') {

@@ -12,22 +12,19 @@ const roleColors: Record<StaffRole, string> = {
   [StaffRole.ADMIN]: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400',
   [StaffRole.MANAGER]: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
   [StaffRole.STAFF]: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
-  [StaffRole.VIEWER]: 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400',
-};
+  [StaffRole.VIEWER]: 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400'};
 
 const statusColors: Record<StaffStatus, string> = {
   [StaffStatus.PENDING]: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
   [StaffStatus.ACTIVE]: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
   [StaffStatus.SUSPENDED]: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
-  [StaffStatus.DEACTIVATED]: 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400',
-};
+  [StaffStatus.DEACTIVATED]: 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400'};
 
 const roleDescriptions: Record<string, string> = {
   [StaffRole.ADMIN]: 'Full access to all features',
   [StaffRole.MANAGER]: 'Can manage products, orders, and staff',
   [StaffRole.STAFF]: 'Can view orders and customers',
-  [StaffRole.VIEWER]: 'Can respond to customer inquiries',
-};
+  [StaffRole.VIEWER]: 'Can respond to customer inquiries'};
 
 export default function StaffPage() {
   const { storeId } = useCurrentStoreId();
@@ -46,8 +43,7 @@ export default function StaffPage() {
       onSuccess: () => {
         setInviteEmail('');
         setShowInvite(false);
-      },
-    });
+      }});
   };
 
   const handleDelete = (staff: StaffDto) => {
@@ -77,7 +73,7 @@ export default function StaffPage() {
       </div>
 
       {showInvite && (
-        <form onSubmit={handleInvite} className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 space-y-4">
+        <form onSubmit={handleInvite} className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 space-y-4">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Invite Team Member</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Input
@@ -105,15 +101,14 @@ export default function StaffPage() {
         </form>
       )}
 
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
         {!staffList || staffList.length === 0 ? (
           <EmptyState
             title="No staff members yet"
             description="Invite your team to collaborate."
             action={{
               label: 'Invite Staff',
-              onClick: () => setShowInvite(true),
-            }}
+              onClick: () => setShowInvite(true)}}
           />
         ) : (
           <div className="overflow-x-auto">
@@ -160,7 +155,7 @@ export default function StaffPage() {
         )}
       </div>
 
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Permission Roles</h2>
         <div className="space-y-3">
           {Object.entries(roleDescriptions).map(([role, desc]) => (

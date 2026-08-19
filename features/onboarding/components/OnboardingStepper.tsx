@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+
 import { ChevronLeft, ChevronRight, Eye } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -17,8 +17,7 @@ export function OnboardingStepper({
   totalSteps,
   onNext,
   onBack,
-  onPreview,
-}: OnboardingStepperProps) {
+  onPreview}: OnboardingStepperProps) {
   const progress = ((currentStep + 1) / totalSteps) * 100;
 
   return (
@@ -26,7 +25,7 @@ export function OnboardingStepper({
       {/* Progress bar */}
       <div className="w-full bg-gray-200 dark:bg-gray-800 rounded-full h-2">
         <div
-          className="bg-gradient-to-r from-blue-600 to-cyan-600 h-2 rounded-full transition-all duration-300"
+          className="bg-gradient-to-r from-blue-600 to-blue-700 h-2 rounded-full transition-all duration-300"
           style={{ width: `${progress}%` }}
         />
       </div>
@@ -59,7 +58,7 @@ export function OnboardingStepper({
           )}
           <button
             onClick={onNext}
-            className="flex items-center gap-2 px-6 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-600 text-white hover:from-blue-700 hover:to-cyan-700 transition-colors"
+            className="flex items-center gap-2 px-6 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 transition-colors"
           >
             <span className="text-sm font-medium">
               {currentStep === totalSteps - 1 ? 'Finish' : 'Next'}

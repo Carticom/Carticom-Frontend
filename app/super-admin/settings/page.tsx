@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import axiosInstance from '@/lib/axios';
+import { superAdminRepository } from '@/features/admin/repositories/admin.repository';
 import { LoadingState, EmptyState, ErrorState } from '@/components/dashboard/shared/StateComponents';
 
 interface Setting {
@@ -12,11 +12,7 @@ interface Setting {
 export default function SuperAdminSettingsPage() {
   const { data: settings, isLoading, error, refetch } = useQuery({
     queryKey: ['super-admin', 'settings'],
-    queryFn: async () => {
-      const res = await axiosInstance.get('/api/v1/super-admin/settings');
-      return (res.data.data ?? []) as Setting[];
-    },
-  });
+    queryFn: () => superAdminRepository.getSettings<Setting>()});
 
   if (isLoading) return <LoadingState message="Loading settings..." />;
   if (error) return <ErrorState onRetry={() => refetch()} />;
@@ -29,7 +25,7 @@ export default function SuperAdminSettingsPage() {
         <p className="text-gray-600 dark:text-gray-400 mt-2">System-wide configuration settings</p>
       </div>
 
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>

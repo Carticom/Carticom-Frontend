@@ -18,8 +18,7 @@ export type {
   ServiceOptions,
   CacheTag,
   FilterClause,
-  FilterOperator,
-} from './types';
+  FilterOperator} from './types';
 
 // ─── Repository ─────────────────────────────────────────────
 
@@ -35,5 +34,4 @@ export {
   createRepositoryHooks,
   prefetchEntity,
   prefetchEntityList,
-  createOptimisticUpdate,
-} from './hooks';
+  createOptimisticUpdate} from './hooks';

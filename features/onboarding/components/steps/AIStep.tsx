@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Brain, MessageCircle, CheckCircle } from 'lucide-react';
@@ -79,7 +79,7 @@ export function AIStep({ onNext, onBack }: AIStepProps) {
 
         <div className="p-4 rounded-lg border border-blue-200 dark:border-blue-900 bg-blue-50 dark:bg-blue-900/20">
           <p className="text-sm text-blue-800 dark:text-blue-300">
-            💡 <strong>Tip:</strong> Carticom AI is available on Pro and Enterprise plans. You can try it free for 14 days!
+            💡 <strong>Tip:</strong> Carticom AI is available on Pro and Enterprise plans. You can try it free for 30 days!
           </p>
         </div>
       </div>
@@ -90,7 +90,7 @@ export function AIStep({ onNext, onBack }: AIStepProps) {
         </Button>
         <Button
           onClick={onNext}
-          className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700"
+          className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
         >
           Continue
         </Button>

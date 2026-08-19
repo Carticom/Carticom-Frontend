@@ -11,7 +11,6 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-06B6D4?style=flat-square&logo=tailwindcss)](https://tailwindcss.com)
 [![Framer Motion](https://img.shields.io/badge/Framer_Motion-12-0055FF?style=flat-square&logo=framer)](https://www.framer.com/motion)
-[![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
 
 </div>
 
@@ -55,8 +54,8 @@ Carticom is a next-generation e-commerce platform designed specifically for the 
 
 ```bash
 # Clone the repository
-git clone https://github.com/carticom/carticom-frontend.git
-cd carticom-frontend
+git clone https://github.com/Carticom/Carticom-Frontend.git
+cd Carticom-Frontend
 
 # Install dependencies
 npm install
@@ -65,15 +64,17 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser to see the result (local dev).
+The live app runs at [https://carticom.vercel.app](https://carticom.vercel.app).
 
 ### Available Scripts
 
 ```bash
-npm run dev      # Start development server (Turbopack)
-npm run build    # Create production build
-npm run start    # Start production server
-npm run lint     # Run ESLint
+npm run dev        # Start development server (Turbopack)
+npm run build      # Create production build
+npm run start      # Start production server
+npm run lint       # Run ESLint
+npm run typecheck  # Run TypeScript type checking
 ```
 
 ## 📁 Project Structure
@@ -169,8 +170,8 @@ This project is proprietary software. All rights reserved.
 
 ## 📞 Contact
 
-- **Email**: hello@carticom.ng
-- **Website**: [carticom.ng](https://carticom.ng)
+- **Email**: hello@carticom.com
+- **Website**: [carticom.com](https://carticom.com)
 - **Location**: Lagos, Nigeria
 
 ---

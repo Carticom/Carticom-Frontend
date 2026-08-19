@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Store, ArrowRight, ShoppingBag, Search, MapPin, Package } from 'lucide-react';
+import { Store, ShoppingBag, Search, MapPin, Package } from 'lucide-react';
 import { storefrontApi } from '@/features/onboarding/services/onboarding.service';
 import type { StoreDto } from '@/features/onboarding/types';
-import { Button } from '@/components/ui/button';
+
 import { Input } from '@/components/ui/input';
 import { LoadingState, EmptyState, ErrorState } from '@/components/dashboard/shared/StateComponents';
 
@@ -15,23 +15,31 @@ export default function MarketplacePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-
-  const fetchStores = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await storefrontApi.getStores();
-      setStores(res.data.data || []);
-    } catch {
-      setError('Unable to load stores. Please try again later.');
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  const [retryKey, setRetryKey] = useState(0);
 
   useEffect(() => {
-    fetchStores();
-  }, [fetchStores]);
+    let cancelled = false;
+    const load = async () => {
+      try {
+        const res = await storefrontApi.getStores();
+        if (cancelled) return;
+        setStores(res.data.data || []);
+      } catch {
+        if (cancelled) return;
+        setError('Unable to load stores. Please try again later.');
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    };
+    load();
+    return () => { cancelled = true; };
+  }, [retryKey]);
+
+  const handleRetry = () => {
+    setLoading(true);
+    setError(null);
+    setRetryKey((k) => k + 1);
+  };
 
   const filteredStores = searchQuery
     ? stores.filter(s =>
@@ -43,7 +51,7 @@ export default function MarketplacePage() {
 
   if (loading) return <LoadingState message="Loading marketplace..." />;
 
-  if (error) return <ErrorState title="Marketplace unavailable" description={error} onRetry={fetchStores} />;
+  if (error) return <ErrorState title="Marketplace unavailable" description={error} onRetry={handleRetry} />;
 
   return (
     <div className="space-y-8 py-8">
@@ -81,8 +89,7 @@ export default function MarketplacePage() {
           action={
             searchQuery ? {
               label: 'Clear search',
-              onClick: () => setSearchQuery(''),
-            } : undefined
+              onClick: () => setSearchQuery('')} : undefined
           }
         />
       ) : (
@@ -96,8 +103,7 @@ export default function MarketplacePage() {
               <div
                 className="h-32 relative overflow-hidden"
                 style={{
-                  backgroundColor: store.primaryColor || '#3b82f6',
-                }}
+                  backgroundColor: store.primaryColor || '#3b82f6'}}
               >
                 {store.bannerUrl ? (
                   <Image

@@ -5,8 +5,7 @@ import Link from 'next/link';
 
 export default function StorefrontErrorBoundary({
   error,
-  reset,
-}: {
+  reset}: {
   error: Error & { digest?: string };
   reset: () => void;
 }) {

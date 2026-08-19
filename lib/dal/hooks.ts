@@ -10,16 +10,14 @@ import {
   useInfiniteQuery,
   useQueryClient,
   type UseQueryOptions,
-  type QueryKey,
-} from '@tanstack/react-query';
+  type QueryKey} from '@tanstack/react-query';
 import { BaseRepository, RepositoryError } from './repository';
 import { queryKeys } from './query-keys';
 import { showToast } from '@/lib/notifications/toast';
 import type {
   PaginationParams,
   QueryParams,
-  ServiceOptions,
-} from './types';
+  ServiceOptions} from './types';
 
 // ─── Mutation Toast Config ──────────────────────────────────
 
@@ -45,8 +43,7 @@ const DEFAULT_MESSAGES = {
   updateError: 'Failed to update',
   deleteSuccess: 'Deleted successfully',
   deleteError: 'Failed to delete',
-  fetchError: 'Failed to fetch data',
-} as const;
+  fetchError: 'Failed to fetch data'} as const;
 
 // ─── Helpers ────────────────────────────────────────────────
 
@@ -97,16 +94,13 @@ export function createRepositoryHooks<TEntity, TCreateDto = TEntity, TUpdateDto 
     return useQuery<TEntity[]>({
       queryKey: keys.list(domainKey, {
         ...pagination,
-        ...queryParams,
-      }),
+        ...queryParams}),
       queryFn: async () => {
         const result = await repository.list(pagination, queryParams, {
-          showToast: shouldShowToast(options),
-        });
+          showToast: shouldShowToast(options)});
         return result.data;
       },
-      ...options,
-    });
+      ...options});
   }
 
   // ─── useGetById ───────────────────────────────────────────
@@ -120,12 +114,10 @@ export function createRepositoryHooks<TEntity, TCreateDto = TEntity, TUpdateDto 
       queryFn: async () => {
         if (!id) throw new Error('ID is required');
         return repository.getById(id, {
-          showToast: shouldShowToast(options),
-        });
+          showToast: shouldShowToast(options)});
       },
       enabled: !!id,
-      ...options,
-    });
+      ...options});
   }
 
   // ─── useCreate ────────────────────────────────────────────
@@ -153,14 +145,12 @@ export function createRepositoryHooks<TEntity, TCreateDto = TEntity, TUpdateDto 
       onError: (error: Error, variables: TCreateDto, context: unknown) => {
         if (shouldShowToast(mutationOptions)) {
           showToast('error', toastConfig?.error ?? DEFAULT_MESSAGES.createError, {
-            description: getErrorMessage(error),
-          });
+            description: getErrorMessage(error)});
         }
 
         mutationOptions?.onError?.(error, variables, context);
       },
-      ...(mutationOptions ?? {}),
-    });
+      ...(mutationOptions ?? {})});
   }
 
   // ─── useUpdate ────────────────────────────────────────────
@@ -191,14 +181,12 @@ export function createRepositoryHooks<TEntity, TCreateDto = TEntity, TUpdateDto 
       onError: (error: Error, variables: UpdateVariables, context: unknown) => {
         if (shouldShowToast(mutationOptions)) {
           showToast('error', toastConfig?.error ?? DEFAULT_MESSAGES.updateError, {
-            description: getErrorMessage(error),
-          });
+            description: getErrorMessage(error)});
         }
 
         mutationOptions?.onError?.(error, variables, context);
       },
-      ...(mutationOptions ?? {}),
-    });
+      ...(mutationOptions ?? {})});
   }
 
   // ─── useDelete ────────────────────────────────────────────
@@ -227,14 +215,12 @@ export function createRepositoryHooks<TEntity, TCreateDto = TEntity, TUpdateDto 
       onError: (error: Error, id: string, context: unknown) => {
         if (shouldShowToast(mutationOptions)) {
           showToast('error', toastConfig?.error ?? DEFAULT_MESSAGES.deleteError, {
-            description: getErrorMessage(error),
-          });
+            description: getErrorMessage(error)});
         }
 
         mutationOptions?.onError?.(error, id, context);
       },
-      ...(mutationOptions ?? {}),
-    });
+      ...(mutationOptions ?? {})});
   }
 
   // ─── useInfiniteList ──────────────────────────────────────
@@ -260,8 +246,7 @@ export function createRepositoryHooks<TEntity, TCreateDto = TEntity, TUpdateDto 
         if (lastPage.length < pageSize) return undefined;
         return lastPageParam + 1;
       },
-      ...(options ?? {}),
-    });
+      ...(options ?? {})});
   }
 
   return {
@@ -270,8 +255,7 @@ export function createRepositoryHooks<TEntity, TCreateDto = TEntity, TUpdateDto 
     useCreate,
     useUpdate,
     useDelete,
-    useInfiniteList,
-  };
+    useInfiniteList};
 }
 
 // ============================================================
@@ -345,6 +329,5 @@ export function createOptimisticUpdate<TEntity>(
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey });
-    },
-  };
+    }};
 }

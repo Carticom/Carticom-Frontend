@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import axiosInstance from '@/lib/axios';
+import { adminRepository } from '@/features/admin/repositories/admin.repository';
 import { LoadingState, ErrorState, EmptyState } from '@/components/dashboard/shared/StateComponents';
 import { Search } from 'lucide-react';
 
@@ -10,18 +10,25 @@ const roleBadge: Record<string, string> = {
   SUPER_ADMIN: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400',
   ADMIN: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
   STAFF: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
-  BUSINESS_OWNER: 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400',
-};
+  BUSINESS_OWNER: 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400'};
 
 const statusBadge: Record<string, string> = {
   ACTIVE: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
   SUSPENDED: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
   PENDING: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
-  DISABLED: 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400',
-};
+  DISABLED: 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400'};
 
 function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString('en-NG', { year: 'numeric', month: 'short', day: 'numeric' });
+}
+
+interface AdminUser {
+  id: string;
+  fullName: string;
+  email: string;
+  role: string;
+  status: string;
+  createdAt: string;
 }
 
 export default function AdminUsersPage() {
@@ -29,10 +36,9 @@ export default function AdminUsersPage() {
   const { data: users, isLoading, error, refetch } = useQuery({
     queryKey: ['admin', 'users'],
     queryFn: async () => {
-      const res = await axiosInstance.get('/api/v1/admin/users');
-      return res.data.data ?? [];
-    },
-  });
+      const page = await adminRepository.getUsers<AdminUser>();
+      return page?.content ?? [];
+    }});
 
   if (isLoading) return <LoadingState message="Loading users..." />;
   if (error) return <ErrorState onRetry={() => refetch()} />;
@@ -50,7 +56,7 @@ export default function AdminUsersPage() {
             <p className="text-gray-600 dark:text-gray-400 mt-2">Manage all platform users</p>
           </div>
         </div>
-        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
           <div className="relative mb-4">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
             <input
@@ -74,7 +80,7 @@ export default function AdminUsersPage() {
         <p className="text-gray-600 dark:text-gray-400 mt-2">Manage all platform users</p>
       </div>
 
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
         <div className="relative mb-4">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
           <input

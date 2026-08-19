@@ -1,26 +1,51 @@
 // ============================================================
-// CARTICOM SUBSCRIPTION — Repository
+// CARTICOM SUBSCRIPTION — Repository (aligned with backend)
 // ============================================================
 
-import { BaseRepository } from '@/lib/dal/repository';
-import type { SubscriptionDto, CreateSubscriptionDto, UpdateSubscriptionDto } from '@/features/dashboard/types/subscription.types';
-import type { QueryParams } from '@/lib/dal/types';
+import axiosInstance from '@/lib/axios';
+import type { ApiResponse } from '@/lib/dal/types';
+import type {
+  SubscriptionDto,
+  SubscriptionPlan,
+  SubscriptionRequest,
+  SubscriptionPaymentResponse} from '@/features/dashboard/types/subscription.types';
 
-export class SubscriptionRepository extends BaseRepository<SubscriptionDto, CreateSubscriptionDto, UpdateSubscriptionDto> {
-  constructor() {
-    super({
-      base: '/api/v1/subscriptions',
-      byId: (id) => `/api/v1/subscriptions/${id}`,
-    });
-  }
+const BASE = '/api/v1/subscriptions';
 
-  async getByStore(storeId: string) {
-    return this.get<SubscriptionDto>(`/api/v1/subscriptions/store/${storeId}`);
-  }
+export const subscriptionRepository = {
+  getByStore: (storeId: string) =>
+    axiosInstance
+      .get<ApiResponse<SubscriptionDto>>(`${BASE}/store/${storeId}`)
+      .then((res) => res.data.data as SubscriptionDto),
 
-  async cancel(subscriptionId: string) {
-    return this.delete({ id: subscriptionId });
-  }
-}
+  getPlans: () =>
+    axiosInstance
+      .get<ApiResponse<SubscriptionPlan[]>>(`${BASE}/plans`)
+      .then((res) => res.data.data ?? []),
 
-export const subscriptionRepository = new SubscriptionRepository();
+  create: (storeId: string, data: SubscriptionRequest) =>
+    axiosInstance
+      .post<ApiResponse<SubscriptionDto>>(BASE, data, { params: { storeId } })
+      .then((res) => res.data.data as SubscriptionDto),
+
+  pay: (subscriptionId: string, data: SubscriptionRequest) =>
+    axiosInstance
+      .post<ApiResponse<SubscriptionPaymentResponse>>(`${BASE}/${subscriptionId}/pay`, data)
+      .then((res) => res.data.data as SubscriptionPaymentResponse),
+
+  upgrade: (subscriptionId: string, data: SubscriptionRequest) =>
+    axiosInstance
+      .post<ApiResponse<SubscriptionPaymentResponse>>(`${BASE}/${subscriptionId}/upgrade`, data)
+      .then((res) => res.data.data as SubscriptionPaymentResponse),
+
+  downgrade: (subscriptionId: string, data: SubscriptionRequest) =>
+    axiosInstance
+      .post<ApiResponse<SubscriptionPaymentResponse>>(`${BASE}/${subscriptionId}/downgrade`, data)
+      .then((res) => res.data.data as SubscriptionPaymentResponse),
+
+  cancel: (subscriptionId: string) =>
+    axiosInstance
+      .delete<ApiResponse<SubscriptionDto>>(`${BASE}/${subscriptionId}`)
+      .then((res) => res.data.data as SubscriptionDto)};
+
+export default subscriptionRepository;

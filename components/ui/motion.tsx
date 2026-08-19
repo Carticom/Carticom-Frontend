@@ -8,10 +8,7 @@ const staggerVariants: Variants = {
   visible: {
     transition: {
       staggerChildren: 0.04,
-      delayChildren: 0.08,
-    },
-  },
-};
+      delayChildren: 0.08}}};
 
 const itemVariants: Variants = {
   hidden: { opacity: 0, y: 12 },
@@ -22,10 +19,7 @@ const itemVariants: Variants = {
       type: 'spring',
       stiffness: 300,
       damping: 30,
-      mass: 0.8,
-    },
-  },
-};
+      mass: 0.8}}};
 
 interface StaggerGridProps {
   children: React.ReactNode;

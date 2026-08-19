@@ -1,16 +1,16 @@
 'use client';
 
-import { useMemo, useState, useEffect, lazy } from 'react';
+import { useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useAuthStore } from '@/features/auth/store/auth.store';
-import { useBusinessOwnerDashboard } from '@/features/business-owner/hooks/useBusinessOwner';
+import { useBusinessOwnerDashboard, useBusinessOwnerAnalytics } from '@/features/business-owner/hooks/useBusinessOwner';
 import { KpiGrid, type KpiCardData } from '@/components/dashboard/cards/KpiCards';
 import { LoadingState, ErrorState } from '@/components/dashboard/shared/StateComponents';
 import { StaggerGrid, StaggerItem, FadeIn } from '@/components/ui/motion';
 import { CountUp } from '@/components/ui/count-up';
-import { DollarSign, ShoppingCart, Shield, TrendingUp, Eye, Loader2, ArrowRight } from 'lucide-react';
+import { DollarSign, ShoppingCart, Shield, TrendingUp, Loader2, ArrowRight, BarChart3 } from 'lucide-react';
 import type { RecentOrder } from '@/types/dashboard';
 import type { OrderSummaryDTO } from '@/features/business-owner/types';
 import { cn } from '@/lib/utils';
@@ -18,28 +18,23 @@ import { EmptyState } from '@/components/ui/empty-state';
 import { Button } from '@/components/ui/button';
 
 const SalesBarChart = dynamic(() => import('@/components/dashboard/charts/ChartCard').then(m => ({ default: m.SalesBarChart })), {
-  loading: () => <ChartSkeleton />,
-});
+  loading: () => <ChartSkeleton />});
 
 const RevenueLineChart = dynamic(() => import('@/components/dashboard/charts/ChartCard').then(m => ({ default: m.RevenueLineChart })), {
-  loading: () => <ChartSkeleton />,
-});
+  loading: () => <ChartSkeleton />});
 
 const TargetProgressCard = dynamic(() => import('@/components/dashboard/charts/ChartCard').then(m => ({ default: m.TargetProgressCard })), {
-  loading: () => <ChartSkeleton />,
-});
+  loading: () => <ChartSkeleton />});
 
 const DemographicCard = dynamic(() => import('@/components/dashboard/charts/ChartCard').then(m => ({ default: m.DemographicCard })), {
-  loading: () => <ChartSkeleton />,
-});
+  loading: () => <ChartSkeleton />});
 
 const RecentOrdersCard = dynamic(() => import('@/components/dashboard/charts/ChartCard').then(m => ({ default: m.RecentOrdersCard })), {
-  loading: () => <ChartSkeleton />,
-});
+  loading: () => <ChartSkeleton />});
 
 function ChartSkeleton() {
   return (
-    <div className="rounded-xl border bg-card p-5 h-80 flex items-center justify-center">
+    <div className="rounded-2xl border bg-card p-5 h-80 flex items-center justify-center">
       <Loader2 className="h-6 w-6 animate-spin text-muted-foreground/50" />
     </div>
   );
@@ -54,12 +49,7 @@ function toRecentOrder(o: OrderSummaryDTO): RecentOrder {
     currency: o.currency || 'NGN',
     status: (o.status?.toLowerCase() ?? 'pending') as RecentOrder['status'],
     items: o.items,
-    date: o.createdAt,
-  };
-}
-
-function formatCurrency(amount: number): string {
-  return amount.toLocaleString('en-NG', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+    date: o.createdAt};
 }
 
 const STATUS_STYLES: Record<string, string> = {
@@ -67,47 +57,26 @@ const STATUS_STYLES: Record<string, string> = {
   processing: 'bg-blue-50 text-blue-600',
   completed: 'bg-emerald-50 text-emerald-600',
   cancelled: 'bg-red-50 text-red-600',
-  refunded: 'bg-muted text-muted-foreground',
-};
+  refunded: 'bg-muted text-muted-foreground'};
 
-const MONTHLY_SALES_DATA = [
-  { name: 'Jan', sales: 4000, revenue: 2400 },
-  { name: 'Feb', sales: 3000, revenue: 1398 },
-  { name: 'Mar', sales: 2000, revenue: 9800 },
-  { name: 'Apr', sales: 2780, revenue: 3908 },
-  { name: 'May', sales: 1890, revenue: 4800 },
-  { name: 'Jun', sales: 2390, revenue: 3800 },
-  { name: 'Jul', sales: 3490, revenue: 4300 },
-];
+function formatCurrency(amount: number): string {
+  return amount.toLocaleString('en-NG', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
 
-const REVENUE_DATA = [
-  { name: 'Jan', revenue: 5000, orders: 40 },
-  { name: 'Feb', revenue: 3500, orders: 30 },
-  { name: 'Mar', revenue: 8200, orders: 65 },
-  { name: 'Apr', revenue: 4200, orders: 35 },
-  { name: 'May', revenue: 6100, orders: 50 },
-  { name: 'Jun', revenue: 7800, orders: 62 },
-  { name: 'Jul', revenue: 9300, orders: 75 },
-];
-
-const DEMOGRAPHIC_DATA = [
-  { country: 'Nigeria', flag: '🇳🇬', customers: 2379, percentage: 79 },
-  { country: 'Ghana', flag: '🇬🇭', customers: 589, percentage: 23 },
-  { country: 'Kenya', flag: '🇰🇪', customers: 412, percentage: 16 },
-  { country: 'South Africa', flag: '🇿🇦', customers: 328, percentage: 13 },
-];
+function greetingForHour(): string {
+  const hour = new Date().getHours();
+  if (hour < 12) return 'Good Morning';
+  if (hour < 17) return 'Good Afternoon';
+  return 'Good Evening';
+}
 
 export default function DashboardPage() {
   const user = useAuthStore((state) => state.user);
   const { data: dashboard, isLoading, error, refetch } = useBusinessOwnerDashboard();
-  const [greeting, setGreeting] = useState('Hello');
+  const { data: analytics } = useBusinessOwnerAnalytics('monthly');
+  const [greeting] = useState(greetingForHour);
 
-  useEffect(() => {
-    const hour = new Date().getHours();
-    if (hour < 12) setGreeting('Good Morning');
-    else if (hour < 17) setGreeting('Good Afternoon');
-    else setGreeting('Good Evening');
-  }, []);
+  const orders = useMemo(() => (dashboard?.recentOrders ?? []).map(toRecentOrder), [dashboard?.recentOrders]);
 
   if (isLoading) {
     return <LoadingState message="Loading your dashboard..." />;
@@ -127,7 +96,6 @@ export default function DashboardPage() {
 
   const firstName = user?.fullName?.split(' ')[0] || 'User';
   const businessName = user?.businessName || 'Welcome to Carticom';
-  const orders = useMemo(() => (dashboard.recentOrders ?? []).map(toRecentOrder), [dashboard.recentOrders]);
 
   const kpiCards: KpiCardData[] = [
     {
@@ -136,32 +104,28 @@ export default function DashboardPage() {
       value: `₦${formatCurrency(dashboard.availableRevenue)}`,
       change: '+12.5%',
       changeType: 'positive',
-      icon: DollarSign,
-    },
+      icon: DollarSign},
     {
       id: 'pending-orders',
       label: 'Pending Orders',
       value: String(dashboard.pendingOrders ?? 0),
       change: dashboard.pendingOrders > 0 ? '+3 this week' : 'No change',
       changeType: 'neutral',
-      icon: ShoppingCart,
-    },
+      icon: ShoppingCart},
     {
       id: 'lifetime-revenue',
       label: 'Lifetime Revenue',
       value: `₦${formatCurrency(dashboard.lifetimeRevenue)}`,
       change: '+8.1%',
       changeType: 'positive',
-      icon: TrendingUp,
-    },
+      icon: TrendingUp},
     {
       id: 'trust-score',
       label: 'Trust Score',
       value: String(dashboard.trustScore ?? 0),
       change: dashboard.activeDisputes > 0 ? `${dashboard.activeDisputes} active disputes` : 'No disputes',
       changeType: dashboard.activeDisputes === 0 ? 'positive' : 'negative',
-      icon: Shield,
-    },
+      icon: Shield},
   ];
 
   return (
@@ -182,10 +146,24 @@ export default function DashboardPage() {
       <FadeIn delay={0.1}>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <div className="lg:col-span-2">
-            <SalesBarChart data={MONTHLY_SALES_DATA} />
+            {analytics?.length ? (
+              <SalesBarChart data={analytics.map((a) => ({
+                name: a.period,
+                sales: a.orders,
+                revenue: a.revenue}))} />
+            ) : (
+              <div className="rounded-2xl border border-gray-200 bg-white p-8 flex flex-col items-center justify-center text-center">
+                <BarChart3 className="h-10 w-10 text-gray-300 mb-3" />
+                <p className="text-sm text-gray-500 font-medium">No sales yet</p>
+                <p className="text-xs text-gray-400 mt-1 mb-4">Your monthly sales chart will appear here after your first order</p>
+                <Button asChild variant="outline" size="sm">
+                  <Link href="/storefront">View your storefront</Link>
+                </Button>
+              </div>
+            )}
           </div>
           <div>
-            <TargetProgressCard percentage={65} target="₦20M" revenue="₦13M" today="₦0" />
+            <TargetProgressCard percentage={dashboard.trustScore ?? 0} target="₦20M" revenue={`₦${formatCurrency(dashboard.lifetimeRevenue ?? 0)}`} today="₦0" />
           </div>
         </div>
       </FadeIn>
@@ -193,10 +171,24 @@ export default function DashboardPage() {
       <FadeIn delay={0.15}>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <div className="lg:col-span-2">
-            <RevenueLineChart data={REVENUE_DATA} />
+            {analytics?.length ? (
+              <RevenueLineChart data={analytics.map((a) => ({
+                name: a.period,
+                revenue: a.revenue,
+                orders: a.orders}))} />
+            ) : (
+              <div className="rounded-2xl border border-gray-200 bg-white p-8 flex flex-col items-center justify-center text-center">
+                <BarChart3 className="h-10 w-10 text-gray-300 mb-3" />
+                <p className="text-sm text-gray-500 font-medium">No revenue yet</p>
+                <p className="text-xs text-gray-400 mt-1 mb-4">Revenue trends will appear here once your first payment is completed</p>
+                <Button asChild variant="outline" size="sm">
+                  <Link href="/dashboard/products">Add your first product</Link>
+                </Button>
+              </div>
+            )}
           </div>
           <div>
-            <DemographicCard data={DEMOGRAPHIC_DATA} />
+            <DemographicCard data={[{ country: 'Nigeria', flag: '🇳🇬', customers: dashboard.recentOrders?.length ?? 0, percentage: 100 }]} />
           </div>
         </div>
       </FadeIn>
@@ -211,7 +203,7 @@ export default function DashboardPage() {
             <motion.div
               whileHover={{ y: -2 }}
               transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-              className="rounded-xl border bg-card p-4"
+              className="rounded-2xl border bg-card p-4"
             >
               <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{stat.label}</p>
               <p className="text-lg font-semibold text-foreground mt-1.5">
@@ -226,7 +218,7 @@ export default function DashboardPage() {
         <motion.div
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
-          className="rounded-xl border border-amber-200 bg-amber-50 p-4"
+          className="rounded-2xl border border-amber-200 bg-amber-50 p-4"
         >
           <p className="text-sm text-amber-800 font-medium">
             You have <strong>{dashboard.activeDisputes}</strong> active dispute{dashboard.activeDisputes !== 1 ? 's' : ''}.
@@ -260,7 +252,7 @@ export default function DashboardPage() {
                   >
                     <td className="px-5 py-3.5">
                       <div className="flex items-center gap-3">
-                        <div className="h-8 w-8 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white text-xs font-semibold">
+                        <div className="h-8 w-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-xs font-semibold">
                           {order.customer.name.charAt(0)}
                         </div>
                         <div>

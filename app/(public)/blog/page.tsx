@@ -11,24 +11,21 @@ const featuredPosts = [
     excerpt: 'Carticom launches intelligent automation tools to help merchants provide 24/7 customer support across multiple channels.',
     author: 'Carticom Team',
     date: 'Jul 15, 2026',
-    readTime: '5 min read',
-  },
+    readTime: '5 min read'},
   {
     category: 'Business',
     title: 'The Rise of Digital Commerce in West Africa: 2026 Trends',
     excerpt: 'An in-depth analysis of the e-commerce landscape in West Africa and how businesses can capitalize on emerging opportunities.',
     author: 'Carticom Team',
     date: 'Jul 10, 2026',
-    readTime: '8 min read',
-  },
+    readTime: '8 min read'},
   {
     category: 'Tutorial',
     title: 'How to Set Up Your First Online Store in Under 30 Minutes',
     excerpt: 'A step-by-step guide to launching your e-commerce store with Carticom, from registration to your first sale.',
     author: 'Carticom Team',
     date: 'Jul 5, 2026',
-    readTime: '6 min read',
-  },
+    readTime: '6 min read'},
 ];
 
 const categories = ['All', 'Product', 'Business', 'Tutorial', 'Engineering', 'Community', 'Events'];
@@ -87,7 +84,7 @@ export default function BlogPage() {
               transition={{ duration: 0.4, delay: index * 0.1 }}
               className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition-shadow group cursor-pointer"
             >
-              <div className="h-48 bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
+              <div className="h-48 bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
                 <Newspaper className="w-12 h-12 text-white/50" />
               </div>
               <div className="p-6">

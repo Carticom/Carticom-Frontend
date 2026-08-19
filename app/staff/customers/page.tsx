@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { useCurrentStoreId } from '@/hooks/useCurrentStore';
 import { useCustomers } from '@/features/dashboard/hooks/useCustomers';
 import { LoadingState, EmptyState, ErrorState } from '@/components/dashboard/shared/StateComponents';
@@ -24,7 +25,7 @@ export default function StaffCustomersPage() {
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Customers</h1>
         <p className="text-gray-600 dark:text-gray-400 mt-2">View store customers</p>
       </div>
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
         <EmptyState
           title="No customers yet"
           description="Customers will appear here after their first purchase."
@@ -47,7 +48,7 @@ export default function StaffCustomersPage() {
         <p className="text-gray-600 dark:text-gray-400 mt-2">View store customers</p>
       </div>
 
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
         <input
           type="text"
           placeholder="Search customers..."
@@ -79,7 +80,7 @@ export default function StaffCustomersPage() {
                   <td className="py-3 px-4">
                     <div className="flex items-center gap-3">
                       {customer.avatarUrl ? (
-                        <img src={customer.avatarUrl} alt={`${customer.firstName} ${customer.lastName}`} className="w-8 h-8 rounded-full object-cover bg-gray-100 dark:bg-gray-800" />
+                        <div className="relative w-8 h-8 rounded-full overflow-hidden"><Image src={customer.avatarUrl} alt={`${customer.firstName} ${customer.lastName}`} fill unoptimized className="object-cover bg-gray-100 dark:bg-gray-800" /></div>
                       ) : (
                         <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 text-xs font-medium">
                           {customer.firstName.charAt(0)}{customer.lastName.charAt(0)}

@@ -38,6 +38,29 @@ export interface StoreDto {
   updatedAt: string;
 }
 
+// ─── Store Payment Config (merchant-connect) ─────────────────
+
+export interface StorePaymentConfigDto {
+  storeId: string;
+  virtualAccountNumber?: string;
+  virtualAccountName?: string;
+  virtualBankName?: string;
+  virtualAccountProvider?: string;
+  paystackConnected: boolean;
+  flutterwaveConnected: boolean;
+  activeProvider?: string;
+  paystackPublicKeyMasked?: string;
+  connectedAt?: string;
+}
+
+export interface SavePaymentCredentialsDto {
+  paystackSecretKey?: string;
+  paystackPublicKey?: string;
+  flutterwaveSecretKey?: string;
+  flutterwaveVerifyHash?: string;
+  activeProvider?: string;
+}
+
 export interface StoreDirectoryItem {
   id: string;
   name: string;
@@ -50,24 +73,32 @@ export interface StoreDirectoryItem {
 }
 
 export interface CreateStoreDto {
-  name: string;
-  slug?: string;
+  storeName: string;
+  storeSlug: string;
+  phone: string;
   description?: string;
-  currency?: string;
+  businessCategory?: string;
+  email?: string;
+  address?: string;
   country?: string;
-  timezone?: string;
+  currency?: string;
 }
 
 export interface UpdateStoreDto {
-  name?: string;
+  storeName?: string;
+  storeSlug?: string;
   description?: string;
-  logoUrl?: string;
-  bannerUrl?: string;
+  phone?: string;
+  email?: string;
+  address?: string;
+  country?: string;
+  currency?: string;
+  timezone?: string;
+  businessCategory?: string;
   template?: string;
   primaryColor?: string;
   secondaryColor?: string;
   fontFamily?: string;
-  businessCategory?: string;
 }
 
 // ─── Product ──────────────────────────────────────────────────
@@ -122,6 +153,16 @@ export interface WalletDto {
 
 // ─── Order (for checkout) ─────────────────────────────────────
 
+export interface OrderItemDto {
+  id: string;
+  productId: string;
+  productName: string;
+  productImage?: string;
+  unitPrice: number;
+  quantity: number;
+  lineTotal: number;
+}
+
 export interface OrderDto {
   id: string;
   storeId: string;
@@ -141,6 +182,7 @@ export interface OrderDto {
   notes?: string;
   completedAt?: number;
   releaseAt?: number;
+  items?: OrderItemDto[];
   createdAt: string;
   updatedAt: string;
 }
@@ -153,7 +195,9 @@ export interface PaymentDto {
   orderId: string;
   transactionId: string;
   providerReference?: string;
-  status: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED' | 'REFUNDED';
+  authorizationUrl?: string;
+  message?: string;
+  status: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'SUCCESSFUL' | 'FAILED' | 'REFUNDED';
   amount: number;
   currency: string;
   paymentMethod: string;

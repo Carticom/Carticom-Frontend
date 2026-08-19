@@ -17,9 +17,7 @@ export async function GET(request: NextRequest) {
       {
         headers: {
           'Content-Type': 'application/json',
-          ...(authHeader && { Authorization: authHeader }),
-        },
-      }
+          ...(authHeader && { Authorization: authHeader })}}
     );
 
     return NextResponse.json(response.data, { status: response.status });
@@ -31,8 +29,7 @@ export async function GET(request: NextRequest) {
           message: error.response?.data?.message || 'Failed to fetch user',
           data: error.response?.data?.data || {},
           errorCode: error.response?.data?.errorCode || 'UNKNOWN_ERROR',
-          timestamp: Date.now(),
-        },
+          timestamp: Date.now()},
         { status: error.response?.status || 500 }
       );
     }
@@ -43,8 +40,7 @@ export async function GET(request: NextRequest) {
         message: 'An unexpected error occurred',
         data: {},
         errorCode: 'INTERNAL_SERVER_ERROR',
-        timestamp: Date.now(),
-      },
+        timestamp: Date.now()},
       { status: 500 }
     );
   }

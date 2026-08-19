@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Store, Zap, Shield } from 'lucide-react';
@@ -19,7 +19,7 @@ export function WelcomeStep({ onNext, onSkip }: WelcomeStepProps) {
     >
       <div className="text-center space-y-4">
         <div className="flex justify-center">
-          <div className="rounded-full bg-gradient-to-br from-blue-600 to-cyan-600 p-4">
+          <div className="rounded-full bg-gradient-to-br from-blue-600 to-blue-700 p-4">
             <Store className="h-12 w-12 text-white" />
           </div>
         </div>
@@ -27,7 +27,7 @@ export function WelcomeStep({ onNext, onSkip }: WelcomeStepProps) {
           Welcome to Carticom! 🎉
         </h2>
         <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-          We're excited to help you launch your online business. This quick setup will take about 5 minutes and will get you ready to start selling.
+          We&apos;re excited to help you launch your online business. This quick setup will take about 5 minutes and will get you ready to start selling.
         </p>
       </div>
 
@@ -57,7 +57,7 @@ export function WelcomeStep({ onNext, onSkip }: WelcomeStepProps) {
         )}
         <Button
           onClick={onNext}
-          className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700"
+          className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
         >
           Start Setup
         </Button>

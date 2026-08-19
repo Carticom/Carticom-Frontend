@@ -29,7 +29,7 @@ export default function ProcessingOrdersPage() {
         <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">Track orders currently being processed.</p>
       </div>
 
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 overflow-hidden">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>

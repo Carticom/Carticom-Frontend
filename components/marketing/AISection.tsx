@@ -1,9 +1,9 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Bot, MessageSquare, BarChart3, TrendingUp, Package, Sparkles, ArrowRight, Clock } from 'lucide-react';
-import Link from 'next/link';
-import { cn } from '@/lib/utils';
+import { Bot, MessageSquare, BarChart3, TrendingUp, Package, Sparkles, Clock } from 'lucide-react';
+
+
 
 const AI_FEATURES = [
   { icon: MessageSquare, title: 'WhatsApp AI', desc: 'Automated customer support, order updates, and product recommendations via WhatsApp.' },

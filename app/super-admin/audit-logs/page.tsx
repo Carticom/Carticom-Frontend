@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import axiosInstance from '@/lib/axios';
+import { superAdminRepository } from '@/features/admin/repositories/admin.repository';
 import { LoadingState, EmptyState, ErrorState } from '@/components/dashboard/shared/StateComponents';
 
 interface AuditLog {
@@ -20,10 +20,9 @@ export default function SuperAdminAuditLogsPage() {
   const { data: logs, isLoading, error, refetch } = useQuery({
     queryKey: ['super-admin', 'audit-logs'],
     queryFn: async () => {
-      const res = await axiosInstance.get('/api/v1/super-admin/audit-logs');
-      return (res.data.data?.content ?? []) as AuditLog[];
-    },
-  });
+      const page = await superAdminRepository.getAuditLogs<AuditLog>();
+      return page?.content ?? [];
+    }});
 
   if (isLoading) return <LoadingState message="Loading audit logs..." />;
   if (error) return <ErrorState onRetry={() => refetch()} />;
@@ -36,7 +35,7 @@ export default function SuperAdminAuditLogsPage() {
         <p className="text-gray-600 dark:text-gray-400 mt-2">Track all administrative actions on the platform</p>
       </div>
 
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>

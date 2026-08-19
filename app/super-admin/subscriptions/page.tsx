@@ -1,8 +1,12 @@
 'use client';
 
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import axiosInstance from '@/lib/axios';
+import { superAdminRepository } from '@/features/admin/repositories/admin.repository';
 import { LoadingState, EmptyState, ErrorState } from '@/components/dashboard/shared/StateComponents';
+import { Button } from '@/components/ui/button';
+import { Gift } from 'lucide-react';
+import { GiftSubscriptionModal } from '@/components/dashboard/subscription/GiftSubscriptionModal';
 
 interface Subscription {
   id: string;
@@ -23,19 +27,19 @@ function statusBadge(status: string) {
     EXPIRED: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
     CANCELLED: 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400',
     PENDING: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400',
-    TRIALING: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
-  };
+    TRIAL: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'};
   return map[status] ?? 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400';
 }
 
 export default function SuperAdminSubscriptionsPage() {
+  const [showGiftModal, setShowGiftModal] = useState(false);
+
   const { data: subscriptions, isLoading, error, refetch } = useQuery({
     queryKey: ['super-admin', 'subscriptions'],
     queryFn: async () => {
-      const res = await axiosInstance.get('/api/v1/super-admin/subscriptions');
-      return (res.data.data?.content ?? []) as Subscription[];
-    },
-  });
+      const page = await superAdminRepository.getSubscriptions<Subscription>();
+      return page?.content ?? [];
+    }});
 
   if (isLoading) return <LoadingState message="Loading subscriptions..." />;
   if (error) return <ErrorState onRetry={() => refetch()} />;
@@ -43,12 +47,18 @@ export default function SuperAdminSubscriptionsPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Subscriptions</h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-2">View all platform subscriptions</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Subscriptions</h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-2">View all platform subscriptions</p>
+        </div>
+        <Button onClick={() => setShowGiftModal(true)}>
+          <Gift className="h-4 w-4 mr-1" />
+          Gift Subscription
+        </Button>
       </div>
 
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -76,6 +86,8 @@ export default function SuperAdminSubscriptionsPage() {
           </table>
         </div>
       </div>
+
+      <GiftSubscriptionModal open={showGiftModal} onOpenChange={setShowGiftModal} />
     </div>
   );
 }

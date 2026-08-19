@@ -1,10 +1,10 @@
 'use client';
 
-import React from 'react';
+
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Globe, Check } from 'lucide-react';
+
+import { Globe } from 'lucide-react';
 import type { StoreDto } from '@/features/onboarding/types';
 
 interface StoreSetupStepProps {
@@ -16,7 +16,7 @@ interface StoreSetupStepProps {
 }
 
 export function StoreSetupStep({ onNext, onBack, store }: StoreSetupStepProps) {
-  const storeUrl = store?.slug ? `carticom.app/store/${store.slug}` : 'Store URL will be generated after creation';
+  const storeUrl = store?.slug ? `carticom.vercel.app/store/${store.slug}` : 'Store URL will be generated after creation';
 
   return (
     <motion.div
@@ -66,7 +66,7 @@ export function StoreSetupStep({ onNext, onBack, store }: StoreSetupStepProps) {
         </Button>
         <Button
           onClick={onNext}
-          className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700"
+          className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
         >
           Continue
         </Button>

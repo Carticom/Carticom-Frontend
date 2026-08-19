@@ -17,43 +17,37 @@ const featuredTutorials = [
     description: 'A step-by-step walkthrough from account creation to your first sale.',
     duration: '45 min',
     level: 'Beginner',
-    category: 'Store Setup',
-  },
+    category: 'Store Setup'},
   {
     title: 'Understanding the Escrow Payment System',
     description: 'Learn how our escrow system protects both buyers and sellers in transactions.',
     duration: '30 min',
     level: 'Beginner',
-    category: 'Payments',
-  },
+    category: 'Payments'},
   {
     title: 'Advanced Analytics: Making Data-Driven Decisions',
     description: 'Use Carticom analytics tools to optimize your store performance and increase sales.',
     duration: '60 min',
     level: 'Advanced',
-    category: 'Analytics',
-  },
+    category: 'Analytics'},
   {
     title: 'Automating Your Workflow with Custom Solutions',
     description: 'Build automation workflows to streamline your business operations.',
     duration: '50 min',
     level: 'Advanced',
-    category: 'Custom Solutions',
-  },
+    category: 'Custom Solutions'},
   {
     title: 'Managing Inventory Across Multiple Channels',
     description: 'Keep your inventory synchronized across all your sales channels.',
     duration: '35 min',
     level: 'Intermediate',
-    category: 'Inventory',
-  },
+    category: 'Inventory'},
   {
     title: 'Optimizing Your Store for Mobile Shoppers',
     description: 'Best practices for creating a seamless mobile shopping experience.',
     duration: '25 min',
     level: 'Intermediate',
-    category: 'Store Design',
-  },
+    category: 'Store Design'},
 ];
 
 const levels = ['All Levels', 'Beginner', 'Intermediate', 'Advanced'];
@@ -134,7 +128,7 @@ export default function TutorialsPage() {
               transition={{ duration: 0.4, delay: index * 0.05 }}
               className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition-shadow group cursor-pointer"
             >
-              <div className="h-40 bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center relative">
+              <div className="h-40 bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center relative">
                 <Play className="w-12 h-12 text-white/70 group-hover:scale-110 transition-transform" />
                 <span className="absolute bottom-3 right-3 px-2 py-1 bg-black/30 text-white text-xs rounded-lg">
                   {tutorial.duration}

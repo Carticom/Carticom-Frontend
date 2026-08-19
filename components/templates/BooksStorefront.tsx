@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ShoppingBag, ArrowRight, Book, Star, BookOpen, Feather, Heart, Search, ChevronRight, Layers, Clock, MessageCircle } from 'lucide-react';
+import { ShoppingBag, ArrowRight, Book, Star, BookOpen, Feather, Heart, Layers, Clock, MessageCircle } from 'lucide-react';
 import type { StoreDto, ProductDto } from '@/features/onboarding/types';
 import { Button } from '@/components/ui/button';
 
@@ -117,7 +117,7 @@ function ShowcaseSection({ products, onAddToCart, addingToCart }: { products: Pr
           ))}
         </div>
         <FadeIn className="text-center mt-12">
-          <Link href="#" className="inline-flex items-center gap-2 text-[#1c1917] font-medium border-b border-[#1c1917] pb-1 hover:text-gray-600 hover:border-gray-400 transition-colors">
+          <Link href="/storefront" className="inline-flex items-center gap-2 text-[#1c1917] font-medium border-b border-[#1c1917] pb-1 hover:text-gray-600 hover:border-gray-400 transition-colors">
             Browse All Titles <ArrowRight className="h-4 w-4" />
           </Link>
         </FadeIn>
@@ -166,7 +166,7 @@ function NewsletterSection() {
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         <FadeIn className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div>
-            <h3 className="text-2xl font-light text-white" style={{ fontFamily: "'Cormorant Garamond', serif" }}>The Reader's Digest</h3>
+            <h3 className="text-2xl font-light text-white" style={{ fontFamily: "'Cormorant Garamond', serif" }}>The Reader&apos;s Digest</h3>
             <p className="text-gray-400 text-sm mt-1 font-serif">Weekly recommendations, author interviews, and exclusive previews.</p>
           </div>
           <div className="flex w-full md:w-auto gap-3">

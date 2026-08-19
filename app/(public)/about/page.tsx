@@ -1,21 +1,8 @@
 'use client';
 
-import React from 'react';
+
 import { motion } from 'framer-motion';
-import {
-  Target,
-  Heart,
-  Shield,
-  Zap,
-  Globe,
-  Users,
-  ArrowRight,
-  Sparkles,
-  Store,
-  CreditCard,
-  Headphones,
-  BarChart3,
-} from 'lucide-react';
+import { Target, Heart, Shield, Zap, Globe, Users, ArrowRight, Sparkles, Store, Headphones, BarChart3 } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Container } from '@/components/common/Container';
@@ -25,9 +12,7 @@ const fadeUp = {
   visible: (delay: number) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] as const },
-  }),
-};
+    transition: { duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] as const }})};
 
 const stats = [
   { value: '50K+', label: 'Merchants', icon: Store },
@@ -42,53 +27,46 @@ const values = [
     title: 'African First',
     description:
       'Every feature we build is designed for the unique realities of African commerce — from mobile money to USSD to last-mile logistics.',
-    color: 'blue',
-  },
+    color: 'blue'},
   {
     icon: Heart,
     title: 'Merchant Obsession',
     description:
       'We succeed only when our merchants grow. Every decision starts with the question: does this help our sellers win?',
-    color: 'rose',
-  },
+    color: 'rose'},
   {
     icon: Shield,
     title: 'Trust & Security',
     description:
       'We handle payments, escrow, and sensitive data with bank-grade encryption and rigorous compliance across every market we serve.',
-    color: 'emerald',
-  },
+    color: 'emerald'},
   {
     icon: Zap,
     title: 'Radical Simplicity',
     description:
       'Complexity is the enemy of execution. We obsess over clean interfaces and workflows that just work — even on 2G networks.',
-    color: 'amber',
-  },
+    color: 'amber'},
   {
     icon: Users,
     title: 'Community Power',
     description:
       'Carticom is built for the African entrepreneur ecosystem. We connect sellers, buyers, logistics partners, and payment providers.',
-    color: 'indigo',
-  },
+    color: 'indigo'},
   {
     icon: Globe,
     title: 'Borderless Commerce',
     description:
       'We break down barriers so a seller in Lagos can sell to a buyer in Nairobi or London as easily as selling next door.',
-    color: 'cyan',
-  },
+    color: 'cyan'},
 ];
 
 const colorMap: Record<string, { bg: string; text: string; border: string }> = {
   blue: { bg: 'bg-blue-50', text: 'text-blue-600', border: 'border-blue-100 group-hover:border-blue-200' },
   rose: { bg: 'bg-rose-50', text: 'text-rose-600', border: 'border-rose-100 group-hover:border-rose-200' },
-  emerald: { bg: 'bg-emerald-50', text: 'text-emerald-600', border: 'border-emerald-100 group-hover:border-emerald-200' },
+  emerald: { bg: 'bg-violet-50', text: 'text-violet-600', border: 'border-violet-100 group-hover:border-violet-200' },
   amber: { bg: 'bg-amber-50', text: 'text-amber-600', border: 'border-amber-100 group-hover:border-amber-200' },
   indigo: { bg: 'bg-indigo-50', text: 'text-indigo-600', border: 'border-indigo-100 group-hover:border-indigo-200' },
-  cyan: { bg: 'bg-cyan-50', text: 'text-cyan-600', border: 'border-cyan-100 group-hover:border-cyan-200' },
-};
+  cyan: { bg: 'bg-blue-50', text: 'text-blue-600', border: 'border-blue-100 group-hover:border-blue-200' }};
 
 export default function AboutPage() {
   return (
@@ -121,7 +99,7 @@ export default function AboutPage() {
               className="text-4xl font-bold leading-[1.08] tracking-tight text-gray-900 sm:text-5xl md:text-6xl"
             >
               About{' '}
-              <span className="bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600 bg-clip-text text-transparent">
                 Carticom
               </span>
             </motion.h1>
@@ -169,7 +147,7 @@ export default function AboutPage() {
                 className="space-y-4 text-gray-600"
               >
                 <p>
-                  Africa's commerce infrastructure is fragmented. Payments, logistics, storefronts,
+                  Africa&apos;s commerce infrastructure is fragmented. Payments, logistics, storefronts,
                   and customer engagement live in disconnected silos — forcing merchants to stitch
                   together dozens of tools just to run their business.
                 </p>
@@ -297,12 +275,12 @@ export default function AboutPage() {
             </h2>
             <p className="mt-4 text-lg text-gray-600">
               Join 50,000+ merchants across Africa who trust Carticom to power their commerce. Start
-              your 14-day free trial today — no credit card required.
+              your 30-day free trial today — no credit card required.
             </p>
             <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Button
                 size="lg"
-                className="h-14 w-full rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-600 px-8 text-base font-semibold text-white shadow-xl shadow-blue-500/20 transition-all duration-300 hover:from-blue-700 hover:to-cyan-700 hover:shadow-blue-500/40 sm:w-auto"
+                className="h-14 w-full rounded-2xl bg-gradient-to-r from-blue-600 to-blue-700 px-8 text-base font-semibold text-white shadow-xl shadow-blue-500/20 transition-all duration-300 hover:from-blue-700 hover:to-blue-800 hover:shadow-blue-500/40 sm:w-auto"
                 asChild
               >
                 <Link href="/register">

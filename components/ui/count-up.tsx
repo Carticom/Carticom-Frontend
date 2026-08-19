@@ -20,8 +20,7 @@ export function CountUp({
   className,
   prefix = '',
   suffix = '',
-  decimals = 0,
-}: CountUpProps) {
+  decimals = 0}: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-50px' });
 
@@ -35,8 +34,7 @@ export function CountUp({
         if (ref.current) {
           ref.current.textContent = `${prefix}${value.toFixed(decimals)}${suffix}`;
         }
-      },
-    });
+      }});
 
     return () => controls.stop();
   }, [from, to, duration, isInView, prefix, suffix, decimals]);

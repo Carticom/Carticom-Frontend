@@ -24,8 +24,7 @@ export default function RegisterPage() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<RegisterBusinessOwnerSchema>({
+    formState: { errors, isSubmitting }} = useForm<RegisterBusinessOwnerSchema>({
     resolver: zodResolver(registerBusinessOwnerSchema),
     defaultValues: {
       fullName: '',
@@ -33,9 +32,7 @@ export default function RegisterPage() {
       email: '',
       phone: '',
       password: '',
-      confirmPassword: '',
-    },
-  });
+      confirmPassword: ''}});
 
   const onSubmit = async (data: RegisterBusinessOwnerSchema) => {
     setServerError(null);
@@ -44,8 +41,7 @@ export default function RegisterPage() {
       businessName: data.businessName,
       email: data.email,
       phone: data.phone,
-      password: data.password,
-    });
+      password: data.password});
 
     if (result.success) {
       authToasts.registerSuccess();
@@ -60,7 +56,7 @@ export default function RegisterPage() {
   return (
     <AuthLayout
       title="Create your business account"
-      subtitle="Start your 14-day free trial. No credit card required."
+      subtitle="Start your 30-day free trial. No credit card required."
     >
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
         {/* Server Error */}
@@ -298,7 +294,7 @@ export default function RegisterPage() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 transition-all duration-300 hover:from-blue-700 hover:to-cyan-700 hover:shadow-blue-500/40 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 transition-all duration-300 hover:from-blue-700 hover:to-blue-800 hover:shadow-blue-500/40 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {isSubmitting ? (
             <>

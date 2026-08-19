@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { CreditCard, CheckCircle } from 'lucide-react';
@@ -22,7 +22,7 @@ export function PaymentsStep({ onNext, onBack }: PaymentsStepProps) {
           Payment Setup
         </h2>
         <p className="text-gray-600 dark:text-gray-400">
-          Configure how you'll receive payments
+          Configure how you&apos;ll receive payments
         </p>
       </div>
 
@@ -92,7 +92,7 @@ export function PaymentsStep({ onNext, onBack }: PaymentsStepProps) {
         </Button>
         <Button
           onClick={onNext}
-          className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700"
+          className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
         >
           Continue
         </Button>

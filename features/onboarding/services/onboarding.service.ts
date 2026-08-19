@@ -8,81 +8,17 @@ import type {
   CreateStoreDto,
   UpdateStoreDto,
   StoreDto,
+  StorePaymentConfigDto,
+  SavePaymentCredentialsDto,
   CreateProductDto,
   ProductDto,
   WalletDto,
   OrderDto,
   PaymentDto,
   EscrowTransactionDto,
-  CartDto,
-} from '@/features/onboarding/types';
+  CartDto} from '@/features/onboarding/types';
 
 const API_PREFIX = '/api/v1';
-
-// ─── Auth API ─────────────────────────────────────────────────
-
-export const authApi = {
-  register: (data: {
-    fullName: string;
-    businessName: string;
-    email: string;
-    password: string;
-    phone?: string;
-  }) =>
-    axiosInstance.post<
-      ApiResponse<{
-        token: string;
-        refreshToken: string;
-        expiresIn: number;
-        tokenType: string;
-        userId: string;
-        email: string;
-        fullName: string;
-        role: string;
-      }>
-    >(`${API_PREFIX}/auth/register`, data),
-
-  login: (data: { email: string; password: string }) =>
-    axiosInstance.post<
-      ApiResponse<{
-        token: string;
-        refreshToken: string;
-        expiresIn: number;
-        tokenType: string;
-        userId: string;
-        email: string;
-        fullName: string;
-        role: string;
-      }>
-    >(`${API_PREFIX}/auth/login`, data),
-
-  refresh: (data: { refreshToken: string }) =>
-    axiosInstance.post<
-      ApiResponse<{
-        token: string;
-        refreshToken: string;
-        expiresIn: number;
-        tokenType: string;
-        userId: string;
-        email: string;
-        fullName: string;
-        role: string;
-      }>
-    >(`${API_PREFIX}/auth/refresh`, data),
-
-  logout: () =>
-    axiosInstance.post<ApiResponse<null>>(`${API_PREFIX}/auth/logout`),
-
-  getMe: () =>
-    axiosInstance.get<
-      ApiResponse<{
-        userId: string;
-        email: string;
-        fullName: string;
-        role: string;
-      }>
-    >(`${API_PREFIX}/auth/me`),
-};
 
 // ─── Store API ────────────────────────────────────────────────
 
@@ -109,7 +45,17 @@ export const storeApi = {
     axiosInstance.patch<ApiResponse<StoreDto>>(
       `${API_PREFIX}/stores/${id}/status?status=${status}`
     ),
-};
+
+  getPaymentConfig: (id: string) =>
+    axiosInstance.get<ApiResponse<StorePaymentConfigDto>>(
+      `${API_PREFIX}/stores/${id}/payment-config`
+    ),
+
+  savePaymentCredentials: (id: string, data: SavePaymentCredentialsDto) =>
+    axiosInstance.put<ApiResponse<StorePaymentConfigDto>>(
+      `${API_PREFIX}/stores/${id}/payment-config/credentials`,
+      data
+    )};
 
 // ─── Product API ──────────────────────────────────────────────
 
@@ -150,8 +96,7 @@ export const productApi = {
   getByCategory: (categoryId: string) =>
     axiosInstance.get<ApiResponse<ProductDto[]>>(
       `${API_PREFIX}/products/category/${categoryId}`
-    ),
-};
+    )};
 
 // ─── Cart API ─────────────────────────────────────────────────
 
@@ -178,8 +123,7 @@ export const cartApi = {
   clear: (storeId: string) =>
     axiosInstance.delete<ApiResponse<null>>(
       `${API_PREFIX}/cart/clear?storeId=${storeId}`
-    ),
-};
+    )};
 
 // ─── Checkout / Orders API ────────────────────────────────────
 
@@ -213,13 +157,18 @@ export const checkoutApi = {
   cancelOrder: (orderId: string) =>
     axiosInstance.post<ApiResponse<OrderDto>>(
       `${API_PREFIX}/checkout/orders/${orderId}/cancel`
-    ),
-};
+    )};
 
 // ─── Payments API ─────────────────────────────────────────────
 
 export const paymentApi = {
-  initiate: (data: { orderId: string; paymentMethod: string; paymentProvider: string }) =>
+  initiate: (data: {
+    orderId: string;
+    paymentMethod: string;
+    paymentProvider: string;
+    email?: string;
+    callbackUrl?: string;
+  }) =>
     axiosInstance.post<ApiResponse<PaymentDto>>(
       `${API_PREFIX}/payments/initiate`,
       data
@@ -235,15 +184,13 @@ export const paymentApi = {
     axiosInstance.post<ApiResponse<PaymentDto>>(
       `${API_PREFIX}/payments/refund`,
       data
-    ),
-};
+    )};
 
 // ─── Wallet API ───────────────────────────────────────────────
 
 export const walletApi = {
   getBalance: () =>
-    axiosInstance.get<ApiResponse<WalletDto>>(`${API_PREFIX}/wallet`),
-};
+    axiosInstance.get<ApiResponse<WalletDto>>(`${API_PREFIX}/wallet`)};
 
 // ─── Storefront API (public) ─────────────────────────────────
 
@@ -256,6 +203,11 @@ export const storefrontApi = {
   getStoreBySlug: (slug: string) =>
     axiosInstance.get<ApiResponse<StoreDto>>(
       `${API_PREFIX}/storefront/stores/${slug}`
+    ),
+
+  getStoreById: (id: string) =>
+    axiosInstance.get<ApiResponse<StoreDto>>(
+      `${API_PREFIX}/stores/${id}`
     ),
 
   getStoreProducts: (slug: string) =>
@@ -271,8 +223,7 @@ export const storefrontApi = {
   search: (q: string) =>
     axiosInstance.get<ApiResponse<ProductDto[]>>(
       `${API_PREFIX}/storefront/search?q=${encodeURIComponent(q)}`
-    ),
-};
+    )};
 
 // ─── Escrow API ───────────────────────────────────────────────
 
@@ -280,5 +231,4 @@ export const escrowApi = {
   getByStore: (storeId: string) =>
     axiosInstance.get<ApiResponse<EscrowTransactionDto[]>>(
       `${API_PREFIX}/escrow/store/${storeId}`
-    ),
-};
+    )};

@@ -34,8 +34,7 @@ function statusBadgeClasses(status: OrderStatus) {
     [OrderStatus.SHIPPED]: 'text-purple-600 bg-purple-50 dark:text-purple-400 dark:bg-purple-900/20',
     [OrderStatus.DELIVERED]: 'text-emerald-600 bg-emerald-50 dark:text-emerald-400 dark:bg-emerald-900/20',
     [OrderStatus.CANCELLED]: 'text-red-600 bg-red-50 dark:text-red-400 dark:bg-red-900/20',
-    [OrderStatus.REFUNDED]: 'text-gray-600 bg-gray-50 dark:text-gray-400 dark:bg-gray-900/20',
-  };
+    [OrderStatus.REFUNDED]: 'text-gray-600 bg-gray-50 dark:text-gray-400 dark:bg-gray-900/20'};
   return map[status] ?? 'text-gray-600 bg-gray-50 dark:text-gray-400 dark:bg-gray-900/20';
 }
 
@@ -45,8 +44,7 @@ export default function OrdersPage() {
   const { data: orders, isLoading, error, refetch } = useOrders(storeId ?? '', {
     page: 0,
     limit: 20,
-    status: selectedStatus || undefined,
-  });
+    status: selectedStatus || undefined});
 
   if (!storeId || isLoading) return <LoadingState message="Loading orders..." />;
   if (error) return <ErrorState title="Failed to load orders" onRetry={refetch} />;
@@ -56,7 +54,7 @@ export default function OrdersPage() {
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Orders</h1>
         <p className="text-gray-600 dark:text-gray-400 mt-2">Manage and track all orders</p>
       </div>
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
         <div className="flex gap-2 mb-4 flex-wrap">
           {STATUS_FILTERS.map((filter) => (
             <button
@@ -87,7 +85,7 @@ export default function OrdersPage() {
         <p className="text-gray-600 dark:text-gray-400 mt-2">Manage and track all orders</p>
       </div>
 
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
         <div className="flex gap-2 mb-4 flex-wrap">
           {STATUS_FILTERS.map((filter) => (
             <button

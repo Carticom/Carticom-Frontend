@@ -1,13 +1,13 @@
 'use client';
 
-import { useMemo, useState, useCallback } from 'react';
+import { useMemo, useState, useCallback, createElement } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Eye } from 'lucide-react';
 import { getTemplate } from '@/features/templates/registry';
-import { getTemplateComponent, getTemplateByCategory } from '@/components/templates';
+import { TEMPLATE_MAP, TEMPLATE_COMPONENT_FALLBACK } from '@/components/templates';
 import type { StoreDto, ProductDto } from '@/features/onboarding/types';
-import { LoadingState, ErrorState } from '@/components/dashboard/shared/StateComponents';
+import { ErrorState } from '@/components/dashboard/shared/StateComponents';
 
 const NAMES: Record<string, string> = {
   'fashion-luxury': 'Luxe EDIT',
@@ -25,8 +25,7 @@ const NAMES: Record<string, string> = {
   'books-media': 'Page & Pixel',
   'books-folio': 'Folio',
   'arts-crafts': 'Atelier',
-  'arts-studio': 'Studio',
-};
+  'arts-studio': 'Studio'};
 
 const DEMO_PRODUCTS: Record<string, { name: string; price: number; image?: string }[]> = {
   'fashion-luxury': [
@@ -156,8 +155,7 @@ const DEMO_PRODUCTS: Record<string, { name: string; price: number; image?: strin
     { name: 'Sculpture Tool Kit', price: 22000 },
     { name: 'Art Apron', price: 8500 },
     { name: 'Printmaking Starter Kit', price: 35000 },
-  ],
-};
+  ]};
 
 export default function TemplatePreviewPage() {
   const params = useParams();
@@ -187,8 +185,7 @@ export default function TemplatePreviewPage() {
       secondaryColor: template?.colors.secondary,
       instagramUrl: 'https://instagram.com/carticom',
       createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    } as StoreDto;
+      updatedAt: new Date().toISOString()} as StoreDto;
   }, [slug, template]);
 
   const mockProducts = useMemo<ProductDto[]>(() => {
@@ -206,8 +203,7 @@ export default function TemplatePreviewPage() {
       tenantId: 'preview',
       imageUrl: p.image,
       createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    } as ProductDto));
+      updatedAt: new Date().toISOString()} as ProductDto));
   }, [slug]);
 
   const [addingToCart, setAddingToCart] = useState<string | null>(null);
@@ -221,9 +217,6 @@ export default function TemplatePreviewPage() {
   if (!slug) return <ErrorState title="No template specified" description="Please provide a template slug." />;
 
   if (!template) return <ErrorState title="Template not found" description={`No template found for "${slug}".`} />;
-
-  const templateComponentSlug = getTemplateByCategory(template.category);
-  const TemplateComponent = getTemplateComponent(templateComponentSlug);
 
   return (
     <>
@@ -245,12 +238,12 @@ export default function TemplatePreviewPage() {
         <ArrowLeft className="h-3.5 w-3.5" />
         Back to Home
       </Link>
-      <TemplateComponent
-        store={mockStore}
-        products={mockProducts}
-        onAddToCart={handleAddToCart}
-        addingToCart={addingToCart}
-      />
+      {createElement(TEMPLATE_MAP[slug] ?? TEMPLATE_COMPONENT_FALLBACK, {
+        store: mockStore,
+        products: mockProducts,
+        onAddToCart: handleAddToCart,
+        addingToCart,
+      })}
     </>
   );
 }

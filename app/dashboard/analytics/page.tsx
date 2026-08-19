@@ -9,16 +9,14 @@ const PERIOD_MAP: Record<string, string> = {
   'Today': 'today',
   '7 Days': '7d',
   '30 Days': '30d',
-  '12 Months': '12m',
-};
+  '12 Months': '12m'};
 
 function formatCurrency(amount: number): string {
   return new Intl.NumberFormat('en-NG', {
     style: 'currency',
     currency: 'NGN',
     minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
+    maximumFractionDigits: 0}).format(amount);
 }
 
 function formatPercent(value: number): string {
@@ -133,7 +131,7 @@ export default function AnalyticsPage() {
 
       {/* Top Products & Categories */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Top Products</h2>
           {topProducts.length === 0 ? (
             <p className="text-center py-8 text-gray-500">No products data yet</p>
@@ -158,7 +156,7 @@ export default function AnalyticsPage() {
             </table>
           )}
         </div>
-        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Top Categories</h2>
           {topCategories.length === 0 ? (
             <p className="text-center py-8 text-gray-500">No categories data yet</p>
@@ -190,7 +188,7 @@ export default function AnalyticsPage() {
 
 function StatCard({ label, value, change }: { label: string; value: string; change: string }) {
   return (
-    <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-4">
+    <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-4">
       <p className="text-sm text-gray-600 dark:text-gray-400">{label}</p>
       <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">{value}</p>
       <p className={`text-sm mt-1 ${change.startsWith('+') ? 'text-green-600' : change.startsWith('-') ? 'text-red-600' : 'text-gray-500'}`}>
@@ -202,7 +200,7 @@ function StatCard({ label, value, change }: { label: string; value: string; chan
 
 function GrowthCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+    <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
       <p className="text-sm text-gray-600 dark:text-gray-400">{label}</p>
       <p className="text-3xl font-bold text-gray-900 dark:text-white mt-2">{value}</p>
     </div>

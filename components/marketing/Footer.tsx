@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { Container } from '@/components/common/Container';
@@ -33,8 +33,7 @@ const footerLinks = {
     { label: 'Terms of Service', href: '/legal/terms' },
     { label: 'Cookie Policy', href: '/legal/cookies' },
     { label: 'GDPR', href: '/legal/gdpr' },
-  ],
-};
+  ]};
 
 const socialLinks = [
   { icon: ExternalLink, href: 'https://twitter.com/carticom', label: 'Twitter' },
@@ -67,8 +66,8 @@ export function Footer() {
             <div className="space-y-3">
               <div className="flex items-center gap-3 text-sm">
                 <Mail className="h-4 w-4 text-gray-400" aria-hidden="true" />
-                <a href="mailto:hello@carticom.ng" className="hover:text-white transition-colors">
-                  hello@carticom.ng
+                <a href="mailto:hello@carticom.com" className="hover:text-white transition-colors">
+                  hello@carticom.com
                 </a>
               </div>
               <div className="flex items-center gap-3 text-sm">

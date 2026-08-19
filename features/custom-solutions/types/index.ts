@@ -14,6 +14,9 @@ export interface CustomSolutionDto {
   quotationUrl?: string;
   quotationAmount?: number;
   quotationNote?: string;
+  assignedTo?: string;
+  assignedToName?: string;
+  adminNotes?: string;
   storeId?: string;
   createdAt: string;
   updatedAt: string;
@@ -43,8 +46,7 @@ export enum CustomSolutionStatus {
   TESTING = 'TESTING',
   DEPLOYED = 'DEPLOYED',
   COMPLETED = 'COMPLETED',
-  REJECTED = 'REJECTED',
-}
+  REJECTED = 'REJECTED'}
 
 export const SERVICE_OPTIONS = [
   'Customer App',
@@ -80,6 +82,14 @@ export interface CustomSolutionStatistics {
 export interface UpdateStatusDto {
   status: CustomSolutionStatus;
   note?: string;
+}
+
+export interface AssignDto {
+  assigneeId: string;
+}
+
+export interface AdminNotesDto {
+  note: string;
 }
 
 export interface QuotationDto {

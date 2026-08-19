@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Crown, Check, Zap, ExternalLink } from 'lucide-react';
@@ -13,7 +13,7 @@ interface SubscriptionLaunchStepProps {
   product?: ProductDto | null;
 }
 
-export function SubscriptionLaunchStep({ onNext, onBack, store, product }: SubscriptionLaunchStepProps) {
+export function SubscriptionLaunchStep({ onNext, onBack, store }: SubscriptionLaunchStepProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -30,14 +30,14 @@ export function SubscriptionLaunchStep({ onNext, onBack, store, product }: Subsc
           🎁 Welcome!
         </h2>
         <p className="text-xl text-gray-700 dark:text-gray-300">
-          You've been placed on the <strong>FREE PLAN</strong>
+          You&apos;ve been placed on the <strong>FREE PLAN</strong>
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="p-6 rounded-lg border-2 border-blue-600 dark:border-blue-500 bg-blue-50 dark:bg-blue-900/20">
           <h3 className="font-semibold text-gray-900 dark:text-white mb-4">
-            What's included:
+            What&apos;s included:
           </h3>
           <ul className="space-y-3">
             <li className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
@@ -113,7 +113,7 @@ export function SubscriptionLaunchStep({ onNext, onBack, store, product }: Subsc
           </Button>
           <Button
             onClick={onNext}
-            className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700"
+            className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
           >
             Launch My Store
           </Button>

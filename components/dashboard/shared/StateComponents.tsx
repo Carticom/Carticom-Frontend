@@ -36,8 +36,7 @@ export function EmptyState({
   title,
   description,
   action,
-  className,
-}: EmptyStateProps) {
+  className}: EmptyStateProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
@@ -73,8 +72,7 @@ export function ErrorState({
   title = 'Something went wrong',
   description = 'We encountered an error while loading this data. Please try again.',
   onRetry,
-  className,
-}: ErrorStateProps) {
+  className}: ErrorStateProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}

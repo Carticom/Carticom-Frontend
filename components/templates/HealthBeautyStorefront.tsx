@@ -2,11 +2,11 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import Link from 'next/link';
-import { ShoppingBag, ArrowRight, Sparkles, Star, Heart, Droplets, Shield, Sun, Moon, Gem, ChevronRight } from 'lucide-react';
+
+import { ShoppingBag, ArrowRight, Sparkles, Star, Heart, Droplets, Shield, Sun, Gem } from 'lucide-react';
 import type { StoreDto, ProductDto } from '@/features/onboarding/types';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+
 
 function FadeIn({ children, delay = 0, className }: { children: React.ReactNode; delay?: number; className?: string }) {
   return (

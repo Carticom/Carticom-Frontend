@@ -54,23 +54,20 @@ export enum OrderStatus {
   SHIPPED = 'SHIPPED',
   DELIVERED = 'DELIVERED',
   CANCELLED = 'CANCELLED',
-  REFUNDED = 'REFUNDED',
-}
+  REFUNDED = 'REFUNDED'}
 
 export enum PaymentStatus {
   PENDING = 'PENDING',
   PAID = 'PAID',
   FAILED = 'FAILED',
   REFUNDED = 'REFUNDED',
-  PARTIALLY_REFUNDED = 'PARTIALLY_REFUNDED',
-}
+  PARTIALLY_REFUNDED = 'PARTIALLY_REFUNDED'}
 
 export enum EscrowStatus {
   NOT_APPLICABLE = 'NOT_APPLICABLE',
   HELD = 'HELD',
   RELEASED = 'RELEASED',
-  DISPUTED = 'DISPUTED',
-}
+  DISPUTED = 'DISPUTED'}
 
 export interface CreateOrderDto {
   customerId: string;

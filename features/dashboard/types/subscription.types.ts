@@ -1,56 +1,56 @@
 // ============================================================
-// CARTICOM SUBSCRIPTION — Domain Types
+// CARTICOM SUBSCRIPTION — Domain Types (aligned with backend)
 // ============================================================
+
+export type BillingCycle = 'MONTHLY' | 'YEARLY';
+
+export type SubscriptionStatus =
+  | 'ACTIVE'
+  | 'TRIAL'
+  | 'PENDING'
+  | 'CANCELLED'
+  | 'EXPIRED'
+  | 'PAST_DUE';
 
 export interface SubscriptionDto {
   id: string;
   storeId: string;
-  plan: SubscriptionPlan;
+  planCode: string;
+  planName: string;
   status: SubscriptionStatus;
-  currentPeriodStart: string;
-  currentPeriodEnd: string;
-  cancelAtPeriodEnd: boolean;
-  usage: SubscriptionUsage;
-  features: string[];
-  metadata: Record<string, unknown>;
-  createdAt: string;
-  updatedAt: string;
+  billingCycle: BillingCycle;
+  amount: number;
+  startDate?: number;
+  endDate?: number;
+  renewalDate?: number;
+  autoRenewal: boolean;
 }
 
-export interface SubscriptionUsage {
-  products: number;
-  productsLimit: number;
-  staff: number;
+export interface SubscriptionPlan {
+  id: string;
+  name: string;
+  description?: string;
+  monthlyPrice: number;
+  yearlyPrice: number;
+  productLimit: number;
   staffLimit: number;
-  customers: number;
-  orders: number;
-  storage: number;
-  storageLimit: number;
+  paymentsEnabled: boolean;
+  customDomainEnabled: boolean;
+  durationDays?: number | null;
 }
 
-export interface CreateSubscriptionDto {
-  plan: SubscriptionPlan;
-  metadata?: Record<string, unknown>;
+export interface SubscriptionRequest {
+  plan: string;
+  billingCycle: BillingCycle;
+  paymentGateway: 'PAYSTACK' | 'FLUTTERWAVE';
 }
 
-export interface UpdateSubscriptionDto {
-  status?: SubscriptionStatus;
-  cancelAtPeriodEnd?: boolean;
-  metadata?: Record<string, unknown>;
-}
-
-export enum SubscriptionPlan {
-  FREE_TRIAL = 'FREE_TRIAL',
-  STARTER = 'STARTER',
-  GROWTH = 'GROWTH',
-  BUSINESS = 'BUSINESS',
-  ENTERPRISE = 'ENTERPRISE',
-}
-
-export enum SubscriptionStatus {
-  ACTIVE = 'ACTIVE',
-  CANCELLED = 'CANCELLED',
-  EXPIRED = 'EXPIRED',
-  PAST_DUE = 'PAST_DUE',
-  READ_ONLY = 'READ_ONLY',
+export interface SubscriptionPaymentResponse {
+  transactionId?: string;
+  status?: string;
+  paymentProvider?: string;
+  paymentMethod?: string;
+  authorizationUrl?: string;
+  providerReference?: string;
+  message?: string;
 }

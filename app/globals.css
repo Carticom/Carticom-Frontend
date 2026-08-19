@@ -5,6 +5,18 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+--color-brand: #2563eb;
+  --color-brand-dark: #1d4ed8;
+  --color-brand-light: #3b82f6;
+  --color-brand-deep: #1e40af;
+  --color-brand-soft: #eff6ff;
+  --color-dark-text: #111827;
+  --color-muted-text: #6b7280;
+  --color-light-bg: #f8fafc;
+  --color-border-brand: #e5e7eb;
+  --color-teal: #00b5ab;
+  --color-teal-dark: #00948c;
+  --color-teal-soft: #e6f7f6;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);

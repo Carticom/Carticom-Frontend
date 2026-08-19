@@ -10,8 +10,7 @@ export class PaymentsRepository extends BaseRepository<PaymentDto, CreatePayment
   constructor() {
     super({
       base: '/api/v1/payments',
-      byId: (id) => `/api/v1/payments/${id}`,
-    });
+      byId: (id) => `/api/v1/payments/${id}`});
   }
 
   async getByStore(storeId: string, params?: QueryParams) {

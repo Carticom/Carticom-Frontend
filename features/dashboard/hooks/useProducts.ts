@@ -6,7 +6,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { productsRepository } from '@/features/dashboard/repositories/products.repository';
-import type { ProductDto, CreateProductDto, UpdateProductDto } from '@/features/dashboard/types/products.types';
+import type { CreateProductDto, UpdateProductDto } from '@/features/dashboard/types/products.types';
 import { queryKeys } from '@/lib/dal/query-keys';
 import { showToast } from '@/lib/notifications/toast';
 
@@ -19,8 +19,7 @@ export function useProducts(storeId: string, params?: { page?: number; limit?: n
       const result = await productsRepository.list(params);
       return result.data;
     },
-    enabled: !!storeId,
-  });
+    enabled: !!storeId});
 }
 
 // ─── Use Product By ID ─────────────────────────────────────────
@@ -32,8 +31,7 @@ export function useProduct(id: string | undefined | null) {
       if (!id) throw new Error('Product ID is required');
       return productsRepository.getById(id);
     },
-    enabled: !!id,
-  });
+    enabled: !!id});
 }
 
 // ─── Use Products By Store ─────────────────────────────────────
@@ -46,8 +44,7 @@ export function useProductsByStore(storeId: string, activeOnly = false) {
         ? productsRepository.getActiveByStore(storeId)
         : productsRepository.getByStore(storeId);
     },
-    enabled: !!storeId,
-  });
+    enabled: !!storeId});
 }
 
 // ─── Use Search Products ───────────────────────────────────────
@@ -59,8 +56,7 @@ export function useSearchProducts(query: string) {
       if (!query.trim()) return [];
       return productsRepository.search(query);
     },
-    enabled: query.trim().length > 0,
-  });
+    enabled: query.trim().length > 0});
 }
 
 // ─── Use Create Product ────────────────────────────────────────
@@ -78,10 +74,8 @@ export function useCreateProduct() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to create product', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }
 
 // ─── Use Update Product ────────────────────────────────────────
@@ -100,10 +94,8 @@ export function useUpdateProduct() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to update product', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }
 
 // ─── Use Delete Product ────────────────────────────────────────
@@ -121,10 +113,8 @@ export function useDeleteProduct() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to delete product', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }
 
 // ─── Use Update Inventory ──────────────────────────────────────
@@ -143,8 +133,6 @@ export function useUpdateInventory() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to update inventory', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }

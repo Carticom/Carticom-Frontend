@@ -10,8 +10,7 @@ import { motion } from 'framer-motion';
 const statusColors: Record<CategoryStatus, string> = {
   [CategoryStatus.ACTIVE]: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
   [CategoryStatus.INACTIVE]: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
-  [CategoryStatus.ARCHIVED]: 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400',
-};
+  [CategoryStatus.ARCHIVED]: 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400'};
 
 export default function StaffCategoriesPage() {
   const { storeId } = useCurrentStoreId();
@@ -28,7 +27,7 @@ export default function StaffCategoriesPage() {
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Categories</h1>
         <p className="text-gray-600 dark:text-gray-400 mt-2">Browse product categories</p>
       </div>
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
         <EmptyState
           title="No categories yet"
           description="Categories will appear here once created by the store owner."
@@ -44,7 +43,7 @@ export default function StaffCategoriesPage() {
         <p className="text-gray-600 dark:text-gray-400 mt-2">Browse product categories</p>
       </div>
 
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>

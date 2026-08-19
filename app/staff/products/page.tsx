@@ -1,6 +1,8 @@
 'use client';
 
 import { useCurrentStoreId } from '@/hooks/useCurrentStore';
+import Link from 'next/link';
+import Image from 'next/image';
 import { useProductsByStore, useUpdateProduct } from '@/features/dashboard/hooks/useProducts';
 import { useAuthStore } from '@/features/auth/store/auth.store';
 import { LoadingState, EmptyState, ErrorState } from '@/components/dashboard/shared/StateComponents';
@@ -17,8 +19,7 @@ function statusBadgeClasses(status: ProductStatus) {
     [ProductStatus.ACTIVE]: 'text-green-600 bg-green-50 dark:text-green-400 dark:bg-green-900/20',
     [ProductStatus.DRAFT]: 'text-gray-600 bg-gray-50 dark:text-gray-400 dark:bg-gray-900/20',
     [ProductStatus.ARCHIVED]: 'text-yellow-600 bg-yellow-50 dark:text-yellow-400 dark:bg-yellow-900/20',
-    [ProductStatus.OUT_OF_STOCK]: 'text-red-600 bg-red-50 dark:text-red-400 dark:bg-red-900/20',
-  };
+    [ProductStatus.OUT_OF_STOCK]: 'text-red-600 bg-red-50 dark:text-red-400 dark:bg-red-900/20'};
   return map[status] ?? 'text-gray-600 bg-gray-50 dark:text-gray-400 dark:bg-gray-900/20';
 }
 
@@ -49,7 +50,7 @@ export default function StaffProductsPage() {
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Products</h1>
         <p className="text-gray-600 dark:text-gray-400 mt-2">Browse the product catalog</p>
       </div>
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
         <EmptyState
           title="No products yet"
           description="Products will appear here once added by the store owner."
@@ -65,7 +66,7 @@ export default function StaffProductsPage() {
         <p className="text-gray-600 dark:text-gray-400 mt-2">Browse the product catalog</p>
       </div>
 
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -88,12 +89,19 @@ export default function StaffProductsPage() {
                   <td className="py-3 px-4">
                     <div className="flex items-center gap-3">
                       {product.images?.[0] ? (
-                        <img src={product.images[0]} alt={product.name} className="w-10 h-10 rounded-lg object-cover bg-gray-100 dark:bg-gray-800" />
+                        <div className="relative w-10 h-10 rounded-lg overflow-hidden"><Image src={product.images[0]} alt={product.name} fill unoptimized className="object-cover bg-gray-100 dark:bg-gray-800" /></div>
                       ) : (
                         <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-400 text-xs">N/A</div>
                       )}
                       <div>
-                        <p className="font-medium text-gray-900 dark:text-white">{product.name}</p>
+                        <p className="font-medium">
+                          <Link
+                            href={`/staff/products/${product.id}`}
+                            className="text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 hover:underline"
+                          >
+                            {product.name}
+                          </Link>
+                        </p>
                         {product.categoryName && (
                           <p className="text-xs text-gray-500 dark:text-gray-400">{product.categoryName}</p>
                         )}

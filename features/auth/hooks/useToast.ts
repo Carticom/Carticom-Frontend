@@ -18,7 +18,6 @@ export {
   dismissAllToasts,
   showPromiseToast,
   authToasts,
-  notificationToasts,
-} from '@/lib/notifications/toast';
+  notificationToasts} from '@/lib/notifications/toast';
 
 export type { ToastType, ToastOptions } from '@/lib/notifications/toast';

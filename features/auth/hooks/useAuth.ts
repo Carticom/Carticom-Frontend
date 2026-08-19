@@ -8,14 +8,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '../store/auth.store';
 import authService from '../services/auth.service';
-import type {
-  RegisterBusinessOwnerDto,
-  LoginDto,
-  ForgotPasswordDto,
-  ResetPasswordDto,
-  UserDto,
-  AuthTokens,
-} from '../types';
+import type { RegisterBusinessOwnerDto, LoginDto, ForgotPasswordDto, UserDto } from '../types';
 
 // ─── Use Auth ────────────────────────────────────────────────
 
@@ -152,8 +145,7 @@ export function useAuth() {
     setUser: store?.setUser ?? (() => {}),
     setTokens: store?.setTokens ?? (() => {}),
     checkSession: store?.checkSession ?? (() => false),
-    hasRole: store?.hasRole ?? (() => false),
-  };
+    hasRole: store?.hasRole ?? (() => false)};
 }
 
 // ─── Use Initialize Auth ─────────────────────────────────────

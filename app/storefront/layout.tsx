@@ -1,34 +1,68 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ShoppingCart, Menu, X, Store } from 'lucide-react';
+import { ShoppingCart, User, Menu, X, Store } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Container } from '@/components/common/Container';
 import { cn } from '@/lib/utils';
 import { useAuthStore } from '@/features/auth/store/auth.store';
+import { cartApi, storefrontApi } from '@/features/onboarding/services/onboarding.service';
 
 export default function StorefrontLayout({
-  children,
-}: {
+  children}: {
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
+  const queryStoreId = typeof window !== 'undefined'
+    ? new URLSearchParams(window.location.search).get('store')
+    : null;
+  const [resolvedStoreId, setResolvedStoreId] = useState<string | null>(null);
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
 
-  const isCheckoutPage = pathname?.startsWith('/storefront/checkout');
-  const isPreviewPage = pathname?.startsWith('/store/preview/');
-
-  const getStoreNameFromPath = () => {
+  const getStoreSlugFromPath = () => {
     if (!pathname) return null;
     const match = pathname.match(/^\/store\/([^/]+)/);
     return match ? decodeURIComponent(match[1]) : null;
   };
 
-  const storeSlug = getStoreNameFromPath();
+  const storeSlug = getStoreSlugFromPath();
+  const storeId = queryStoreId || resolvedStoreId;
   const storeLabel = storeSlug ? storeSlug.replace(/-/g, ' ') : null;
+
+  useEffect(() => {
+    if (queryStoreId) return;
+    if (!storeSlug) return;
+    let cancelled = false;
+    storefrontApi.getStoreBySlug(storeSlug)
+      .then((res) => {
+        if (!cancelled && res.data.data?.id) setResolvedStoreId(res.data.data.id);
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, [storeSlug, queryStoreId]);
+
+  useEffect(() => {
+    let cancelled = false;
+    const load = async () => {
+      try {
+        const res = storeId ? await cartApi.get(storeId) : null;
+        if (cancelled) return;
+        setCartCount(res?.data.data?.items?.length ?? 0);
+      } catch {
+        if (cancelled) return;
+        setCartCount(0);
+      }
+    };
+    load();
+    return () => { cancelled = true; };
+  }, [storeId]);
+
+  const isCheckoutPage = pathname?.startsWith('/storefront/checkout');
+  const isPreviewPage = pathname?.startsWith('/store/preview/');
 
   if (isPreviewPage) return <>{children}</>;
 
@@ -80,14 +114,24 @@ export default function StorefrontLayout({
 
             <div className="flex items-center gap-3">
               <Link
-                href="/storefront/cart"
+                href={storeId ? `/storefront/cart?store=${storeId}` : '/storefront/cart'}
                 className="relative p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                 aria-label="Shopping cart"
               >
                 <ShoppingCart className="h-5 w-5" />
-                <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-blue-600 text-[10px] font-bold text-white">
-                  0
-                </span>
+                {cartCount > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-blue-600 text-[10px] font-bold text-white">
+                    {cartCount > 9 ? '9+' : cartCount}
+                  </span>
+                )}
+              </Link>
+
+              <Link
+                href="/storefront/profile"
+                className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                aria-label="My account"
+              >
+                <User className="h-5 w-5" />
               </Link>
 
               {isAuthenticated ? (
@@ -150,10 +194,10 @@ export default function StorefrontLayout({
               <Link href="/contact" className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
                 Contact
               </Link>
-              <Link href="/privacy" className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
+              <Link href="/legal/privacy" className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
                 Privacy
               </Link>
-              <Link href="/terms" className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
+              <Link href="/legal/terms" className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
                 Terms
               </Link>
             </div>

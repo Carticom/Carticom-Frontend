@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -45,7 +45,7 @@ export function CTA() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto"
           >
-            Join 50,000+ African businesses already using Carticom. Start your 14-day free trial today. No credit card required.
+            Join 50,000+ African businesses already using Carticom. Start your 30-day free trial today. No credit card required.
           </motion.p>
 
           <motion.div
@@ -71,7 +71,7 @@ export function CTA() {
               className="w-full sm:w-auto gap-2 px-8 py-4 text-lg bg-transparent border-white text-white hover:bg-white/10"
               asChild
             >
-              <a href="mailto:sales@carticom.ng">
+              <a href="mailto:sales@carticom.com">
                 Contact Sales
               </a>
             </Button>
@@ -86,7 +86,7 @@ export function CTA() {
           >
             {[
               'No credit card required',
-              '14-day free trial',
+              '30-day free trial',
               'Cancel anytime',
               '24/7 support',
             ].map((item) => (

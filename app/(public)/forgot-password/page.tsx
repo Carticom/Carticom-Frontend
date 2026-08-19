@@ -23,13 +23,10 @@ export default function ForgotPasswordPage() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<ForgotPasswordSchema>({
+    formState: { errors, isSubmitting }} = useForm<ForgotPasswordSchema>({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
-      email: '',
-    },
-  });
+      email: ''}});
 
   const onSubmit = async (data: ForgotPasswordSchema) => {
     setServerError(null);
@@ -53,18 +50,18 @@ export default function ForgotPasswordPage() {
     >
       {isSuccess ? (
         <div className="text-center">
-          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-50 dark:bg-green-900/20">
-            <Mail className="h-8 w-8 text-green-500" aria-hidden="true" />
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-blue-50 dark:bg-green-900/20">
+            <Mail className="h-8 w-8 text-blue-500" aria-hidden="true" />
           </div>
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
             Check your email
           </h2>
           <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-            We've sent a password reset link to your email. Please check
+            We&apos;ve sent a password reset link to your email. Please check
             your inbox and follow the instructions.
           </p>
           <p className="mt-4 text-xs text-gray-400 dark:text-gray-500">
-            Didn't receive the email? Check your spam folder or{' '}
+            Didn&apos;t receive the email? Check your spam folder or{' '}
             <button
               type="button"
               onClick={() => setIsSuccess(false)}
@@ -126,7 +123,7 @@ export default function ForgotPasswordPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 transition-all duration-300 hover:from-blue-700 hover:to-cyan-700 hover:shadow-blue-500/40 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 transition-all duration-300 hover:from-blue-700 hover:to-blue-800 hover:shadow-blue-500/40 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {isSubmitting ? (
                 <>

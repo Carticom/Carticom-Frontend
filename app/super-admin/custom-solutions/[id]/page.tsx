@@ -1,28 +1,30 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import { toast } from 'sonner';
 import { ArrowLeft, Building2, Globe, Users, Package, DollarSign, Clock, Loader2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+
 import { LoadingState, ErrorState } from '@/components/dashboard/shared/StateComponents';
 import { customSolutionsService } from '@/features/custom-solutions/services/custom-solutions.service';
 import { CustomSolutionStatus } from '@/features/custom-solutions/types';
 import type { UpdateStatusDto, QuotationDto } from '@/features/custom-solutions/types';
 
-const STATUS_FLOW = [
-  CustomSolutionStatus.SUBMITTED,
-  CustomSolutionStatus.UNDER_REVIEW,
-  CustomSolutionStatus.MEETING_SCHEDULED,
-  CustomSolutionStatus.QUOTATION_SENT,
-  CustomSolutionStatus.NEGOTIATION,
-  CustomSolutionStatus.APPROVED,
-  CustomSolutionStatus.DEVELOPMENT,
-  CustomSolutionStatus.TESTING,
-  CustomSolutionStatus.DEPLOYED,
-  CustomSolutionStatus.COMPLETED,
-];
+const ALLOWED_TRANSITIONS: Record<CustomSolutionStatus, CustomSolutionStatus[]> = {
+  [CustomSolutionStatus.SUBMITTED]: [CustomSolutionStatus.UNDER_REVIEW, CustomSolutionStatus.REJECTED],
+  [CustomSolutionStatus.UNDER_REVIEW]: [CustomSolutionStatus.MEETING_SCHEDULED, CustomSolutionStatus.QUOTATION_SENT, CustomSolutionStatus.REJECTED],
+  [CustomSolutionStatus.MEETING_SCHEDULED]: [CustomSolutionStatus.QUOTATION_SENT, CustomSolutionStatus.NEGOTIATION, CustomSolutionStatus.REJECTED],
+  [CustomSolutionStatus.QUOTATION_SENT]: [CustomSolutionStatus.NEGOTIATION, CustomSolutionStatus.QUOTATION_SENT, CustomSolutionStatus.APPROVED, CustomSolutionStatus.REJECTED],
+  [CustomSolutionStatus.NEGOTIATION]: [CustomSolutionStatus.QUOTATION_SENT, CustomSolutionStatus.APPROVED, CustomSolutionStatus.REJECTED],
+  [CustomSolutionStatus.APPROVED]: [CustomSolutionStatus.DEVELOPMENT, CustomSolutionStatus.QUOTATION_SENT],
+  [CustomSolutionStatus.DEVELOPMENT]: [CustomSolutionStatus.TESTING],
+  [CustomSolutionStatus.TESTING]: [CustomSolutionStatus.DEPLOYED],
+  [CustomSolutionStatus.DEPLOYED]: [CustomSolutionStatus.COMPLETED],
+  [CustomSolutionStatus.REJECTED]: [],
+  [CustomSolutionStatus.COMPLETED]: [],
+};
 
 const statusColors: Record<string, string> = {
   [CustomSolutionStatus.SUBMITTED]: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
@@ -32,15 +34,13 @@ const statusColors: Record<string, string> = {
   [CustomSolutionStatus.NEGOTIATION]: 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400',
   [CustomSolutionStatus.APPROVED]: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
   [CustomSolutionStatus.DEVELOPMENT]: 'bg-cyan-100 text-cyan-800 dark:bg-cyan-900/30 dark:text-cyan-400',
-  [CustomSolutionStatus.TESTING]: 'bg-teal-100 text-teal-800 dark:bg-teal-900/30 dark:text-teal-400',
+  [CustomSolutionStatus.TESTING]: 'bg-brand-100 text-brand-800 dark:bg-brand-900/30 dark:text-brand-400',
   [CustomSolutionStatus.DEPLOYED]: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400',
   [CustomSolutionStatus.COMPLETED]: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
-  [CustomSolutionStatus.REJECTED]: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
-};
+  [CustomSolutionStatus.REJECTED]: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'};
 
 export default function SuperAdminCustomSolutionDetailPage() {
   const params = useParams();
-  const router = useRouter();
   const queryClient = useQueryClient();
   const id = params.id as string;
 
@@ -48,12 +48,19 @@ export default function SuperAdminCustomSolutionDetailPage() {
   const [quotationAmount, setQuotationAmount] = useState('');
   const [quotationNote, setQuotationNote] = useState('');
   const [quotationFile, setQuotationFile] = useState<File | null>(null);
+  const [assigneeId, setAssigneeId] = useState('');
+  const [adminNotes, setAdminNotes] = useState('');
 
   const { data: req, isLoading, error, refetch } = useQuery({
     queryKey: ['super-admin', 'custom-solutions', id],
     queryFn: () => customSolutionsService.getById(id),
-    enabled: !!id,
-  });
+    enabled: !!id});
+
+  useEffect(() => {
+    if (!req) return;
+    setAssigneeId(req.assignedTo ?? '');
+    setAdminNotes(req.adminNotes ?? '');
+  }, [req]);
 
   const statusMutation = useMutation({
     mutationFn: ({ status, note: n }: UpdateStatusDto) =>
@@ -63,7 +70,9 @@ export default function SuperAdminCustomSolutionDetailPage() {
       refetch();
       setNote('');
     },
-  });
+    onError: (err: Error) => {
+      toast.error(err.message || 'Invalid status transition');
+    }});
 
   const quotationMutation = useMutation({
     mutationFn: (dto: QuotationDto) =>
@@ -74,14 +83,35 @@ export default function SuperAdminCustomSolutionDetailPage() {
       setQuotationAmount('');
       setQuotationNote('');
       setQuotationFile(null);
+    }});
+
+  const assignMutation = useMutation({
+    mutationFn: (dto: { assigneeId: string }) => customSolutionsService.adminAssign(id, dto),
+    onSuccess: () => {
+      toast.success('Request assigned');
+      queryClient.invalidateQueries({ queryKey: ['super-admin', 'custom-solutions'] });
+      refetch();
     },
-  });
+    onError: (err: Error) => {
+      toast.error(err.message || 'Failed to assign request');
+    }});
+
+  const notesMutation = useMutation({
+    mutationFn: (dto: { note: string }) => customSolutionsService.adminAddNotes(id, dto),
+    onSuccess: () => {
+      toast.success('Notes saved');
+      queryClient.invalidateQueries({ queryKey: ['super-admin', 'custom-solutions'] });
+      refetch();
+    },
+    onError: (err: Error) => {
+      toast.error(err.message || 'Failed to save notes');
+    }});
 
   if (isLoading) return <LoadingState message="Loading custom solution..." />;
   if (error) return <ErrorState title="Failed to load custom solution" onRetry={refetch} />;
   if (!req) return null;
 
-  const nextStatuses = STATUS_FLOW.slice(STATUS_FLOW.indexOf(req.status as CustomSolutionStatus) + 1);
+  const nextStatuses = ALLOWED_TRANSITIONS[req.status as CustomSolutionStatus] ?? [];
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
@@ -106,7 +136,7 @@ export default function SuperAdminCustomSolutionDetailPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+          <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Business Information</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <InfoRow icon={<Building2 className="h-5 w-5 text-gray-400" />} label="Industry" value={req.industry} />
@@ -120,7 +150,7 @@ export default function SuperAdminCustomSolutionDetailPage() {
             </div>
           </div>
 
-          <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+          <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Services Required</h2>
             <div className="flex flex-wrap gap-2">
               {req.services.map((service) => (
@@ -132,7 +162,7 @@ export default function SuperAdminCustomSolutionDetailPage() {
           </div>
 
           {req.additionalRequirements && (
-            <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+            <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Additional Requirements</h2>
               <p className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{req.additionalRequirements}</p>
             </div>
@@ -140,7 +170,7 @@ export default function SuperAdminCustomSolutionDetailPage() {
         </div>
 
         <div className="space-y-6">
-          <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+          <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Update Status</h2>
             <div className="space-y-2">
               {nextStatuses.map((status) => (
@@ -164,23 +194,99 @@ export default function SuperAdminCustomSolutionDetailPage() {
                 placeholder="Add a note..."
               />
             </div>
-            <button
-              onClick={() => statusMutation.mutate({ status: CustomSolutionStatus.REJECTED, note })}
-              disabled={statusMutation.isPending}
-              className="mt-3 w-full px-4 py-2.5 rounded-lg bg-red-600 text-white text-sm font-medium hover:bg-red-700 transition-colors disabled:opacity-50"
-            >
-              {statusMutation.isPending ? (
-                <span className="flex items-center justify-center gap-2">
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  Updating...
-                </span>
-              ) : (
-                'Reject Request'
-              )}
-            </button>
+            {nextStatuses.includes(CustomSolutionStatus.REJECTED) && (
+              <button
+                onClick={() => statusMutation.mutate({ status: CustomSolutionStatus.REJECTED, note })}
+                disabled={statusMutation.isPending}
+                className="mt-3 w-full px-4 py-2.5 rounded-lg bg-red-600 text-white text-sm font-medium hover:bg-red-700 transition-colors disabled:opacity-50"
+              >
+                {statusMutation.isPending ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Updating...
+                  </span>
+                ) : (
+                  'Reject Request'
+                )}
+              </button>
+            )}
           </div>
 
-          <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+          <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Assignment</h2>
+            {req.assignedToName && (
+              <p className="text-sm text-gray-700 dark:text-gray-300 mb-3">
+                Assigned to: <span className="font-medium">{req.assignedToName}</span>
+              </p>
+            )}
+            <div className="space-y-3">
+              <div>
+                <label className="block text-sm text-gray-500 mb-1">Admin User ID</label>
+                <input
+                  type="text"
+                  value={assigneeId}
+                  onChange={(e) => setAssigneeId(e.target.value)}
+                  className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white"
+                  placeholder="e.g. 550e8400-e29b-41d4-a716-446655440000"
+                />
+              </div>
+              <button
+                onClick={() => {
+                  if (!assigneeId.trim()) {
+                    toast.error('Admin User ID is required');
+                    return;
+                  }
+                  assignMutation.mutate({ assigneeId: assigneeId.trim() });
+                }}
+                disabled={assignMutation.isPending}
+                className="w-full px-4 py-2.5 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-colors disabled:opacity-50"
+              >
+                {assignMutation.isPending ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Assigning...
+                  </span>
+                ) : (
+                  'Assign Request'
+                )}
+              </button>
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Admin Notes</h2>
+            <div className="space-y-3">
+              <textarea
+                rows={4}
+                value={adminNotes}
+                onChange={(e) => setAdminNotes(e.target.value)}
+                className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white"
+                placeholder="Internal notes for the assigned team..."
+              />
+              <button
+                onClick={() => {
+                  if (!adminNotes.trim()) {
+                    toast.error('Note cannot be empty');
+                    return;
+                  }
+                  notesMutation.mutate({ note: adminNotes });
+                }}
+                disabled={notesMutation.isPending}
+                className="w-full px-4 py-2.5 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-colors disabled:opacity-50"
+              >
+                {notesMutation.isPending ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Saving...
+                  </span>
+                ) : (
+                  'Save Notes'
+                )}
+              </button>
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Upload Quotation</h2>
             <div className="space-y-3">
               <div>
@@ -234,7 +340,7 @@ export default function SuperAdminCustomSolutionDetailPage() {
           </div>
 
           {req.quotationUrl && (
-            <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+            <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Quotation Sent</h2>
               {req.quotationAmount && (
                 <p className="text-xl font-bold text-gray-900 dark:text-white mb-2">

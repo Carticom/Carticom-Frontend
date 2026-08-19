@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Briefcase, Calendar, CreditCard, BarChart3, ArrowRight, CheckCircle, Users, MessageSquare, Clock } from 'lucide-react';
+import { Calendar, CreditCard, BarChart3, ArrowRight, CheckCircle, MessageSquare } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 

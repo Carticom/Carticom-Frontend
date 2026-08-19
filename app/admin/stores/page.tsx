@@ -1,21 +1,29 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import axiosInstance from '@/lib/axios';
+import { adminRepository } from '@/features/admin/repositories/admin.repository';
 import { LoadingState, ErrorState, EmptyState } from '@/components/dashboard/shared/StateComponents';
 
 function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString('en-NG', { year: 'numeric', month: 'short', day: 'numeric' });
 }
 
+interface Store {
+  id: string;
+  name: string;
+  ownerName: string;
+  status: string;
+  productsCount: number;
+  createdAt: string;
+}
+
 export default function AdminStoresPage() {
   const { data: stores, isLoading, error, refetch } = useQuery({
     queryKey: ['admin', 'stores'],
     queryFn: async () => {
-      const res = await axiosInstance.get('/api/v1/admin/stores');
-      return res.data.data ?? [];
-    },
-  });
+      const page = await adminRepository.getStores<Store>();
+      return page?.content ?? [];
+    }});
 
   if (isLoading) return <LoadingState message="Loading stores..." />;
   if (error) return <ErrorState onRetry={() => refetch()} />;
@@ -27,7 +35,7 @@ export default function AdminStoresPage() {
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Stores</h1>
           <p className="text-gray-600 dark:text-gray-400 mt-2">Manage all platform stores</p>
         </div>
-        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
           <EmptyState title="No stores found" description="No stores have been created yet." />
         </div>
       </div>
@@ -41,7 +49,7 @@ export default function AdminStoresPage() {
         <p className="text-gray-600 dark:text-gray-400 mt-2">Manage all platform stores</p>
       </div>
 
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>

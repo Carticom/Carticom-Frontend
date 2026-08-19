@@ -10,8 +10,7 @@ export class EscrowRepository extends BaseRepository<EscrowTransactionDto, Creat
   constructor() {
     super({
       base: '/api/v1/escrow',
-      byId: (id) => `/api/v1/escrow/${id}`,
-    });
+      byId: (id) => `/api/v1/escrow/${id}`});
   }
 
   async getByStore(storeId: string, params?: QueryParams) {

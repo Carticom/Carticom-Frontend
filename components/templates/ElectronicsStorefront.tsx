@@ -2,13 +2,11 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import Link from 'next/link';
-import { ShoppingBag, ArrowRight, Cpu, Zap, Shield, Headphones, Star, ChevronRight, Layers, TrendingUp, Package } from 'lucide-react';
+
+import { ShoppingBag, ArrowRight, Cpu, Zap, Shield, Headphones, Star, Layers, TrendingUp, Package } from 'lucide-react';
 import type { StoreDto, ProductDto } from '@/features/onboarding/types';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-
-const COLORS = { primary: '#00d4ff', secondary: '#0a1628', accent: '#7c3aed', text: '#f1f5f9', muted: '#64748b' };
 
 function GlassCard({ children, className, delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
   return (

@@ -1,10 +1,10 @@
 'use client';
 
-import React, { Suspense, useEffect, useState, useCallback } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { ArrowLeft, Loader2, ShoppingBag, Tag, Truck, Package } from 'lucide-react';
-import { cartApi, checkoutApi, storefrontApi } from '@/features/onboarding/services/onboarding.service';
-import type { CartDto, StoreDto } from '@/features/onboarding/types';
+import { ArrowLeft, Loader2, ShoppingBag, Tag, Truck, Package, CreditCard, Building2, Smartphone } from 'lucide-react';
+import { cartApi, checkoutApi, paymentApi } from '@/features/onboarding/services/onboarding.service';
+import type { CartDto } from '@/features/onboarding/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -24,13 +24,14 @@ interface CustomerDetails {
 function CheckoutPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const storeSlug = searchParams.get('store');
+  const storeId = searchParams.get('store') || '';
   const [cart, setCart] = useState<CartDto | null>(null);
-  const [store, setStore] = useState<StoreDto | null>(null);
   const [loadingCart, setLoadingCart] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [retryKey, setRetryKey] = useState(0);
   const [deliveryMethod, setDeliveryMethod] = useState<'PICKUP' | 'LOCAL_DELIVERY' | 'INTERSTATE_DELIVERY'>('LOCAL_DELIVERY');
+  const [paymentMethod, setPaymentMethod] = useState<'CARD' | 'BANK_TRANSFER' | 'MOBILE_MONEY'>('CARD');
   const [couponCode, setCouponCode] = useState('');
   const [notes, setNotes] = useState('');
 
@@ -40,30 +41,32 @@ function CheckoutPageContent() {
     phone: '',
     address: '',
     city: '',
-    state: '',
-  });
-
-  const fetchCart = useCallback(async () => {
-    setLoadingCart(true);
-    setError(null);
-    try {
-      const res = await cartApi.get(storeSlug || '');
-      if (!res.data.data) throw new Error('Cart is empty');
-      setCart(res.data.data);
-      if (storeSlug) {
-        const storeRes = await storefrontApi.getStoreBySlug(storeSlug);
-        setStore(storeRes.data.data || null);
-      }
-    } catch {
-      setError('Unable to load your order. Please try again.');
-    } finally {
-      setLoadingCart(false);
-    }
-  }, [storeSlug]);
+    state: ''});
 
   useEffect(() => {
-    fetchCart();
-  }, [fetchCart]);
+    let cancelled = false;
+    const load = async () => {
+      try {
+        const res = await cartApi.get(storeId);
+        if (cancelled) return;
+        if (!res.data.data) throw new Error('Cart is empty');
+        setCart(res.data.data);
+      } catch {
+        if (cancelled) return;
+        setError('Unable to load your order. Please try again.');
+      } finally {
+        if (!cancelled) setLoadingCart(false);
+      }
+    };
+    load();
+    return () => { cancelled = true; };
+  }, [storeId, retryKey]);
+
+  const handleRetry = () => {
+    setLoadingCart(true);
+    setError(null);
+    setRetryKey((k) => k + 1);
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -92,9 +95,9 @@ function CheckoutPageContent() {
     try {
       const payload: Record<string, unknown> = {
         deliveryMethod,
+        paymentMethod,
         notes: notes || undefined,
-        couponCode: couponCode || undefined,
-      };
+        couponCode: couponCode || undefined};
 
       if (deliveryMethod !== 'PICKUP') {
         payload.shippingAddress = {
@@ -103,13 +106,40 @@ function CheckoutPageContent() {
           address: customer.address,
           city: customer.city,
           state: customer.state,
-          country: 'NG',
-        };
+          country: 'NG'};
       }
 
-      await checkoutApi.checkout(cart.storeId, payload);
+      const res = await checkoutApi.checkout(cart.storeId, payload);
+      const order = res?.data?.data;
+      const orderId = order?.id;
+
+      if (!orderId) {
+        toast.error('Order was not created. Please try again.');
+        return;
+      }
+
+      const orderTotal = Number(order.total || 0);
+
+      if (orderTotal > 0) {
+        const payRes = await paymentApi.initiate({
+          orderId,
+          paymentMethod,
+          paymentProvider: 'paystack',
+          email: customer.email,
+          callbackUrl: `${window.location.origin}/payment/callback?orderId=${orderId}`,
+        });
+        const data = payRes?.data?.data;
+        const authUrl = data?.authorizationUrl;
+        if (authUrl) {
+          window.location.href = authUrl;
+          return;
+        }
+        toast.error('Payment link could not be generated. Your order is saved — retry payment from your orders page.');
+        return;
+      }
+
       toast.success('Order placed successfully!');
-      router.push('/storefront');
+      router.push(`/storefront/order-confirmation?id=${orderId}`);
     } catch {
       toast.error('Failed to place order. Please try again.');
     } finally {
@@ -119,7 +149,7 @@ function CheckoutPageContent() {
 
   if (loadingCart) return <LoadingState message="Preparing checkout..." />;
 
-  if (error) return <ErrorState title="Checkout unavailable" description={error} onRetry={fetchCart} />;
+  if (error) return <ErrorState title="Checkout unavailable" description={error} onRetry={handleRetry} />;
 
   if (!cart || !cart.items || cart.items.length === 0) {
     return (
@@ -129,8 +159,7 @@ function CheckoutPageContent() {
         description="Your cart is empty. Add some items before checking out."
         action={{
           label: 'Browse Stores',
-          onClick: () => router.push('/storefront'),
-        }}
+          onClick: () => router.push('/storefront')}}
       />
     );
   }
@@ -139,8 +168,7 @@ function CheckoutPageContent() {
     new Intl.NumberFormat('en-NG', {
       style: 'currency',
       currency: cart.currency || 'NGN',
-      minimumFractionDigits: 2,
-    }).format(price);
+      minimumFractionDigits: 2}).format(price);
 
   return (
     <div className="space-y-6 py-4 max-w-3xl mx-auto">
@@ -223,6 +251,38 @@ function CheckoutPageContent() {
                 </div>
               </>
             )}
+          </div>
+        </div>
+
+        {/* Payment Method */}
+        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 space-y-4">
+          <h2 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <CreditCard className="h-5 w-5 text-blue-600" />
+            Payment Method
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {[
+              { value: 'CARD' as const, icon: CreditCard, label: 'Card', desc: 'Debit/Credit card' },
+              { value: 'BANK_TRANSFER' as const, icon: Building2, label: 'Bank Transfer', desc: 'Pay via bank transfer' },
+              { value: 'MOBILE_MONEY' as const, icon: Smartphone, label: 'Mobile Money', desc: 'USSD or mobile wallet' },
+            ].map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                onClick={() => setPaymentMethod(option.value)}
+                className={`p-4 rounded-xl border-2 text-left transition-all ${
+                  paymentMethod === option.value
+                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                    : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'
+                }`}
+              >
+                <option.icon className={`h-5 w-5 mb-2 ${
+                  paymentMethod === option.value ? 'text-blue-600' : 'text-gray-400'
+                }`} />
+                <div className="font-medium text-sm text-gray-900 dark:text-white">{option.label}</div>
+                <div className="text-xs text-gray-500">{option.desc}</div>
+              </button>
+            ))}
           </div>
         </div>
 

@@ -3,7 +3,8 @@
 import { useMemo } from 'react';
 import { usePayments } from '@/features/dashboard/hooks/usePayments';
 import { useCurrentStoreId } from '@/hooks/useCurrentStore';
-import { LoadingState, ErrorState, EmptyState } from '@/components/dashboard/shared/StateComponents';
+import { LoadingState, ErrorState } from '@/components/dashboard/shared/StateComponents';
+import { ProviderConnect } from '@/components/dashboard/payments/ProviderConnect';
 import type { PaymentDto } from '@/features/dashboard/types/payments.types';
 import { PaymentStatus } from '@/features/dashboard/types/payments.types';
 
@@ -12,33 +13,30 @@ function formatCurrency(amount: number): string {
     style: 'currency',
     currency: 'NGN',
     minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
+    maximumFractionDigits: 0}).format(amount);
 }
 
 function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString('en-NG', {
     day: '2-digit',
     month: 'short',
-    year: 'numeric',
-  });
+    year: 'numeric'});
 }
 
 function formatTime(dateStr: string): string {
   return new Date(dateStr).toLocaleTimeString('en-NG', {
     hour: '2-digit',
-    minute: '2-digit',
-  });
+    minute: '2-digit'});
 }
 
 const STATUS_STYLES: Record<string, string> = {
   [PaymentStatus.SUCCESSFUL]: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
+  [PaymentStatus.COMPLETED]: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
   [PaymentStatus.FAILED]: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
   [PaymentStatus.PENDING]: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
   [PaymentStatus.PROCESSING]: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
   [PaymentStatus.REFUNDED]: 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400',
-  [PaymentStatus.PARTIALLY_REFUNDED]: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400',
-};
+  [PaymentStatus.PARTIALLY_REFUNDED]: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400'};
 
 function StatusBadge({ status }: { status: string }) {
   return (
@@ -61,11 +59,10 @@ export default function PaymentsPage() {
   const stats = useMemo(() => {
     if (!payments) return { successful: 0, failed: 0, pending: 0, refunded: 0 };
     return {
-      successful: sumByStatus(payments, PaymentStatus.SUCCESSFUL),
+      successful: sumByStatus(payments, PaymentStatus.SUCCESSFUL, PaymentStatus.COMPLETED),
       failed: sumByStatus(payments, PaymentStatus.FAILED),
       pending: sumByStatus(payments, PaymentStatus.PENDING, PaymentStatus.PROCESSING),
-      refunded: sumByStatus(payments, PaymentStatus.REFUNDED, PaymentStatus.PARTIALLY_REFUNDED),
-    };
+      refunded: sumByStatus(payments, PaymentStatus.REFUNDED, PaymentStatus.PARTIALLY_REFUNDED)};
   }, [payments]);
 
   if (isLoading || !storeId) {
@@ -94,20 +91,10 @@ export default function PaymentsPage() {
       </div>
 
       {/* Payment Methods */}
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Payment Methods</h2>
-        <div className="space-y-3">
-          {['Paystack', 'Flutterwave'].map((method) => (
-            <div key={method} className="flex items-center justify-between p-3 border border-gray-200 dark:border-gray-700 rounded-lg">
-              <span className="text-sm font-medium text-gray-900 dark:text-white">{method}</span>
-              <span className="text-xs px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full">Not Connected</span>
-            </div>
-          ))}
-        </div>
-      </div>
+      <ProviderConnect storeId={storeId} />
 
       {/* Transactions */}
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Recent Transactions</h2>
         {!payments || payments.length === 0 ? (
           <div className="text-center py-12 text-gray-500">No transactions yet</div>
@@ -127,13 +114,13 @@ export default function PaymentsPage() {
                 {payments.map((payment) => (
                   <tr key={payment.id} className="border-b border-gray-100 dark:border-gray-800">
                     <td className="py-3 text-gray-900 dark:text-white font-mono text-xs">
-                      {payment.reference}
+                      {payment.transactionId ?? payment.reference}
                     </td>
                     <td className="py-3 text-gray-900 dark:text-white font-medium">
                       {formatCurrency(payment.amount)}
                     </td>
                     <td className="py-3 text-gray-600 dark:text-gray-400 capitalize">
-                      {payment.method.replace(/_/g, ' ')}
+                      {(payment.paymentMethod ?? payment.method).replace(/_/g, ' ')}
                     </td>
                     <td className="py-3">
                       <StatusBadge status={payment.status} />
@@ -155,7 +142,7 @@ export default function PaymentsPage() {
 
 function StatCard({ label, value, color }: { label: string; value: string; color: string }) {
   return (
-    <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-4">
+    <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-4">
       <p className="text-sm text-gray-600 dark:text-gray-400">{label}</p>
       <p className={`text-2xl font-bold mt-1 ${color}`}>{value}</p>
     </div>

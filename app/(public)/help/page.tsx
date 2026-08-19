@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Container } from '@/components/common/Container';
-import { LifeBuoy, MessageCircle, Mail, Search, HelpCircle, BookOpen, MessagesSquare, Phone } from 'lucide-react';
+import { LifeBuoy, MessageCircle, Mail, Search, BookOpen, MessagesSquare, Phone } from 'lucide-react';
 
 const helpCategories = [
   { icon: BookOpen, title: 'Getting Started', description: 'New to Carticom? Start here to learn the basics.', articles: '12 articles' },
@@ -16,7 +16,7 @@ const helpCategories = [
 const contactOptions = [
   { icon: MessageCircle, title: 'Live Chat', description: 'Chat with our support team in real-time', action: 'Start Chat', color: 'bg-blue-50 text-blue-600' },
   { icon: Mail, title: 'Email Support', description: 'Get a response within 24 hours', action: 'Send Email', color: 'bg-purple-50 text-purple-600' },
-  { icon: MessagesSquare, title: 'Community Forum', description: 'Get help from other merchants', action: 'Join Forum', color: 'bg-green-50 text-green-600' },
+  { icon: MessagesSquare, title: 'Community Forum', description: 'Get help from other merchants', action: 'Join Forum', color: 'bg-blue-50 text-blue-600' },
   { icon: Phone, title: 'Phone Support', description: 'Speak directly with a support agent', action: 'Call Us', color: 'bg-orange-50 text-orange-600' },
 ];
 

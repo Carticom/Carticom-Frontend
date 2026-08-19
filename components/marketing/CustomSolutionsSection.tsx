@@ -20,8 +20,8 @@ const SOLUTIONS_CUSTOM = [
 
 const COLORS = [
   'from-blue-500/20', 'from-blue-500/20', 'from-amber-500/20',
-  'from-violet-500/20', 'from-rose-500/20', 'from-cyan-500/20',
-  'from-orange-500/20', 'from-purple-500/20', 'from-teal-500/20',
+  'from-violet-500/20', 'from-rose-500/20', 'from-blue-500/20',
+  'from-orange-500/20', 'from-purple-500/20', 'from-blue-500/20',
 ];
 
 export function CustomSolutionsSection() {

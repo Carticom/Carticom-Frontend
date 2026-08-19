@@ -6,7 +6,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { aiRepository } from '@/features/dashboard/repositories/ai.repository';
-import type { AIConfigDto, UpdateAIConfigDto } from '@/features/dashboard/types/ai.types';
+
 import { queryKeys } from '@/lib/dal/query-keys';
 import { showToast } from '@/lib/notifications/toast';
 
@@ -18,8 +18,7 @@ export function useAIConfig(storeId: string) {
     queryFn: async () => {
       return aiRepository.getByStore(storeId);
     },
-    enabled: !!storeId,
-  });
+    enabled: !!storeId});
 }
 
 // ─── Use Toggle AI Config ─────────────────────────────────────
@@ -37,8 +36,6 @@ export function useToggleAI() {
     },
     onError: (error: Error) => {
       showToast('error', 'Failed to update AI configuration', {
-        description: error.message,
-      });
-    },
-  });
+        description: error.message});
+    }});
 }

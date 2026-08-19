@@ -16,10 +16,8 @@ export function useDashboardStats() {
     queryFn: async () => {
       const user = await authService.getCurrentUser();
       return {
-        user,
-      };
-    },
-  });
+        user};
+    }});
 }
 
 // ─── Onboarding Status ─────────────────────────────────────────
@@ -32,10 +30,8 @@ export function useOnboardingStatus() {
       return {
         isComplete: false,
         currentStep: 0,
-        completedSteps: [],
-      };
-    },
-  });
+        completedSteps: []};
+    }});
 }
 
 // ─── Complete Onboarding ───────────────────────────────────────
@@ -44,14 +40,13 @@ export function useCompleteOnboarding() {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: async (data: { step: number; data: Record<string, unknown> }) => {
+    mutationFn: async (_data: { step: number; data: Record<string, unknown> }) => {
       // Will be implemented when backend endpoint is ready
       return { success: true };
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['onboarding'] });
-    },
-  });
+    }});
 }
 
 // ─── Business Profile ──────────────────────────────────────────
@@ -65,10 +60,8 @@ export function useBusinessProfile() {
         id: user.id,
         businessName: user.businessName,
         email: user.email,
-        phone: user.phone,
-      };
-    },
-  });
+        phone: user.phone};
+    }});
 }
 
 // ─── Update Business Profile ───────────────────────────────────
@@ -84,6 +77,5 @@ export function useUpdateBusinessProfile() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['business'] });
       queryClient.invalidateQueries({ queryKey: ['auth'] });
-    },
-  });
+    }});
 }

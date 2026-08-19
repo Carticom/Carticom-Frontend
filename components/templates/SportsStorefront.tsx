@@ -2,8 +2,8 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import Link from 'next/link';
-import { ShoppingBag, ArrowRight, Zap, Star, Trophy, Flame, Heart, Users, ChevronRight, Dumbbell, TrendingUp, Shield } from 'lucide-react';
+
+import { ShoppingBag, ArrowRight, Zap, Star, Trophy, Flame, Users, Dumbbell, TrendingUp, Shield } from 'lucide-react';
 import type { StoreDto, ProductDto } from '@/features/onboarding/types';
 import { Button } from '@/components/ui/button';
 

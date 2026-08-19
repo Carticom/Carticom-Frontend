@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useSyncExternalStore } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -14,24 +14,21 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+  DropdownMenuTrigger} from '@/components/ui/dropdown-menu';
 import { Avatar } from '@/components/ui/avatar';
 import { usePathname } from 'next/navigation';
 
+const subscribeToClientState = () => () => {};
+
 export function DynamicNavbar() {
   const pathname = usePathname();
-  const [isClient, setIsClient] = useState(false);
+  const isClient = useSyncExternalStore(subscribeToClientState, () => true, () => false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const user = useAuthStore((state) => state.user);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const logout = useAuthStore((state) => state.logout);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -86,30 +83,26 @@ export function DynamicNavbar() {
       { href: '/admin/users', label: 'Users' },
       { href: '/admin/stores', label: 'Stores' },
       { href: '/admin/subscriptions', label: 'Subscriptions' },
-      { href: '/admin/reports', label: 'Reports' },
+      { href: '/admin/analytics', label: 'Analytics' },
     ],
     SUPER_ADMIN: [
       { href: '/super-admin/dashboard', label: 'Dashboard' },
       { href: '/super-admin/users', label: 'Users' },
       { href: '/super-admin/stores', label: 'Stores' },
-      { href: '/super-admin/platforms', label: 'Platforms' },
-      { href: '/super-admin/logs', label: 'Logs' },
+      { href: '/super-admin/plans', label: 'Plans' },
+      { href: '/super-admin/audit-logs', label: 'Audit Logs' },
     ],
     CUSTOMER: [
       { href: '/storefront', label: 'My Storefront' },
       { href: '/storefront/orders', label: 'Orders' },
-      { href: '/storefront/wishlist', label: 'Wishlist' },
-      { href: '/storefront/support', label: 'Support' },
-    ],
-  };
+    ]};
 
   const roleRedirectMap: Record<string, string> = {
     SUPER_ADMIN: '/super-admin/dashboard',
     ADMIN: '/admin/dashboard',
     BUSINESS_OWNER: '/dashboard',
     STAFF: '/staff/dashboard',
-    CUSTOMER: '/storefront',
-  };
+    CUSTOMER: '/storefront'};
 
   const navLinks = isAuthenticated
     ? roleNavLinks[user?.role ?? ''] ?? roleNavLinks.BUSINESS_OWNER
@@ -176,7 +169,7 @@ export function DynamicNavbar() {
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="relative h-10 w-10 rounded-full" aria-label="User menu">
                       <Avatar className="h-10 w-10">
-                        <div className="flex h-full w-full items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-cyan-600 text-white font-semibold">
+                        <div className="flex h-full w-full items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-blue-700 text-white font-semibold">
                           {user?.fullName?.charAt(0) || 'U'}
                         </div>
                       </Avatar>
@@ -209,36 +202,24 @@ export function DynamicNavbar() {
                     {user?.role === 'STAFF' && (
                       <>
                         <DropdownMenuItem asChild>
-                          <Link href="/staff/profile">My Profile</Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                          <Link href="/staff/support">Support</Link>
+                          <Link href="/staff/dashboard">My Dashboard</Link>
                         </DropdownMenuItem>
                       </>
                     )}
                     {user?.role === 'ADMIN' && (
                       <>
                         <DropdownMenuItem asChild>
-                          <Link href="/admin/profile">My Profile</Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                          <Link href="/admin/settings">Platform Settings</Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                          <Link href="/admin/support">Support</Link>
+                          <Link href="/admin/dashboard">My Dashboard</Link>
                         </DropdownMenuItem>
                       </>
                     )}
                     {user?.role === 'SUPER_ADMIN' && (
                       <>
                         <DropdownMenuItem asChild>
-                          <Link href="/super-admin/profile">My Profile</Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
                           <Link href="/super-admin/settings">System Settings</Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild>
-                          <Link href="/super-admin/logs">Audit Logs</Link>
+                          <Link href="/super-admin/audit-logs">Audit Logs</Link>
                         </DropdownMenuItem>
                       </>
                     )}
@@ -264,7 +245,7 @@ export function DynamicNavbar() {
                 <Link href="/login" className="relative text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors px-4 py-2 rounded-xl hover:bg-blue-50/50">
                   Login
                 </Link>
-                <Button size="sm" className="rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 shadow-lg shadow-blue-500/20 text-white font-medium" asChild>
+                <Button size="sm" className="rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg shadow-blue-500/20 text-white font-medium" asChild>
                   <Link href="/register">Get Started</Link>
                 </Button>
               </>
@@ -323,18 +304,18 @@ export function DynamicNavbar() {
                         </Link>
                       )}
                       {user?.role === 'STAFF' && (
-                        <Link href="/staff/profile" className="text-center text-sm font-medium text-gray-700 hover:text-gray-900 px-4 py-3 rounded-xl hover:bg-gray-50 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
-                          My Profile
+                        <Link href="/staff/dashboard" className="text-center text-sm font-medium text-gray-700 hover:text-gray-900 px-4 py-3 rounded-xl hover:bg-gray-50 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
+                          My Dashboard
                         </Link>
                       )}
                       {user?.role === 'ADMIN' && (
-                        <Link href="/admin/profile" className="text-center text-sm font-medium text-gray-700 hover:text-gray-900 px-4 py-3 rounded-xl hover:bg-gray-50 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
-                          My Profile
+                        <Link href="/admin/dashboard" className="text-center text-sm font-medium text-gray-700 hover:text-gray-900 px-4 py-3 rounded-xl hover:bg-gray-50 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
+                          My Dashboard
                         </Link>
                       )}
                       {user?.role === 'SUPER_ADMIN' && (
-                        <Link href="/super-admin/profile" className="text-center text-sm font-medium text-gray-700 hover:text-gray-900 px-4 py-3 rounded-xl hover:bg-gray-50 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
-                          My Profile
+                        <Link href="/super-admin/settings" className="text-center text-sm font-medium text-gray-700 hover:text-gray-900 px-4 py-3 rounded-xl hover:bg-gray-50 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
+                          System Settings
                         </Link>
                       )}
                       {user?.role === 'CUSTOMER' && (
@@ -342,7 +323,7 @@ export function DynamicNavbar() {
                           My Profile
                         </Link>
                       )}
-                      <Button className="w-full rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-medium" onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }}>
+                      <Button className="w-full rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium" onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }}>
                         Logout
                       </Button>
                     </>
@@ -351,7 +332,7 @@ export function DynamicNavbar() {
                       <Link href="/login" className="text-center text-sm font-medium text-gray-700 hover:text-gray-900 px-4 py-3 rounded-xl hover:bg-gray-50 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
                         Login
                       </Link>
-                      <Button className="w-full rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-medium" asChild>
+                      <Button className="w-full rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium" asChild>
                         <Link href="/register">Get Started</Link>
                       </Button>
                     </>

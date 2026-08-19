@@ -1,8 +1,8 @@
 'use client';
 
-import React from 'react';
+
 import { motion } from 'framer-motion';
-import { CreditCard, Smartphone, Shield, Zap, ArrowRight, CheckCircle, Banknote, QrCode, Receipt, RefreshCw } from 'lucide-react';
+import { CreditCard, Smartphone, Shield, Zap, ArrowRight, CheckCircle, Banknote, QrCode, Receipt } from 'lucide-react';
 import { Container } from '@/components/common/Container';
 import { Button } from '@/components/ui/button';
 
@@ -11,26 +11,22 @@ const features = [
     icon: CreditCard,
     title: 'Paystack & Flutterwave Integration',
     description: 'Accept payments from the leading African payment gateways. Seamless checkout with cards, bank transfers, and digital wallets.',
-    color: 'purple',
-  },
+    color: 'purple'},
   {
     icon: Smartphone,
     title: 'Mobile Money & USSD',
     description: 'Tap into the mobile-first market with MTN MoMo, Airtel Money, M-Pesa, and USSD codes. No internet? No problem.',
-    color: 'amber',
-  },
+    color: 'amber'},
   {
     icon: Shield,
     title: 'Escrow & Payment Protection',
     description: 'Built-in escrow for high-value transactions. Funds are held securely until both parties are satisfied. Fraud protection included.',
-    color: 'blue',
-  },
+    color: 'blue'},
   {
     icon: Zap,
     title: 'Instant Settlements & Payouts',
     description: 'Get paid faster with instant settlements. Withdraw to your bank account, mobile wallet, or prefered payment method in real time.',
-    color: 'green',
-  },
+    color: 'green'},
 ];
 
 const benefits = [
@@ -137,8 +133,7 @@ export default function PaymentsPage() {
                 purple: 'bg-purple-50 text-purple-600',
                 amber: 'bg-amber-50 text-amber-600',
                 blue: 'bg-blue-50 text-blue-600',
-                green: 'bg-green-50 text-green-600',
-              };
+                green: 'bg-blue-50 text-blue-600'};
               return (
                 <motion.div
                   key={feature.title}
@@ -281,7 +276,7 @@ export default function PaymentsPage() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="text-xl text-purple-100 mb-8 max-w-2xl mx-auto"
             >
-              One integration to accept payments from every African customer. Start your 14-day free trial today.
+              One integration to accept payments from every African customer. Start your 30-day free trial today.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -297,7 +292,7 @@ export default function PaymentsPage() {
                 </a>
               </Button>
               <Button size="lg" variant="outline" className="gap-2 px-8 py-4 text-lg bg-transparent border-white text-white hover:bg-white/10 rounded-2xl" asChild>
-                <a href="mailto:sales@carticom.ng">
+                <a href="mailto:sales@carticom.com">
                   Contact Sales
                 </a>
               </Button>
@@ -309,7 +304,7 @@ export default function PaymentsPage() {
               transition={{ duration: 0.5, delay: 0.4 }}
               className="flex flex-wrap items-center justify-center gap-6 text-sm text-purple-100 mt-10"
             >
-              {['No credit card required', '14-day free trial', '100+ payment methods', '24/7 support'].map((item) => (
+              {['No credit card required', '30-day free trial', '100+ payment methods', '24/7 support'].map((item) => (
                 <div key={item} className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4" aria-hidden="true" />
                   <span>{item}</span>

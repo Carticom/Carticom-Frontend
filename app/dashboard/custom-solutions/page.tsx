@@ -16,17 +16,15 @@ const statusColors: Record<string, string> = {
   [CustomSolutionStatus.NEGOTIATION]: 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400',
   [CustomSolutionStatus.APPROVED]: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
   [CustomSolutionStatus.DEVELOPMENT]: 'bg-cyan-100 text-cyan-800 dark:bg-cyan-900/30 dark:text-cyan-400',
-  [CustomSolutionStatus.TESTING]: 'bg-teal-100 text-teal-800 dark:bg-teal-900/30 dark:text-teal-400',
+  [CustomSolutionStatus.TESTING]: 'bg-brand-100 text-brand-800 dark:bg-brand-900/30 dark:text-brand-400',
   [CustomSolutionStatus.DEPLOYED]: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400',
   [CustomSolutionStatus.COMPLETED]: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
-  [CustomSolutionStatus.REJECTED]: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
-};
+  [CustomSolutionStatus.REJECTED]: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'};
 
 export default function CustomSolutionsPage() {
   const { data: requests, isLoading, error, refetch } = useQuery({
     queryKey: ['custom-solutions', 'my'],
-    queryFn: () => customSolutionsService.getMyRequests(),
-  });
+    queryFn: () => customSolutionsService.getMyRequests()});
 
   if (isLoading) return <LoadingState message="Loading your custom solutions..." />;
   if (error) return <ErrorState title="Failed to load custom solutions" onRetry={refetch} />;
@@ -79,7 +77,7 @@ export default function CustomSolutionsPage() {
           <Link
             key={req.id}
             href={`/dashboard/custom-solutions/${req.id}`}
-            className="block rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 hover:shadow-md transition-shadow"
+            className="block rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 hover:shadow-md transition-shadow"
           >
             <div className="flex items-start justify-between">
               <div>

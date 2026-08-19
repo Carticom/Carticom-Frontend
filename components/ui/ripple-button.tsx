@@ -46,8 +46,7 @@ export function RippleButton({ children, className, onClick, ...props }: RippleB
               left: ripple.x - 8,
               top: ripple.y - 8,
               width: 16,
-              height: 16,
-            }}
+              height: 16}}
           />
         ))}
       </AnimatePresence>
