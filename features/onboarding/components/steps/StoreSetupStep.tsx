@@ -66,7 +66,7 @@ export function StoreSetupStep({ onNext, onBack, store }: StoreSetupStepProps) {
         </Button>
         <Button
           onClick={onNext}
-          className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700"
+          className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
         >
           Continue
         </Button>

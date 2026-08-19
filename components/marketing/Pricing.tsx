@@ -119,7 +119,7 @@ function ToggleSwitch({
         }`}
       >
         Yearly
-        <span className="ml-1.5 inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
+        <span className="ml-1.5 inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">
           Save 17%
         </span>
       </span>
@@ -268,7 +268,7 @@ export function Pricing() {
 
                     {plan.save && (
                       <div className="absolute -top-3.5 right-4">
-                        <span className="inline-flex items-center px-2 py-1 rounded-full bg-green-100 text-green-700 text-[10px] font-semibold">
+                        <span className="inline-flex items-center px-2 py-1 rounded-full bg-blue-100 text-blue-700 text-[10px] font-semibold">
                           {plan.save}
                         </span>
                       </div>
@@ -323,7 +323,7 @@ export function Pricing() {
                       {plan.features.map((feature) => (
                         <li key={feature} className="flex items-start gap-2">
                           <Check className={`h-4 w-4 shrink-0 mt-0.5 ${
-                            plan.popular ? 'text-blue-200' : 'text-green-500'
+                            plan.popular ? 'text-blue-200' : 'text-blue-500'
                           }`} aria-hidden="true" />
                           <span className={`text-xs ${
                             plan.popular ? 'text-blue-50' : 'text-gray-600'

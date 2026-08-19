@@ -103,7 +103,7 @@ export function Analytics() {
                     <div key={metric.label} className="p-4 rounded-xl bg-gray-50 border border-gray-100">
                       <div className="flex items-center justify-between mb-2">
                         <metric.icon className={`h-5 w-5 text-${metric.color}-600`} aria-hidden="true" />
-                        <span className="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-full">{metric.change}</span>
+                        <span className="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-1 rounded-full">{metric.change}</span>
                       </div>
                       <p className="text-2xl font-bold text-gray-900">{metric.value}</p>
                       <p className="text-xs text-gray-500 mt-1">{metric.label}</p>

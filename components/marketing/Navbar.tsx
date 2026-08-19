@@ -10,7 +10,8 @@ import { useAuthStore } from '@/features/auth/store/auth.store';
 import { cn } from '@/lib/utils';
 
 const NAV_LINKS = [
-  { href: '/features', label: 'Features' },
+  { href: '/features', label: 'Product' },
+  { href: '/templates', label: 'Templates' },
   {
     label: 'Solutions',
     children: [
@@ -20,9 +21,15 @@ const NAV_LINKS = [
       { href: '/solutions/services', label: 'Service Businesses' },
     ]},
   { href: '/pricing', label: 'Pricing' },
-  { href: '/docs', label: 'Developers' },
+  {
+    label: 'Resources',
+    children: [
+      { href: '/help', label: 'Help Center' },
+      { href: '/docs', label: 'Documentation' },
+      { href: '/tutorials', label: 'Tutorials' },
+      { href: '/blog', label: 'Blog' },
+    ]},
   { href: '/about', label: 'About' },
-  { href: '/contact', label: 'Contact' },
 ];
 
 export function Navbar() {
@@ -32,7 +39,7 @@ export function Navbar() {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    const onScroll = () => setScrolled(window.scrollY > 8);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
@@ -40,41 +47,44 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
-        scrolled
-          ? 'bg-white/80 backdrop-blur-xl border-b border-gray-100/80 shadow-[0_1px_2px_rgba(0,0,0,0.04)]'
-          : 'bg-transparent'
+        'sticky top-0 z-50 w-full bg-white/90 backdrop-blur-xl transition-shadow duration-300',
+        scrolled ? 'shadow-[0_1px_3px_rgba(53,25,81,0.06)] border-b border-gray-100' : 'border-b border-transparent'
       )}
     >
-      <div className="max-w-7xl mx-auto px-4 md:px-8">
-        <div className="flex h-16 md:h-20 items-center justify-between">
-          <Link href="/" className="flex items-center gap-3 group" aria-label="Carticom Home">
-            <Image src="/image/carticom_logo.png" alt="Carticom Logo" width={36} height={36} className="rounded-lg" />
-            <span className="font-bold text-lg tracking-tight text-gray-900">Carticom</span>
+      <div className="mx-auto max-w-7xl px-4 md:px-8">
+        <div className="flex h-16 md:h-[72px] items-center justify-between gap-4">
+          <Link href="/" className="flex items-center gap-2.5 shrink-0" aria-label="Carticom Home">
+            <Image src="/image/carticom_logo.png" alt="Carticom Logo" width={34} height={34} className="rounded-lg" />
+            <span className="text-lg font-bold tracking-tight text-brand">Carticom</span>
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-1" aria-label="Main">
-            {NAV_LINKS.map((link) => (
+          <nav className="hidden lg:flex items-center gap-0.5" aria-label="Main">
+            {NAV_LINKS.map((link) =>
               'children' in link && link.children ? (
-                <div key={link.label} className="relative"
+                <div
+                  key={link.label}
+                  className="relative"
                   onMouseEnter={() => setOpenDropdown(link.label)}
                   onMouseLeave={() => setOpenDropdown(null)}
                 >
-                  <button className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 rounded-xl hover:bg-gray-50 transition-colors">
+                  <button className="flex items-center gap-1 px-3.5 py-2 text-sm font-medium text-gray-600 hover:text-brand rounded-xl hover:bg-brand-soft transition-colors">
                     {link.label}
-                    <ChevronDown className="h-3.5 w-3.5 text-gray-400" />
+                    <ChevronDown className={cn('h-3.5 w-3.5 text-gray-400 transition-transform', openDropdown === link.label && 'rotate-180')} />
                   </button>
                   <AnimatePresence>
                     {openDropdown === link.label && (
                       <motion.div
-                        initial={{ opacity: 0, y: 8 }}
+                        initial={{ opacity: 0, y: 6 }}
                         animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 8 }}
-                        className="absolute top-full left-0 mt-2 w-56 rounded-2xl bg-white border border-gray-100 shadow-xl shadow-gray-200/50 p-2"
+                        exit={{ opacity: 0, y: 6 }}
+                        transition={{ duration: 0.15 }}
+                        className="absolute top-full left-0 mt-2 w-56 rounded-2xl bg-white border border-gray-100 shadow-xl shadow-brand/5 p-2"
                       >
                         {link.children.map((child) => (
-                          <Link key={child.href} href={child.href}
-                            className="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-xl transition-colors"
+                          <Link
+                            key={child.href}
+                            href={child.href}
+                            className="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-brand hover:bg-brand-soft rounded-xl transition-colors"
                           >
                             {child.label}
                           </Link>
@@ -84,26 +94,28 @@ export function Navbar() {
                   </AnimatePresence>
                 </div>
               ) : (
-                <Link key={link.href} href={link.href!}
-                  className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 rounded-xl hover:bg-gray-50 transition-colors"
+                <Link
+                  key={link.href}
+                  href={link.href!}
+                  className="px-3.5 py-2 text-sm font-medium text-gray-600 hover:text-brand rounded-xl hover:bg-brand-soft transition-colors"
                 >
                   {link.label}
                 </Link>
               )
-            ))}
+            )}
           </nav>
 
           <div className="hidden lg:flex items-center gap-3">
             {isAuthenticated ? (
-              <Button asChild className="rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-sm shadow-blue-200">
+              <Button asChild className="h-10 rounded-xl bg-brand hover:bg-brand-dark text-white px-5 shadow-sm shadow-brand/20">
                 <Link href="/dashboard">Dashboard</Link>
               </Button>
             ) : (
               <>
-                <Link href="/login" className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 rounded-xl hover:bg-gray-50 transition-colors">
+                <Link href="/login" className="px-3.5 py-2 text-sm font-medium text-gray-600 hover:text-brand rounded-xl hover:bg-brand-soft transition-colors">
                   Login
                 </Link>
-                <Button asChild className="rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-sm shadow-blue-200">
+                <Button asChild className="h-10 rounded-xl bg-brand hover:bg-brand-dark text-white px-5 shadow-sm shadow-brand/20">
                   <Link href="/register">Get Started</Link>
                 </Button>
               </>
@@ -111,7 +123,7 @@ export function Navbar() {
           </div>
 
           <button
-            className="lg:hidden p-2 rounded-xl hover:bg-gray-100 transition-colors"
+            className="lg:hidden p-2 -mr-1 rounded-xl hover:bg-gray-100 transition-colors"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
           >
@@ -126,42 +138,50 @@ export function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden border-t border-gray-100 bg-white/95 backdrop-blur-xl overflow-hidden"
+            className="lg:hidden border-t border-gray-100 bg-white overflow-hidden"
           >
-            <div className="px-4 py-6 space-y-1">
-              {NAV_LINKS.map((link) => (
+            <div className="px-4 py-4 space-y-1">
+              {NAV_LINKS.map((link) =>
                 'children' in link && link.children ? (
                   <div key={link.label}>
-                    <p className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-400">{link.label}</p>
+                    <p className="px-4 pt-2 pb-1 text-xs font-semibold uppercase tracking-wider text-gray-400">{link.label}</p>
                     {link.children.map((child) => (
-                      <Link key={child.href} href={child.href} onClick={() => setMobileOpen(false)}
-                        className="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 rounded-xl hover:bg-gray-50"
+                      <Link
+                        key={child.href}
+                        href={child.href}
+                        onClick={() => setMobileOpen(false)}
+                        className="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-brand rounded-xl hover:bg-brand-soft"
                       >
                         {child.label}
                       </Link>
                     ))}
                   </div>
                 ) : (
-                  <Link key={link.href} href={link.href!} onClick={() => setMobileOpen(false)}
-                    className="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 rounded-xl hover:bg-gray-50"
+                  <Link
+                    key={link.href}
+                    href={link.href!}
+                    onClick={() => setMobileOpen(false)}
+                    className="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-brand rounded-xl hover:bg-brand-soft"
                   >
                     {link.label}
                   </Link>
                 )
-              ))}
-              <div className="pt-4 mt-4 border-t border-gray-100 space-y-3 px-4">
+              )}
+              <div className="pt-4 mt-4 border-t border-gray-100 space-y-3">
                 {isAuthenticated ? (
-                  <Button asChild className="w-full rounded-xl bg-blue-600 hover:bg-blue-700 text-white">
+                  <Button asChild className="w-full h-11 rounded-xl bg-brand hover:bg-brand-dark text-white">
                     <Link href="/dashboard">Dashboard</Link>
                   </Button>
                 ) : (
                   <>
-                    <Link href="/login" onClick={() => setMobileOpen(false)}
+                    <Link
+                      href="/login"
+                      onClick={() => setMobileOpen(false)}
                       className="block text-center text-sm font-medium text-gray-700 py-2.5 rounded-xl hover:bg-gray-50"
                     >
                       Login
                     </Link>
-                    <Button asChild className="w-full rounded-xl bg-blue-600 hover:bg-blue-700 text-white">
+                    <Button asChild className="w-full h-11 rounded-xl bg-brand hover:bg-brand-dark text-white">
                       <Link href="/register">Get Started</Link>
                     </Button>
                   </>

@@ -68,9 +68,9 @@ export default function StaffProductDetailPage() {
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div className="flex items-center gap-4">
             {product.images?.[0] ? (
-              <div className="relative w-16 h-16 rounded-xl overflow-hidden"><Image src={product.images[0]} alt={product.name} fill unoptimized className="object-cover bg-gray-100 dark:bg-gray-800" /></div>
+              <div className="relative w-16 h-16 rounded-2xl overflow-hidden"><Image src={product.images[0]} alt={product.name} fill unoptimized className="object-cover bg-gray-100 dark:bg-gray-800" /></div>
             ) : (
-              <div className="w-16 h-16 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-400">
+              <div className="w-16 h-16 rounded-2xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-400">
                 <Package className="h-6 w-6" />
               </div>
             )}
@@ -104,7 +104,7 @@ export default function StaffProductDetailPage() {
         </div>
       </div>
 
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
           <Package className="h-5 w-5 text-gray-400" />
           Description
@@ -113,7 +113,7 @@ export default function StaffProductDetailPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Pricing</h2>
           <div className="text-sm space-y-3">
             <div className="flex items-center justify-between">
@@ -135,7 +135,7 @@ export default function StaffProductDetailPage() {
           </div>
         </div>
 
-        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
             <Boxes className="h-5 w-5 text-gray-400" />
             Inventory
@@ -162,7 +162,7 @@ export default function StaffProductDetailPage() {
           </div>
         </div>
 
-        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
             <Tag className="h-5 w-5 text-gray-400" />
             Details
@@ -189,7 +189,7 @@ export default function StaffProductDetailPage() {
       </div>
 
       {product.tags.length > 0 && (
-        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
             <Hash className="h-5 w-5 text-gray-400" />
             Tags
@@ -204,7 +204,7 @@ export default function StaffProductDetailPage() {
         </div>
       )}
 
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
         <div className="flex items-center gap-2 text-sm text-gray-500">
           <Barcode className="h-5 w-5 text-blue-500" />
           <span>Created <strong className="text-gray-900 dark:text-white">{formatDate(product.createdAt)}</strong> · Updated <strong className="text-gray-900 dark:text-white">{formatDate(product.updatedAt)}</strong> · Product ID <strong className="font-mono text-gray-900 dark:text-white">{product.id}</strong></span>

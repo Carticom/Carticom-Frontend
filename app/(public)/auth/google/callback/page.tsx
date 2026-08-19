@@ -88,7 +88,7 @@ function GoogleCallbackContent() {
           <button
             type="button"
             onClick={() => router.replace('/login')}
-            className="mt-2 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 transition-colors hover:from-blue-700 hover:to-cyan-700"
+            className="mt-2 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 transition-colors hover:from-blue-700 hover:to-blue-800"
           >
             Back to Login
           </button>

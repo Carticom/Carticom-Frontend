@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Container } from '@/components/common/Container';
 import { cn } from '@/lib/utils';
 import { useAuthStore } from '@/features/auth/store/auth.store';
-import { cartApi } from '@/features/onboarding/services/onboarding.service';
+import { cartApi, storefrontApi } from '@/features/onboarding/services/onboarding.service';
 
 export default function StorefrontLayout({
   children}: {
@@ -17,10 +17,33 @@ export default function StorefrontLayout({
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
-  const storeId = typeof window !== 'undefined'
+  const queryStoreId = typeof window !== 'undefined'
     ? new URLSearchParams(window.location.search).get('store')
     : null;
+  const [resolvedStoreId, setResolvedStoreId] = useState<string | null>(null);
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+
+  const getStoreSlugFromPath = () => {
+    if (!pathname) return null;
+    const match = pathname.match(/^\/store\/([^/]+)/);
+    return match ? decodeURIComponent(match[1]) : null;
+  };
+
+  const storeSlug = getStoreSlugFromPath();
+  const storeId = queryStoreId || resolvedStoreId;
+  const storeLabel = storeSlug ? storeSlug.replace(/-/g, ' ') : null;
+
+  useEffect(() => {
+    if (queryStoreId) return;
+    if (!storeSlug) return;
+    let cancelled = false;
+    storefrontApi.getStoreBySlug(storeSlug)
+      .then((res) => {
+        if (!cancelled && res.data.data?.id) setResolvedStoreId(res.data.data.id);
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, [storeSlug, queryStoreId]);
 
   useEffect(() => {
     let cancelled = false;
@@ -40,15 +63,6 @@ export default function StorefrontLayout({
 
   const isCheckoutPage = pathname?.startsWith('/storefront/checkout');
   const isPreviewPage = pathname?.startsWith('/store/preview/');
-
-  const getStoreNameFromPath = () => {
-    if (!pathname) return null;
-    const match = pathname.match(/^\/store\/([^/]+)/);
-    return match ? decodeURIComponent(match[1]) : null;
-  };
-
-  const storeSlug = getStoreNameFromPath();
-  const storeLabel = storeSlug ? storeSlug.replace(/-/g, ' ') : null;
 
   if (isPreviewPage) return <>{children}</>;
 

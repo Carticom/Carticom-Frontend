@@ -25,7 +25,7 @@ export default function SuperAdminSettingsPage() {
         <p className="text-gray-600 dark:text-gray-400 mt-2">System-wide configuration settings</p>
       </div>
 
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>

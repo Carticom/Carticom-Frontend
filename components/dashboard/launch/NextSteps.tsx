@@ -27,7 +27,7 @@ const colorClasses = {
 
 export function NextSteps({ actions }: NextStepsProps) {
   return (
-    <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+    <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
       <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
         Your Next Steps
       </h3>

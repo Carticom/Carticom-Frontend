@@ -18,7 +18,7 @@ export default function DashboardErrorBoundary({
       <p className="text-gray-500 mb-6">An error occurred while loading this page.</p>
       <button
         onClick={reset}
-        className="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors"
+        className="px-6 py-2.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors"
       >
         Try Again
       </button>

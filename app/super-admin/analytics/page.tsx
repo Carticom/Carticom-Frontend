@@ -87,7 +87,7 @@ export default function SuperAdminAnalyticsPage() {
         {summaryCards.map((card) => {
           const Icon = card.icon;
           return (
-            <div key={card.label} className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+            <div key={card.label} className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
               <div className="flex items-center justify-between mb-4">
                 <p className="text-sm text-gray-600 dark:text-gray-400">{card.label}</p>
                 <Icon className={`h-5 w-5 ${card.color}`} />
@@ -99,7 +99,7 @@ export default function SuperAdminAnalyticsPage() {
       </div>
 
       {topStores?.length > 0 && (
-        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Top Performing Stores</h2>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">

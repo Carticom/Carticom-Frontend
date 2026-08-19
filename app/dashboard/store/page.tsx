@@ -38,10 +38,10 @@ if (store) {
     }
   }
 
-  const handleSave = () => {
+const handleSave = () => {
     if (!store) return;
     updateStore.mutate(
-      { id: store.id, data: { name, description } },
+      { id: store.id, data: { storeName: name, description } },
       { onSuccess: () => setEditing(false) }
     );
   };
@@ -138,7 +138,7 @@ if (store) {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Store Information</h2>
             <button
@@ -218,7 +218,7 @@ if (store) {
           )}
         </div>
 
-        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Branding</h2>
           <div className="space-y-4">
             <div>
@@ -266,14 +266,14 @@ if (store) {
         </div>
 
         {/* Template Selection */}
-        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Storefront Template</h2>
           <div className="space-y-4">
             {BUSINESS_CATEGORIES.map((cat) => {
               const catTemplates = getTemplatesForCategory(cat.value);
               if (catTemplates.length === 0) return null;
               return (
-                <details key={cat.value} className="group rounded-xl border border-gray-200 dark:border-gray-700 open:bg-gray-50 dark:open:bg-gray-800/50 transition-colors">
+                <details key={cat.value} className="group rounded-2xl border border-gray-200 dark:border-gray-700 open:bg-gray-50 dark:open:bg-gray-800/50 transition-colors">
                   <summary className="flex items-center justify-between px-4 py-3 cursor-pointer list-none text-sm font-semibold text-gray-900 dark:text-white">
                     <span className="capitalize">{cat.label.toLowerCase()}</span>
                     <ChevronDown className="h-4 w-4 text-gray-400 group-open:rotate-180 transition-transform" />
@@ -296,7 +296,7 @@ if (store) {
                           }}
                           disabled={updateStore.isPending}
                           className={cn(
-                            'relative flex flex-col items-center gap-2 p-3 rounded-xl border-2 text-center transition-all',
+                            'relative flex flex-col items-center gap-2 p-3 rounded-2xl border-2 text-center transition-all',
                             isActive
                               ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 shadow-sm'
                               : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-sm'
@@ -323,7 +323,7 @@ if (store) {
         </div>
 
         {/* SEO Settings */}
-        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 lg:col-span-2">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 lg:col-span-2">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">SEO & Preview</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4">

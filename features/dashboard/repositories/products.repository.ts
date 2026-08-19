@@ -3,6 +3,7 @@
 // ============================================================
 
 import { BaseRepository } from '@/lib/dal/repository';
+import axiosInstance from '@/lib/axios';
 import type { ProductDto, CreateProductDto, UpdateProductDto } from '@/features/dashboard/types/products.types';
 import type { QueryParams } from '@/lib/dal/types';
 
@@ -30,7 +31,8 @@ export class ProductsRepository extends BaseRepository<ProductDto, CreateProduct
   }
 
   async updateInventory(id: string, quantityDelta: number) {
-    return this.patch(id, { quantityDelta } as unknown as UpdateProductDto);
+    const res = await axiosInstance.patch(`/api/v1/products/${id}/inventory`, { quantityDelta });
+    return res.data.data as ProductDto;
   }
 }
 

@@ -223,11 +223,11 @@ export default function CouponsPage() {
       )}
 
       {!coupons?.length ? (
-        <div className="rounded-xl border border-gray-200 bg-white p-6">
+        <div className="rounded-2xl border border-gray-200 bg-white p-6">
           <EmptyState title="No coupons yet" description="Create your first coupon to offer discounts to customers." />
         </div>
       ) : (
-        <div className="rounded-xl border border-gray-200 bg-white p-6">
+        <div className="rounded-2xl border border-gray-200 bg-white p-6">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>

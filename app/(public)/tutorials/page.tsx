@@ -128,7 +128,7 @@ export default function TutorialsPage() {
               transition={{ duration: 0.4, delay: index * 0.05 }}
               className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition-shadow group cursor-pointer"
             >
-              <div className="h-40 bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center relative">
+              <div className="h-40 bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center relative">
                 <Play className="w-12 h-12 text-white/70 group-hover:scale-110 transition-transform" />
                 <span className="absolute bottom-3 right-3 px-2 py-1 bg-black/30 text-white text-xs rounded-lg">
                   {tutorial.duration}

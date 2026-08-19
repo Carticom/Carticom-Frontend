@@ -1,198 +1,202 @@
 'use client';
 
-import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ArrowRight, Play, Store, ShoppingBag, Package, CreditCard, Building2, Users } from 'lucide-react';
+import { ArrowRight, Store, ShoppingBag, Package, Users, MessageCircle, TrendingUp, Wallet } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { TEMPLATES, getTemplateIcon } from '@/features/templates/registry';
-import type { TemplateConfig } from '@/features/templates/types';
-import { TemplatePreviewModal } from './TemplatePreviewModal';
+import { cn } from '@/lib/utils';
 
 const fadeUp = (delay = 0) => ({
-  initial: { opacity: 0, y: 30 },
-  animate: { opacity: 1, y: 0, transition: { duration: 0.7, delay, ease: [0.25, 0.1, 0.25, 1] as const } }});
+  initial: { opacity: 0, y: 24 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] as const } },
+});
 
-const FLOATING_ITEMS = [
-  { icon: Store, label: 'Store', color: 'from-blue-500 to-blue-600', x: '-10%', y: '15%', delay: 0.3 },
-  { icon: ShoppingBag, label: 'Orders', color: 'from-blue-500 to-blue-600', x: '75%', y: '10%', delay: 0.5 },
-  { icon: Package, label: 'Products', color: 'from-amber-500 to-amber-600', x: '-8%', y: '55%', delay: 0.4 },
-  { icon: CreditCard, label: 'Payments', color: 'from-violet-500 to-violet-600', x: '78%', y: '50%', delay: 0.6 },
-  { icon: Users, label: 'Team', color: 'from-green-500 to-green-600', x: '35%', y: '5%', delay: 0.35 },
-  { icon: Building2, label: 'Multi-Store', color: 'from-rose-500 to-rose-600', x: '35%', y: '70%', delay: 0.45 },
+const STATS = [
+  { icon: Wallet, label: 'Sales today', value: '₦128,500', delta: '+12%' },
+  { icon: ShoppingBag, label: 'Orders', value: '24', delta: '+8%' },
+  { icon: Package, label: 'Products', value: '132', delta: '3 low' },
 ];
 
-const TRUST_BADGES = [
-  { icon: Store, text: 'Store Builder' },
-  { icon: CreditCard, text: 'Paystack + Flutterwave' },
-  { icon: ShoppingBag, text: 'Order Management' },
+const BARS = [42, 58, 40, 66, 52, 78, 64];
+
+const RECENT_ORDERS = [
+  { id: '#1042', item: 'Linen Dress (M)', amount: '₦45,000', status: 'Paid', tone: 'text-brand-dark bg-brand-soft' },
+  { id: '#1041', item: 'Leather Loafers', amount: '₦62,000', status: 'Paid', tone: 'text-brand-dark bg-brand-soft' },
+  { id: '#1040', item: 'Handbag · Beige', amount: '₦38,000', status: 'Pending', tone: 'text-amber-600 bg-amber-50' },
 ];
 
 export function HeroSection() {
-  const [previewTemplate, setPreviewTemplate] = useState<TemplateConfig | null>(null);
-
   return (
-    <section className="relative pt-28 md:pt-36 pb-20 md:pb-28 overflow-hidden bg-gradient-to-b from-white via-blue-50/30 to-white">
-      <div className="absolute inset-0">
-        <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-bl from-blue-100/40 to-transparent rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-gradient-to-tr from-blue-50/60 to-transparent rounded-full blur-3xl" />
+    <section className="relative overflow-hidden bg-gradient-to-b from-brand-soft/60 via-white to-white">
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute -top-32 -right-24 h-96 w-96 rounded-full bg-brand/10 blur-3xl" />
+        <div className="absolute top-1/3 -left-32 h-80 w-80 rounded-full bg-brand/10 blur-3xl" />
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 md:px-8">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          <div className="space-y-8">
-            <motion.div {...fadeUp(0.1)}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200/60"
+      <div className="relative mx-auto max-w-7xl px-4 md:px-8 pt-16 pb-20 md:pt-24 md:pb-28">
+        <div className="grid items-center gap-14 lg:grid-cols-2 lg:gap-12">
+          <div className="space-y-8 max-w-xl">
+            <motion.div
+              {...fadeUp(0.05)}
+              className="inline-flex items-center gap-2 rounded-full border border-brand/20 bg-brand-soft px-4 py-1.5"
             >
-              <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-              <span className="text-xs font-semibold text-blue-700 tracking-wide">Built for African Businesses</span>
+              <span className="h-1.5 w-1.5 rounded-full bg-brand" />
+              <span className="text-xs font-semibold tracking-wide text-brand-dark">Commerce infrastructure for African businesses</span>
             </motion.div>
 
-            <motion.h1 {...fadeUp(0.2)}
-              className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 leading-[1.05] tracking-tight"
+            <motion.h1
+              {...fadeUp(0.15)}
+              className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl leading-[1.08]"
             >
-              Launch Your Online
-              <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-500">
-                Store in Minutes
-              </span>
-              <br />
-              Start Selling Today.
+              Everything You Need to{' '}
+              <span className="text-brand">Sell Online.</span>
             </motion.h1>
 
-            <motion.p {...fadeUp(0.3)}
-              className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-xl"
-            >
-              Create a professional online store, manage products and orders, accept payments with Paystack and Flutterwave, 
-              and grow your business — all from one dashboard. No coding required.
+            <motion.p {...fadeUp(0.25)} className="text-lg md:text-xl leading-relaxed text-gray-600">
+              Carticom gives African businesses a simple way to create an online store, manage their business and sell
+              to customers — without needing a developer.
             </motion.p>
 
-            <motion.div {...fadeUp(0.4)} className="flex flex-wrap gap-4">
-              <Button asChild size="lg" className="rounded-xl bg-blue-600 hover:bg-blue-700 text-white px-8 h-14 text-base shadow-lg shadow-blue-200/50 group">
+            <motion.div {...fadeUp(0.35)} className="flex flex-wrap items-center gap-4">
+              <Button
+                asChild
+                size="lg"
+                className="group h-13 rounded-xl bg-brand px-7 text-base shadow-lg shadow-brand/20 hover:bg-brand-dark"
+              >
                 <Link href="/register">
                   Get Started Free
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="rounded-xl border-gray-300 text-gray-700 hover:bg-gray-50 px-8 h-14 text-base">
-                <Link href="/contact">
-                  <Play className="mr-2 h-4 w-4" />
-                  Book Demo
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="h-13 rounded-xl border-gray-300 px-7 text-base text-gray-700 hover:bg-gray-50"
+              >
+                <Link href="#how-it-works">
+                  See How It Works
+                  <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
             </motion.div>
 
-            <motion.div {...fadeUp(0.5)} className="flex flex-wrap items-center gap-6 pt-2">
-              <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">Trusted by</p>
-              <div className="flex flex-wrap items-center gap-4">
-                {TRUST_BADGES.map((badge) => (
-                  <div key={badge.text} className="flex items-center gap-1.5 text-xs text-gray-500">
-                    <badge.icon className="h-3.5 w-3.5 text-blue-500" />
-                    {badge.text}
-                  </div>
-                ))}
+            <motion.div {...fadeUp(0.45)} className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-2">
+              <p className="text-sm font-medium text-gray-500">Built for the way African businesses sell.</p>
+              <div className="flex items-center gap-4 text-gray-400">
+                <span className="flex items-center gap-1.5 text-xs"><Store className="h-3.5 w-3.5 text-brand" /> Stores</span>
+                <span className="flex items-center gap-1.5 text-xs"><MessageCircle className="h-3.5 w-3.5 text-brand" /> WhatsApp-first</span>
+                <span className="flex items-center gap-1.5 text-xs"><Users className="h-3.5 w-3.5 text-brand" /> Team-ready</span>
               </div>
             </motion.div>
           </div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-            className="relative hidden lg:block"
+            initial={{ opacity: 0, scale: 0.96, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="relative"
           >
-            <div className="relative aspect-[4/3] rounded-3xl bg-gradient-to-br from-gray-50 to-white border border-gray-200/80 shadow-2xl shadow-gray-200/50 overflow-hidden">
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,_rgba(37,99,235,0.04)_0%,_transparent_60%)]" />
-              <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMjAgMjB2LTIwaDIwdjIweiIgZmlsbD0icmdiYSg1LDE1MCwxMDUsMC4wMykiLz48L3N2Zz4=')] opacity-50" />
+            <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-brand/5 via-brand/5 to-transparent blur-2xl" />
 
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center space-y-4">
-                  <div className="bg-gradient-to-br from-blue-50 to-white rounded-2xl p-8 max-w-sm mx-auto shadow-inner">
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
-                          <Store className="h-5 w-5 text-white" />
-                        </div>
-                        <div className="flex-1">
-                          <div className="h-3 bg-gray-200 rounded w-24" />
-                          <div className="h-2 bg-gray-100 rounded w-16 mt-1" />
-                        </div>
-                      </div>
-                      <div className="grid grid-cols-2 gap-2">
-                        <div className="h-12 rounded-lg bg-gray-100" />
-                        <div className="h-12 rounded-lg bg-gray-50" />
-                        <div className="h-12 rounded-lg bg-blue-50 border border-blue-100 flex items-center justify-center text-xs font-medium text-blue-600">Active Store</div>
-                        <div className="h-12 rounded-lg bg-gray-100" />
-                      </div>
-                      <div className="h-20 rounded-xl bg-gradient-to-r from-blue-100 via-blue-50 to-transparent flex items-center justify-center text-xs text-blue-500 font-medium">
-                        Real-time Analytics Dashboard
-                      </div>
-                    </div>
-                  </div>
+            <div className="relative overflow-hidden rounded-2xl border border-gray-200/80 bg-white shadow-2xl shadow-brand/10">
+              <div className="flex items-center gap-2 border-b border-gray-100 bg-gray-50/80 px-4 py-3">
+                <div className="flex gap-1.5">
+                  <span className="h-2.5 w-2.5 rounded-full bg-red-400/80" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-amber-400/80" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-brand/70" />
+                </div>
+                <div className="ml-3 flex-1 rounded-lg bg-white border border-gray-200/70 px-3 py-1 text-xs text-gray-400">
+                  app.carticom.com/dashboard
                 </div>
               </div>
 
-              {FLOATING_ITEMS.map((item) => (
-                <motion.div
-                  key={item.label}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: item.delay }}
-                  className="absolute flex items-center gap-2 px-3 py-2 rounded-xl bg-white/90 backdrop-blur-sm border border-gray-100 shadow-lg shadow-gray-200/30"
-                  style={{ left: item.x, top: item.y }}
-                >
-                  <div className={`flex h-6 w-6 items-center justify-center rounded-lg bg-gradient-to-br ${item.color}`}>
-                    <item.icon className="h-3 w-3 text-white" />
+              <div className="p-5 space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900">Good day, Adaeze</p>
+                    <p className="text-xs text-gray-500">Your store summary</p>
                   </div>
-                  <span className="text-xs font-medium text-gray-700">{item.label}</span>
-                </motion.div>
-              ))}
+                  <div className="flex items-center gap-1.5 rounded-lg bg-brand-soft px-2.5 py-1 text-xs font-semibold text-brand-dark">
+                    <TrendingUp className="h-3.5 w-3.5" /> Growth
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-3 gap-3">
+                  {STATS.map((s) => (
+                    <div key={s.label} className="rounded-xl border border-gray-100 bg-gray-50/60 p-3">
+                      <div className="flex items-center justify-between">
+                        <s.icon className="h-3.5 w-3.5 text-brand/60" />
+                        <span className="text-[10px] font-semibold text-brand-dark">{s.delta}</span>
+                      </div>
+                      <p className="mt-2 text-sm font-bold text-brand">{s.value}</p>
+                      <p className="text-[11px] text-gray-500">{s.label}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="rounded-xl border border-gray-100 p-3.5">
+                  <div className="flex items-center justify-between mb-3">
+                    <p className="text-xs font-semibold text-gray-700">Sales this week</p>
+                    <p className="text-[11px] text-gray-400">₦478,200</p>
+                  </div>
+                  <div className="flex items-end gap-1.5 h-16">
+                    {BARS.map((h, i) => (
+                      <motion.div
+                        key={i}
+                        initial={{ height: 0 }}
+                        animate={{ height: `${h}%` }}
+                        transition={{ duration: 0.6, delay: 0.6 + i * 0.06, ease: [0.22, 1, 0.36, 1] }}
+                        className={cn('flex-1 rounded-t-md', i === BARS.length - 1 ? 'bg-brand' : 'bg-brand/20')}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                <div className="rounded-xl border border-gray-100">
+                  {RECENT_ORDERS.map((o, i) => (
+                    <div
+                      key={o.id}
+                      className={cn(
+                        'flex items-center justify-between gap-2 px-3.5 py-2.5',
+                        i > 0 && 'border-t border-gray-100'
+                      )}
+                    >
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-brand-soft">
+                          <Package className="h-3.5 w-3.5 text-brand" />
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-xs font-medium text-gray-800">{o.item}</p>
+                          <p className="text-[10px] text-gray-400">{o.id}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <span className="text-xs font-semibold text-gray-800">{o.amount}</span>
+                        <span className={cn('rounded-full px-2 py-0.5 text-[10px] font-semibold', o.tone)}>{o.status}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.9 }}
+              className="absolute -left-4 -bottom-5 flex items-center gap-2.5 rounded-2xl border border-gray-100 bg-white px-4 py-3 shadow-xl shadow-brand/10"
+            >
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-soft">
+                <MessageCircle className="h-4.5 w-4.5 text-brand-dark" />
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-gray-900">New WhatsApp order</p>
+                <p className="text-[11px] text-gray-500">₦45,000 · just now</p>
+              </div>
+            </motion.div>
           </motion.div>
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.2 }}
-          className="mt-20 md:mt-28"
-        >
-          <div className="text-center mb-10">
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-[0.2em]">Choose Your Storefront Template</p>
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mt-3">Launch in Minutes</h2>
-            <p className="text-gray-500 mt-2 max-w-xl mx-auto">Pick a professionally designed template tailored for your industry. Customize colors, logo, and content — no coding needed.</p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {TEMPLATES.map((t, i) => (
-              <motion.div
-                key={t.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.05 }}
-                className="group cursor-pointer"
-                onClick={() => setPreviewTemplate(t)}
-              >
-                <div className="aspect-[4/3] rounded-2xl border border-gray-200 bg-white overflow-hidden shadow-sm hover:shadow-lg hover:border-blue-200/50 transition-all duration-300 relative">
-                  <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center">
-                    <span className="text-4xl mb-3">{React.createElement(getTemplateIcon(t.id), { className: 'h-8 w-8 text-gray-700' })}</span>
-                    <p className="text-sm font-semibold text-gray-900">{t.name}</p>
-                    <p className="text-xs text-gray-500 mt-1 capitalize">{t.category.toLowerCase().replace('_', ' & ')}</p>
-                  </div>
-                  <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-blue-400 to-blue-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          <TemplatePreviewModal
-            template={previewTemplate}
-            open={!!previewTemplate}
-            onClose={() => setPreviewTemplate(null)}
-          />
-        </motion.div>
       </div>
     </section>
   );

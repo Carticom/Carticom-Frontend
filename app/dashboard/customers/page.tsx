@@ -26,7 +26,7 @@ export default function CustomersPage() {
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Customers</h1>
         <p className="text-gray-600 dark:text-gray-400 mt-2">Manage your customer relationships</p>
       </div>
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
         <EmptyState
           title="No customers yet"
           description="Customers will appear here after their first purchase."
@@ -42,7 +42,7 @@ export default function CustomersPage() {
         <p className="text-gray-600 dark:text-gray-400 mt-2">Manage your customer relationships</p>
       </div>
 
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
         <input
           type="text"
           placeholder="Search customers..."

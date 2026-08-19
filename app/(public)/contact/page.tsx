@@ -49,9 +49,9 @@ export default function ContactPage() {
 
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}>
             {submitted ? (
-              <div className="flex flex-col items-center justify-center h-full p-8 text-center rounded-2xl bg-green-50 border border-green-200">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-100 mb-4">
-                  <Send className="h-6 w-6 text-green-600" />
+              <div className="flex flex-col items-center justify-center h-full p-8 text-center rounded-2xl bg-blue-50 border border-green-200">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 mb-4">
+                  <Send className="h-6 w-6 text-blue-600" />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900">Message Sent!</h3>
                 <p className="text-gray-600 mt-2">We&apos;ll get back to you within 24 hours.</p>

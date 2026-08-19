@@ -44,8 +44,8 @@ export default function GlobalSalesPage() {
       {/* Hero */}
       <section className="relative py-24 overflow-hidden">
         <div className="absolute inset-0 -z-10">
-          <div className="absolute top-[-10%] right-[-5%] w-[700px] h-[700px] bg-gradient-to-bl from-emerald-500/15 via-emerald-400/8 to-transparent rounded-full blur-3xl" />
-          <div className="absolute bottom-[-10%] left-[-5%] w-[600px] h-[600px] bg-gradient-to-tr from-teal-500/12 via-teal-400/6 to-transparent rounded-full blur-3xl" />
+          <div className="absolute top-[-10%] right-[-5%] w-[700px] h-[700px] bg-gradient-to-bl from-blue-500/15 via-blue-400/8 to-transparent rounded-full blur-3xl" />
+          <div className="absolute bottom-[-10%] left-[-5%] w-[600px] h-[600px] bg-gradient-to-tr from-blue-500/12 via-blue-400/6 to-transparent rounded-full blur-3xl" />
         </div>
         <Container>
           <div className="max-w-4xl mx-auto text-center">
@@ -54,7 +54,7 @@ export default function GlobalSalesPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-50 text-emerald-600 text-sm font-medium mb-6"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 text-blue-600 text-sm font-medium mb-6"
             >
               <Globe className="h-4 w-4" aria-hidden="true" />
               Global Sales Solution
@@ -68,7 +68,7 @@ export default function GlobalSalesPage() {
             >
               Sell across borders
               <br />
-              <span className="bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-600 via-blue-500 to-blue-500 bg-clip-text text-transparent">
                 without the complexity
               </span>
             </motion.h1>
@@ -130,7 +130,7 @@ export default function GlobalSalesPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {features.map((feature, index) => {
               const colorMap: Record<string, string> = {
-                emerald: 'bg-emerald-50 text-emerald-600',
+                emerald: 'bg-blue-50 text-blue-600',
                 blue: 'bg-blue-50 text-blue-600',
                 amber: 'bg-amber-50 text-amber-600',
                 purple: 'bg-purple-50 text-purple-600'};
@@ -142,7 +142,7 @@ export default function GlobalSalesPage() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   whileHover={{ y: -5 }}
-                  className="group p-8 rounded-2xl bg-white border border-gray-100 hover:border-emerald-200 transition-all duration-300 hover:shadow-xl"
+                  className="group p-8 rounded-2xl bg-white border border-gray-100 hover:border-blue-200 transition-all duration-300 hover:shadow-xl"
                 >
                   <div className={`inline-flex items-center justify-center w-14 h-14 rounded-xl ${colorMap[feature.color]} mb-5`}>
                     <feature.icon className="h-7 w-7" aria-hidden="true" />
@@ -166,7 +166,7 @@ export default function GlobalSalesPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-50 text-emerald-600 text-sm font-medium mb-6">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 text-blue-600 text-sm font-medium mb-6">
                 <MapPin className="h-4 w-4" aria-hidden="true" />
                 Why Sell Globally with Carticom
               </div>
@@ -185,7 +185,7 @@ export default function GlobalSalesPage() {
               >
                 {benefits.map((item, index) => (
                   <li key={index} className="flex items-start gap-3">
-                    <CheckCircle className="h-5 w-5 text-emerald-500 mt-0.5 shrink-0" aria-hidden="true" />
+                    <CheckCircle className="h-5 w-5 text-blue-500 mt-0.5 shrink-0" aria-hidden="true" />
                     <span className="text-gray-700">{item}</span>
                   </li>
                 ))}
@@ -198,11 +198,11 @@ export default function GlobalSalesPage() {
               transition={{ duration: 0.6 }}
               className="relative"
             >
-              <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-3xl p-8 border border-emerald-100">
+              <div className="bg-gradient-to-br from-blue-50 to-blue-50 rounded-3xl p-8 border border-blue-100">
                 <div className="bg-white rounded-2xl shadow-xl p-6 space-y-5">
                   <div className="flex items-center gap-3 pb-4 border-b border-gray-100">
-                    <div className="h-10 w-10 rounded-xl bg-emerald-100 flex items-center justify-center">
-                      <Banknote className="h-5 w-5 text-emerald-600" aria-hidden="true" />
+                    <div className="h-10 w-10 rounded-xl bg-blue-100 flex items-center justify-center">
+                      <Banknote className="h-5 w-5 text-blue-600" aria-hidden="true" />
                     </div>
                     <div>
                       <p className="font-semibold text-gray-900">Cross-Border Performance</p>
@@ -213,26 +213,26 @@ export default function GlobalSalesPage() {
                     <div className="p-4 rounded-xl bg-gray-50 border border-gray-100">
                       <p className="text-xs text-gray-500 mb-1">Countries Reached</p>
                       <p className="text-2xl font-bold text-gray-900">28</p>
-                      <span className="text-xs font-medium text-emerald-600">and growing</span>
+                      <span className="text-xs font-medium text-blue-600">and growing</span>
                     </div>
                     <div className="p-4 rounded-xl bg-gray-50 border border-gray-100">
                       <p className="text-xs text-gray-500 mb-1">Currencies</p>
                       <p className="text-2xl font-bold text-gray-900">15+</p>
-                      <span className="text-xs font-medium text-emerald-600">supported</span>
+                      <span className="text-xs font-medium text-blue-600">supported</span>
                     </div>
                     <div className="p-4 rounded-xl bg-gray-50 border border-gray-100">
                       <p className="text-xs text-gray-500 mb-1">Avg. Delivery Time</p>
                       <p className="text-2xl font-bold text-gray-900">2-5 days</p>
-                      <span className="text-xs font-medium text-emerald-600">intra-Africa</span>
+                      <span className="text-xs font-medium text-blue-600">intra-Africa</span>
                     </div>
                     <div className="p-4 rounded-xl bg-gray-50 border border-gray-100">
                       <p className="text-xs text-gray-500 mb-1">Conversion Rate</p>
                       <p className="text-2xl font-bold text-gray-900">+42%</p>
-                      <span className="text-xs font-medium text-emerald-600">with local pricing</span>
+                      <span className="text-xs font-medium text-blue-600">with local pricing</span>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 text-xs text-gray-500 pt-2">
-                    <Clock className="h-3 w-3 text-emerald-500" aria-hidden="true" />
+                    <Clock className="h-3 w-3 text-blue-500" aria-hidden="true" />
                     <span>Real-time exchange rates powered by Carticom</span>
                   </div>
                 </div>
@@ -243,7 +243,7 @@ export default function GlobalSalesPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-24 bg-gradient-to-br from-emerald-600 via-emerald-500 to-teal-600 relative overflow-hidden">
+      <section className="py-24 bg-gradient-to-br from-blue-600 via-blue-500 to-blue-700 relative overflow-hidden">
         <div className="absolute inset-0 -z-10 overflow-hidden">
           <div className="absolute top-0 left-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
           <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
@@ -274,7 +274,7 @@ export default function GlobalSalesPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-xl text-emerald-100 mb-8 max-w-2xl mx-auto"
+              className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto"
             >
               Break into new markets with confidence. Start your 30-day free trial and begin selling across borders today.
             </motion.p>
@@ -285,7 +285,7 @@ export default function GlobalSalesPage() {
               transition={{ duration: 0.5, delay: 0.3 }}
               className="flex flex-col sm:flex-row items-center justify-center gap-4"
             >
-              <Button size="lg" className="gap-2 px-8 py-4 text-lg bg-white text-emerald-600 hover:bg-emerald-50 shadow-xl rounded-2xl" asChild>
+              <Button size="lg" className="gap-2 px-8 py-4 text-lg bg-white text-blue-600 hover:bg-blue-50 shadow-xl rounded-2xl" asChild>
                 <a href="/register">
                   Start Global Selling
                   <ArrowRight className="h-5 w-5" aria-hidden="true" />
@@ -302,7 +302,7 @@ export default function GlobalSalesPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.4 }}
-              className="flex flex-wrap items-center justify-center gap-6 text-sm text-emerald-100 mt-10"
+              className="flex flex-wrap items-center justify-center gap-6 text-sm text-blue-100 mt-10"
             >
               {['No credit card required', '30-day free trial', 'Multi-currency support', '24/7 support'].map((item) => (
                 <div key={item} className="flex items-center gap-2">

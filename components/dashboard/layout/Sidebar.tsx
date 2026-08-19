@@ -9,10 +9,10 @@ import { useQueryClient } from '@tanstack/react-query';
 import axiosInstance from '@/lib/axios';
 import {
   LayoutDashboard, Store, Package, ShoppingCart, Users,
-  Wallet, Brain, BarChart3, Crown,
+  Brain, BarChart3, Crown,
   Headphones, Settings, LogOut, DollarSign,
   ChevronLeft, ChevronRight, Menu, X,
-  Tags, CreditCard, UserPlus, Shield
+  Tags, CreditCard, UserPlus, LayoutTemplate, Mail
 } from 'lucide-react';
 import { useAuthStore } from '@/features/auth/store/auth.store';
 import { UserRole } from '@/features/auth/types';
@@ -21,13 +21,12 @@ import { cn } from '@/lib/utils';
 const OWNER_ITEMS = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
   { id: 'store', label: 'Store', icon: Store, href: '/dashboard/store' },
+  { id: 'templates', label: 'Templates', icon: LayoutTemplate, href: '/dashboard/templates' },
   { id: 'products', label: 'Products', icon: Package, href: '/dashboard/products' },
   { id: 'categories', label: 'Categories', icon: Tags, href: '/dashboard/categories' },
   { id: 'orders', label: 'Orders', icon: ShoppingCart, href: '/dashboard/orders' },
   { id: 'customers', label: 'Customers', icon: Users, href: '/dashboard/customers' },
   { id: 'payments', label: 'Payments', icon: DollarSign, href: '/dashboard/payments' },
-  { id: 'settlements', label: 'Settlements', icon: Wallet, href: '/dashboard/settlements' },
-  { id: 'wallet', label: 'Wallet', icon: Wallet, href: '/dashboard/wallet' },
   { id: 'subscription', label: 'Subscription', icon: Crown, href: '/dashboard/subscription' },
   { id: 'staff', label: 'Staff', icon: UserPlus, href: '/dashboard/team' },
   { id: 'custom-solutions', label: 'Custom Solutions', icon: Package, href: '/dashboard/custom-solutions' },
@@ -51,9 +50,6 @@ const ADMIN_ITEMS = [
   { id: 'stores', label: 'Stores', icon: Store, href: '/admin/stores' },
   { id: 'orders', label: 'Orders', icon: ShoppingCart, href: '/admin/orders' },
   { id: 'payments', label: 'Payments', icon: DollarSign, href: '/admin/payments' },
-  { id: 'settlements', label: 'Settlements', icon: Wallet, href: '/admin/settlements' },
-  { id: 'disputes', label: 'Disputes', icon: Shield, href: '/admin/disputes' },
-  { id: 'disputes', label: 'Disputes', icon: Shield, href: '/admin/disputes' },
   { id: 'analytics', label: 'Analytics', icon: BarChart3, href: '/admin/analytics' },
   { id: 'subscriptions', label: 'Subscriptions', icon: Crown, href: '/admin/subscriptions' },
 ];
@@ -68,6 +64,7 @@ const SUPER_ADMIN_ITEMS = [
   { id: 'settings', label: 'Settings', icon: Settings, href: '/super-admin/settings' },
   { id: 'custom-solutions', label: 'Custom Solutions', icon: Package, href: '/super-admin/custom-solutions' },
   { id: 'payments', label: 'Payments', icon: CreditCard, href: '/super-admin/payments' },
+  { id: 'waitlist', label: 'Waitlist', icon: Mail, href: '/super-admin/waitlist' },
   { id: 'audit', label: 'Audit Logs', icon: Headphones, href: '/super-admin/audit-logs' },
 ];
 
@@ -83,7 +80,7 @@ function getRoleItems(role: string | undefined) {
 
 const NAV_GROUPS: Record<string, { label: string; keys: string[] }[]> = {
   [UserRole.BUSINESS_OWNER]: [
-    { label: 'Menu', keys: ['dashboard', 'store', 'products', 'categories', 'orders', 'customers', 'payments', 'settlements', 'wallet'] },
+    { label: 'Menu', keys: ['dashboard', 'store', 'templates', 'products', 'categories', 'orders', 'customers', 'payments'] },
     { label: 'Manage', keys: ['subscription', 'staff', 'custom-solutions', 'ai'] },
     { label: 'Insights', keys: ['analytics', 'settings', 'support'] },
   ],
@@ -91,13 +88,13 @@ const NAV_GROUPS: Record<string, { label: string; keys: string[] }[]> = {
     { label: 'Menu', keys: ['dashboard', 'orders', 'products', 'customers', 'categories'] },
   ],
   [UserRole.ADMIN]: [
-    { label: 'Menu', keys: ['dashboard', 'users', 'stores', 'orders', 'payments', 'settlements', 'disputes'] },
+    { label: 'Menu', keys: ['dashboard', 'users', 'stores', 'orders', 'payments'] },
     { label: 'Insights', keys: ['analytics', 'subscriptions'] },
   ],
   [UserRole.SUPER_ADMIN]: [
     { label: 'Menu', keys: ['dashboard', 'users', 'stores', 'plans', 'subscriptions'] },
     { label: 'Insights', keys: ['analytics', 'settings'] },
-    { label: 'Manage', keys: ['custom-solutions', 'payments', 'audit'] },
+    { label: 'Manage', keys: ['custom-solutions', 'payments', 'waitlist', 'audit'] },
   ]};
 
 function getNavGroups(role: string | undefined) {
@@ -141,7 +138,7 @@ function NavItem({ item, active, collapsed, onMouseEnter, onClick }: {
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       className={cn(
-        'group relative flex items-center gap-3 rounded-lg text-sm font-medium transition-all duration-150',
+        'group relative flex items-center gap-3 rounded-2xl text-sm font-medium transition-all duration-150',
         collapsed ? 'justify-center px-2 py-2' : 'px-3 py-2',
         active
           ? 'text-blue-700 bg-blue-50'
@@ -251,7 +248,7 @@ export function Sidebar({ isCollapsed, onToggleCollapse, isMobileOpen, onMobileC
         <button
           onClick={() => { logout(); if (isMobile) onMobileClose(); }}
           className={cn(
-            'flex w-full items-center gap-3 rounded-lg text-sm font-medium transition-all duration-150 text-gray-500 hover:text-red-600 hover:bg-red-50',
+            'flex w-full items-center gap-3 rounded-2xl text-sm font-medium transition-all duration-150 text-gray-500 hover:text-red-600 hover:bg-red-50',
             isCollapsed && !isMobile ? 'justify-center p-2' : 'px-3 py-2'
           )}
           aria-label="Logout"
@@ -269,6 +266,7 @@ export function Sidebar({ isCollapsed, onToggleCollapse, isMobileOpen, onMobileC
       <aside
         className={cn(
           'hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:flex-col',
+          'border-r border-gray-200 dark:border-gray-800',
           'transition-all duration-300 ease-in-out'
         )}
         style={{ width: isCollapsed ? 72 : 240 }}

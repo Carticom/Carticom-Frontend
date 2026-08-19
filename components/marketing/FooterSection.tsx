@@ -1,75 +1,101 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight } from 'lucide-react';
+import { Mail, MapPin } from 'lucide-react';
+import { FaXTwitter, FaInstagram, FaLinkedinIn, FaYoutube } from 'react-icons/fa6';
 
-const FOOTER_LINKS = {
-  Company: [
-    { label: 'About', href: '/about' },
-    { label: 'Blog', href: '/blog' },
-    { label: 'Careers', href: '/careers' },
-    { label: 'Press', href: '/press' },
-    { label: 'Contact', href: '/contact' },
-  ],
-  Product: [
-    { label: 'Features', href: '/features' },
-    { label: 'Pricing', href: '/pricing' },
-    { label: 'Templates', href: '/features' },
-    { label: 'Integrations', href: '/solutions/ecommerce' },
-    { label: 'API', href: '/docs' },
-  ],
-  Resources: [
-    { label: 'Help Center', href: '/help' },
-    { label: 'Documentation', href: '/docs' },
-    { label: 'Tutorials', href: '/tutorials' },
-    { label: 'Community', href: '/community' },
-    { label: 'Partners', href: '/partners' },
-  ],
-  Developers: [
-    { label: 'API Reference', href: '/docs' },
-    { label: 'SDKs', href: '/docs' },
-    { label: 'Webhooks', href: '/docs' },
-    { label: 'Changelog', href: '/docs' },
-  ],
-  Legal: [
-    { label: 'Privacy Policy', href: '/legal/privacy' },
-    { label: 'Terms of Service', href: '/legal/terms' },
-    { label: 'Cookie Policy', href: '/legal/cookies' },
-    { label: 'GDPR', href: '/legal/gdpr' },
-    { label: 'Security', href: '/features' },
-  ]};
+const LINK_GROUPS = [
+  {
+    title: 'Product',
+    links: [
+      { label: 'Features', href: '/features' },
+      { label: 'Pricing', href: '/pricing' },
+      { label: 'Solutions', href: '/solutions/ecommerce' },
+      { label: 'API', href: '/docs' },
+    ],
+  },
+  {
+    title: 'Resources',
+    links: [
+      { label: 'Help Center', href: '/help' },
+      { label: 'Documentation', href: '/docs' },
+      { label: 'Tutorials', href: '/tutorials' },
+      { label: 'Blog', href: '/blog' },
+    ],
+  },
+  {
+    title: 'Company',
+    links: [
+      { label: 'About', href: '/about' },
+      { label: 'Careers', href: '/careers' },
+      { label: 'Press', href: '/press' },
+      { label: 'Partners', href: '/partners' },
+    ],
+  },
+  {
+    title: 'Contact',
+    links: [
+      { label: 'Contact Us', href: '/contact' },
+      { label: 'Community', href: '/community' },
+      { label: 'Custom Solutions', href: '/contact' },
+      { label: 'Request a Demo', href: '/demo' },
+    ],
+  },
+];
+
+const SOCIALS = [
+  { icon: FaXTwitter, label: 'X (Twitter)', href: 'https://twitter.com/carticom' },
+  { icon: FaInstagram, label: 'Instagram', href: 'https://instagram.com/carticom' },
+  { icon: FaLinkedinIn, label: 'LinkedIn', href: 'https://linkedin.com/company/carticom' },
+  { icon: FaYoutube, label: 'YouTube', href: 'https://youtube.com/@carticom' },
+];
 
 export function FooterSection() {
-  const [newsletterMessage, setNewsletterMessage] = useState('');
   return (
-    <footer className="bg-gray-900 border-t border-gray-800">
-      <div className="max-w-7xl mx-auto px-4 md:px-8 py-16">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 lg:gap-12">
-          <div className="col-span-2 md:col-span-3 lg:col-span-2">
-            <Link href="/" className="flex items-center gap-3 mb-4">
-              <Image src="/image/carticom_logo.png" alt="Carticom Logo" width={36} height={36} className="rounded-lg brightness-0 invert" />
-              <span className="font-bold text-lg text-white">Carticom</span>
+    <footer className="border-t border-gray-100 bg-white">
+      <div className="mx-auto max-w-7xl px-4 md:px-8 py-14">
+        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1fr_1fr] lg:gap-12">
+          <div>
+            <Link href="/" className="mb-4 flex items-center gap-2.5" aria-label="Carticom Home">
+              <Image src="/image/carticom_logo.png" alt="Carticom Logo" width={34} height={34} className="rounded-lg" />
+              <span className="text-lg font-bold tracking-tight text-brand">Carticom</span>
             </Link>
-            <p className="text-sm text-gray-400 max-w-sm mb-6">
-              The all-in-one commerce operating system for Africa. Build, manage, and grow your business from one platform.
+            <p className="max-w-xs text-sm leading-relaxed text-gray-500">
+              The simple way for African businesses to create an online store, manage their business and sell — without
+              needing a developer.
             </p>
-            <div className="flex items-center gap-4">
-              <a href="https://twitter.com/carticom" target="_blank" rel="noopener noreferrer" className="text-xs font-medium text-gray-500 hover:text-gray-300 transition-colors bg-gray-800 px-3 py-1.5 rounded-lg">X</a>
-              <a href="https://instagram.com/carticom" target="_blank" rel="noopener noreferrer" className="text-xs font-medium text-gray-500 hover:text-gray-300 transition-colors bg-gray-800 px-3 py-1.5 rounded-lg">IG</a>
-              <a href="https://linkedin.com/company/carticom" target="_blank" rel="noopener noreferrer" className="text-xs font-medium text-gray-500 hover:text-gray-300 transition-colors bg-gray-800 px-3 py-1.5 rounded-lg">LI</a>
-              <a href="https://youtube.com/@carticom" target="_blank" rel="noopener noreferrer" className="text-xs font-medium text-gray-500 hover:text-gray-300 transition-colors bg-gray-800 px-3 py-1.5 rounded-lg">YT</a>
+            <div className="mt-5 flex items-center gap-2.5">
+              {SOCIALS.map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={s.label}
+                  className="flex h-9 w-9 items-center justify-center rounded-xl border border-gray-200 text-gray-500 transition-colors hover:border-blue-600/40 hover:bg-blue-50 hover:text-blue-600"
+                >
+                  <s.icon className="h-4 w-4" />
+                </a>
+              ))}
+            </div>
+            <div className="mt-5 space-y-1.5 text-sm text-gray-500">
+              <p className="flex items-center gap-2">
+                <Mail className="h-3.5 w-3.5 text-gray-400" /> support@carticom.com
+              </p>
+              <p className="flex items-center gap-2">
+                <MapPin className="h-3.5 w-3.5 text-gray-400" /> Lagos, Nigeria
+              </p>
             </div>
           </div>
 
-          {Object.entries(FOOTER_LINKS).map(([title, links]) => (
-            <div key={title}>
-              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">{title}</p>
+          {LINK_GROUPS.map((group) => (
+            <div key={group.title}>
+              <p className="mb-4 text-sm font-semibold text-gray-900">{group.title}</p>
               <ul className="space-y-2.5">
-                {links.map((link) => (
+                {group.links.map((link) => (
                   <li key={link.label}>
-                    <Link href={link.href} className="text-sm text-gray-500 hover:text-white transition-colors">
+                    <Link href={link.href} className="text-sm text-gray-500 transition-colors hover:text-brand">
                       {link.label}
                     </Link>
                   </li>
@@ -79,23 +105,12 @@ export function FooterSection() {
           ))}
         </div>
 
-        <div className="mt-16 pt-8 border-t border-gray-800 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-gray-600">&copy; {new Date().getFullYear()} Carticom. All rights reserved.</p>
-          <div className="flex items-center gap-6 text-xs text-gray-600">
-            <Link href="/legal/privacy" className="hover:text-gray-400">Privacy</Link>
-            <Link href="/legal/terms" className="hover:text-gray-400">Terms</Link>
-            <Link href="/legal/cookies" className="hover:text-gray-400">Cookies</Link>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <form onSubmit={(e) => { e.preventDefault(); setNewsletterMessage('Newsletter subscription coming soon — stay tuned!'); }} className="flex items-center gap-2">
-              <input type="email" placeholder="Join newsletter" className="px-3 py-2 rounded-lg bg-gray-800 border border-gray-700 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-blue-500 w-40" required />
-              <button type="submit" className="px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium">
-                <ArrowRight className="h-4 w-4" />
-              </button>
-            </form>
-            {newsletterMessage && (
-              <p className="text-xs text-gray-500">{newsletterMessage}</p>
-            )}
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-gray-100 pt-8 md:flex-row">
+          <p className="text-xs text-gray-400">&copy; {new Date().getFullYear()} Carticom. All rights reserved.</p>
+          <div className="flex items-center gap-6 text-xs text-gray-500">
+            <Link href="/legal/terms" className="transition-colors hover:text-brand">Terms</Link>
+            <Link href="/legal/privacy" className="transition-colors hover:text-brand">Privacy Policy</Link>
+            <Link href="/legal/cookies" className="transition-colors hover:text-brand">Cookie Policy</Link>
           </div>
         </div>
       </div>

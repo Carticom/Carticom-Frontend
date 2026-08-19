@@ -86,7 +86,7 @@ export function TopNavbar({ onToggleSidebar, isSidebarCollapsed }: TopNavbarProp
               aria-expanded={isProfileOpen}
               aria-haspopup="true"
             >
-              <div className="h-7 w-7 rounded-full bg-gradient-to-br from-blue-600 to-cyan-600 flex items-center justify-center text-white text-[11px] font-semibold">
+              <div className="h-7 w-7 rounded-full bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center text-white text-[11px] font-semibold">
                 {initials}
               </div>
               <ChevronDown className="h-3.5 w-3.5 text-muted-foreground hidden md:block" />
@@ -98,7 +98,7 @@ export function TopNavbar({ onToggleSidebar, isSidebarCollapsed }: TopNavbarProp
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 8, scale: 0.95 }}
                   transition={{ duration: 0.12 }}
-                  className="absolute right-0 mt-2 w-56 rounded-xl border bg-card shadow-lg py-1 z-50"
+                  className="absolute right-0 mt-2 w-56 rounded-2xl border bg-card shadow-lg py-1 z-50"
                   role="menu"
                 >
                   <div className="px-4 py-3 border-b border-border">

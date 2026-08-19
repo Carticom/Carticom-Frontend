@@ -122,7 +122,7 @@ export function Navbar() {
                         </motion.div>
                       )}
                       <motion.div
-                        className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-blue-500 to-cyan-500"
+                        className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-blue-500 to-blue-600"
                         initial={{ scaleX: 0 }}
                         whileHover={{ scaleX: 1 }}
                         transition={{ duration: 0.3 }}
@@ -193,7 +193,7 @@ export function Navbar() {
             >
               <Button
                 size="sm"
-                className="rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all duration-300 text-white font-medium"
+                className="rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all duration-300 text-white font-medium"
                 asChild
               >
                 <Link href="/register">Get Started</Link>
@@ -330,7 +330,7 @@ export function Navbar() {
                     whileTap={{ scale: 0.98 }}
                   >
                     <Button
-                      className="w-full rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 shadow-lg shadow-blue-500/20 text-white font-medium"
+                      className="w-full rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg shadow-blue-500/20 text-white font-medium"
                       onClick={() => setIsMobileMenuOpen(false)}
                       asChild
                     >

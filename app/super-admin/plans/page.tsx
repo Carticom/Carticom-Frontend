@@ -134,7 +134,7 @@ export default function SuperAdminPlansPage() {
       {!plans?.length ? (
         <EmptyState title="No plans found" description="No subscription plans have been created yet." />
       ) : (
-        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>

@@ -36,7 +36,7 @@ const features = [
     icon: Truck,
     title: 'Logistics Integration',
     description: 'Connect with top delivery services across Africa. Automated shipping labels, tracking, and delivery confirmations.',
-    color: 'cyan'},
+    color: 'blue'},
   {
     icon: Headphones,
     title: '24/7 Support',
@@ -46,12 +46,11 @@ const features = [
 
 const colorClasses: Record<string, { bg: string; text: string; border: string }> = {
   blue: { bg: 'bg-blue-50', text: 'text-blue-600', border: 'group-hover:border-blue-200' },
-  green: { bg: 'bg-green-50', text: 'text-green-600', border: 'group-hover:border-green-200' },
+  green: { bg: 'bg-blue-50', text: 'text-blue-600', border: 'group-hover:border-blue-200' },
   purple: { bg: 'bg-purple-50', text: 'text-purple-600', border: 'group-hover:border-purple-200' },
   indigo: { bg: 'bg-indigo-50', text: 'text-indigo-600', border: 'group-hover:border-indigo-200' },
   orange: { bg: 'bg-orange-50', text: 'text-orange-600', border: 'group-hover:border-orange-200' },
   pink: { bg: 'bg-pink-50', text: 'text-pink-600', border: 'group-hover:border-pink-200' },
-  cyan: { bg: 'bg-cyan-50', text: 'text-cyan-600', border: 'group-hover:border-cyan-200' },
   red: { bg: 'bg-red-50', text: 'text-red-600', border: 'group-hover:border-red-200' }};
 
 export function Features() {

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Check, ArrowRight, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { axiosInstance } from '@/lib/axios';
+import { useAuthStore } from '@/features/auth/store/auth.store';
 
 interface SubscriptionPlanDTO {
   id: string;
@@ -122,6 +123,8 @@ export default function PricingPage() {
   const [plans, setPlans] = useState<Plan[]>(fallbackPlans);
   const [, setLoading] = useState(true);
   const [yearly, setYearly] = useState(false);
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const planHref = isAuthenticated ? '/dashboard/subscription' : '/register';
 
   useEffect(() => {
     axiosInstance.get('/api/v1/subscriptions/plans')
@@ -135,14 +138,14 @@ export default function PricingPage() {
             period: yearly ? '/year' : p.monthlyPrice === 0 ? ' trial' : '/month',
             desc: p.description || '',
             features: generateFeatures(p),
-            cta: p.monthlyPrice === 0 ? 'Get Started Free' : 'Start Free Trial',
-            href: '/register',
+            cta: p.monthlyPrice === 0 ? 'Get Started Free' : isAuthenticated ? 'Choose Plan' : 'Start Free Trial',
+            href: planHref,
             popular: p.name === 'Growth'})));
         }
       })
       .catch(() => {})
       .finally(() => setLoading(false));
-  }, [yearly]);
+  }, [yearly, isAuthenticated, planHref]);
 
   return (
     <main className="min-h-screen pt-28 pb-20">

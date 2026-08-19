@@ -44,7 +44,7 @@ export default function AIPage() {
         </p>
       </div>
 
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">AI Configuration</h2>
@@ -98,14 +98,14 @@ export default function AIPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {stats.map((stat) => (
-          <div key={stat.label} className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-4">
+          <div key={stat.label} className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-4">
             <p className="text-sm text-gray-600 dark:text-gray-400">{stat.label}</p>
             <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">{stat.value}</p>
           </div>
         ))}
       </div>
 
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Knowledge Base</h2>
         <p className="text-sm text-gray-500 mb-4">Teach AI about your business — FAQs, policies, and products</p>
         <div className="text-center py-8 text-gray-500">

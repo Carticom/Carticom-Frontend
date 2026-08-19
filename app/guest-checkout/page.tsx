@@ -1,13 +1,14 @@
 'use client';
 
-import React, { Suspense, useState, useCallback } from 'react';
+import React, { Suspense, useState, useCallback, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ArrowLeft, ArrowRight, Check, CreditCard, ExternalLink, Loader2, ShoppingBag, Mail, Phone, MapPin, User, Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { cartApi } from '@/features/onboarding/services/onboarding.service';
 
-import { useGuestCheckout } from '@/features/dashboard/hooks/useGuestCheckout';
+import { useGuestCheckout, useGuestCheckoutPay } from '@/features/dashboard/hooks/useGuestCheckout';
 import type { GuestCheckoutRequest } from '@/features/dashboard/types/guest-checkout.types';
 
 const STEPS = ['Contact', 'Shipping', 'Review', 'Confirmation'] as const;
@@ -47,6 +48,22 @@ function GuestCheckoutPageContent() {
   } | null>(null);
 
   const { mutate: submitCheckout, isPending: isSubmitting, error: submitError } = useGuestCheckout();
+  const { mutate: initiatePay, isPending: isInitiatingPay } = useGuestCheckoutPay();
+
+  useEffect(() => {
+    if (!storeId) return;
+    let cancelled = false;
+    cartApi.get(storeId)
+      .then((res) => {
+        if (cancelled || !res.data.data?.items?.length) return;
+        setItems(res.data.data.items.map((i) => ({
+          productId: i.productId,
+          quantity: i.quantity,
+        })));
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, [storeId]);
 
   const addItem = () => {
     setItems(prev => [...prev, { productId: '', quantity: 1 }]);
@@ -100,6 +117,17 @@ function GuestCheckoutPageContent() {
             total: data.total,
             paymentUrl: data.paymentUrl});
           setStep(3);
+
+          if (data.total > 0 && data.reference) {
+            initiatePay(
+              { referenceCode: data.reference },
+              {
+                onSuccess: (payData) => {
+                  setResult(prev => prev ? {
+                    ...prev,
+                    paymentUrl: payData.authorizationUrl || prev.paymentUrl} : prev);
+                }});
+          }
         }});
       return;
     }
@@ -445,16 +473,34 @@ function GuestCheckoutPageContent() {
                 </div>
               </div>
 
-              {result.paymentUrl && (
+              {result.total > 0 && (
                 <Button
                   size="lg"
                   className="w-full h-14 text-base"
                   asChild
+                  disabled={isInitiatingPay || !result.paymentUrl}
                 >
-                  <a href={result.paymentUrl} target="_blank" rel="noopener noreferrer">
-                    <CreditCard className="h-5 w-5 mr-2" />
-                    Pay Now
-                    <ExternalLink className="h-4 w-4 ml-2" />
+                  <a
+                    href={result.paymentUrl || '#'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-disabled={!result.paymentUrl}
+                    onClick={e => {
+                      if (!result.paymentUrl) e.preventDefault();
+                    }}
+                  >
+                    {isInitiatingPay ? (
+                      <>
+                        <Loader2 className="h-5 w-5 mr-2 animate-spin" />
+                        Preparing payment...
+                      </>
+                    ) : (
+                      <>
+                        <CreditCard className="h-5 w-5 mr-2" />
+                        Pay Now
+                        <ExternalLink className="h-4 w-4 ml-2" />
+                      </>
+                    )}
                   </a>
                 </Button>
               )}

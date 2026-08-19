@@ -169,7 +169,7 @@ export function DynamicNavbar() {
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="relative h-10 w-10 rounded-full" aria-label="User menu">
                       <Avatar className="h-10 w-10">
-                        <div className="flex h-full w-full items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-cyan-600 text-white font-semibold">
+                        <div className="flex h-full w-full items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-blue-700 text-white font-semibold">
                           {user?.fullName?.charAt(0) || 'U'}
                         </div>
                       </Avatar>
@@ -245,7 +245,7 @@ export function DynamicNavbar() {
                 <Link href="/login" className="relative text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors px-4 py-2 rounded-xl hover:bg-blue-50/50">
                   Login
                 </Link>
-                <Button size="sm" className="rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 shadow-lg shadow-blue-500/20 text-white font-medium" asChild>
+                <Button size="sm" className="rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg shadow-blue-500/20 text-white font-medium" asChild>
                   <Link href="/register">Get Started</Link>
                 </Button>
               </>
@@ -323,7 +323,7 @@ export function DynamicNavbar() {
                           My Profile
                         </Link>
                       )}
-                      <Button className="w-full rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-medium" onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }}>
+                      <Button className="w-full rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium" onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }}>
                         Logout
                       </Button>
                     </>
@@ -332,7 +332,7 @@ export function DynamicNavbar() {
                       <Link href="/login" className="text-center text-sm font-medium text-gray-700 hover:text-gray-900 px-4 py-3 rounded-xl hover:bg-gray-50 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
                         Login
                       </Link>
-                      <Button className="w-full rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-medium" asChild>
+                      <Button className="w-full rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium" asChild>
                         <Link href="/register">Get Started</Link>
                       </Button>
                     </>

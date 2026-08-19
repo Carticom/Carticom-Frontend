@@ -73,7 +73,7 @@ export default function StaffPage() {
       </div>
 
       {showInvite && (
-        <form onSubmit={handleInvite} className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 space-y-4">
+        <form onSubmit={handleInvite} className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 space-y-4">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Invite Team Member</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Input
@@ -101,7 +101,7 @@ export default function StaffPage() {
         </form>
       )}
 
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
         {!staffList || staffList.length === 0 ? (
           <EmptyState
             title="No staff members yet"
@@ -155,7 +155,7 @@ export default function StaffPage() {
         )}
       </div>
 
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Permission Roles</h2>
         <div className="space-y-3">
           {Object.entries(roleDescriptions).map(([role, desc]) => (

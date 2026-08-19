@@ -2,7 +2,7 @@
 
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { guestCheckoutRepository } from '@/features/dashboard/repositories/guest-checkout.repository';
-import type { GuestCheckoutRequest } from '@/features/dashboard/types/guest-checkout.types';
+import type { GuestCheckoutRequest, GuestPayRequest } from '@/features/dashboard/types/guest-checkout.types';
 import { showToast } from '@/lib/notifications/toast';
 
 export function useGuestCheckout() {
@@ -12,6 +12,17 @@ export function useGuestCheckout() {
     },
     onError: (error: Error) => {
       showToast('error', 'Checkout failed', {
+        description: error.message});
+    }});
+}
+
+export function useGuestCheckoutPay() {
+  return useMutation({
+    mutationFn: async (data: GuestPayRequest) => {
+      return guestCheckoutRepository.pay(data);
+    },
+    onError: (error: Error) => {
+      showToast('error', 'Payment initiation failed', {
         description: error.message});
     }});
 }

@@ -14,7 +14,7 @@ interface ChartCardProps {
 
 export function ChartCard({ title, description, children, className = '' }: ChartCardProps) {
   return (
-    <div className={`rounded-xl border bg-card p-5 ${className}`}>
+    <div className={`rounded-2xl border bg-card p-5 ${className}`}>
       <div className="mb-4">
         <h3 className="text-base font-semibold text-foreground">{title}</h3>
         {description && <p className="text-sm text-muted-foreground mt-0.5">{description}</p>}
@@ -161,7 +161,7 @@ function DemographicCardInner({ data }: { data: { country: string; flag: string;
 
 function RecentOrdersCardInner({ children }: { children: React.ReactNode }) {
   return (
-    <div className="rounded-xl border bg-card overflow-hidden">
+    <div className="rounded-2xl border bg-card overflow-hidden">
       <div className="flex items-center justify-between px-5 py-4 border-b border-border">
         <h3 className="text-base font-semibold text-foreground">Recent Orders</h3>
         <button className="text-xs font-medium text-primary hover:text-primary/80 transition-colors">

@@ -1,70 +1,74 @@
 export interface ShippingZoneDto {
   id: string;
+  storeId: string;
   name: string;
   countries: string[];
   regions: string[];
+  baseRate: number;
+  perKgRate?: number;
   isActive: boolean;
 }
 
 export interface CreateShippingZoneDto {
+  storeId: string;
   name: string;
   countries: string[];
   regions?: string[];
+  baseRate: number;
+  perKgRate?: number;
 }
 
 export interface UpdateShippingZoneDto {
   name?: string;
   countries?: string[];
   regions?: string[];
+  baseRate?: number;
+  perKgRate?: number;
   isActive?: boolean;
 }
 
-export type ShippingMethodType = 'FREE' | 'FLAT' | 'PER_ITEM';
-
 export interface ShippingMethodDto {
   id: string;
-  zoneId: string;
+  storeId: string;
   name: string;
-  type: ShippingMethodType;
-  rate: number;
-  minOrderAmount?: number;
-  estimatedDaysMin: number;
-  estimatedDaysMax: number;
+  description?: string;
+  price: number;
+  estimatedDays?: number;
   isActive: boolean;
 }
 
 export interface CreateShippingMethodDto {
+  storeId: string;
   name: string;
-  type: ShippingMethodType;
-  rate: number;
-  minOrderAmount?: number;
-  estimatedDaysMin: number;
-  estimatedDaysMax: number;
+  description?: string;
+  price: number;
+  estimatedDays?: number;
 }
 
 export interface UpdateShippingMethodDto {
   name?: string;
-  type?: ShippingMethodType;
-  rate?: number;
-  minOrderAmount?: number;
-  estimatedDaysMin?: number;
-  estimatedDaysMax?: number;
+  description?: string;
+  price?: number;
+  estimatedDays?: number;
   isActive?: boolean;
 }
 
 export interface ShippingRateRequest {
   storeId: string;
+  weight?: number;
   country: string;
-  region?: string;
-  itemsWeight?: number;
-  cartTotal: number;
+  state: string;
+  zipCode?: string;
 }
 
 export interface ShippingRateResponse {
+  destination: string;
+  weight?: number;
   methods: {
-    id: string;
+    methodId: string;
     name: string;
-    rate: number;
-    estimatedDays: number;
+    description?: string;
+    price: number;
+    estimatedDays?: number;
   }[];
 }

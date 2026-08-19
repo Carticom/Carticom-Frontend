@@ -133,7 +133,7 @@ export default function PaymentsPage() {
                 purple: 'bg-purple-50 text-purple-600',
                 amber: 'bg-amber-50 text-amber-600',
                 blue: 'bg-blue-50 text-blue-600',
-                green: 'bg-green-50 text-green-600'};
+                green: 'bg-blue-50 text-blue-600'};
               return (
                 <motion.div
                   key={feature.title}

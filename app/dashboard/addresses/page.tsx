@@ -113,7 +113,7 @@ export default function AddressesPage() {
       </div>
 
       {!addresses || addresses.length === 0 ? (
-        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
           <EmptyState
             title="No addresses yet"
             description="Add an address to make checkout faster and easier."
@@ -129,7 +129,7 @@ export default function AddressesPage() {
               <div
                 key={address.id}
                 className={cn(
-                  'rounded-xl border bg-white dark:bg-gray-900 p-5 relative',
+                  'rounded-2xl border bg-white dark:bg-gray-900 p-5 relative',
                   address.isDefault
                     ? 'border-blue-400 dark:border-blue-600 ring-1 ring-blue-400/30 dark:ring-blue-600/30'
                     : 'border-gray-200 dark:border-gray-800'

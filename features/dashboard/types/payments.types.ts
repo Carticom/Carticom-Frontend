@@ -14,6 +14,11 @@ export interface PaymentDto {
   provider: string;
   reference: string;
   providerReference?: string;
+  transactionId?: string;
+  paymentMethod?: string;
+  paymentProvider?: string;
+  authorizationUrl?: string;
+  message?: string;
   metadata: Record<string, unknown>;
   createdAt: string;
   updatedAt: string;
@@ -36,6 +41,7 @@ export interface UpdatePaymentDto {
 export enum PaymentStatus {
   PENDING = 'PENDING',
   PROCESSING = 'PROCESSING',
+  COMPLETED = 'COMPLETED',
   SUCCESSFUL = 'SUCCESSFUL',
   FAILED = 'FAILED',
   REFUNDED = 'REFUNDED',

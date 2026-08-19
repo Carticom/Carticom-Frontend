@@ -21,12 +21,25 @@ interface DynamicStorefrontProps {
   addingToCart: string | null;
 }
 
-function useTemplateConfig(templateSlug?: string): TemplateConfig {
+function useTemplateConfig(templateSlug?: string, store?: StoreDto): TemplateConfig {
   const config = useMemo(() => {
     const t = getTemplate(templateSlug || '');
-    if (t) return t;
-    return getTemplate('fashion-luxury')!;
-  }, [templateSlug]);
+    const base = t || getTemplate('fashion-luxury')!;
+    if (!store || (!store.primaryColor && !store.secondaryColor && !store.fontFamily)) return base;
+    return {
+      ...base,
+      colors: {
+        ...base.colors,
+        primary: store.primaryColor || base.colors.primary,
+        accent: store.secondaryColor || base.colors.accent,
+      },
+      typography: {
+        ...base.typography,
+        headingFont: store.fontFamily || base.typography.headingFont,
+        bodyFont: store.fontFamily || base.typography.bodyFont,
+      },
+    };
+  }, [templateSlug, store]);
   return config;
 }
 
@@ -325,7 +338,7 @@ function NewsletterDynamic({ template }: { template: TemplateConfig }) {
 }
 
 export function DynamicStorefront({ store, products, onAddToCart, addingToCart }: DynamicStorefrontProps) {
-  const template = useTemplateConfig(store.template);
+  const template = useTemplateConfig(store.template, store);
   const sectionComponents: Record<string, React.ReactNode> = {
     hero: <HeroDynamic key="hero" store={store} template={template} />,
     showcase: <ShowcaseDynamic key="showcase" products={products} onAddToCart={onAddToCart} addingToCart={addingToCart} template={template} />,

@@ -40,7 +40,7 @@ function SkeletonRow() {
 export function RecentOrdersTable({ orders, isLoading }: RecentOrdersTableProps) {
   if (isLoading) {
     return (
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 overflow-hidden">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 overflow-hidden">
         <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-800"><div className="h-5 w-32 bg-gray-100 dark:bg-gray-800 rounded animate-pulse" /></div>
         <table className="w-full"><tbody>{Array.from({ length: 5 }).map((_, i) => <SkeletonRow key={i} />)}</tbody></table>
       </div>
@@ -48,7 +48,7 @@ export function RecentOrdersTable({ orders, isLoading }: RecentOrdersTableProps)
   }
 
   return (
-    <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 overflow-hidden">
+    <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 overflow-hidden">
       <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-800">
         <h2 className="text-base font-semibold text-gray-900 dark:text-white">Recent Orders</h2>
       </div>

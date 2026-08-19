@@ -54,7 +54,7 @@ export default function AdminPaymentsPage() {
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Payments</h1>
           <p className="text-gray-600 dark:text-gray-400 mt-2">View all platform payment transactions</p>
         </div>
-        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
           <EmptyState title="No payments found" description="Payment transactions will appear here." />
         </div>
       </div>
@@ -68,7 +68,7 @@ export default function AdminPaymentsPage() {
         <p className="text-gray-600 dark:text-gray-400 mt-2">View all platform payment transactions</p>
       </div>
 
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>

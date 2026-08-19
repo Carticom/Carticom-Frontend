@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { getTemplateIcon } from '@/features/templates/registry';
 import type { TemplateConfig } from '@/features/templates/types';
 import { Button } from '@/components/ui/button';
+import { useAuthStore } from '@/features/auth/store/auth.store';
 
 interface TemplatePreviewModalProps {
   template: TemplateConfig | null;
@@ -45,6 +46,7 @@ const ANIMATION_LABELS: Record<string, string> = {
   bold: 'Bold (Dramatic, strong)'};
 
 export function TemplatePreviewModal({ template, open, onClose }: TemplatePreviewModalProps) {
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   if (!template) return null;
 
   return (
@@ -190,8 +192,8 @@ export function TemplatePreviewModal({ template, open, onClose }: TemplatePrevie
 
               <div className="flex flex-wrap gap-3 pt-4 border-t border-gray-100">
                 <Button asChild className="rounded-xl bg-blue-600 hover:bg-blue-700 text-white px-8 h-12 text-base shadow-lg shadow-blue-200/50">
-                  <Link href="/register">
-                    Use This Template
+                  <Link href={isAuthenticated ? '/dashboard/templates' : '/register'}>
+                    {isAuthenticated ? 'Apply to My Store' : 'Use This Template'}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>

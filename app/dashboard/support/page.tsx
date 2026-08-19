@@ -43,7 +43,7 @@ export default function SupportPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
           <div className="flex items-center gap-2 mb-4">
             <Ticket className="h-5 w-5 text-blue-600" />
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Submit a Ticket</h2>
@@ -105,13 +105,13 @@ export default function SupportPage() {
         </div>
 
         <div className="space-y-4">
-          <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+          <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
             <h3 className="font-semibold text-gray-900 dark:text-white">Email Support</h3>
             <p className="text-sm text-gray-500 mt-1">We&apos;ll get back to you within 24 hours</p>
             <p className="mt-2 text-sm text-blue-600">support@carticom.com</p>
           </div>
 
-          <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+          <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
             <h3 className="font-semibold text-gray-900 dark:text-white mb-4">My Tickets</h3>
             {ticketsLoading ? (
               <div className="flex justify-center py-6">

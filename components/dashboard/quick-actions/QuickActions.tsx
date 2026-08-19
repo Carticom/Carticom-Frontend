@@ -8,10 +8,10 @@ import { cn } from '@/lib/utils';
 
 const COLOR_MAP: Record<string, string> = {
   blue: 'from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700',
-  green: 'from-green-500 to-green-600 dark:from-green-600 dark:to-green-700',
+  green: 'from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700',
   purple: 'from-purple-500 to-purple-600 dark:from-purple-600 dark:to-purple-700',
   orange: 'from-orange-500 to-orange-600 dark:from-orange-600 dark:to-orange-700',
-  cyan: 'from-cyan-500 to-cyan-600 dark:from-cyan-600 dark:to-cyan-700',
+  cyan: 'from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700',
   red: 'from-red-500 to-red-600 dark:from-red-600 dark:to-red-700'};
 
 interface QuickActionsProps {
@@ -20,7 +20,7 @@ interface QuickActionsProps {
 }
 
 function Skeleton() {
-  return <div className="h-24 bg-gray-100 dark:bg-gray-800 rounded-xl animate-pulse" />;
+  return <div className="h-24 bg-gray-100 dark:bg-gray-800 rounded-2xl animate-pulse" />;
 }
 
 export function QuickActionCard({ action }: { action: QuickAction }) {
@@ -39,12 +39,12 @@ export function QuickActionCard({ action }: { action: QuickAction }) {
 
   if (action.href) {
     return (
-      <Link href={action.href} className={cn('block h-full p-4 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 hover:shadow-md transition-shadow', action.disabled && 'opacity-50 pointer-events-none')}>
+      <Link href={action.href} className={cn('block h-full p-4 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 hover:shadow-md transition-shadow', action.disabled && 'opacity-50 pointer-events-none')}>
         {content}
       </Link>
     );
   }
-  return <div className={cn('h-full p-4 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900', action.disabled && 'opacity-50')}>{content}</div>;
+  return <div className={cn('h-full p-4 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900', action.disabled && 'opacity-50')}>{content}</div>;
 }
 
 export function QuickActions({ actions, isLoading }: QuickActionsProps) {

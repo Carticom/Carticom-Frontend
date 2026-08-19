@@ -106,7 +106,7 @@ export function ProductReviews({ productId, productName }: ProductReviewsProps) 
       </div>
 
       {isCustomer ? (
-        <div className="rounded-xl border bg-card p-5 space-y-4">
+        <div className="rounded-2xl border bg-card p-5 space-y-4">
           <h4 className="text-sm font-semibold text-foreground">Write a Review</h4>
           <div className="space-y-2">
             <label className="text-xs font-medium text-muted-foreground">Rating</label>
@@ -142,13 +142,13 @@ export function ProductReviews({ productId, productName }: ProductReviewsProps) 
           </div>
         </div>
       ) : isAuthenticated ? (
-        <div className="rounded-xl border bg-muted/30 p-4 text-center">
+        <div className="rounded-2xl border bg-muted/30 p-4 text-center">
           <p className="text-sm text-muted-foreground">
             Reviews can only be submitted by customers.
           </p>
         </div>
       ) : (
-        <div className="rounded-xl border bg-muted/30 p-4 text-center">
+        <div className="rounded-2xl border bg-muted/30 p-4 text-center">
           <p className="text-sm text-muted-foreground">
             <a href="/login" className="text-primary hover:underline">Sign in</a> to leave a review.
           </p>

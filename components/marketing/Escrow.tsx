@@ -56,7 +56,7 @@ export function Escrow() {
                 'Compliance with Nigerian financial regulations',
               ].map((item, index) => (
                 <li key={index} className="flex items-start gap-3">
-                  <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 shrink-0" aria-hidden="true" />
+                  <CheckCircle className="h-5 w-5 text-blue-500 mt-0.5 shrink-0" aria-hidden="true" />
                   <span className="text-gray-700">{item}</span>
                 </li>
               ))}
@@ -96,7 +96,7 @@ export function Escrow() {
                       <p className="text-xs text-gray-500">Active transaction</p>
                     </div>
                   </div>
-                  <span className="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-medium">Secured</span>
+                  <span className="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-medium">Secured</span>
                 </div>
 
                 <div className="space-y-3">

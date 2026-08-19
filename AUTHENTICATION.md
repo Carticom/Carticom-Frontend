@@ -17,7 +17,7 @@ June 27, 2026
 - **Direct Connection**: Frontend calls backend directly (no Next.js API route proxying)
 - **Base URL**: `http://localhost:8080/api/v1`
 - **Authorization Headers**: Disabled for development (prevents 403 errors with invalid tokens)
-- **CORS**: Configured to allow `http://localhost:3000`
+- **CORS**: Configured to allow `https://carticom.vercel.app` (and `http://localhost:3000` for local dev)
 
 ### Key Components
 
@@ -209,8 +209,8 @@ BACKEND_URL=https://localhost:8080
 BACKEND_API_PREFIX=/api/v1
 
 # Next.js Public Config
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-NEXT_PUBLIC_API_URL=http://localhost:8080/api/v1
+NEXT_PUBLIC_APP_URL=https://carticom.vercel.app
+NEXT_PUBLIC_API_URL=https://backend-kqel.onrender.com
 
 # Session timeout (30 minutes)
 NEXT_PUBLIC_SESSION_TIMEOUT=1800000

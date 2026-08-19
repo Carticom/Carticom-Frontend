@@ -68,7 +68,7 @@ export default function EcommercePage() {
             >
               Build and scale your
               <br />
-              <span className="bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600 bg-clip-text text-transparent">
                 online store
               </span>
               <br />
@@ -133,7 +133,7 @@ export default function EcommercePage() {
             {features.map((feature, index) => {
               const colorMap: Record<string, string> = {
                 blue: 'bg-blue-50 text-blue-600',
-                green: 'bg-green-50 text-green-600',
+                green: 'bg-blue-50 text-blue-600',
                 indigo: 'bg-indigo-50 text-indigo-600',
                 orange: 'bg-orange-50 text-orange-600'};
               return (
@@ -200,7 +200,7 @@ export default function EcommercePage() {
               transition={{ duration: 0.6 }}
               className="relative"
             >
-              <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-3xl p-8 border border-blue-100">
+              <div className="bg-gradient-to-br from-blue-50 to-blue-50 rounded-3xl p-8 border border-blue-100">
                 <div className="bg-white rounded-2xl shadow-xl p-6 space-y-5">
                   <div className="flex items-center gap-3 pb-4 border-b border-gray-100">
                     <div className="h-10 w-10 rounded-xl bg-blue-100 flex items-center justify-center">
@@ -215,22 +215,22 @@ export default function EcommercePage() {
                     <div className="p-4 rounded-xl bg-gray-50 border border-gray-100">
                       <p className="text-xs text-gray-500 mb-1">Total Orders</p>
                       <p className="text-2xl font-bold text-gray-900">1,247</p>
-                      <span className="text-xs font-medium text-green-600">+23% vs last month</span>
+                      <span className="text-xs font-medium text-blue-600">+23% vs last month</span>
                     </div>
                     <div className="p-4 rounded-xl bg-gray-50 border border-gray-100">
                       <p className="text-xs text-gray-500 mb-1">Revenue</p>
                       <p className="text-2xl font-bold text-gray-900">₦8.4M</p>
-                      <span className="text-xs font-medium text-green-600">+31% vs last month</span>
+                      <span className="text-xs font-medium text-blue-600">+31% vs last month</span>
                     </div>
                     <div className="p-4 rounded-xl bg-gray-50 border border-gray-100">
                       <p className="text-xs text-gray-500 mb-1">Conversion Rate</p>
                       <p className="text-2xl font-bold text-gray-900">4.8%</p>
-                      <span className="text-xs font-medium text-green-600">+12% vs last month</span>
+                      <span className="text-xs font-medium text-blue-600">+12% vs last month</span>
                     </div>
                     <div className="p-4 rounded-xl bg-gray-50 border border-gray-100">
                       <p className="text-xs text-gray-500 mb-1">Active Products</p>
                       <p className="text-2xl font-bold text-gray-900">342</p>
-                      <span className="text-xs font-medium text-green-600">+18% vs last month</span>
+                      <span className="text-xs font-medium text-blue-600">+18% vs last month</span>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 text-xs text-gray-500 pt-2">

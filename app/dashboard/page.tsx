@@ -34,7 +34,7 @@ const RecentOrdersCard = dynamic(() => import('@/components/dashboard/charts/Cha
 
 function ChartSkeleton() {
   return (
-    <div className="rounded-xl border bg-card p-5 h-80 flex items-center justify-center">
+    <div className="rounded-2xl border bg-card p-5 h-80 flex items-center justify-center">
       <Loader2 className="h-6 w-6 animate-spin text-muted-foreground/50" />
     </div>
   );
@@ -152,7 +152,7 @@ export default function DashboardPage() {
                 sales: a.orders,
                 revenue: a.revenue}))} />
             ) : (
-              <div className="rounded-xl border border-gray-200 bg-white p-8 flex flex-col items-center justify-center text-center">
+              <div className="rounded-2xl border border-gray-200 bg-white p-8 flex flex-col items-center justify-center text-center">
                 <BarChart3 className="h-10 w-10 text-gray-300 mb-3" />
                 <p className="text-sm text-gray-500 font-medium">No sales yet</p>
                 <p className="text-xs text-gray-400 mt-1 mb-4">Your monthly sales chart will appear here after your first order</p>
@@ -177,7 +177,7 @@ export default function DashboardPage() {
                 revenue: a.revenue,
                 orders: a.orders}))} />
             ) : (
-              <div className="rounded-xl border border-gray-200 bg-white p-8 flex flex-col items-center justify-center text-center">
+              <div className="rounded-2xl border border-gray-200 bg-white p-8 flex flex-col items-center justify-center text-center">
                 <BarChart3 className="h-10 w-10 text-gray-300 mb-3" />
                 <p className="text-sm text-gray-500 font-medium">No revenue yet</p>
                 <p className="text-xs text-gray-400 mt-1 mb-4">Revenue trends will appear here once your first payment is completed</p>
@@ -203,7 +203,7 @@ export default function DashboardPage() {
             <motion.div
               whileHover={{ y: -2 }}
               transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-              className="rounded-xl border bg-card p-4"
+              className="rounded-2xl border bg-card p-4"
             >
               <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{stat.label}</p>
               <p className="text-lg font-semibold text-foreground mt-1.5">
@@ -218,7 +218,7 @@ export default function DashboardPage() {
         <motion.div
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
-          className="rounded-xl border border-amber-200 bg-amber-50 p-4"
+          className="rounded-2xl border border-amber-200 bg-amber-50 p-4"
         >
           <p className="text-sm text-amber-800 font-medium">
             You have <strong>{dashboard.activeDisputes}</strong> active dispute{dashboard.activeDisputes !== 1 ? 's' : ''}.
@@ -252,7 +252,7 @@ export default function DashboardPage() {
                   >
                     <td className="px-5 py-3.5">
                       <div className="flex items-center gap-3">
-                        <div className="h-8 w-8 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white text-xs font-semibold">
+                        <div className="h-8 w-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-xs font-semibold">
                           {order.customer.name.charAt(0)}
                         </div>
                         <div>

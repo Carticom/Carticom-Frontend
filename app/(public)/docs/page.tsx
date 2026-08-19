@@ -22,7 +22,7 @@ const docsCategories = [
     title: 'Store Management',
     description: 'Manage your store, products, inventory, and customer relationships.',
     links: ['Products & Inventory', 'Order Management', 'Customer Management', 'Shipping Setup'],
-    color: 'bg-green-50 text-green-600'},
+    color: 'bg-blue-50 text-blue-600'},
   {
     icon: Layers,
     title: 'Payments & Escrow',
@@ -46,7 +46,7 @@ const docsCategories = [
     title: 'Multi-Marketplace',
     description: 'Sell across multiple marketplaces from a single dashboard.',
     links: ['Marketplace Setup', 'Cross-Listing', 'Inventory Sync', 'Channel Management'],
-    color: 'bg-cyan-50 text-cyan-600'},
+    color: 'bg-blue-50 text-blue-600'},
   {
     icon: BookOpen,
     title: 'SDKs & Libraries',

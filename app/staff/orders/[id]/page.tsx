@@ -140,7 +140,7 @@ export default function StaffOrderDetailPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Payment Information</h2>
           <div className="space-y-4 text-sm">
             <div className="flex items-center gap-3">
@@ -164,7 +164,7 @@ export default function StaffOrderDetailPage() {
           </div>
         </div>
 
-        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Customer</h2>
           <div className="space-y-4 text-sm">
             <div className="flex items-center gap-3">
@@ -191,7 +191,7 @@ export default function StaffOrderDetailPage() {
           </div>
         </div>
 
-        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Order Summary</h2>
           <div className="text-sm space-y-3">
             <div className="flex items-center justify-between">
@@ -220,7 +220,7 @@ export default function StaffOrderDetailPage() {
         </div>
       </div>
 
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
           <Package className="h-5 w-5 text-gray-400" />
           Items ({order.items.length})
@@ -259,14 +259,14 @@ export default function StaffOrderDetailPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
             <MapPin className="h-5 w-5 text-gray-400" />
             Shipping Address
           </h2>
           <AddressBlock address={order.shippingAddress} />
         </div>
-        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
             <MapPin className="h-5 w-5 text-gray-400" />
             Billing Address
@@ -276,13 +276,13 @@ export default function StaffOrderDetailPage() {
       </div>
 
       {order.notes && (
-        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Order Notes</h2>
           <p className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{order.notes}</p>
         </div>
       )}
 
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
         <div className="flex items-center gap-2 text-sm text-gray-500">
           <Calendar className="h-5 w-5 text-blue-500" />
           <span>Created <strong className="text-gray-900 dark:text-white">{formatDate(order.createdAt)}</strong> · Updated <strong className="text-gray-900 dark:text-white">{formatDate(order.updatedAt)}</strong> · Order ID <strong className="font-mono text-gray-900 dark:text-white">{order.id}</strong></span>

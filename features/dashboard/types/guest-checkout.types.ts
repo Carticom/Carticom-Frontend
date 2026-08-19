@@ -43,3 +43,24 @@ export interface GuestOrderTrackResponse {
     note?: string;
   }[];
 }
+
+export interface GuestPayRequest {
+  referenceCode: string;
+  paymentProvider?: string;
+  callbackUrl?: string;
+}
+
+export interface GuestPayConfirmRequest {
+  transactionId: string;
+  providerReference?: string;
+}
+
+export interface GuestPaymentResponse {
+  transactionId: string;
+  status: string;
+  paymentProvider: string;
+  paymentMethod: string;
+  authorizationUrl?: string;
+  providerReference?: string;
+  message?: string;
+}

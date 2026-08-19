@@ -28,8 +28,8 @@ export function AI() {
                     <p className="font-semibold text-gray-900">Carticom AI Assistant</p>
                     <p className="text-xs text-gray-500">Active now</p>
                   </div>
-                  <span className="ml-auto flex items-center gap-1 px-2 py-1 rounded-full bg-green-100 text-green-700 text-xs font-medium">
-                    <span className="h-1.5 w-1.5 rounded-full bg-green-500"></span>
+                  <span className="ml-auto flex items-center gap-1 px-2 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-medium">
+                    <span className="h-1.5 w-1.5 rounded-full bg-blue-500"></span>
                     Online
                   </span>
                 </div>

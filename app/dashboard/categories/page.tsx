@@ -63,7 +63,7 @@ export default function CategoriesPage() {
       </div>
 
       {showForm && (
-        <form onSubmit={handleCreate} className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 space-y-4">
+        <form onSubmit={handleCreate} className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 space-y-4">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">New Category</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Input
@@ -84,7 +84,7 @@ export default function CategoriesPage() {
         </form>
       )}
 
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
         {categoryList.length === 0 ? (
           <EmptyState
             title="No categories yet"

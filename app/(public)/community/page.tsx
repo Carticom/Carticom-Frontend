@@ -8,7 +8,7 @@ const communityLinks = [
   { icon: MessageCircle, title: 'Discord Server', description: 'Join our real-time chat community for discussions and support.', members: '3,500+', color: 'bg-indigo-50 text-indigo-600' },
   { icon: Code2, title: 'GitHub', description: 'Contribute to open-source projects and explore our codebase.', members: '1,200+', color: 'bg-gray-50 text-gray-900' },
   { icon: X, title: 'Twitter (X)', description: 'Follow us for the latest updates, tips, and community highlights.', members: '15,000+', color: 'bg-sky-50 text-sky-600' },
-  { icon: Globe, title: 'Community Forum', description: 'Ask questions, share knowledge, and connect with other merchants.', members: '8,000+', color: 'bg-emerald-50 text-emerald-600' },
+  { icon: Globe, title: 'Community Forum', description: 'Ask questions, share knowledge, and connect with other merchants.', members: '8,000+', color: 'bg-blue-50 text-blue-600' },
 ];
 
 const events = [

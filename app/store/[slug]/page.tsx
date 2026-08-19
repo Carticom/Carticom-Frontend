@@ -82,14 +82,22 @@ export default function StorePage() {
   const templateSlug = store.template || getTemplateByCategory(store.businessCategory || '');
   const storeUrl = typeof window !== 'undefined' ? window.location.href : `https://carticom.vercel.app/store/${slug}`;
 
+  const brandVars = {
+    '--store-primary': store.primaryColor || '#1d4ed8',
+    '--store-secondary': store.secondaryColor || '#0f172a',
+    '--store-font': store.fontFamily || 'Inter, sans-serif',
+  } as React.CSSProperties;
+
   return (
     <>
-      {createElement(TEMPLATE_MAP[templateSlug] ?? TEMPLATE_COMPONENT_FALLBACK, {
-        store,
-        products,
-        onAddToCart: handleAddToCart,
-        addingToCart,
-      })}
+      <div style={brandVars}>
+        {createElement(TEMPLATE_MAP[templateSlug] ?? TEMPLATE_COMPONENT_FALLBACK, {
+          store,
+          products,
+          onAddToCart: handleAddToCart,
+          addingToCart,
+        })}
+      </div>
       <ShareButton
         url={storeUrl}
         title={store.name}

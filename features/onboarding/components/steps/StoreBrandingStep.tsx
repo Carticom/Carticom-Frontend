@@ -16,10 +16,10 @@ interface StoreBrandingStepProps {
   onNext: () => void;
   onBack: () => void;
   storeId?: string;
-  onStoreCreated: (store: StoreDto) => void;
+  onStoreUpdated: (store: StoreDto) => void;
 }
 
-export function StoreBrandingStep({ onNext, onBack, storeId }: StoreBrandingStepProps) {
+export function StoreBrandingStep({ onNext, onBack, storeId, onStoreUpdated }: StoreBrandingStepProps) {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const updateStore = useUpdateStore();
 
@@ -38,6 +38,7 @@ export function StoreBrandingStep({ onNext, onBack, storeId }: StoreBrandingStep
 
   const watchStoreName = useWatch({ control, name: 'storeName', defaultValue: '' });
   const watchThemeColor = useWatch({ control, name: 'themeColor', defaultValue: '#3B82F6' });
+  const watchSlug = useWatch({ control, name: 'slug', defaultValue: '' });
 
   // Auto-generate slug from store name
   const autoSlug = watchStoreName
@@ -54,11 +55,14 @@ export function StoreBrandingStep({ onNext, onBack, storeId }: StoreBrandingStep
         return;
       }
 
-      await updateStore.mutateAsync({
+      const updated = await updateStore.mutateAsync({
         id: storeId,
         data: {
-          name: data.storeName}});
+          storeName: data.storeName,
+          storeSlug: data.slug || undefined,
+          primaryColor: data.themeColor}});
 
+      onStoreUpdated(updated);
       onNext();
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Failed to save branding. Please try again.';
@@ -172,12 +176,30 @@ export function StoreBrandingStep({ onNext, onBack, storeId }: StoreBrandingStep
         <div className="p-4 rounded-lg border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50">
           <div className="flex items-center justify-between mb-2">
             <Label className="text-base font-medium">Store Preview</Label>
-            <Button variant="outline" size="sm" type="button">
-              Preview
-            </Button>
+            {storeId && (
+              <Button
+                variant="outline"
+                size="sm"
+                type="button"
+                onClick={() => {
+                  const previewSlug = watchSlug || autoSlug;
+                  if (previewSlug) {
+                    window.open(`${window.location.origin}/store/${previewSlug}`, '_blank', 'noopener,noreferrer');
+                  }
+                }}
+              >
+                Preview
+              </Button>
+            )}
           </div>
           <div className="aspect-video bg-white dark:bg-gray-900 rounded border border-gray-200 dark:border-gray-700 flex items-center justify-center">
-            <p className="text-sm text-gray-500">Store preview will appear here</p>
+            {storeId ? (
+              <p className="text-sm text-gray-500">
+                Live preview at /store/{watchSlug || autoSlug || '...'}
+              </p>
+            ) : (
+              <p className="text-sm text-gray-500">Store preview will appear here</p>
+            )}
           </div>
         </div>
 
@@ -188,7 +210,7 @@ export function StoreBrandingStep({ onNext, onBack, storeId }: StoreBrandingStep
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700"
+            className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
           >
             {isSubmitting ? (
               <>

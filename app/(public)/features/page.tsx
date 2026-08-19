@@ -183,12 +183,12 @@ const categories = [
 ];
 
 const colorMap: Record<string, { bg: string; text: string; border: string; gradient: string }> = {
-  blue: { bg: 'bg-blue-50', text: 'text-blue-600', border: 'group-hover:border-blue-200', gradient: 'from-blue-600 to-cyan-500' },
-  green: { bg: 'bg-green-50', text: 'text-green-600', border: 'group-hover:border-green-200', gradient: 'from-green-600 to-emerald-500' },
+  blue: { bg: 'bg-blue-50', text: 'text-blue-600', border: 'group-hover:border-blue-200', gradient: 'from-blue-600 to-blue-600' },
+  green: { bg: 'bg-blue-50', text: 'text-blue-600', border: 'group-hover:border-blue-200', gradient: 'from-blue-600 to-blue-500' },
   indigo: { bg: 'bg-indigo-50', text: 'text-indigo-600', border: 'group-hover:border-indigo-200', gradient: 'from-indigo-600 to-purple-500' },
   orange: { bg: 'bg-orange-50', text: 'text-orange-600', border: 'group-hover:border-orange-200', gradient: 'from-orange-600 to-amber-500' },
   pink: { bg: 'bg-pink-50', text: 'text-pink-600', border: 'group-hover:border-pink-200', gradient: 'from-pink-600 to-rose-500' },
-  cyan: { bg: 'bg-cyan-50', text: 'text-cyan-600', border: 'group-hover:border-cyan-200', gradient: 'from-cyan-600 to-teal-500' },
+  cyan: { bg: 'bg-blue-50', text: 'text-blue-600', border: 'group-hover:border-blue-200', gradient: 'from-blue-600 to-blue-500' },
   red: { bg: 'bg-red-50', text: 'text-red-600', border: 'group-hover:border-red-200', gradient: 'from-red-600 to-rose-500' },
   purple: { bg: 'bg-purple-50', text: 'text-purple-600', border: 'group-hover:border-purple-200', gradient: 'from-purple-600 to-indigo-500' },
   amber: { bg: 'bg-amber-50', text: 'text-amber-600', border: 'group-hover:border-amber-200', gradient: 'from-amber-600 to-yellow-500' }};
@@ -239,7 +239,7 @@ export default function FeaturesPage() {
             >
               Powerful features to
               <br />
-              <span className="bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600 bg-clip-text text-transparent">
                 grow your business
               </span>
             </motion.h1>

@@ -69,7 +69,7 @@ export function AuthLayout({
       {/* Right Panel - Branding / Social Proof */}
       {!hideSocialProof && (
         <div className="relative hidden flex-1 lg:block">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-500">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-500 to-blue-600">
             {/* Pattern overlay */}
             <div
               className="absolute inset-0 opacity-10"

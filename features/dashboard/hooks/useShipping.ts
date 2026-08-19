@@ -10,10 +10,11 @@ import type {
   ShippingRateRequest} from '@/features/dashboard/types/shipping.types';
 import { showToast } from '@/lib/notifications/toast';
 
-export function useShippingZones() {
+export function useShippingZones(storeId: string | null) {
   return useQuery({
-    queryKey: ['shipping', 'zones'],
-    queryFn: () => shippingRepository.getZones()});
+    queryKey: ['shipping', 'zones', storeId],
+    queryFn: () => shippingRepository.getZones(storeId!),
+    enabled: !!storeId});
 }
 
 export function useCreateZone() {
@@ -62,21 +63,20 @@ export function useDeleteZone() {
     }});
 }
 
-export function useShippingMethods(zoneId: string | null) {
+export function useShippingMethods(storeId: string | null) {
   return useQuery({
-    queryKey: ['shipping', 'zones', zoneId, 'methods'],
-    queryFn: () => shippingRepository.getMethods(zoneId!),
-    enabled: !!zoneId});
+    queryKey: ['shipping', 'methods', storeId],
+    queryFn: () => shippingRepository.getMethods(storeId!),
+    enabled: !!storeId});
 }
 
 export function useCreateMethod() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ zoneId, data }: { zoneId: string; data: CreateShippingMethodDto }) =>
-      shippingRepository.createMethod(zoneId, data),
+    mutationFn: (data: CreateShippingMethodDto) => shippingRepository.createMethod(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['shipping', 'zones'] });
+      queryClient.invalidateQueries({ queryKey: ['shipping', 'methods'] });
       showToast('success', 'Shipping method created');
     },
     onError: (error: Error) => {
@@ -89,10 +89,10 @@ export function useUpdateMethod() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ zoneId, id, data }: { zoneId: string; id: string; data: UpdateShippingMethodDto }) =>
-      shippingRepository.updateMethod(zoneId, id, data),
+    mutationFn: ({ id, data }: { id: string; data: UpdateShippingMethodDto }) =>
+      shippingRepository.updateMethod(id, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['shipping', 'zones'] });
+      queryClient.invalidateQueries({ queryKey: ['shipping', 'methods'] });
       showToast('success', 'Shipping method updated');
     },
     onError: (error: Error) => {
@@ -105,10 +105,9 @@ export function useDeleteMethod() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ zoneId, id }: { zoneId: string; id: string }) =>
-      shippingRepository.deleteMethod(zoneId, id),
+    mutationFn: (id: string) => shippingRepository.deleteMethod(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['shipping', 'zones'] });
+      queryClient.invalidateQueries({ queryKey: ['shipping', 'methods'] });
       showToast('success', 'Shipping method deleted');
     },
     onError: (error: Error) => {

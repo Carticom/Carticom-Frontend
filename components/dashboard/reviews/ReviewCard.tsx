@@ -79,7 +79,7 @@ export function ReviewCard({ review, isAuthor, onUpdate, onDelete, isUpdating, i
 
   if (isEditing) {
     return (
-      <div className="rounded-xl border bg-card p-5 space-y-4">
+      <div className="rounded-2xl border bg-card p-5 space-y-4">
         <div className="flex items-start justify-between">
           <div className="space-y-2">
             <p className="text-sm font-medium text-foreground">{review.customerName}</p>
@@ -112,7 +112,7 @@ export function ReviewCard({ review, isAuthor, onUpdate, onDelete, isUpdating, i
   }
 
   return (
-    <div className="rounded-xl border bg-card p-5 space-y-3">
+    <div className="rounded-2xl border bg-card p-5 space-y-3">
       <div className="flex items-start justify-between">
         <div className="space-y-1">
           <div className="flex items-center gap-2">

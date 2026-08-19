@@ -138,7 +138,7 @@ export default function ProductVariantsPage() {
       </div>
 
       {!variants?.length ? (
-        <div className="rounded-xl border border-gray-200 bg-white p-6">
+        <div className="rounded-2xl border border-gray-200 bg-white p-6">
           <EmptyState
             title="No variants yet"
             description="Add size, color, or other options to this product."
@@ -146,7 +146,7 @@ export default function ProductVariantsPage() {
           />
         </div>
       ) : (
-        <div className="rounded-xl border border-gray-200 bg-white overflow-hidden">
+        <div className="rounded-2xl border border-gray-200 bg-white overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>

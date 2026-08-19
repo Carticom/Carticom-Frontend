@@ -17,7 +17,7 @@ export interface KpiCardData {
 
 function KpiSkeleton() {
   return (
-    <div className="rounded-xl border bg-card p-5">
+    <div className="rounded-2xl border bg-card p-5">
       <div className="flex items-start justify-between mb-4">
         <div className="space-y-2">
           <Skeleton className="h-3 w-20" />
@@ -41,14 +41,14 @@ export function KpiCard({ data, isLoading, index = 0 }: { data: KpiCardData; isL
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05, type: 'spring', stiffness: 300, damping: 30, mass: 0.8 }}
       whileHover={{ y: -3 }}
-      className="rounded-xl border bg-card p-5 hover:shadow-sm transition-shadow"
+      className="rounded-2xl border bg-card p-5 hover:shadow-sm transition-shadow"
     >
       <div className="flex items-start justify-between mb-3">
         <div className="space-y-1">
           <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{data.label}</p>
           <p className="text-2xl font-semibold text-foreground tracking-tight">{data.value}</p>
         </div>
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-muted">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-muted">
           <Icon className="h-5 w-5 text-muted-foreground" />
         </div>
       </div>

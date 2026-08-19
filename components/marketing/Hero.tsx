@@ -45,10 +45,10 @@ const floatingCards = [
     title: "Smart Payments",
     value: "100+ Methods",
     description: "Global & local",
-    color: "from-emerald-500 to-emerald-600",
-    bg: "bg-emerald-50",
-    iconColor: "text-emerald-600",
-    borderColor: "border-emerald-200/50"},
+    color: "from-blue-500 to-blue-600",
+    bg: "bg-blue-50",
+    iconColor: "text-blue-600",
+    borderColor: "border-blue-200/50"},
   {
     icon: Bot,
     title: "AI Assistant",
@@ -77,7 +77,7 @@ export function Hero() {
           className="absolute bottom-[-10%] left-[-5%] w-[700px] h-[700px] bg-gradient-to-tr from-indigo-500/12 via-indigo-400/6 to-transparent rounded-full blur-3xl animate-pulse"
           style={{ animationDelay: "2s" }}
         />
-        <div className="absolute top-1/3 right-1/4 w-[400px] h-[400px] bg-gradient-to-b from-cyan-500/10 to-transparent rounded-full blur-3xl" />
+        <div className="absolute top-1/3 right-1/4 w-[400px] h-[400px] bg-gradient-to-b from-blue-500/10 to-transparent rounded-full blur-3xl" />
 
         {/* Subtle accent gradients */}
         <div className="absolute inset-0 bg-gradient-to-b from-white/50 via-transparent to-transparent pointer-events-none" />
@@ -144,7 +144,7 @@ export function Hero() {
                 The Commerce
                 <br />
                 <span className="relative inline-block">
-                  <span className="relative z-10 bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 bg-clip-text text-transparent">
+                  <span className="relative z-10 bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600 bg-clip-text text-transparent">
                     Operating System
                   </span>
                 </span>
@@ -186,8 +186,8 @@ export function Hero() {
                             aria-hidden="true"
                           />
                         </div>
-                        <div className="flex h-6 px-2.5 items-center rounded-full bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-200/50">
-                          <span className="text-xs font-semibold text-green-700">
+                        <div className="flex h-6 px-2.5 items-center rounded-full bg-gradient-to-r from-blue-500/20 to-blue-500/20 border border-blue-200/50">
+                          <span className="text-xs font-semibold text-blue-700">
                             Active
                           </span>
                         </div>
@@ -243,7 +243,7 @@ export function Hero() {
               >
                 <Button
                   size="lg"
-                  className="group w-full sm:w-auto h-14 px-8 text-base font-semibold rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 border-0 text-white shadow-xl shadow-blue-500/20 hover:shadow-blue-500/40 transition-all duration-300"
+                  className="group w-full sm:w-auto h-14 px-8 text-base font-semibold rounded-2xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 border-0 text-white shadow-xl shadow-blue-500/20 hover:shadow-blue-500/40 transition-all duration-300"
                   asChild
                 >
                   <a href="/demo" className="flex items-center gap-2">
@@ -274,7 +274,7 @@ export function Hero() {
                       key={badge}
                       className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-50 border border-gray-100"
                     >
-                      <div className="h-1.5 w-1.5 rounded-full bg-green-500" />
+                      <div className="h-1.5 w-1.5 rounded-full bg-blue-500" />
                       <span className="text-xs font-medium text-gray-700">
                         {badge}
                       </span>

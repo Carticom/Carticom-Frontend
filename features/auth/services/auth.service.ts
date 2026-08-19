@@ -14,6 +14,7 @@ const AUTH_ENDPOINTS = {
   FORGOT_PASSWORD: '/api/v1/auth/forgot-password',
   RESET_PASSWORD: '/api/v1/auth/reset-password',
   VERIFY_EMAIL: '/api/v1/auth/verify-email',
+  RESEND_VERIFICATION: '/api/v1/auth/resend-verification',
   ME: '/api/v1/auth/me',
   UPDATE_PROFILE: '/api/v1/auth/profile'} as const;
 
@@ -172,6 +173,16 @@ class AuthService {
   async verifyEmail(dto: VerifyEmailDto): Promise<void> {
     try {
       await axiosInstance.post(AUTH_ENDPOINTS.VERIFY_EMAIL, dto);
+    } catch (error) {
+      throw new Error(extractErrorMessage(error));
+    }
+  }
+
+  // ─── Resend Verification Email ───────────────────────────
+
+  async resendVerification(): Promise<void> {
+    try {
+      await axiosInstance.post(AUTH_ENDPOINTS.RESEND_VERIFICATION);
     } catch (error) {
       throw new Error(extractErrorMessage(error));
     }

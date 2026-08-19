@@ -63,10 +63,10 @@ const values = [
 const colorMap: Record<string, { bg: string; text: string; border: string }> = {
   blue: { bg: 'bg-blue-50', text: 'text-blue-600', border: 'border-blue-100 group-hover:border-blue-200' },
   rose: { bg: 'bg-rose-50', text: 'text-rose-600', border: 'border-rose-100 group-hover:border-rose-200' },
-  emerald: { bg: 'bg-emerald-50', text: 'text-emerald-600', border: 'border-emerald-100 group-hover:border-emerald-200' },
+  emerald: { bg: 'bg-violet-50', text: 'text-violet-600', border: 'border-violet-100 group-hover:border-violet-200' },
   amber: { bg: 'bg-amber-50', text: 'text-amber-600', border: 'border-amber-100 group-hover:border-amber-200' },
   indigo: { bg: 'bg-indigo-50', text: 'text-indigo-600', border: 'border-indigo-100 group-hover:border-indigo-200' },
-  cyan: { bg: 'bg-cyan-50', text: 'text-cyan-600', border: 'border-cyan-100 group-hover:border-cyan-200' }};
+  cyan: { bg: 'bg-blue-50', text: 'text-blue-600', border: 'border-blue-100 group-hover:border-blue-200' }};
 
 export default function AboutPage() {
   return (
@@ -99,7 +99,7 @@ export default function AboutPage() {
               className="text-4xl font-bold leading-[1.08] tracking-tight text-gray-900 sm:text-5xl md:text-6xl"
             >
               About{' '}
-              <span className="bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600 bg-clip-text text-transparent">
                 Carticom
               </span>
             </motion.h1>
@@ -280,7 +280,7 @@ export default function AboutPage() {
             <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Button
                 size="lg"
-                className="h-14 w-full rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-600 px-8 text-base font-semibold text-white shadow-xl shadow-blue-500/20 transition-all duration-300 hover:from-blue-700 hover:to-cyan-700 hover:shadow-blue-500/40 sm:w-auto"
+                className="h-14 w-full rounded-2xl bg-gradient-to-r from-blue-600 to-blue-700 px-8 text-base font-semibold text-white shadow-xl shadow-blue-500/20 transition-all duration-300 hover:from-blue-700 hover:to-blue-800 hover:shadow-blue-500/40 sm:w-auto"
                 asChild
               >
                 <Link href="/register">

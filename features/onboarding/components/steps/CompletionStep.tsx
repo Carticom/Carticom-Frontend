@@ -41,7 +41,7 @@ export function CompletionStep({ onComplete }: CompletionStepProps) {
         </Button>
         <Button
           onClick={onComplete}
-          className="flex-1 bg-gradient-to-r from-blue-600 to-cyan-600"
+          className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700"
         >
           <Store className="h-4 w-4 mr-2" />
           Go to Dashboard

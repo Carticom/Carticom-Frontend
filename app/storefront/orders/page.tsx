@@ -108,9 +108,10 @@ export default function OrdersPage() {
 
       <div className="space-y-4">
         {orders.map((order) => (
-          <div
+          <Link
             key={order.id}
-            className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 space-y-4"
+            href={`/storefront/orders/${order.id}`}
+            className="block rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 space-y-4 hover:border-blue-300 dark:hover:border-blue-800 hover:shadow-sm transition-all"
           >
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
@@ -147,7 +148,7 @@ export default function OrdersPage() {
                 }).format(order.total)}
               </p>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

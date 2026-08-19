@@ -73,24 +73,32 @@ export interface StoreDirectoryItem {
 }
 
 export interface CreateStoreDto {
-  name: string;
-  slug?: string;
+  storeName: string;
+  storeSlug: string;
+  phone: string;
   description?: string;
-  currency?: string;
+  businessCategory?: string;
+  email?: string;
+  address?: string;
   country?: string;
-  timezone?: string;
+  currency?: string;
 }
 
 export interface UpdateStoreDto {
-  name?: string;
+  storeName?: string;
+  storeSlug?: string;
   description?: string;
-  logoUrl?: string;
-  bannerUrl?: string;
+  phone?: string;
+  email?: string;
+  address?: string;
+  country?: string;
+  currency?: string;
+  timezone?: string;
+  businessCategory?: string;
   template?: string;
   primaryColor?: string;
   secondaryColor?: string;
   fontFamily?: string;
-  businessCategory?: string;
 }
 
 // ─── Product ──────────────────────────────────────────────────
@@ -145,6 +153,16 @@ export interface WalletDto {
 
 // ─── Order (for checkout) ─────────────────────────────────────
 
+export interface OrderItemDto {
+  id: string;
+  productId: string;
+  productName: string;
+  productImage?: string;
+  unitPrice: number;
+  quantity: number;
+  lineTotal: number;
+}
+
 export interface OrderDto {
   id: string;
   storeId: string;
@@ -164,6 +182,7 @@ export interface OrderDto {
   notes?: string;
   completedAt?: number;
   releaseAt?: number;
+  items?: OrderItemDto[];
   createdAt: string;
   updatedAt: string;
 }
@@ -176,7 +195,9 @@ export interface PaymentDto {
   orderId: string;
   transactionId: string;
   providerReference?: string;
-  status: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED' | 'REFUNDED';
+  authorizationUrl?: string;
+  message?: string;
+  status: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'SUCCESSFUL' | 'FAILED' | 'REFUNDED';
   amount: number;
   currency: string;
   paymentMethod: string;

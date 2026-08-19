@@ -90,16 +90,16 @@ export default function SuperAdminDashboardPage() {
           {derivedStats.map((stat) => (
             <StaggerItem key={stat.label}>
               <motion.div whileHover={{ y: -2 }} transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                className="rounded-xl border bg-card p-5"
+                className="rounded-2xl border bg-card p-5"
               >
                 <div className="flex items-start justify-between mb-3">
                   <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{stat.label}</p>
                   {'icon' in stat && stat.icon ? (
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-muted">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-muted">
                       <stat.icon className="h-5 w-5 text-muted-foreground" />
                     </div>
                   ) : (
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-muted">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-muted">
                       <TrendingUp className="h-5 w-5 text-muted-foreground" />
                     </div>
                   )}

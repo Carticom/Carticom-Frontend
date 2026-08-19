@@ -28,6 +28,8 @@ function VerifyEmailContent() {
       ? { status: 'LOADING' }
       : { status: EmailVerificationStatus.INVALID_TOKEN, error: 'No verification token provided' }
   );
+  const [resending, setResending] = useState(false);
+  const [resent, setResent] = useState(false);
 
   useEffect(() => {
     if (!token) return;
@@ -75,8 +77,8 @@ function VerifyEmailContent() {
   if (state.status === EmailVerificationStatus.VERIFIED) {
     return (
       <div className="text-center">
-        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-50 dark:bg-green-900/20">
-          <CheckCircle className="h-8 w-8 text-green-500" aria-hidden="true" />
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-blue-50 dark:bg-green-900/20">
+          <CheckCircle className="h-8 w-8 text-blue-500" aria-hidden="true" />
         </div>
         <h2 className="mt-6 text-xl font-semibold text-gray-900 dark:text-white">
           Email Verified Successfully
@@ -88,7 +90,7 @@ function VerifyEmailContent() {
         <div className="mt-8">
           <Link
             href="/login"
-            className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 transition-all duration-300 hover:from-blue-700 hover:to-cyan-700"
+            className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 transition-all duration-300 hover:from-blue-700 hover:to-blue-800"
           >
             Continue to Login
           </Link>
@@ -114,21 +116,38 @@ function VerifyEmailContent() {
         <div className="mt-8">
           <button
             type="button"
+            disabled={resending}
             onClick={async () => {
-              setState({ status: 'LOADING' });
+              setResending(true);
               try {
-                // You can add resend verification logic here
-                setState({ status: EmailVerificationStatus.EXPIRED });
+                await authService.resendVerification();
+                setResent(true);
               } catch {
                 setState({
                   status: 'ERROR',
-                  message: 'Failed to resend verification email.'});
+                  message: 'Failed to resend verification email. Please make sure you are logged in and try again.'});
+              } finally {
+                setResending(false);
               }
             }}
-            className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 transition-all duration-300 hover:from-blue-700 hover:to-cyan-700"
+            className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 transition-all duration-300 hover:from-blue-700 hover:to-blue-800 disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            Resend Verification Email
+            {resending ? (
+              <>
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                Sending...
+              </>
+            ) : resent ? (
+              'Verification Email Sent'
+            ) : (
+              'Resend Verification Email'
+            )}
           </button>
+          {resent && (
+            <p className="mt-3 text-sm text-green-600 dark:text-green-400">
+              A new verification link has been sent to your email address.
+            </p>
+          )}
         </div>
       </div>
     );
@@ -151,7 +170,7 @@ function VerifyEmailContent() {
       <div className="mt-8">
         <Link
           href="/login"
-          className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 transition-all duration-300 hover:from-blue-700 hover:to-cyan-700"
+          className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 transition-all duration-300 hover:from-blue-700 hover:to-blue-800"
         >
           Go to Login
         </Link>

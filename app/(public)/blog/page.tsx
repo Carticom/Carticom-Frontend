@@ -84,7 +84,7 @@ export default function BlogPage() {
               transition={{ duration: 0.4, delay: index * 0.1 }}
               className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition-shadow group cursor-pointer"
             >
-              <div className="h-48 bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
+              <div className="h-48 bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
                 <Newspaper className="w-12 h-12 text-white/50" />
               </div>
               <div className="p-6">

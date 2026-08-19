@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { OnboardingShell } from './OnboardingShell';
 import { OnboardingStepper } from './OnboardingStepper';
@@ -16,7 +16,7 @@ import { AIStep } from './steps/AIStep';
 import { CompletionStep } from './steps/CompletionStep';
 import type { BusinessInfoFormData } from '@/features/onboarding/schemas';
 import type { StoreDto } from '@/features/onboarding/types';
-import { useUpdateStore } from '@/features/onboarding/hooks/useOnboarding';
+import { useMyStores, useUpdateStore } from '@/features/onboarding/hooks/useOnboarding';
 
 const STEPS = [
   'welcome',
@@ -34,10 +34,18 @@ const STEPS = [
 export function OnboardingWizard() {
   const router = useRouter();
   const updateStore = useUpdateStore();
+  const { data: existingStores } = useMyStores();
   const [currentStep, setCurrentStep] = useState(0);
   const totalSteps = STEPS.length;
   const [store, setStore] = useState<StoreDto | null>(null);
   const [category, setCategory] = useState('');
+
+  useEffect(() => {
+    if (existingStores && existingStores.length > 0) {
+      setStore(existingStores[0]);
+      setCategory(existingStores[0].businessCategory ?? '');
+    }
+  }, [existingStores]);
 
   const goNext = useCallback(() => {
     if (currentStep < totalSteps - 1) {
@@ -67,6 +75,7 @@ export function OnboardingWizard() {
             onNext={goNext}
             onBack={goBack}
             onSave={(data: BusinessInfoFormData) => setCategory(data.businessCategory)}
+            onStoreCreated={(s: StoreDto) => setStore(s)}
           />
         );
       case 'store-setup':
@@ -86,7 +95,7 @@ export function OnboardingWizard() {
             onNext={goNext}
             onBack={goBack}
             storeId={store?.id}
-            onStoreCreated={(s: StoreDto) => setStore(s)}
+            onStoreUpdated={(s: StoreDto) => setStore(s)}
           />
         );
       case 'template':
@@ -94,9 +103,14 @@ export function OnboardingWizard() {
           <TemplateSelectStep
             key="template"
             category={category}
-            onSelect={(templ) => {
+            onSelect={async (templ) => {
               if (store) {
-                updateStore.mutate({ id: store.id, data: { template: templ } });
+                try {
+                  const updated = await updateStore.mutateAsync({ id: store.id, data: { template: templ } });
+                  setStore(updated);
+                } catch {
+                  // template save failed - toast already shown by hook
+                }
               }
             }}
             onNext={goNext}

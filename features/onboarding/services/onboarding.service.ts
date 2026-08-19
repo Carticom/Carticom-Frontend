@@ -162,7 +162,13 @@ export const checkoutApi = {
 // ─── Payments API ─────────────────────────────────────────────
 
 export const paymentApi = {
-  initiate: (data: { orderId: string; paymentMethod: string; paymentProvider: string }) =>
+  initiate: (data: {
+    orderId: string;
+    paymentMethod: string;
+    paymentProvider: string;
+    email?: string;
+    callbackUrl?: string;
+  }) =>
     axiosInstance.post<ApiResponse<PaymentDto>>(
       `${API_PREFIX}/payments/initiate`,
       data
@@ -197,6 +203,11 @@ export const storefrontApi = {
   getStoreBySlug: (slug: string) =>
     axiosInstance.get<ApiResponse<StoreDto>>(
       `${API_PREFIX}/storefront/stores/${slug}`
+    ),
+
+  getStoreById: (id: string) =>
+    axiosInstance.get<ApiResponse<StoreDto>>(
+      `${API_PREFIX}/stores/${id}`
     ),
 
   getStoreProducts: (slug: string) =>

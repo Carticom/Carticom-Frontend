@@ -117,7 +117,7 @@ export function ProviderConnect({ storeId }: { storeId: string }) {
 
   if (loading) {
     return (
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 space-y-3">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 space-y-3">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Payment Methods</h2>
         <div className="space-y-3">
           {['Paystack', 'Flutterwave'].map((name) => (
@@ -130,7 +130,7 @@ export function ProviderConnect({ storeId }: { storeId: string }) {
 
   if (error) {
     return (
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Payment Methods</h2>
           <Button variant="outline" size="sm" onClick={load}>Retry</Button>
@@ -144,7 +144,7 @@ export function ProviderConnect({ storeId }: { storeId: string }) {
   }
 
   return (
-    <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+    <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Payment Methods</h2>
         <span className="text-xs text-gray-500">

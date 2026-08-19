@@ -3,8 +3,8 @@
 import React, { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ArrowLeft, Loader2, ShoppingBag, Tag, Truck, Package, CreditCard, Building2, Smartphone } from 'lucide-react';
-import { cartApi, checkoutApi, storefrontApi } from '@/features/onboarding/services/onboarding.service';
-import type { CartDto, StoreDto } from '@/features/onboarding/types';
+import { cartApi, checkoutApi, paymentApi } from '@/features/onboarding/services/onboarding.service';
+import type { CartDto } from '@/features/onboarding/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -24,9 +24,8 @@ interface CustomerDetails {
 function CheckoutPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const storeSlug = searchParams.get('store');
+  const storeId = searchParams.get('store') || '';
   const [cart, setCart] = useState<CartDto | null>(null);
-  const [, setStore] = useState<StoreDto | null>(null);
   const [loadingCart, setLoadingCart] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -48,15 +47,10 @@ function CheckoutPageContent() {
     let cancelled = false;
     const load = async () => {
       try {
-        const res = await cartApi.get(storeSlug || '');
+        const res = await cartApi.get(storeId);
         if (cancelled) return;
         if (!res.data.data) throw new Error('Cart is empty');
         setCart(res.data.data);
-        if (storeSlug) {
-          const storeRes = await storefrontApi.getStoreBySlug(storeSlug);
-          if (cancelled) return;
-          setStore(storeRes.data.data || null);
-        }
       } catch {
         if (cancelled) return;
         setError('Unable to load your order. Please try again.');
@@ -66,7 +60,7 @@ function CheckoutPageContent() {
     };
     load();
     return () => { cancelled = true; };
-  }, [storeSlug, retryKey]);
+  }, [storeId, retryKey]);
 
   const handleRetry = () => {
     setLoadingCart(true);
@@ -116,13 +110,36 @@ function CheckoutPageContent() {
       }
 
       const res = await checkoutApi.checkout(cart.storeId, payload);
-      toast.success('Order placed successfully!');
-      const orderId = res?.data?.data?.id;
-      if (orderId) {
-        router.push(`/storefront/order-confirmation?id=${orderId}`);
-      } else {
-        router.push('/storefront');
+      const order = res?.data?.data;
+      const orderId = order?.id;
+
+      if (!orderId) {
+        toast.error('Order was not created. Please try again.');
+        return;
       }
+
+      const orderTotal = Number(order.total || 0);
+
+      if (orderTotal > 0) {
+        const payRes = await paymentApi.initiate({
+          orderId,
+          paymentMethod,
+          paymentProvider: 'paystack',
+          email: customer.email,
+          callbackUrl: `${window.location.origin}/payment/callback?orderId=${orderId}`,
+        });
+        const data = payRes?.data?.data;
+        const authUrl = data?.authorizationUrl;
+        if (authUrl) {
+          window.location.href = authUrl;
+          return;
+        }
+        toast.error('Payment link could not be generated. Your order is saved — retry payment from your orders page.');
+        return;
+      }
+
+      toast.success('Order placed successfully!');
+      router.push(`/storefront/order-confirmation?id=${orderId}`);
     } catch {
       toast.error('Failed to place order. Please try again.');
     } finally {

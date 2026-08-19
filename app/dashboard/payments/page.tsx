@@ -31,6 +31,7 @@ function formatTime(dateStr: string): string {
 
 const STATUS_STYLES: Record<string, string> = {
   [PaymentStatus.SUCCESSFUL]: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
+  [PaymentStatus.COMPLETED]: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
   [PaymentStatus.FAILED]: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
   [PaymentStatus.PENDING]: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
   [PaymentStatus.PROCESSING]: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
@@ -58,7 +59,7 @@ export default function PaymentsPage() {
   const stats = useMemo(() => {
     if (!payments) return { successful: 0, failed: 0, pending: 0, refunded: 0 };
     return {
-      successful: sumByStatus(payments, PaymentStatus.SUCCESSFUL),
+      successful: sumByStatus(payments, PaymentStatus.SUCCESSFUL, PaymentStatus.COMPLETED),
       failed: sumByStatus(payments, PaymentStatus.FAILED),
       pending: sumByStatus(payments, PaymentStatus.PENDING, PaymentStatus.PROCESSING),
       refunded: sumByStatus(payments, PaymentStatus.REFUNDED, PaymentStatus.PARTIALLY_REFUNDED)};
@@ -93,7 +94,7 @@ export default function PaymentsPage() {
       <ProviderConnect storeId={storeId} />
 
       {/* Transactions */}
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Recent Transactions</h2>
         {!payments || payments.length === 0 ? (
           <div className="text-center py-12 text-gray-500">No transactions yet</div>
@@ -113,13 +114,13 @@ export default function PaymentsPage() {
                 {payments.map((payment) => (
                   <tr key={payment.id} className="border-b border-gray-100 dark:border-gray-800">
                     <td className="py-3 text-gray-900 dark:text-white font-mono text-xs">
-                      {payment.reference}
+                      {payment.transactionId ?? payment.reference}
                     </td>
                     <td className="py-3 text-gray-900 dark:text-white font-medium">
                       {formatCurrency(payment.amount)}
                     </td>
                     <td className="py-3 text-gray-600 dark:text-gray-400 capitalize">
-                      {payment.method.replace(/_/g, ' ')}
+                      {(payment.paymentMethod ?? payment.method).replace(/_/g, ' ')}
                     </td>
                     <td className="py-3">
                       <StatusBadge status={payment.status} />
@@ -141,7 +142,7 @@ export default function PaymentsPage() {
 
 function StatCard({ label, value, color }: { label: string; value: string; color: string }) {
   return (
-    <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-4">
+    <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-4">
       <p className="text-sm text-gray-600 dark:text-gray-400">{label}</p>
       <p className={`text-2xl font-bold mt-1 ${color}`}>{value}</p>
     </div>
