@@ -29,6 +29,8 @@ export function AuthGate({ children }: { children: React.ReactNode }) {
   const [ready, setReady] = useState(false);
   const initRef = useRef(false);
 
+  const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
+
   // C10: mount session idle monitor + H7: clear store on logout
   useSessionMonitor();
   useClearStoreOnLogout();
@@ -45,6 +47,11 @@ export function AuthGate({ children }: { children: React.ReactNode }) {
       router.replace(getDashboardForRole(user?.role));
     }
   }, [ready, isAuthenticated, pathname, router, user?.role]);
+
+  // Public routes render immediately — never block the landing page with a loader.
+  if (isPublicRoute) {
+    return <>{children}</>;
+  }
 
   if (!ready) {
     return (
