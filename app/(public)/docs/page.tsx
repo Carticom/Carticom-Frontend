@@ -25,9 +25,9 @@ const docsCategories = [
     color: 'bg-blue-50 text-blue-600'},
   {
     icon: Layers,
-    title: 'Payments & Escrow',
-    description: 'Understand our payment processing and escrow system.',
-    links: ['Payment Methods', 'Escrow Process', 'Payouts & Withdrawals', 'Dispute Resolution'],
+    title: 'Payments & Payouts',
+    description: 'Understand our payment processing and payout options.',
+    links: ['Payment Methods', 'Checkout Process', 'Payment Verification', 'Refund Policy'],
     color: 'bg-orange-50 text-orange-600'},
   {
     icon: Lock,

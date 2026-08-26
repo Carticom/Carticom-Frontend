@@ -7,7 +7,7 @@ import { GraduationCap, Play, BookOpen, BarChart3, Store, CreditCard, Settings, 
 const tutorialCategories = [
   { icon: Store, title: 'Store Setup', count: '8 tutorials', duration: '2.5 hours', level: 'Beginner' },
   { icon: BarChart3, title: 'Analytics & Reports', count: '6 tutorials', duration: '2 hours', level: 'Intermediate' },
-  { icon: CreditCard, title: 'Payments & Escrow', count: '5 tutorials', duration: '1.5 hours', level: 'Beginner' },
+  { icon: CreditCard, title: 'Payments & Checkout', count: '5 tutorials', duration: '1.5 hours', level: 'Beginner' },
   { icon: Settings, title: 'Advanced Configuration', count: '7 tutorials', duration: '3 hours', level: 'Advanced' },
 ];
 
@@ -19,8 +19,8 @@ const featuredTutorials = [
     level: 'Beginner',
     category: 'Store Setup'},
   {
-    title: 'Understanding the Escrow Payment System',
-    description: 'Learn how our escrow system protects both buyers and sellers in transactions.',
+    title: 'Understanding the Carticom Payment Flow',
+    description: 'Learn how our verified payment flow protects both buyers and sellers in transactions.',
     duration: '30 min',
     level: 'Beginner',
     category: 'Payments'},

@@ -86,13 +86,13 @@ const categories = [
         color: 'green'},
       {
         icon: Wallet,
-        title: 'Carticom Wallet',
-        description: 'Built-in digital wallet for instant settlements, withdrawals, and balance management. No more waiting for payouts.',
+        title: 'Payment Dashboard',
+        description: 'Track sales, payments, and revenue in real time from one dashboard. Reconcile every transaction with your Paystack or Flutterwave account.',
         color: 'blue'},
       {
         icon: Shield,
-        title: 'Escrow Service',
-        description: 'Secure payment protection for high-value transactions. Funds are released only when both parties are satisfied.',
+        title: 'Verified Secure Payments',
+        description: 'Every transaction is verified server-side before orders are confirmed, protecting both you and your customers.',
         color: 'indigo'},
       {
         icon: RefreshCw,

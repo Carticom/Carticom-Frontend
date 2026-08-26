@@ -25,7 +25,7 @@ const features = [
   {
     icon: Shield,
     title: 'Trade & Payment Protection',
-    description: 'Built-in escrow for high-value cross-border transactions. Fraud detection, dispute resolution, and buyer/seller protection.',
+    description: 'Verified secure payments for high-value cross-border transactions. Fraud detection, dispute resolution, and buyer/seller protection.',
     color: 'purple'},
 ];
 

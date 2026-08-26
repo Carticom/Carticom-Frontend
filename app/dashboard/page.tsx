@@ -8,9 +8,8 @@ import { useAuthStore } from '@/features/auth/store/auth.store';
 import { useBusinessOwnerDashboard, useBusinessOwnerAnalytics } from '@/features/business-owner/hooks/useBusinessOwner';
 import { KpiGrid, type KpiCardData } from '@/components/dashboard/cards/KpiCards';
 import { LoadingState, ErrorState } from '@/components/dashboard/shared/StateComponents';
-import { StaggerGrid, StaggerItem, FadeIn } from '@/components/ui/motion';
-import { CountUp } from '@/components/ui/count-up';
-import { DollarSign, ShoppingCart, Shield, TrendingUp, Loader2, ArrowRight, BarChart3 } from 'lucide-react';
+import { FadeIn } from '@/components/ui/motion';
+import { DollarSign, ShoppingCart, Clock, TrendingUp, Loader2, ArrowRight, BarChart3 } from 'lucide-react';
 import type { RecentOrder } from '@/types/dashboard';
 import type { OrderSummaryDTO } from '@/features/business-owner/types';
 import { cn } from '@/lib/utils';
@@ -120,12 +119,12 @@ export default function DashboardPage() {
       changeType: 'positive',
       icon: TrendingUp},
     {
-      id: 'trust-score',
-      label: 'Trust Score',
-      value: String(dashboard.trustScore ?? 0),
-      change: dashboard.activeDisputes > 0 ? `${dashboard.activeDisputes} active disputes` : 'No disputes',
-      changeType: dashboard.activeDisputes === 0 ? 'positive' : 'negative',
-      icon: Shield},
+      id: 'pending-revenue',
+      label: 'Pending Revenue',
+      value: `₦${formatCurrency(dashboard.pendingRevenue)}`,
+      change: 'Awaiting payment',
+      changeType: 'neutral',
+      icon: Clock},
   ];
 
   return (
@@ -163,7 +162,7 @@ export default function DashboardPage() {
             )}
           </div>
           <div>
-            <TargetProgressCard percentage={dashboard.trustScore ?? 0} target="₦20M" revenue={`₦${formatCurrency(dashboard.lifetimeRevenue ?? 0)}`} today="₦0" />
+            <TargetProgressCard percentage={Math.min(100, ((dashboard.lifetimeRevenue ?? 0) / 20000000) * 100)} target="₦20M" revenue={`₦${formatCurrency(dashboard.lifetimeRevenue ?? 0)}`} today="₦0" />
           </div>
         </div>
       </FadeIn>
@@ -192,40 +191,6 @@ export default function DashboardPage() {
           </div>
         </div>
       </FadeIn>
-
-      <StaggerGrid className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {[
-          { label: 'Pending Revenue', value: dashboard.pendingRevenue, prefix: '₦', format: (v: number) => formatCurrency(v) },
-          { label: 'Total Withdrawn', value: dashboard.totalWithdrawn, prefix: '₦', format: (v: number) => formatCurrency(v) },
-          { label: 'Avg Delivery Time', value: dashboard.averageDeliveryTime ?? 0, suffix: ' days', format: (v: number) => v?.toFixed(1) ?? '—' },
-        ].map((stat) => (
-          <StaggerItem key={stat.label}>
-            <motion.div
-              whileHover={{ y: -2 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-              className="rounded-2xl border bg-card p-4"
-            >
-              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{stat.label}</p>
-              <p className="text-lg font-semibold text-foreground mt-1.5">
-                {stat.prefix}<CountUp from={0} to={stat.value} duration={1.5} decimals={0} />{stat.suffix ?? ''}
-              </p>
-            </motion.div>
-          </StaggerItem>
-        ))}
-      </StaggerGrid>
-
-      {dashboard.activeDisputes > 0 && (
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: 'auto' }}
-          className="rounded-2xl border border-amber-200 bg-amber-50 p-4"
-        >
-          <p className="text-sm text-amber-800 font-medium">
-            You have <strong>{dashboard.activeDisputes}</strong> active dispute{dashboard.activeDisputes !== 1 ? 's' : ''}.
-            {' '}Please resolve them to maintain your trust score.
-          </p>
-        </motion.div>
-      )}
 
       <RecentOrdersCard>
         {orders.length > 0 ? (

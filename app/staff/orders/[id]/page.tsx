@@ -55,13 +55,6 @@ const PAYMENT_BADGES: Record<string, string> = {
   PARTIALLY_REFUNDED: 'text-blue-600 bg-blue-50 dark:text-blue-400 dark:bg-blue-900/20',
 };
 
-const ESCROW_BADGES: Record<string, string> = {
-  NOT_APPLICABLE: 'text-gray-600 bg-gray-50 dark:text-gray-400 dark:bg-gray-900/20',
-  HELD: 'text-blue-600 bg-blue-50 dark:text-blue-400 dark:bg-blue-900/20',
-  RELEASED: 'text-green-600 bg-green-50 dark:text-green-400 dark:bg-green-900/20',
-  DISPUTED: 'text-red-600 bg-red-50 dark:text-red-400 dark:bg-red-900/20',
-};
-
 function badgeClasses(status: string, map: Record<string, string>) {
   return map[status] ?? 'text-gray-600 bg-gray-50 dark:text-gray-400 dark:bg-gray-900/20';
 }
@@ -155,9 +148,9 @@ export default function StaffOrderDetailPage() {
             <div className="flex items-center gap-3">
               <ShieldCheck className="h-5 w-5 text-gray-400" />
               <div>
-                <p className="text-gray-500">Escrow Status</p>
-                <p className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mt-1 ${badgeClasses(order.escrowStatus, ESCROW_BADGES)}`}>
-                  {formatStatus(order.escrowStatus)}
+                <p className="text-gray-500">Payment Status</p>
+                <p className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mt-1 ${badgeClasses(order.paymentStatus, PAYMENT_BADGES)}`}>
+                  {formatStatus(order.paymentStatus)}
                 </p>
               </div>
             </div>

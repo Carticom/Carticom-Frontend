@@ -22,7 +22,7 @@ export function SubscriptionStep({ onNext, onBack }: SubscriptionStepProps) {
           Choose Your Plan
         </h2>
         <p className="text-gray-600 dark:text-gray-400">
-          Start free and upgrade when you&apos;re ready
+          Your 30-day free trial includes every feature - no credit card required. Upgrade anytime.
         </p>
       </div>
 
@@ -34,11 +34,11 @@ export function SubscriptionStep({ onNext, onBack }: SubscriptionStepProps) {
               <div className="flex items-center gap-2 mb-2">
                 <Crown className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                  Free Tier
+                  Free Trial
                 </h3>
               </div>
               <p className="text-3xl font-bold text-gray-900 dark:text-white">
-                ₦0<span className="text-lg text-gray-600 dark:text-gray-400">/month</span>
+                30 days<span className="text-lg text-gray-600 dark:text-gray-400"> free</span>
               </p>
             </div>
             <div className="px-3 py-1 rounded-full bg-blue-600 text-white text-sm font-medium">
@@ -49,7 +49,7 @@ export function SubscriptionStep({ onNext, onBack }: SubscriptionStepProps) {
           <ul className="space-y-3 mb-6">
             <li className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
               <Check className="h-4 w-4 text-green-600" />
-              Up to 10 products
+              Unlimited-length feature access for 30 days
             </li>
             <li className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
               <Check className="h-4 w-4 text-green-600" />

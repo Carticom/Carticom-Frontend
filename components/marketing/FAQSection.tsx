@@ -7,12 +7,12 @@ import { cn } from '@/lib/utils';
 
 const FAQS = [
   { q: 'What is Carticom?', a: 'Carticom is an all-in-one commerce operating system for African businesses. It provides tools to create online stores, manage products and orders, accept payments, handle subscriptions, and automate business operations with AI.' },
-  { q: 'How is Carticom different from Shopify?', a: 'While Shopify is built for global markets, Carticom is designed specifically for African businesses. We offer local payment integration (bank transfers, USSD, mobile money), escrow protection for trust, AI-powered tools, and pricing suited for African entrepreneurs.' },
+  { q: 'How is Carticom different from Shopify?', a: 'While Shopify is built for global markets, Carticom is designed specifically for African businesses. We offer local payment integration (bank transfers, USSD, mobile money), verified secure payments, AI-powered tools, and pricing suited for African entrepreneurs.' },
   { q: 'Do I need a website to use Carticom?', a: 'No. Carticom provides you with a professional storefront website and templates. You can start selling immediately without any web development skills.' },
-  { q: 'What payment methods are supported?', a: 'Carticom supports card payments, bank transfers, USSD codes, mobile money, and our smart escrow system that protects both buyers and sellers.' },
+  { q: 'What payment methods are supported?', a: 'Carticom supports card payments, bank transfers, USSD codes, and mobile money through Paystack and Flutterwave, with server-side verification on every transaction.' },
   { q: 'Is there a free trial?', a: 'Yes! You can start with a 30-day free trial that includes full access to all features. No credit card required.' },
   { q: 'Can I sell both physical and digital products?', a: 'Absolutely. Carticom supports physical products with inventory tracking, digital downloads, subscriptions, and service-based offerings.' },
-  { q: 'How does the escrow system work?', a: 'When a customer makes a purchase, the payment is held securely by Carticom. The funds are released to you only after the customer confirms delivery. This builds trust and reduces fraud.' },
+  { q: 'How do payments work?', a: 'When a customer makes a purchase, the payment is processed securely through Paystack or Flutterwave. Every transaction is verified server-side before your order is confirmed, which builds trust and reduces fraud.' },
   { q: 'Can I integrate with my existing tools?', a: 'Yes. Carticom provides REST APIs, webhooks, and is building integrations with popular accounting, shipping, and marketing tools.' },
   { q: 'What kind of support do you offer?', a: 'We offer email support for all plans, priority chat support for Growth plans, and a dedicated account manager for Business and Enterprise plans.' },
   { q: 'Is my data secure?', a: 'Absolutely. We use enterprise-grade encryption, secure cloud infrastructure (AWS), JWT authentication, role-based access control, and automated daily backups.' },

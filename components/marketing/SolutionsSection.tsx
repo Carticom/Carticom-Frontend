@@ -11,7 +11,7 @@ const SOLUTIONS = [
   { icon: UtensilsCrossed, title: 'Restaurants', desc: 'Online ordering, table management, delivery tracking, and payment at the table.' },
   { icon: Shirt, title: 'Fashion', desc: 'Showcase collections, manage variants, and sell across Instagram and your store.' },
   { icon: Pill, title: 'Pharmacy', desc: 'Prescription management, stock tracking, expiry monitoring, and regulatory compliance.' },
-  { icon: Smartphone, title: 'Electronics', desc: 'Manage SKUs, warranties, repairs, and sell gadgets with confidence using escrow.' },
+  { icon: Smartphone, title: 'Electronics', desc: 'Manage SKUs, warranties, repairs, and sell gadgets with confidence using verified payments.' },
   { icon: Sparkles, title: 'Beauty', desc: 'Build a beauty empire with subscription boxes, appointment booking, and product sales.' },
   { icon: PackageSearch, title: 'Wholesale', desc: 'B2B ordering, bulk pricing, minimum order quantities, and supplier management.' },
   { icon: Wrench, title: 'Manufacturing', desc: 'Raw material tracking, production orders, and distributor management.' },

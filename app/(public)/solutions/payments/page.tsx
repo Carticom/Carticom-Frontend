@@ -19,13 +19,13 @@ const features = [
     color: 'amber'},
   {
     icon: Shield,
-    title: 'Escrow & Payment Protection',
-    description: 'Built-in escrow for high-value transactions. Funds are held securely until both parties are satisfied. Fraud protection included.',
+    title: 'Payment Verification & Protection',
+    description: 'Server-side verification for high-value transactions. Payments are confirmed securely before orders are processed. Fraud protection included.',
     color: 'blue'},
   {
     icon: Zap,
-    title: 'Instant Settlements & Payouts',
-    description: 'Get paid faster with instant settlements. Withdraw to your bank account, mobile wallet, or prefered payment method in real time.',
+    title: 'Fast Settlements & Payouts',
+    description: 'Get paid faster with direct gateway settlements to your bank account via Paystack and Flutterwave, in your preferred payout method.',
     color: 'green'},
 ];
 

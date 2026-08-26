@@ -45,7 +45,6 @@ export interface RecentOrder {
 export type NotificationType =
   | 'payment'
   | 'order'
-  | 'escrow'
   | 'subscription'
   | 'system'
   | 'alert';
@@ -127,8 +126,6 @@ export interface StoreInfo {
 
 export interface DashboardStats {
   todayRevenue: number;
-  walletBalance: number;
-  escrowBalance: number;
   totalOrders: number;
   totalProducts: number;
   totalCustomers: number;

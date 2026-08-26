@@ -15,26 +15,8 @@ export function useBusinessOwnerAnalytics(period: string = 'monthly') {
     queryFn: () => businessOwnerService.getAnalyticsRevenue(period)});
 }
 
-export function useBusinessOwnerWallet() {
-  return useQuery({
-    queryKey: ['business-owner', 'wallet'],
-    queryFn: () => businessOwnerService.getWallet()});
-}
-
-export function useBusinessOwnerWalletHistory(page = 0, size = 20) {
-  return useQuery({
-    queryKey: ['business-owner', 'wallet-history', page, size],
-    queryFn: () => businessOwnerService.getWalletHistory(page, size)});
-}
-
 export function useBusinessOwnerProfile() {
   return useQuery({
     queryKey: ['business-owner', 'profile'],
     queryFn: () => businessOwnerService.getProfile()});
-}
-
-export function useBusinessOwnerTrustScore() {
-  return useQuery({
-    queryKey: ['business-owner', 'trust-score'],
-    queryFn: () => businessOwnerService.getTrustScore()});
 }
