@@ -129,7 +129,7 @@ export function PricingSection() {
             >
               Yearly
               <span className="rounded-full bg-brand-soft px-2 py-0.5 text-[10px] font-bold text-brand-dark">
-                Save 17%
+                2 months free
               </span>
             </button>
           </div>
@@ -173,7 +173,7 @@ export function PricingSection() {
                 </div>
                 {plan.savePct && (
                   <span className="mt-1.5 inline-flex w-fit items-center gap-1 rounded-full bg-brand-soft px-2.5 py-0.5 text-[11px] font-bold text-brand-dark">
-                    You save {plan.savePct}% with yearly billing
+                    2 months free with yearly billing
                   </span>
                 )}
                 <p className="mt-3 text-sm text-gray-500">{plan.desc}</p>

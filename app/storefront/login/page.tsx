@@ -18,8 +18,9 @@ function CustomerAuthContent() {
   const searchParams = useSearchParams();
   const storeId = searchParams.get('storeId') ?? '';
   const mode = searchParams.get('mode') === 'register' ? 'register' : 'login';
+  const presetEmail = searchParams.get('email') ?? '';
 
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(presetEmail);
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');

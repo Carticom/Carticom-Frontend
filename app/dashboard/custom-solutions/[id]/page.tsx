@@ -1,9 +1,10 @@
 'use client';
 
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Calendar, Building2, Globe, Users, Package, DollarSign, Clock, CheckCircle, XCircle } from 'lucide-react';
+import { ArrowLeft, Calendar, Building2, Globe, Users, Package, DollarSign, Clock, CheckCircle, XCircle, CreditCard } from 'lucide-react';
 import { LoadingState, ErrorState } from '@/components/dashboard/shared/StateComponents';
 import { customSolutionsService } from '@/features/custom-solutions/services/custom-solutions.service';
 import { CustomSolutionStatus } from '@/features/custom-solutions/types';
@@ -15,20 +16,46 @@ const statusColors: Record<string, string> = {
   [CustomSolutionStatus.QUOTATION_SENT]: 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-400',
   [CustomSolutionStatus.NEGOTIATION]: 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400',
   [CustomSolutionStatus.APPROVED]: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
+  [CustomSolutionStatus.PAID]: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400',
   [CustomSolutionStatus.DEVELOPMENT]: 'bg-cyan-100 text-cyan-800 dark:bg-cyan-900/30 dark:text-cyan-400',
   [CustomSolutionStatus.TESTING]: 'bg-brand-100 text-brand-800 dark:bg-brand-900/30 dark:text-brand-400',
   [CustomSolutionStatus.DEPLOYED]: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400',
   [CustomSolutionStatus.COMPLETED]: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
   [CustomSolutionStatus.REJECTED]: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'};
 
+const PAYABLE_STATUSES: string[] = [
+  CustomSolutionStatus.QUOTATION_SENT,
+  CustomSolutionStatus.NEGOTIATION,
+  CustomSolutionStatus.APPROVED];
+
 export default function CustomSolutionDetailPage() {
   const params = useParams();
   const id = params.id as string;
+  const [paying, setPaying] = useState(false);
+  const [payError, setPayError] = useState<string | null>(null);
 
   const { data: req, isLoading, error, refetch } = useQuery({
     queryKey: ['custom-solutions', id],
     queryFn: () => customSolutionsService.getById(id),
     enabled: !!id});
+
+  const acceptAndPay = async () => {
+    if (!req) return;
+    setPayError(null);
+    setPaying(true);
+    try {
+      const res = await customSolutionsService.payQuotation(req.id);
+      if (res.authorizationUrl) {
+        window.location.href = res.authorizationUrl;
+        return;
+      }
+      setPaying(false);
+      refetch();
+    } catch (err) {
+      setPayError(err instanceof Error ? err.message : 'Could not start payment.');
+      setPaying(false);
+    }
+  };
 
   if (isLoading) return <LoadingState message="Loading custom solution..." />;
   if (error) return <ErrorState title="Failed to load custom solution" onRetry={refetch} />;
@@ -54,6 +81,39 @@ export default function CustomSolutionDetailPage() {
           </span>
         </div>
       </div>
+
+      {req.status === CustomSolutionStatus.PAID ? (
+        <div className="rounded-2xl border border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-900/20 p-5 flex items-center gap-3">
+          <CheckCircle className="h-5 w-5 text-emerald-600" />
+          <p className="text-sm font-medium text-emerald-700 dark:text-emerald-300">
+            Payment received. Our team will contact you to kick off the project.
+          </p>
+        </div>
+      ) : PAYABLE_STATUSES.includes(req.status) && req.quotationAmount ? (
+        <div className="rounded-2xl border border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-900/20 p-6">
+          <div className="flex items-center gap-3 mb-4">
+            <DollarSign className="h-5 w-5 text-blue-600" />
+            <div>
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Quotation ready</h2>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Accept and pay ₦{Number(req.quotationAmount).toLocaleString()} to begin development.
+              </p>
+            </div>
+          </div>
+          {payError && (
+            <p className="mb-3 text-sm text-red-600 dark:text-red-400">{payError}</p>
+          )}
+          <button
+            type="button"
+            onClick={() => void acceptAndPay()}
+            disabled={paying}
+            className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-60"
+          >
+            <CreditCard className="h-4 w-4" />
+            {paying ? 'Redirecting to payment…' : 'Accept & Pay'}
+          </button>
+        </div>
+      ) : null}
 
       <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Business Information</h2>
