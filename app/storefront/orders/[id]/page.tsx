@@ -3,10 +3,11 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { ArrowLeft, Package, LogIn, MapPin, Mail, Phone, CreditCard } from 'lucide-react';
+import { ArrowLeft, Package, LogIn, MapPin, Mail, Phone, CreditCard, RefreshCw } from 'lucide-react';
 import { checkoutApi } from '@/features/onboarding/services/onboarding.service';
 import type { OrderDto } from '@/features/onboarding/types';
 import { useAuthStore } from '@/features/auth/store/auth.store';
+import { getCustomerToken } from '@/features/storefront/services/customer-auth.service';
 import { Button } from '@/components/ui/button';
 import { LoadingState, EmptyState, ErrorState } from '@/components/dashboard/shared/StateComponents';
 import { showToast } from '@/lib/notifications/toast';
@@ -43,6 +44,9 @@ export default function OrderDetailPage() {
   const [order, setOrder] = useState<OrderDto | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [cancelling, setCancelling] = useState(false);
+  const [refundOpen, setRefundOpen] = useState(false);
+  const [refundReason, setRefundReason] = useState('');
+  const [refundSubmitting, setRefundSubmitting] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated || !orderId) return;
@@ -72,6 +76,34 @@ export default function OrderDetailPage() {
       showToast('error', extractErrorMessage(err) || 'Failed to cancel order. Please try again.');
     } finally {
       setCancelling(false);
+    }
+  };
+
+  const handleRefundRequest = async () => {
+    if (!order || !refundReason.trim()) return;
+    const token = getCustomerToken();
+    if (!token) { showToast('error', 'Please sign in to request a refund.'); return; }
+    setRefundSubmitting(true);
+    try {
+      const res = await fetch('/api/v1/support/tickets', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          subject: `Refund request — Order ${order.orderNumber}`,
+          message: `Order ID: ${order.id}\nOrder Number: ${order.orderNumber}\nReason: ${refundReason.trim()}\nAmount: ${order.total} ${order.currency}`,
+        }),
+      });
+      if (!res.ok) throw new Error('Failed to submit refund request');
+      showToast('success', 'Refund request submitted. Our team will review it shortly.');
+      setRefundOpen(false);
+      setRefundReason('');
+    } catch (err) {
+      showToast('error', err instanceof Error ? err.message : 'Failed to submit refund request.');
+    } finally {
+      setRefundSubmitting(false);
     }
   };
 
@@ -255,6 +287,44 @@ export default function OrderDetailPage() {
           >
             {cancelling ? 'Cancelling...' : 'Cancel Order'}
           </Button>
+        </div>
+      )}
+
+      {order.status === 'DELIVERED' && order.paymentStatus === 'COMPLETED' && (
+        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-5">
+          {refundOpen ? (
+            <div className="space-y-3">
+              <h3 className="text-sm font-semibold text-gray-900 dark:text-white">Request a refund</h3>
+              <textarea
+                value={refundReason}
+                onChange={(e) => setRefundReason(e.target.value)}
+                rows={3}
+                placeholder="Tell us why you'd like a refund…"
+                className="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <div className="flex justify-end gap-2">
+                <Button variant="ghost" size="sm" onClick={() => { setRefundOpen(false); setRefundReason(''); }} disabled={refundSubmitting}>Cancel</Button>
+                <Button size="sm" onClick={handleRefundRequest} disabled={refundSubmitting || !refundReason.trim()}>
+                  {refundSubmitting ? 'Submitting…' : 'Submit refund request'}
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-900 dark:text-white">Need a refund?</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">If something wasn't right with your order, we can help.</p>
+              </div>
+              {getCustomerToken() ? (
+                <Button variant="outline" size="sm" onClick={() => setRefundOpen(true)}>
+                  <RefreshCw className="h-4 w-4 mr-1.5" />
+                  Request refund
+                </Button>
+              ) : (
+                <p className="text-xs text-gray-400">Sign in to request a refund.</p>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>

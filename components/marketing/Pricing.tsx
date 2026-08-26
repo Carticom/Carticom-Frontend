@@ -120,7 +120,7 @@ function ToggleSwitch({
       >
         Yearly
         <span className="ml-1.5 inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">
-          Save 17%
+          2 months free
         </span>
       </span>
     </div>

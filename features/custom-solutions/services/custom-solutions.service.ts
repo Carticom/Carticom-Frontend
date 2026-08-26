@@ -38,6 +38,17 @@ class CustomSolutionsService {
     }
   }
 
+  async payQuotation(
+    id: string
+  ): Promise<{ authorizationUrl: string; amount: number; transactionId: string; provider: string }> {
+    try {
+      const response = await axiosInstance.post(`/api/v1/custom-solutions/${id}/pay`);
+      return response.data?.data ?? response.data;
+    } catch (error) {
+      throw new Error(extractErrorMessage(error));
+    }
+  }
+
   async getById(id: string): Promise<CustomSolutionDto> {
     try {
       const response = await axiosInstance.get(ENDPOINTS.DETAIL(id));

@@ -71,6 +71,20 @@ function ConfirmationContent() {
           <p className="text-xs text-gray-400 mt-4 sm:mt-0 sm:self-center">A confirmation email will be sent to <span className="font-medium">{order.customerEmail}</span></p>
         )}
       </div>
+
+      {order.customerEmail && (
+        <div className="rounded-xl border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/20 p-5 text-center space-y-3">
+          <h2 className="text-sm font-semibold text-gray-900 dark:text-white">Want to track this order?</h2>
+          <p className="text-xs text-gray-600 dark:text-gray-400">
+            Create an account with <span className="font-medium">{order.customerEmail}</span> to view order status and history.
+          </p>
+          <Button asChild variant="outline" className="rounded-xl text-sm">
+            <a href={`/storefront/login?storeId=${encodeURIComponent(order.storeId)}&mode=register&email=${encodeURIComponent(order.customerEmail)}`}>
+              Create an account
+            </a>
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

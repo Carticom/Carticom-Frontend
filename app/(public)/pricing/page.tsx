@@ -58,7 +58,7 @@ function generateFeatures(dto: SubscriptionPlanDTO): string[] {
   }
   if (dto.yearlyPrice > 0 && dto.monthlyPrice > 0) {
     const savePct = Math.round((1 - dto.yearlyPrice / (dto.monthlyPrice * 12)) * 100);
-    if (savePct > 0) features.push(`Save ${savePct}% with yearly billing`);
+    if (savePct > 0) features.push(`2 months free with yearly billing`);
   }
   return features;
 }
@@ -115,7 +115,7 @@ const faqs = [
   { q: 'Can I upgrade or downgrade anytime?', a: 'Yes. You can change your plan at any time. Changes take effect at the start of your next billing cycle.' },
   { q: 'Is there a free trial?', a: 'Yes, every paid plan comes with a 30-day free trial. No credit card required.' },
   { q: 'What payment methods do you accept?', a: 'We accept card payments, bank transfers, USSD, and mobile money across supported African countries.' },
-  { q: 'How does yearly billing work?', a: 'Pay for a full year upfront and save up to 20% compared to monthly billing. Your subscription renews annually.' },
+  { q: 'How does yearly billing work?', a: 'Pay for a full year upfront and save 2 months compared to monthly billing. Your subscription renews annually.' },
   { q: 'Are there any setup fees?', a: 'No. There are no setup fees or hidden charges. You only pay your subscription fee.' },
 ];
 
@@ -161,7 +161,7 @@ export default function PricingPage() {
             <button onClick={() => setYearly(false)} className={`px-5 py-2 text-sm font-medium rounded-lg transition-all ${!yearly ? 'bg-white text-gray-900 shadow-sm' : ''}`}>Monthly</button>
             <button onClick={() => setYearly(true)} className={`px-5 py-2 text-sm font-medium rounded-lg transition-all ${yearly ? 'bg-white text-gray-900 shadow-sm' : ''}`}>
               Yearly
-              <span className="ml-1.5 text-[10px] text-blue-600 font-bold bg-blue-50 px-1.5 py-0.5 rounded-full">Save up to 20%</span>
+              <span className="ml-1.5 text-[10px] text-blue-600 font-bold bg-blue-50 px-1.5 py-0.5 rounded-full">2 months free</span>
             </button>
           </div>
         </motion.div>

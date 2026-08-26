@@ -22,6 +22,8 @@ function StoreProductsContent() {
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState<'name' | 'price-asc' | 'price-desc' | 'newest'>('name');
+  const [category, setCategory] = useState<string>('all');
+  const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
   const [view, setView] = useState<'grid' | 'list'>('grid');
   const [retryKey, setRetryKey] = useState(0);
 
@@ -34,6 +36,12 @@ function StoreProductsContent() {
         if (!storeRes.data.data) { if (!cancelled) { setError('Store not found'); setLoading(false); } return; }
         const storeData = storeRes.data.data;
         setStore(storeData);
+        try {
+          const catRes = await storefrontApi.getStoreCategories(slug);
+          if (!cancelled) setCategories((catRes.data.data || []) as { id: string; name: string }[]);
+        } catch {
+          if (!cancelled) setCategories([]);
+        }
         const prodRes = await productApi.getActiveByStore(storeData.id);
         if (cancelled) return;
         setProducts(prodRes.data.data || []);
@@ -56,6 +64,7 @@ function StoreProductsContent() {
 
   const filtered = products
     .filter((p) => !search || p.name.toLowerCase().includes(search.toLowerCase()))
+    .filter((p) => category === 'all' || p.categoryId === category)
     .sort((a, b) => {
       if (sort === 'price-asc') return a.price - b.price;
       if (sort === 'price-desc') return b.price - a.price;
@@ -119,6 +128,34 @@ function StoreProductsContent() {
           <span className="text-xs text-gray-400">{filtered.length} products</span>
         </div>
       </div>
+
+      {categories.length > 0 && (
+        <div className="flex gap-2 overflow-x-auto pb-2">
+          <button
+            onClick={() => setCategory('all')}
+            className={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
+              category === 'all'
+                ? 'bg-blue-600 text-white'
+                : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
+            }`}
+          >
+            All
+          </button>
+          {categories.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => setCategory(cat.id)}
+              className={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
+                category === cat.id
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
+              }`}
+            >
+              {cat.name}
+            </button>
+          ))}
+        </div>
+      )}
 
       {filtered.length === 0 ? (
         <EmptyState icon={ShoppingBag} title="No products found" description={search ? 'Try a different search term' : 'This store has no products yet'} />
