@@ -207,23 +207,6 @@ export interface PaymentDto {
   updatedAt: string;
 }
 
-// ─── Escrow ───────────────────────────────────────────────────
-
-export interface EscrowTransactionDto {
-  id: string;
-  storeId: string;
-  orderId: string;
-  holdAmount: number;
-  status: 'HELD' | 'RELEASED' | 'DISPUTED' | 'REFUNDED';
-  releaseAt?: number;
-  releasedAt?: number;
-  transactionRef?: string;
-  platformFeePercent: number;
-  sellerAmount: number;
-  createdAt: string;
-  updatedAt: string;
-}
-
 // ─── Cart ─────────────────────────────────────────────────────
 
 export interface CartDto {
@@ -321,8 +304,6 @@ export interface DashboardStatsDto {
   totalOrders: number;
   totalProducts: number;
   totalCustomers: number;
-  walletBalance: number;
-  escrowBalance: number;
   subscriptionStatus: string;
   storeStatus: string;
   aiEnabled: boolean;

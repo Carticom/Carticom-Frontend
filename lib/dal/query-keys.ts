@@ -64,17 +64,6 @@ export const queryKeys = {
       [...queryKeys.transactions.lists(), filters] as const,
     byId: (id: string) => [...queryKeys.transactions.all, id] as const},
 
-  // ─── Escrow ───────────────────────────────────────────────
-  escrow: {
-    all: ['escrow'] as const,
-    lists: () => [...queryKeys.escrow.all, 'list'] as const,
-    list: (filters: Record<string, unknown>) =>
-      [...queryKeys.escrow.lists(), filters] as const,
-    byId: (id: string) => [...queryKeys.escrow.all, id] as const,
-    balance: () => [...queryKeys.escrow.all, 'balance'] as const,
-    transactions: (escrowId: string) =>
-      [...queryKeys.escrow.byId(escrowId), 'transactions'] as const},
-
   // ─── Disputes ──────────────────────────────────────────────
   disputes: {
     all: ['disputes'] as const,
@@ -135,13 +124,6 @@ export const queryKeys = {
   subscription: {
     all: ['subscription'] as const,
     byStore: (storeId: string) => ['subscription', 'store', storeId] as const},
-
-  // ─── Wallet ───────────────────────────────────────────────
-  wallet: {
-    all: ['wallet'] as const,
-    byStore: (storeId: string) => ['wallet', 'store', storeId] as const,
-    transactions: (storeId: string, params?: Record<string, unknown>) =>
-      ['wallet', storeId, 'transactions', params] as const},
 
   // ─── Addresses ───────────────────────────────────────────
   addresses: {

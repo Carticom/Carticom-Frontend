@@ -16,7 +16,7 @@ const pressReleases = [
   { title: 'Carticom Launches AI-Powered Customer Support for Merchants', date: 'Jun 5, 2026', source: 'Techpoint Africa' },
   { title: 'Carticom Partners with Paystack for Seamless Payments', date: 'May 15, 2026', source: 'Business Day' },
   { title: 'Carticom Crosses 50,000 Active Merchants Milestone', date: 'Apr 28, 2026', source: 'Nairametrics' },
-  { title: 'Carticom Introduces Escrow Payment System for Trusted Trade', date: 'Apr 10, 2026', source: 'Punch Nigeria' },
+  { title: 'Carticom Launches Integrated Payment System for Trusted Trade', date: 'Apr 10, 2026', source: 'Punch Nigeria' },
 ];
 
 export default function PressPage() {

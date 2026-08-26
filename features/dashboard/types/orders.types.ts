@@ -17,7 +17,6 @@ export interface OrderDto {
   total: number;
   status: OrderStatus;
   paymentStatus: PaymentStatus;
-  escrowStatus: EscrowStatus;
   shippingAddress: Address;
   billingAddress: Address;
   notes?: string;
@@ -63,12 +62,6 @@ export enum PaymentStatus {
   REFUNDED = 'REFUNDED',
   PARTIALLY_REFUNDED = 'PARTIALLY_REFUNDED'}
 
-export enum EscrowStatus {
-  NOT_APPLICABLE = 'NOT_APPLICABLE',
-  HELD = 'HELD',
-  RELEASED = 'RELEASED',
-  DISPUTED = 'DISPUTED'}
-
 export interface CreateOrderDto {
   customerId: string;
   items: {
@@ -84,7 +77,6 @@ export interface CreateOrderDto {
 export interface UpdateOrderDto {
   status?: OrderStatus;
   paymentStatus?: PaymentStatus;
-  escrowStatus?: EscrowStatus;
   notes?: string;
   metadata?: Record<string, unknown>;
 }

@@ -44,7 +44,7 @@ export function PaymentsStep({ onNext, onBack }: PaymentsStepProps) {
                 </li>
                 <li className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
                   <CheckCircle className="h-4 w-4 text-green-600" />
-                  Automatic escrow protection
+                  Automatic payment verification
                 </li>
                 <li className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
                   <CheckCircle className="h-4 w-4 text-green-600" />

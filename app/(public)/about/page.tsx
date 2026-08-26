@@ -38,7 +38,7 @@ const values = [
     icon: Shield,
     title: 'Trust & Security',
     description:
-      'We handle payments, escrow, and sensitive data with bank-grade encryption and rigorous compliance across every market we serve.',
+      'We handle payments and sensitive data with bank-grade encryption and rigorous compliance across every market we serve.',
     color: 'emerald'},
   {
     icon: Zap,

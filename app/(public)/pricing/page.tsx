@@ -48,7 +48,7 @@ function generateFeatures(dto: SubscriptionPlanDTO): string[] {
   if (dto.customDomainEnabled) features.push('Custom domain');
   features.push('Order management', 'Inventory tracking');
   if (dto.name === 'Growth' || dto.name === 'Business' || dto.name === 'Enterprise') {
-    features.push('Advanced analytics', 'AI insights', 'Escrow protection', 'Priority support');
+    features.push('Advanced analytics', 'AI insights', 'Secure payments', 'Priority support');
   }
   if (dto.name === 'Business' || dto.name === 'Enterprise') {
     features.push('Dedicated account manager', 'Custom integrations', 'SLA guarantee');
@@ -87,7 +87,7 @@ const fallbackPlans: Plan[] = [
     price: '₦15,000',
     period: '/month',
     desc: 'For growing businesses. More products, staff, and priority support.',
-    features: ['500 products', '10 staff accounts', 'Payment processing', 'Custom domain', 'Order management', 'Inventory tracking', 'Advanced analytics', 'AI insights', 'Escrow protection', 'Priority support'],
+    features: ['500 products', '10 staff accounts', 'Payment processing', 'Custom domain', 'Order management', 'Inventory tracking', 'Advanced analytics', 'AI insights', 'Secure payments', 'Priority support'],
     cta: 'Start Free Trial',
     href: '/register',
     popular: true},
@@ -96,7 +96,7 @@ const fallbackPlans: Plan[] = [
     price: '₦25,000',
     period: '/month',
     desc: 'For established businesses. Custom domain, API access, dedicated support.',
-    features: ['3,000 products', '25 staff accounts', 'Payment processing', 'Custom domain', 'Order management', 'Inventory tracking', 'Advanced analytics', 'AI insights', 'Escrow protection', 'Priority support', 'Dedicated account manager', 'Custom integrations', 'SLA guarantee'],
+    features: ['3,000 products', '25 staff accounts', 'Payment processing', 'Custom domain', 'Order management', 'Inventory tracking', 'Advanced analytics', 'AI insights', 'Secure payments', 'Priority support', 'Dedicated account manager', 'Custom integrations', 'SLA guarantee'],
     cta: 'Start Free Trial',
     href: '/register',
     popular: false},
@@ -105,7 +105,7 @@ const fallbackPlans: Plan[] = [
     price: '₦45,000',
     period: '/month',
     desc: 'For large operations. Unlimited everything, dedicated manager, SLA, 24/7 support.',
-    features: ['Unlimited products', 'Unlimited staff', 'Custom domain', 'Order management', 'Inventory tracking', 'Advanced analytics', 'AI insights', 'Escrow protection', 'Priority support', 'Dedicated account manager', 'Custom integrations', 'SLA guarantee', 'White-label option', 'Custom development', '24/7 dedicated support'],
+    features: ['Unlimited products', 'Unlimited staff', 'Custom domain', 'Order management', 'Inventory tracking', 'Advanced analytics', 'AI insights', 'Secure payments', 'Priority support', 'Dedicated account manager', 'Custom integrations', 'SLA guarantee', 'White-label option', 'Custom development', '24/7 dedicated support'],
     cta: 'Start Free Trial',
     href: '/register',
     popular: false},

@@ -30,7 +30,7 @@ export function SubscriptionLaunchStep({ onNext, onBack, store }: SubscriptionLa
           🎁 Welcome!
         </h2>
         <p className="text-xl text-gray-700 dark:text-gray-300">
-          You&apos;ve been placed on the <strong>FREE PLAN</strong>
+          Your <strong>30-DAY FREE TRIAL</strong> has started
         </p>
       </div>
 
@@ -46,7 +46,7 @@ export function SubscriptionLaunchStep({ onNext, onBack, store }: SubscriptionLa
             </li>
             <li className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
               <Check className="h-4 w-4 text-green-600" />
-              Up to 10 products
+              All features, no credit card required
             </li>
             <li className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
               <Check className="h-4 w-4 text-green-600" />
@@ -54,7 +54,7 @@ export function SubscriptionLaunchStep({ onNext, onBack, store }: SubscriptionLa
             </li>
             <li className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
               <Check className="h-4 w-4 text-green-600" />
-              Wallet & payments
+              Payments via Paystack & Flutterwave
             </li>
             <li className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
               <Check className="h-4 w-4 text-green-600" />

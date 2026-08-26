@@ -12,10 +12,8 @@ import type {
   SavePaymentCredentialsDto,
   CreateProductDto,
   ProductDto,
-  WalletDto,
   OrderDto,
   PaymentDto,
-  EscrowTransactionDto,
   CartDto} from '@/features/onboarding/types';
 
 const API_PREFIX = '/api/v1';
@@ -188,12 +186,6 @@ export const paymentApi = {
 
 // ─── Wallet API ───────────────────────────────────────────────
 
-export const walletApi = {
-  getBalance: () =>
-    axiosInstance.get<ApiResponse<WalletDto>>(`${API_PREFIX}/wallet`)};
-
-// ─── Storefront API (public) ─────────────────────────────────
-
 export const storefrontApi = {
   getStores: (q?: string) =>
     axiosInstance.get<ApiResponse<StoreDto[]>>(
@@ -223,12 +215,4 @@ export const storefrontApi = {
   search: (q: string) =>
     axiosInstance.get<ApiResponse<ProductDto[]>>(
       `${API_PREFIX}/storefront/search?q=${encodeURIComponent(q)}`
-    )};
-
-// ─── Escrow API ───────────────────────────────────────────────
-
-export const escrowApi = {
-  getByStore: (storeId: string) =>
-    axiosInstance.get<ApiResponse<EscrowTransactionDto[]>>(
-      `${API_PREFIX}/escrow/store/${storeId}`
     )};

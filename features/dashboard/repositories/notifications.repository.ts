@@ -55,8 +55,6 @@ export class NotificationsRepository {
         return 'payment';
       case 'order':
         return 'order';
-      case 'escrow':
-        return 'escrow';
       case 'subscription':
         return 'subscription';
       case 'alert':

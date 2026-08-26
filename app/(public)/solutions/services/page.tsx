@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 
 const features = [
   { icon: Calendar, title: 'Booking & Scheduling', description: 'Let clients book appointments online. Automated calendar sync, reminders, and rescheduling — no more back-and-forth.', color: 'blue' },
-  { icon: CreditCard, title: 'Service Payments', description: 'Accept deposits, full payments, or retainers. Escrow protection ensures trust for both you and your clients.', color: 'indigo' },
+  { icon: CreditCard, title: 'Service Payments', description: 'Accept deposits, full payments, or retainers. Verified payments ensure trust for both you and your clients.', color: 'indigo' },
   { icon: MessageSquare, title: 'Client Communication', description: 'Automated booking confirmations, reminders, and follow-ups via SMS, WhatsApp, and email.', color: 'purple' },
   { icon: BarChart3, title: 'Business Analytics', description: 'Track bookings, revenue, client retention, and peak service periods. Make informed decisions for your service business.', color: 'orange' },
 ];
@@ -15,7 +15,7 @@ const features = [
 const benefits = [
   '24/7 online booking — no phone tag',
   'Automated appointment reminders reduce no-shows',
-  'Secure deposits and escrow-protected payments',
+  'Secure deposits and verified payments',
   'Client history and preferences at your fingertips',
   'Multi-service and package pricing support',
   'Staff scheduling and commission tracking',

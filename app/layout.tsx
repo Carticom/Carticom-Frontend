@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://carticom.vercel.app"),
   title: "Carticom - Commerce Operating System for Africa",
   description: "Build, sell, manage and scale your business with Carticom. The all-in-one commerce platform for African businesses.",
-  keywords: ["commerce", "africa", "ecommerce", "payments", "escrow", "ai", "business"],
+  keywords: ["commerce", "africa", "ecommerce", "payments", "subscriptions", "ai", "business"],
   authors: [{ name: "Carticom" }],
   icons: {
     icon: "/icon.svg",

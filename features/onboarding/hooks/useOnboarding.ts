@@ -7,8 +7,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   storeApi,
-  productApi,
-  walletApi} from '@/features/onboarding/services/onboarding.service';
+  productApi} from '@/features/onboarding/services/onboarding.service';
 import { showToast } from '@/lib/notifications/toast';
 import type {
   CreateStoreDto,
@@ -98,10 +97,3 @@ export function useStoreProducts(storeId: string | undefined) {
 }
 
 // ─── Wallet Balance ───────────────────────────────────────────
-
-export function useWalletBalance() {
-  return useQuery({
-    queryKey: onboardingKeys.wallet,
-    queryFn: () => walletApi.getBalance().then((res) => res.data.data),
-    retry: false});
-}
