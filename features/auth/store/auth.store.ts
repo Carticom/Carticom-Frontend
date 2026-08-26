@@ -81,6 +81,10 @@ export const useAuthStore = create<AuthState>()(
           isAuthenticated: true,
           isLoading: false,
           lastActivity: Date.now()});
+        // Redirect to change-password if mustChangePassword is set
+        if (user.mustChangePassword && typeof window !== 'undefined') {
+          window.location.href = '/change-password';
+        }
       },
 
       // ─── Logout ───────────────────────────────────────────
@@ -169,6 +173,9 @@ export const useAuthStore = create<AuthState>()(
             try {
               const user = await authService.getCurrentUser();
               set({ user, isLoading: false, isAuthenticated: true });
+              if (user?.mustChangePassword && typeof window !== 'undefined') {
+                window.location.href = '/change-password';
+              }
               return;
             } catch {
               // fall through to refresh
@@ -192,6 +199,9 @@ export const useAuthStore = create<AuthState>()(
                 isLoading: false,
                 lastActivity: Date.now()});
               if (user?.role) setSessionMarker(user.role, 3600);
+              if (user?.mustChangePassword && typeof window !== 'undefined') {
+                window.location.href = '/change-password';
+              }
               return;
             }
           } catch {

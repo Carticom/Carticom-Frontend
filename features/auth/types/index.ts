@@ -71,6 +71,8 @@ export interface UserDto {
   status: AccountStatus;
   emailVerified: boolean;
   avatarUrl?: string;
+  profileImageUrl?: string;
+  mustChangePassword?: boolean;
   onboardingCompleted?: boolean;
   createdAt: string;
   updatedAt: string;
@@ -91,6 +93,8 @@ export interface BackendAuthData {
   email: string;
   fullName: string;
   role: UserRole;
+  mustChangePassword?: boolean;
+  profileImageUrl?: string;
 }
 
 export interface ApiError {

@@ -26,15 +26,13 @@ function formatPercent(value: number): string {
   return `${sign}${value.toFixed(1)}%`;
 }
 
-interface AnalyticsMetrics {
+interface AnalyticsData {
   totalRevenue?: number;
   totalOrders?: number;
+  totalUsers?: number;
+  totalStores?: number;
   activeUsers?: number;
   activeStores?: number;
-}
-
-interface AnalyticsData {
-  metrics?: AnalyticsMetrics;
   topStores?: { name: string; revenue: number; orders: number; growth: number }[];
 }
 
@@ -47,15 +45,16 @@ export default function SuperAdminAnalyticsPage() {
 
   if (isLoading) return <LoadingState message="Loading analytics..." />;
   if (error) return <ErrorState onRetry={() => refetch()} />;
-  if (!analytics?.metrics) return <EmptyState title="No analytics data" description="Analytics will appear once there is platform activity." />;
+  if (!analytics) return <EmptyState title="No analytics data" description="Analytics will appear once there is platform activity." />;
 
-  const { metrics = {}, topStores = [] } = analytics ?? {};
+  const metrics = analytics ?? {};
+  const topStores = metrics.topStores ?? [];
 
   const summaryCards = [
     { label: 'Total Revenue', value: formatCurrency(metrics.totalRevenue ?? 0), icon: TrendingUp, color: 'text-green-600' },
     { label: 'Total Orders', value: (metrics.totalOrders ?? 0).toLocaleString(), icon: ShoppingCart, color: 'text-purple-600' },
-    { label: 'Active Users', value: (metrics.activeUsers ?? 0).toLocaleString(), icon: Users, color: 'text-blue-600' },
-    { label: 'Active Stores', value: (metrics.activeStores ?? 0).toLocaleString(), icon: Store, color: 'text-emerald-600' },
+    { label: 'Active Users', value: (metrics.totalUsers ?? 0).toLocaleString(), icon: Users, color: 'text-blue-600' },
+    { label: 'Active Stores', value: (metrics.totalStores ?? 0).toLocaleString(), icon: Store, color: 'text-emerald-600' },
   ];
 
   return (

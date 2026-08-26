@@ -5,6 +5,7 @@ import { useAuthStore } from '@/features/auth/store/auth.store';
 import { useUpdateBusinessProfile } from '@/features/dashboard/hooks/useDashboard';
 import { authService } from '@/features/auth/services/auth.service';
 import { showToast } from '@/lib/notifications/toast';
+import { FileUpload } from '@/components/ui/FileUpload';
 
 export default function ProfilePage() {
   const user = useAuthStore((state) => state.user);
@@ -19,6 +20,18 @@ export default function ProfilePage() {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [changingPassword, setChangingPassword] = useState(false);
+
+  const avatarUrl = user?.profileImageUrl || user?.avatarUrl;
+
+  const handleAvatarUploaded = async (url: string) => {
+    try {
+      const updated = await authService.updateProfile({ profileImageUrl: url });
+      setUser(updated);
+      showToast('success', 'Avatar updated successfully');
+    } catch {
+      showToast('error', 'Failed to update avatar');
+    }
+  };
 
   const handleUpdateProfile = async () => {
     try {
@@ -62,6 +75,22 @@ export default function ProfilePage() {
         <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
           Manage your personal information and business details.
         </p>
+      </div>
+
+      <div className="rounded-2xl bg-white dark:bg-gray-900 shadow-sm ring-1 ring-gray-200 dark:ring-gray-800">
+        <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-800">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+            Profile Photo
+          </h2>
+        </div>
+        <div className="p-6">
+          <FileUpload
+            folder="avatars"
+            onUploaded={handleAvatarUploaded}
+            currentUrl={avatarUrl}
+            label="Avatar"
+          />
+        </div>
       </div>
 
       <div className="rounded-2xl bg-white dark:bg-gray-900 shadow-sm ring-1 ring-gray-200 dark:ring-gray-800">

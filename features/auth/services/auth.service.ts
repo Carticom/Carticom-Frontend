@@ -47,6 +47,8 @@ class AuthService {
             role: backendData.role,
             status: AccountStatus.ACTIVE, // Default to ACTIVE
             emailVerified: false, // Default
+            mustChangePassword: backendData.mustChangePassword,
+            profileImageUrl: backendData.profileImageUrl,
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString()},
           tokens: {
@@ -90,6 +92,8 @@ class AuthService {
             role: backendData.role,
             status: AccountStatus.ACTIVE, // Default to ACTIVE
             emailVerified: false, // Default
+            mustChangePassword: backendData.mustChangePassword,
+            profileImageUrl: backendData.profileImageUrl,
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString()},
           tokens: {
@@ -220,7 +224,7 @@ class AuthService {
   // ─── Update Profile ────────────────────────────────────────
 
   async updateProfile(
-    data: Partial<Pick<UserDto, 'fullName' | 'phone' | 'businessName'>>
+    data: Partial<Pick<UserDto, 'fullName' | 'phone' | 'businessName' | 'profileImageUrl'>>
   ): Promise<UserDto> {
     try {
       const response = await axiosInstance.put<ApiResponse<UserDto>>(

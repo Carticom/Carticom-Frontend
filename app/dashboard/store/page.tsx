@@ -11,6 +11,7 @@ import { getTemplateIcon, getTemplatesForCategory } from '@/features/templates/r
 import { BUSINESS_CATEGORIES } from '@/features/templates/types';
 import axiosInstance from '@/lib/axios';
 import { cn } from '@/lib/utils';
+import { FileUpload } from '@/components/ui/FileUpload';
 
 export default function StorePage() {
   const user = useAuthStore((state) => state.user);
@@ -58,6 +59,25 @@ const handleSave = () => {
       refetch();
     } catch {
       showToast('error', 'Failed to upload logo');
+    }
+  };
+
+  const handleBannerUploaded = async (url: string) => {
+    if (!store) return;
+    try {
+      const res = await fetch(url);
+      const blob = await res.blob();
+      const ext = url.split('.').pop() || 'png';
+      const file = new File([blob], `banner.${ext}`, { type: blob.type });
+      const formData = new FormData();
+      formData.append('file', file);
+      await axiosInstance.post(`/api/v1/stores/${store.id}/banner`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      showToast('success', 'Banner uploaded successfully');
+      refetch();
+    } catch {
+      showToast('error', 'Failed to upload banner');
     }
   };
 
@@ -250,14 +270,16 @@ const handleSave = () => {
                 </div>
               </div>
             </div>
-            {store.bannerUrl && (
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Banner</label>
-                <div className="mt-1 relative w-full h-24 rounded-lg border border-gray-300 dark:border-gray-700 overflow-hidden">
-                  <Image src={store.bannerUrl} alt="Store banner" fill unoptimized className="object-cover" />
-                </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Banner</label>
+              <div className="mt-2">
+                <FileUpload
+                  folder="banners"
+                  onUploaded={handleBannerUploaded}
+                  currentUrl={store.bannerUrl}
+                />
               </div>
-            )}
+            </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Business Owner</label>
               <p className="mt-1 text-sm text-gray-900 dark:text-white">{user?.fullName || 'Not set'}</p>

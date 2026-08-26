@@ -21,15 +21,37 @@ class SuperAdminRepository extends BaseRepository<
   Record<string, unknown>
 > {
   constructor() {
-    super({ base: '/api/v1/super-admin' });
+    super({
+      base: '/api/v1/super-admin',
+      byId: (id) => `/api/v1/super-admin/plans/${id}`,
+    });
   }
 
   async getDashboard<T>(): Promise<T> {
     return this.get<T>('/api/v1/super-admin/dashboard');
   }
 
-  async getUsers<T>(page = 0, size = 20): Promise<PageResponse<T>> {
-    return this.get<PageResponse<T>>('/api/v1/super-admin/users', { page, size });
+  async getUsers<T>(page = 0, size = 20, search?: string, role?: string): Promise<PageResponse<T>> {
+    const params: Record<string, string | number> = { page, size };
+    if (search) params.search = search;
+    if (role) params.role = role;
+    return this.get<PageResponse<T>>('/api/v1/super-admin/users', params);
+  }
+
+  async createUser<T>(data: Record<string, unknown>): Promise<T> {
+    return this.post<T>('/api/v1/super-admin/users', data);
+  }
+
+  async updateUser<T>(id: string, data: Record<string, unknown>): Promise<T> {
+    return this.update({ id: '/api/v1/super-admin/users/' + id, data }) as Promise<T>;
+  }
+
+  async deleteUser(id: string): Promise<void> {
+    await this.delete({ id: '/api/v1/super-admin/users/' + id });
+  }
+
+  async resetUserPassword(id: string): Promise<{ tempPassword: string }> {
+    return this.post<{ tempPassword: string }>('/api/v1/super-admin/users/' + id + '/reset-password', {});
   }
 
   async updateUserStatus(id: string, action: string): Promise<void> {
@@ -40,8 +62,11 @@ class SuperAdminRepository extends BaseRepository<
     return this.get<PageResponse<T>>('/api/v1/super-admin/subscriptions', { page, size });
   }
 
-  async getStores<T>(page = 0, size = 20): Promise<PageResponse<T>> {
-    return this.get<PageResponse<T>>('/api/v1/super-admin/stores', { page, size });
+  async getStores<T>(page = 0, size = 20, search?: string, status?: string): Promise<PageResponse<T>> {
+    const params: Record<string, string | number> = { page, size };
+    if (search) params.search = search;
+    if (status) params.status = status;
+    return this.get<PageResponse<T>>('/api/v1/super-admin/stores', params);
   }
 
   async updateStoreStatus(id: string, action: string): Promise<void> {
@@ -50,6 +75,18 @@ class SuperAdminRepository extends BaseRepository<
 
   async getSettings<T>(): Promise<T[]> {
     return this.get<T[]>('/api/v1/super-admin/settings');
+  }
+
+  async createSetting<T>(data: Record<string, unknown>): Promise<T> {
+    return this.post<T>('/api/v1/super-admin/settings', data);
+  }
+
+  async updateSetting<T>(id: string, data: Record<string, unknown>): Promise<T> {
+    return this.update({ id: '/api/v1/super-admin/settings/' + id, data }) as Promise<T>;
+  }
+
+  async deleteSetting(id: string): Promise<void> {
+    await this.delete({ id: '/api/v1/super-admin/settings/' + id });
   }
 
   async getPlans<T>(): Promise<T[]> {
