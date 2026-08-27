@@ -5,6 +5,7 @@ import { Sidebar } from './Sidebar';
 import { TopNavbar } from './TopNavbar';
 import { DashboardFooter } from './DashboardFooter';
 import { SubscriptionBanner } from '@/components/dashboard/subscription/SubscriptionBanner';
+import { DashboardTour } from './DashboardTour';
 import { PageTransition } from '@/components/ui/page-transition';
 import { cn } from '@/lib/utils';
 
@@ -28,8 +29,9 @@ export function DashboardShell({ children }: DashboardShellProps) {
         'transition-all duration-300 ease-in-out',
         sidebarCollapsed ? 'lg:pl-[72px]' : 'lg:pl-[240px]'
       )}>
-        <TopNavbar onToggleSidebar={() => setMobileOpen(true)} isSidebarCollapsed={sidebarCollapsed} />
+        <TopNavbar onToggleSidebar={sidebarCollapsed ? () => setSidebarCollapsed(false) : () => setMobileOpen(true)} isSidebarCollapsed={sidebarCollapsed} />
         <SubscriptionBanner />
+        <DashboardTour />
         <main className="p-4 md:p-6 lg:p-8">
           <div className="mx-auto max-w-7xl">
             <PageTransition>{children}</PageTransition>

@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useAuthStore } from '@/features/auth/store/auth.store';
 import { useMyStores, useUpdateStore } from '@/features/onboarding/hooks/useOnboarding';
 import { LoadingState, EmptyState, ErrorState } from '@/components/dashboard/shared/StateComponents';
-import { Globe, Eye, Upload, ExternalLink, Check, ChevronDown, Copy } from 'lucide-react';
+import { Globe, Eye, Upload, ExternalLink, Check, ChevronDown, Copy, Palette, Type, Link2, Layout, Code } from 'lucide-react';
 import { showToast } from '@/lib/notifications/toast';
 import { getTemplateIcon, getTemplatesForCategory } from '@/features/templates/registry';
 import { BUSINESS_CATEGORIES } from '@/features/templates/types';
@@ -27,6 +27,14 @@ const [editing, setEditing] = useState(false);
   const [publishing, setPublishing] = useState(false);
   const [seoTitle, setSeoTitle] = useState('');
   const [seoDesc, setSeoDesc] = useState('');
+  const [primaryColor, setPrimaryColor] = useState('#4f46e5');
+  const [secondaryColor, setSecondaryColor] = useState('#7c3aed');
+  const [fontFamily, setFontFamily] = useState('Inter');
+  const [facebookUrl, setFacebookUrl] = useState('');
+  const [instagramUrl, setInstagramUrl] = useState('');
+  const [twitterUrl, setTwitterUrl] = useState('');
+  const [whatsappNumber, setWhatsappNumber] = useState('');
+  const [customCss, setCustomCss] = useState('');
 
   const [syncedStore, setSyncedStore] = useState<typeof store>(null);
   if (store !== syncedStore) {
@@ -36,6 +44,14 @@ if (store) {
       setDescription(store.description ?? '');
       setSeoTitle(store.name ?? '');
       setSeoDesc(store.description ?? '');
+      setPrimaryColor((store as any).primaryColor ?? '#4f46e5');
+      setSecondaryColor((store as any).secondaryColor ?? '#7c3aed');
+      setFontFamily((store as any).fontFamily ?? 'Inter');
+      setFacebookUrl((store as any).facebookUrl ?? '');
+      setInstagramUrl((store as any).instagramUrl ?? '');
+      setTwitterUrl((store as any).twitterUrl ?? '');
+      setWhatsappNumber((store as any).whatsappNumber ?? '');
+      setCustomCss((store as any).customCss ?? '');
     }
   }
 
@@ -92,6 +108,62 @@ const handleSave = () => {
       refetch();
     } catch {
       showToast('error', 'Failed to save SEO settings');
+    }
+  };
+
+  const handleSaveColors = async () => {
+    if (!store) return;
+    try {
+      await updateStore.mutateAsync({
+        id: store.id,
+        data: { primaryColor, secondaryColor } as any,
+      });
+      showToast('success', 'Colors saved');
+      refetch();
+    } catch {
+      showToast('error', 'Failed to save colors');
+    }
+  };
+
+  const handleSaveFont = async () => {
+    if (!store) return;
+    try {
+      await updateStore.mutateAsync({
+        id: store.id,
+        data: { fontFamily } as any,
+      });
+      showToast('success', 'Font saved');
+      refetch();
+    } catch {
+      showToast('error', 'Failed to save font');
+    }
+  };
+
+  const handleSaveSocialLinks = async () => {
+    if (!store) return;
+    try {
+      await updateStore.mutateAsync({
+        id: store.id,
+        data: { facebookUrl, instagramUrl, twitterUrl, whatsappNumber } as any,
+      });
+      showToast('success', 'Social links saved');
+      refetch();
+    } catch {
+      showToast('error', 'Failed to save social links');
+    }
+  };
+
+  const handleSaveCustomCss = async () => {
+    if (!store) return;
+    try {
+      await updateStore.mutateAsync({
+        id: store.id,
+        data: { customCss } as any,
+      });
+      showToast('success', 'Custom CSS saved');
+      refetch();
+    } catch {
+      showToast('error', 'Failed to save custom CSS');
     }
   };
 
@@ -299,6 +371,99 @@ const handleSave = () => {
               <p className="mt-1 text-sm text-gray-900 dark:text-white">{user?.fullName || 'Not set'}</p>
             </div>
           </div>
+        </div>
+
+        {/* Colors & Fonts */}
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+            <Palette className="h-5 w-5" /> Colors & Fonts
+          </h2>
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Primary Color</label>
+                <div className="flex items-center gap-2">
+                  <input type="color" value={primaryColor} onChange={(e) => setPrimaryColor(e.target.value)} className="w-10 h-10 rounded border border-gray-300 dark:border-gray-700 cursor-pointer" />
+                  <input type="text" value={primaryColor} onChange={(e) => setPrimaryColor(e.target.value)} className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm font-mono" />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Secondary Color</label>
+                <div className="flex items-center gap-2">
+                  <input type="color" value={secondaryColor} onChange={(e) => setSecondaryColor(e.target.value)} className="w-10 h-10 rounded border border-gray-300 dark:border-gray-700 cursor-pointer" />
+                  <input type="text" value={secondaryColor} onChange={(e) => setSecondaryColor(e.target.value)} className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm font-mono" />
+                </div>
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center gap-1">
+                <Type className="h-4 w-4" /> Font Family
+              </label>
+              <select value={fontFamily} onChange={(e) => setFontFamily(e.target.value)} className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
+                <option value="Inter">Inter</option>
+                <option value="Roboto">Roboto</option>
+                <option value="Open Sans">Open Sans</option>
+                <option value="Lato">Lato</option>
+                <option value="Poppins">Poppins</option>
+                <option value="Montserrat">Montserrat</option>
+                <option value="Raleway">Raleway</option>
+                <option value="Nunito">Nunito</option>
+                <option value="Playfair Display">Playfair Display</option>
+                <option value="Merriweather">Merriweather</option>
+              </select>
+            </div>
+            <button onClick={handleSaveColors} disabled={updateStore.isPending} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 text-sm">
+              Save Colors & Font
+            </button>
+          </div>
+        </div>
+
+        {/* Social Links */}
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+            <Link2 className="h-5 w-5" /> Social Links
+          </h2>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Facebook URL</label>
+              <input type="url" value={facebookUrl} onChange={(e) => setFacebookUrl(e.target.value)} placeholder="https://facebook.com/yourpage" className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Instagram URL</label>
+              <input type="url" value={instagramUrl} onChange={(e) => setInstagramUrl(e.target.value)} placeholder="https://instagram.com/yourpage" className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Twitter / X URL</label>
+              <input type="url" value={twitterUrl} onChange={(e) => setTwitterUrl(e.target.value)} placeholder="https://twitter.com/yourpage" className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">WhatsApp Number</label>
+              <input type="tel" value={whatsappNumber} onChange={(e) => setWhatsappNumber(e.target.value)} placeholder="+234 800 000 0000" className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm" />
+            </div>
+            <button onClick={handleSaveSocialLinks} disabled={updateStore.isPending} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 text-sm">
+              Save Social Links
+            </button>
+          </div>
+        </div>
+
+        {/* Custom CSS */}
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 lg:col-span-2">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+            <Code className="h-5 w-5" /> Custom CSS
+          </h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+            Add custom CSS to further customize your storefront appearance. This will be injected into your store page.
+          </p>
+          <textarea
+            value={customCss}
+            onChange={(e) => setCustomCss(e.target.value)}
+            placeholder="/* Add your custom CSS here */&#10;.store-header {&#10;  border-bottom: 2px solid #4f46e5;&#10;}"
+            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white text-sm font-mono resize-y"
+            rows={6}
+          />
+          <button onClick={handleSaveCustomCss} disabled={updateStore.isPending} className="mt-3 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 text-sm">
+            Save Custom CSS
+          </button>
         </div>
 
         {/* Template Selection */}

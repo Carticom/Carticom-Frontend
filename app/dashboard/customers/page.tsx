@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useCustomers } from '@/features/dashboard/hooks/useCustomers';
 import { LoadingState, EmptyState, ErrorState } from '@/components/dashboard/shared/StateComponents';
 import type { CustomerDto } from '@/features/dashboard/types/customers.types';
+import { Download } from 'lucide-react';
 
 function formatCurrency(amount: number) {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
@@ -12,6 +13,23 @@ function formatCurrency(amount: number) {
 
 function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+}
+
+function exportCustomersCsv(customers: CustomerDto[]) {
+  const headers = ['Name', 'Email', 'Phone', 'Orders', 'Total Spent', 'Joined'];
+  const rows = customers.map(c => [
+    `${c.firstName} ${c.lastName}`,
+    c.email,
+    c.phone || '',
+    c.totalOrders?.toString() || '0',
+    c.totalSpent?.toString() || '0',
+    c.createdAt ? new Date(c.createdAt).toLocaleDateString() : ''
+  ]);
+  const csv = [headers.join(','), ...rows.map(r => r.map(c => `"${c.replace(/"/g, '""')}"`).join(','))].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'customers.csv'; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
 }
 
 export default function CustomersPage() {
@@ -37,9 +55,17 @@ export default function CustomersPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Customers</h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-2">Manage your customer relationships</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Customers</h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-2">Manage your customer relationships</p>
+        </div>
+        <button
+          onClick={() => exportCustomersCsv(customers)}
+          className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg text-sm hover:bg-gray-50 dark:hover:bg-gray-800"
+        >
+          <Download className="h-4 w-4" /> Export CSV
+        </button>
       </div>
 
       <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">

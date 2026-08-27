@@ -10,7 +10,7 @@ import type { ProductDto } from '@/features/dashboard/types/products.types';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { X, Plus, Trash2 } from 'lucide-react';
+import { X, Plus, Trash2, Download, Share2 } from 'lucide-react';
 
 const productSchema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -35,6 +35,30 @@ function statusBadgeClasses(status: ProductStatus) {
     [ProductStatus.ARCHIVED]: 'text-yellow-600 bg-yellow-50',
     [ProductStatus.OUT_OF_STOCK]: 'text-red-600 bg-red-50'};
   return map[status] ?? 'text-gray-600 bg-gray-50';
+}
+
+function exportProductsCsv(products: ProductDto[]) {
+  const headers = ['Name', 'SKU', 'Price', 'Status', 'Inventory', 'Category', 'Created'];
+  const rows = products.map(p => [
+    p.name,
+    p.sku || '',
+    p.price?.toString() || '0',
+    p.status,
+    p.quantity?.toString() || '',
+    p.categoryName || '',
+    p.createdAt ? new Date(p.createdAt).toLocaleDateString() : ''
+  ]);
+  const csv = [headers.join(','), ...rows.map(r => r.map(c => `"${c.replace(/"/g, '""')}"`).join(','))].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'products.csv'; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+
+function shareOnWhatsApp(product: ProductDto, storeSlug?: string) {
+  const url = storeSlug ? `${window.location.origin}/store/${storeSlug}/product/${product.id}` : '';
+  const text = `Check out ${product.name} — ${formatCurrency(product.price)}${url ? `\n${url}` : ''}`;
+  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
 }
 
 export default function ProductsPage() {
@@ -90,12 +114,22 @@ export default function ProductsPage() {
           <h1 className="text-3xl font-bold text-gray-900">Products</h1>
           <p className="text-gray-600 mt-2">Manage your product catalog</p>
         </div>
-        <button
-          onClick={() => setShowForm(true)}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
-        >
-          <Plus className="h-4 w-4" /> Add Product
-        </button>
+        <div className="flex items-center gap-2">
+          {products && products.length > 0 && (
+            <button
+              onClick={() => exportProductsCsv(products)}
+              className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium"
+            >
+              <Download className="h-4 w-4" /> Export CSV
+            </button>
+          )}
+          <button
+            onClick={() => setShowForm(true)}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+          >
+            <Plus className="h-4 w-4" /> Add Product
+          </button>
+        </div>
       </div>
 
       {showForm && (
@@ -188,13 +222,22 @@ export default function ProductsPage() {
                     <td className="py-3 px-4 text-gray-600">{product.inventory?.quantity ?? '—'}</td>
                     <td className="py-3 px-4 text-gray-500">{formatDate(product.createdAt)}</td>
                     <td className="py-3 px-4 text-right">
-                      <button
-                        onClick={() => handleDelete(product.id)}
-                        className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                        title="Delete product"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </button>
+                      <div className="flex items-center justify-end gap-1">
+                        <button
+                          onClick={() => shareOnWhatsApp(product)}
+                          className="p-1.5 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                          title="Share on WhatsApp"
+                        >
+                          <Share2 className="h-4 w-4" />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(product.id)}
+                          className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                          title="Delete product"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}

@@ -6,32 +6,21 @@ import { OnboardingShell } from './OnboardingShell';
 import { OnboardingStepper } from './OnboardingStepper';
 import { WelcomeStep } from './steps/WelcomeStep';
 import { BusinessInfoStep } from './steps/BusinessInfoStep';
-import { StoreSetupStep } from './steps/StoreSetupStep';
 import { StoreBrandingStep } from './steps/StoreBrandingStep';
 import { TemplateSelectStep } from './steps/TemplateSelectStep';
 import { FirstProductStep } from './steps/FirstProductStep';
 import { InviteStaffStep } from './steps/InviteStaffStep';
-import { PaymentsStep } from './steps/PaymentsStep';
 import { SubscriptionLaunchStep } from './steps/SubscriptionLaunchStep';
-import { SubscriptionStep } from './steps/SubscriptionStep';
-import { AIStep } from './steps/AIStep';
 import { CompletionStep } from './steps/CompletionStep';
 import type { BusinessInfoFormData } from '@/features/onboarding/schemas';
 import type { StoreDto } from '@/features/onboarding/types';
 import { useMyStores, useUpdateStore } from '@/features/onboarding/hooks/useOnboarding';
 
 const STEPS = [
-  'welcome',
   'business-info',
-  'store-setup',
-  'store-branding',
-  'template',
+  'template-branding',
   'first-product',
-  'invite-staff',
-  'payments',
-  'subscription-launch',
-  'subscription',
-  'ai',
+  'launch',
   'complete',
 ] as const;
 
@@ -70,8 +59,6 @@ export function OnboardingWizard() {
   const renderStep = () => {
     const step = STEPS[currentStep];
     switch (step) {
-      case 'welcome':
-        return <WelcomeStep key="welcome" onNext={goNext} />;
       case 'business-info':
         return (
           <BusinessInfoStep
@@ -82,44 +69,33 @@ export function OnboardingWizard() {
             onStoreCreated={(s: StoreDto) => setStore(s)}
           />
         );
-      case 'store-setup':
+      case 'template-branding':
         return (
-          <StoreSetupStep
-            key="store-setup"
-            onNext={goNext}
-            onBack={goBack}
-            store={store}
-            onStoreUpdated={(s: StoreDto) => setStore(s)}
-          />
-        );
-      case 'store-branding':
-        return (
-          <StoreBrandingStep
-            key="store-branding"
-            onNext={goNext}
-            onBack={goBack}
-            storeId={store?.id}
-            onStoreUpdated={(s: StoreDto) => setStore(s)}
-          />
-        );
-      case 'template':
-        return (
-          <TemplateSelectStep
-            key="template"
-            category={category}
-            onSelect={async (templ) => {
-              if (store) {
-                try {
-                  const updated = await updateStore.mutateAsync({ id: store.id, data: { template: templ } });
-                  setStore(updated);
-                } catch {
-                  // template save failed - toast already shown by hook
-                }
-              }
-            }}
-            onNext={goNext}
-            onBack={goBack}
-          />
+          <div key="template-branding">
+            <StoreBrandingStep
+              onNext={goNext}
+              onBack={goBack}
+              storeId={store?.id}
+              onStoreUpdated={(s: StoreDto) => setStore(s)}
+            />
+            <div className="mt-6">
+              <TemplateSelectStep
+                category={category}
+                onSelect={async (templ) => {
+                  if (store) {
+                    try {
+                      const updated = await updateStore.mutateAsync({ id: store.id, data: { template: templ } });
+                      setStore(updated);
+                    } catch {
+                      // template save failed - toast already shown by hook
+                    }
+                  }
+                }}
+                onNext={goNext}
+                onBack={goBack}
+              />
+            </div>
+          </div>
         );
       case 'first-product':
         return (
@@ -131,16 +107,15 @@ export function OnboardingWizard() {
             onProductCreated={() => {}}
           />
         );
-      case 'invite-staff':
-        return <InviteStaffStep key="invite-staff" onNext={goNext} onBack={goBack} />;
-      case 'payments':
-        return <PaymentsStep key="payments" onNext={goNext} onBack={goBack} />;
-      case 'subscription-launch':
-        return <SubscriptionLaunchStep key="subscription-launch" onNext={goNext} onBack={goBack} store={store} />;
-      case 'subscription':
-        return <SubscriptionStep key="subscription" onNext={goNext} onBack={goBack} />;
-      case 'ai':
-        return <AIStep key="ai" onNext={goNext} onBack={goBack} />;
+      case 'launch':
+        return (
+          <div key="launch">
+            <SubscriptionLaunchStep onNext={goNext} onBack={goBack} store={store} />
+            <div className="mt-6">
+              <InviteStaffStep onNext={goNext} onBack={goBack} />
+            </div>
+          </div>
+        );
       case 'complete':
         return <CompletionStep key="complete" onComplete={finish} />;
       default:

@@ -1,9 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+import dynamic from 'next/dynamic';
 import { useAnalytics } from '@/features/dashboard/hooks/useAnalytics';
 import { useCurrentStoreId } from '@/hooks/useCurrentStore';
 import { LoadingState, ErrorState, EmptyState } from '@/components/dashboard/shared/StateComponents';
+
+const RevenueLineChart = dynamic(() => import('@/components/dashboard/charts/ChartCard').then(m => ({ default: m.RevenueLineChart })), { ssr: false });
+const SalesBarChart = dynamic(() => import('@/components/dashboard/charts/ChartCard').then(m => ({ default: m.SalesBarChart })), { ssr: false });
 
 const PERIOD_MAP: Record<string, string> = {
   'Today': 'today',
@@ -176,6 +180,12 @@ export default function AnalyticsPage() {
           label="Conversion Rate"
           value={metrics.conversionRate > 0 ? `${(metrics.conversionRate * 100).toFixed(1)}%` : '0%'}
         />
+      </div>
+
+      {/* Charts */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <RevenueLineChart data={trends.revenue.map((t, i) => ({ name: t.label || `Day ${i + 1}`, revenue: t.value, orders: trends.orders[i]?.value || 0 }))} />
+        <SalesBarChart data={trends.revenue.map((t, i) => ({ name: t.label || `Day ${i + 1}`, sales: trends.orders[i]?.value || 0, revenue: t.value }))} />
       </div>
 
       {/* Top Products & Categories */}

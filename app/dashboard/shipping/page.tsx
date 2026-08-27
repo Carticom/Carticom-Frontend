@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { useCurrentStoreId } from '@/hooks/useCurrentStore';
 import { useShippingZones, useCreateZone, useUpdateZone, useDeleteZone, useShippingMethods, useCreateMethod, useUpdateMethod, useDeleteMethod } from '@/features/dashboard/hooks/useShipping';
 import type { ShippingZoneDto, ShippingMethodDto, CreateShippingZoneDto, UpdateShippingZoneDto, CreateShippingMethodDto, UpdateShippingMethodDto } from '@/features/dashboard/types/shipping.types';
-import { Plus, Trash2, Edit, MapPin, Truck } from 'lucide-react';
+import { Plus, Trash2, Edit, MapPin, Truck, Package, Map, MessageSquare, Calculator } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 function formatCurrency(amount: number) {
@@ -146,6 +146,52 @@ export default function ShippingPage() {
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Shipping</h1>
         <p className="text-gray-600 dark:text-gray-400 mt-2">Configure shipping zones and delivery methods for your store</p>
       </div>
+
+      {/* Delivery & Logistics - Coming Soon */}
+      <section className="space-y-4">
+        <div className="flex items-center gap-2 mb-2">
+          <span className="px-2.5 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 rounded-full text-xs font-semibold uppercase tracking-wide">Coming Soon</span>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Delivery & Logistics Integration</h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-5">
+            <div className="h-10 w-10 rounded-xl bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center mb-3">
+              <Package className="h-5 w-5 text-blue-600" />
+            </div>
+            <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Automated Carrier Integration</h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
+              Direct connections with major logistics providers across Nigeria and Africa. Every order will automatically be assigned to a delivery rider from providers like ShipBubble, Kwik, and Fez. You will see real-time tracking, automated shipping labels, and delivery confirmations — all without leaving your dashboard.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-5">
+            <div className="h-10 w-10 rounded-xl bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center mb-3">
+              <Map className="h-5 w-5 text-purple-600" />
+            </div>
+            <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Multi-Location Fulfillment</h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
+              Manage inventory and fulfillment across multiple warehouse and store locations. Each location will have its own stock levels, shipping rates, and fulfillment queue. Orders will be automatically routed to the nearest location for faster delivery.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-5">
+            <div className="h-10 w-10 rounded-xl bg-green-50 dark:bg-green-900/20 flex items-center justify-center mb-3">
+              <MessageSquare className="h-5 w-5 text-green-600" />
+            </div>
+            <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Customer Delivery Tracking</h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
+              Give your customers real-time delivery tracking with SMS and WhatsApp notifications at every stage — from order confirmed to out for delivery to delivered. Your customers will never have to ask "where is my order?" again.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-5">
+            <div className="h-10 w-10 rounded-xl bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center mb-3">
+              <Calculator className="h-5 w-5 text-orange-600" />
+            </div>
+            <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Smart Shipping Rates</h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
+              Automatic shipping rate calculation based on weight, dimensions, distance, and carrier pricing. Offer your customers multiple delivery options — standard, express, same-day — with accurate pricing at checkout.
+            </p>
+          </div>
+        </div>
+      </section>
 
       {/* Shipping Zones */}
       <section className="space-y-3">
