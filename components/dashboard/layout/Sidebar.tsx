@@ -12,7 +12,8 @@ import {
   Brain, BarChart3, Crown,
   Headphones, Settings, LogOut, DollarSign,
   ChevronLeft, ChevronRight, Menu, X,
-  Tags, CreditCard, UserPlus, LayoutTemplate, Mail
+  Tags, CreditCard, UserPlus, LayoutTemplate, Mail,
+  FileText, Ticket, Bell, Truck
 } from 'lucide-react';
 import { useAuthStore } from '@/features/auth/store/auth.store';
 import { UserRole } from '@/features/auth/types';
@@ -27,11 +28,15 @@ const OWNER_ITEMS = [
   { id: 'orders', label: 'Orders', icon: ShoppingCart, href: '/dashboard/orders' },
   { id: 'customers', label: 'Customers', icon: Users, href: '/dashboard/customers' },
   { id: 'payments', label: 'Payments', icon: DollarSign, href: '/dashboard/payments' },
+  { id: 'invoices', label: 'Invoices', icon: FileText, href: '/dashboard/invoices' },
+  { id: 'shipping', label: 'Shipping', icon: Truck, href: '/dashboard/shipping' },
+  { id: 'coupons', label: 'Coupons', icon: Ticket, href: '/dashboard/coupons' },
   { id: 'subscription', label: 'Subscription', icon: Crown, href: '/dashboard/subscription' },
   { id: 'staff', label: 'Staff', icon: UserPlus, href: '/dashboard/team' },
   { id: 'custom-solutions', label: 'Custom Solutions', icon: Package, href: '/dashboard/custom-solutions' },
   { id: 'ai', label: 'Carticom AI', icon: Brain, href: '/dashboard/ai' },
   { id: 'analytics', label: 'Analytics', icon: BarChart3, href: '/dashboard/analytics' },
+  { id: 'notifications', label: 'Notifications', icon: Bell, href: '/dashboard/notifications' },
   { id: 'settings', label: 'Settings', icon: Settings, href: '/dashboard/settings' },
   { id: 'support', label: 'Support', icon: Headphones, href: '/dashboard/support' },
 ];
@@ -80,9 +85,9 @@ function getRoleItems(role: string | undefined) {
 
 const NAV_GROUPS: Record<string, { label: string; keys: string[] }[]> = {
   [UserRole.BUSINESS_OWNER]: [
-    { label: 'Menu', keys: ['dashboard', 'store', 'templates', 'products', 'categories', 'orders', 'customers', 'payments'] },
+    { label: 'Menu', keys: ['dashboard', 'store', 'templates', 'products', 'categories', 'orders', 'customers', 'payments', 'invoices', 'shipping', 'coupons'] },
     { label: 'Manage', keys: ['subscription', 'staff', 'custom-solutions', 'ai'] },
-    { label: 'Insights', keys: ['analytics', 'settings', 'support'] },
+    { label: 'Insights', keys: ['analytics', 'notifications', 'settings', 'support'] },
   ],
   [UserRole.STAFF]: [
     { label: 'Menu', keys: ['dashboard', 'orders', 'products', 'customers', 'categories'] },

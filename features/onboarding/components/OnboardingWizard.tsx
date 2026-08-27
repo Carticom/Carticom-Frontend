@@ -10,7 +10,9 @@ import { StoreSetupStep } from './steps/StoreSetupStep';
 import { StoreBrandingStep } from './steps/StoreBrandingStep';
 import { TemplateSelectStep } from './steps/TemplateSelectStep';
 import { FirstProductStep } from './steps/FirstProductStep';
+import { InviteStaffStep } from './steps/InviteStaffStep';
 import { PaymentsStep } from './steps/PaymentsStep';
+import { SubscriptionLaunchStep } from './steps/SubscriptionLaunchStep';
 import { SubscriptionStep } from './steps/SubscriptionStep';
 import { AIStep } from './steps/AIStep';
 import { CompletionStep } from './steps/CompletionStep';
@@ -25,7 +27,9 @@ const STEPS = [
   'store-branding',
   'template',
   'first-product',
+  'invite-staff',
   'payments',
+  'subscription-launch',
   'subscription',
   'ai',
   'complete',
@@ -127,8 +131,12 @@ export function OnboardingWizard() {
             onProductCreated={() => {}}
           />
         );
+      case 'invite-staff':
+        return <InviteStaffStep key="invite-staff" onNext={goNext} onBack={goBack} />;
       case 'payments':
         return <PaymentsStep key="payments" onNext={goNext} onBack={goBack} />;
+      case 'subscription-launch':
+        return <SubscriptionLaunchStep key="subscription-launch" onNext={goNext} onBack={goBack} store={store} />;
       case 'subscription':
         return <SubscriptionStep key="subscription" onNext={goNext} onBack={goBack} />;
       case 'ai':

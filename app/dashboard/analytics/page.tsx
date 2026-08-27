@@ -33,6 +33,41 @@ function computeGrowth(trend: { value: number }[]): number | null {
   return ((last - first) / first) * 100;
 }
 
+function convertToCsv(data: { metrics: { revenue: number; orders: number; products: number; customers: number; conversionRate: number; averageOrderValue: number }; topProducts: { productName: string; revenue: number; orders: number }[]; topCategories: { categoryName: string; revenue: number; orders: number }[] }): string {
+  const rows = ['Metric,Value'];
+  rows.push(`Revenue,${data.metrics.revenue}`);
+  rows.push(`Orders,${data.metrics.orders}`);
+  rows.push(`Products,${data.metrics.products}`);
+  rows.push(`Customers,${data.metrics.customers}`);
+  rows.push(`Conversion Rate,${(data.metrics.conversionRate * 100).toFixed(1)}%`);
+  rows.push(`Average Order Value,${data.metrics.averageOrderValue}`);
+  rows.push('');
+  rows.push('Top Products');
+  rows.push('Product,Revenue,Orders');
+  data.topProducts.forEach((p) => {
+    rows.push(`${p.productName},${p.revenue},${p.orders}`);
+  });
+  rows.push('');
+  rows.push('Top Categories');
+  rows.push('Category,Revenue,Orders');
+  data.topCategories.forEach((c) => {
+    rows.push(`${c.categoryName},${c.revenue},${c.orders}`);
+  });
+  return rows.join('\n');
+}
+
+function downloadFile(content: string, filename: string, mimeType: string) {
+  const blob = new Blob([content], { type: mimeType });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
 export default function AnalyticsPage() {
   const { storeId } = useCurrentStoreId();
   const [activePeriod, setActivePeriod] = useState('7 Days');
@@ -67,8 +102,22 @@ export default function AnalyticsPage() {
           </p>
         </div>
         <div className="flex gap-2">
-          <button className="px-3 py-1.5 border border-gray-300 dark:border-gray-700 rounded-lg text-sm">Export CSV</button>
-          <button className="px-3 py-1.5 border border-gray-300 dark:border-gray-700 rounded-lg text-sm">Export PDF</button>
+          <button
+            onClick={() => {
+              if (!analytics) return;
+              const csv = convertToCsv(analytics);
+              downloadFile(csv, 'analytics.csv', 'text/csv');
+            }}
+            className="px-3 py-1.5 border border-gray-300 dark:border-gray-700 rounded-lg text-sm"
+          >
+            Export CSV
+          </button>
+          <button
+            onClick={() => window.print()}
+            className="px-3 py-1.5 border border-gray-300 dark:border-gray-700 rounded-lg text-sm"
+          >
+            Export PDF
+          </button>
         </div>
       </div>
 

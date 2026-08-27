@@ -99,6 +99,8 @@ export interface UpdateStoreDto {
   primaryColor?: string;
   secondaryColor?: string;
   fontFamily?: string;
+  seoTitle?: string;
+  seoDescription?: string;
 }
 
 // ─── Product ──────────────────────────────────────────────────

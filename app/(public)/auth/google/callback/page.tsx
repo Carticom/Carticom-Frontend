@@ -47,7 +47,7 @@ function GoogleCallbackContent() {
         const backendData = res.data?.data;
 
         if (!res.data?.success || !backendData?.accessToken) {
-          setError(backendData?.error?.message ?? 'Google sign-in failed. Please try again.');
+          setError('Google sign-in failed. Please try again.');
           return;
         }
 

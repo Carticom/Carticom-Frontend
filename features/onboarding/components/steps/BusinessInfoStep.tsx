@@ -11,7 +11,31 @@ import { Textarea } from '@/components/ui/textarea';
 import { Building2, Upload, Loader2 } from 'lucide-react';
 import { businessInfoSchema, type BusinessInfoFormData } from '@/features/onboarding/schemas';
 import { useCreateStore } from '@/features/onboarding/hooks/useOnboarding';
+import { axiosInstance } from '@/lib/axios';
 import type { StoreDto } from '@/features/onboarding/types';
+
+const BUSINESS_CATEGORY_OPTIONS = [
+  'Fashion & Clothing',
+  'Electronics & Gadgets',
+  'Food & Beverages',
+  'Health & Beauty',
+  'Home & Furniture',
+  'Sports & Fitness',
+  'Books & Stationery',
+  'Arts & Crafts',
+  'Agriculture & Grocery',
+  'Services (Salon, Repair, etc.)',
+  'Other',
+];
+
+const COUNTRY_CURRENCY_MAP: Record<string, string> = {
+  Nigeria: 'NGN',
+  Ghana: 'GHS',
+  Kenya: 'KES',
+  'South Africa': 'ZAR',
+  'United States': 'USD',
+  'United Kingdom': 'GBP',
+};
 
 interface BusinessInfoStepProps {
   onNext: () => void;
@@ -25,6 +49,8 @@ export function BusinessInfoStep({ onNext, onBack, initialData, onSave, onStoreC
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [bannerFile, setBannerFile] = useState<File | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [country, setCountry] = useState('Nigeria');
+  const [currency, setCurrency] = useState('NGN');
   const createStore = useCreateStore();
 
   const {
@@ -58,8 +84,22 @@ export function BusinessInfoStep({ onNext, onBack, initialData, onSave, onStoreC
         businessCategory: data.businessCategory,
         email: data.email || undefined,
         address: data.address || undefined,
-        country: 'Nigeria',
-        currency: 'NGN'});
+        country,
+        currency});
+
+      if (logoFile && store.id) {
+        const formData = new FormData();
+        formData.append('file', logoFile);
+        await axiosInstance.post(`/api/v1/stores/${store.id}/logo`, formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }});
+      }
+      if (bannerFile && store.id) {
+        const formData = new FormData();
+        formData.append('file', bannerFile);
+        await axiosInstance.post(`/api/v1/stores/${store.id}/banner`, formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }});
+      }
+
       onStoreCreated(store);
       onNext();
     } catch (err) {
@@ -100,7 +140,16 @@ export function BusinessInfoStep({ onNext, onBack, initialData, onSave, onStoreC
           </div>
           <div className="space-y-2">
             <Label htmlFor="businessCategory">Business Category *</Label>
-            <Input id="businessCategory" placeholder="Electronics, Fashion, etc." {...register('businessCategory')} />
+            <select
+              id="businessCategory"
+              {...register('businessCategory')}
+              className="flex h-10 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white ring-offset-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">Select a category</option>
+              {BUSINESS_CATEGORY_OPTIONS.map((cat) => (
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
+            </select>
             {errors.businessCategory && (
               <p className="text-sm text-red-500">{errors.businessCategory.message}</p>
             )}
@@ -127,6 +176,39 @@ export function BusinessInfoStep({ onNext, onBack, initialData, onSave, onStoreC
         <div className="space-y-2">
           <Label htmlFor="address">Business Address</Label>
           <Input id="address" placeholder="123 Business Street, Lagos" {...register('address')} />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="country">Country *</Label>
+            <select
+              id="country"
+              value={country}
+              onChange={(e) => {
+                const val = e.target.value;
+                setCountry(val);
+                setCurrency(COUNTRY_CURRENCY_MAP[val] || 'USD');
+              }}
+              className="flex h-10 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white ring-offset-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              {Object.keys(COUNTRY_CURRENCY_MAP).map((c) => (
+                <option key={c} value={c}>{c}</option>
+              ))}
+            </select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="currency">Currency *</Label>
+            <select
+              id="currency"
+              value={currency}
+              onChange={(e) => setCurrency(e.target.value)}
+              className="flex h-10 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white ring-offset-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              {Object.values(COUNTRY_CURRENCY_MAP).filter((v, i, a) => a.indexOf(v) === i).map((cur) => (
+                <option key={cur} value={cur}>{cur}</option>
+              ))}
+            </select>
+          </div>
         </div>
 
         <div className="space-y-2">

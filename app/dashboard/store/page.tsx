@@ -81,6 +81,20 @@ const handleSave = () => {
     }
   };
 
+  const handleSaveSeo = async () => {
+    if (!store) return;
+    try {
+      await updateStore.mutateAsync({
+        id: store.id,
+        data: { seoTitle, seoDescription: seoDesc },
+      });
+      showToast('success', 'SEO settings saved');
+      refetch();
+    } catch {
+      showToast('error', 'Failed to save SEO settings');
+    }
+  };
+
   const handleTogglePublish = async () => {
     if (!store) return;
     setPublishing(true);
@@ -373,15 +387,13 @@ const handleSave = () => {
               <div>
                 <button
                   type="button"
-                  disabled
-                  title="Search engine metadata publishing is coming soon — your store name and description are used automatically."
-                  className="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                  onClick={handleSaveSeo}
+                  className="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm"
                 >
                   Save SEO
                 </button>
                 <p className="text-xs text-gray-500 mt-2">
-                  Your storefront already publishes your store name and description for search engines. Full SEO
-                  customization is coming soon.
+                  Your storefront already publishes your store name and description for search engines.
                 </p>
               </div>
             </div>

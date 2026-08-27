@@ -1,10 +1,13 @@
 'use client';
 
+import { useState } from 'react';
 import { useCurrentStoreId } from '@/hooks/useCurrentStore';
 import { useAIConfig, useToggleAI } from '@/features/dashboard/hooks/useAI';
 import { LoadingState, ErrorState, EmptyState } from '@/components/dashboard/shared/StateComponents';
 import { AIStatus } from '@/features/dashboard/types/ai.types';
-import { MessageSquare, ShoppingCart, TrendingUp, Brain } from 'lucide-react';
+import { MessageSquare, ShoppingCart, TrendingUp, Brain, Loader2 } from 'lucide-react';
+import axiosInstance from '@/lib/axios';
+import { showToast } from '@/lib/notifications/toast';
 
 const statusColors: Record<AIStatus, string> = {
   [AIStatus.ACTIVE]: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
@@ -16,6 +19,8 @@ export default function AIPage() {
   const { storeId } = useCurrentStoreId();
   const { data: aiConfig, isLoading, error, refetch } = useAIConfig(storeId ?? '');
   const toggleMutation = useToggleAI();
+  const [aiLoading, setAiLoading] = useState<string | null>(null);
+  const [aiResult, setAiResult] = useState<string | null>(null);
 
   const handleToggle = () => {
     if (!aiConfig || !storeId) return;
@@ -122,12 +127,46 @@ export default function AIPage() {
         ].map((action) => (
           <button
             key={action}
-            className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg text-sm font-medium text-gray-900 dark:text-white hover:border-blue-500 transition-colors"
+            onClick={async () => {
+              if (!storeId) return;
+              setAiLoading(action);
+              setAiResult(null);
+              try {
+                const res = await axiosInstance.post('/api/v1/ai/generate', {
+                  action,
+                  storeId,
+                });
+                const data = res.data?.data;
+                setAiResult(data?.result ?? `AI action "${action}" completed.`);
+                showToast('success', `${action} completed`);
+              } catch {
+                showToast('info', `${action} — Coming soon`);
+                setAiResult(null);
+              } finally {
+                setAiLoading(null);
+              }
+            }}
+            disabled={!!aiLoading}
+            className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg text-sm font-medium text-gray-900 dark:text-white hover:border-blue-500 transition-colors disabled:opacity-50"
           >
-            {action}
+            {aiLoading === action ? (
+              <span className="flex items-center justify-center gap-2">
+                <Loader2 className="h-4 w-4 animate-spin" />
+                Running...
+              </span>
+            ) : (
+              action
+            )}
           </button>
         ))}
       </div>
+
+      {aiResult && (
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">AI Result</h2>
+          <p className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{aiResult}</p>
+        </div>
+      )}
     </div>
   );
 }

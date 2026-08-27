@@ -8,9 +8,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Plus, Loader2 } from 'lucide-react';
+import { Plus, Loader2, X } from 'lucide-react';
 import { firstProductSchema, type FirstProductFormData } from '@/features/onboarding/schemas';
 import { useCreateProduct } from '@/features/onboarding/hooks/useOnboarding';
+import { axiosInstance } from '@/lib/axios';
 
 interface FirstProductStepProps {
   onNext: () => void;
@@ -21,6 +22,7 @@ interface FirstProductStepProps {
 
 export function FirstProductStep({ onNext, onBack, storeId, onProductCreated }: FirstProductStepProps) {
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [images, setImages] = useState<File[]>([]);
   const createProduct = useCreateProduct();
 
   const {
@@ -47,6 +49,28 @@ export function FirstProductStep({ onNext, onBack, storeId, onProductCreated }: 
         description: data.description || undefined,
         price: Number(data.price),
         quantity: Number(data.quantity)});
+
+      if (product?.id && images.length > 0) {
+        const uploadedUrls: string[] = [];
+        for (const image of images) {
+          const formData = new FormData();
+          formData.append('file', image);
+          formData.append('folder', 'products');
+          const res = await axiosInstance.post<{ data: { url: string } }>(
+            '/api/v1/storage/upload',
+            formData,
+            { headers: { 'Content-Type': 'multipart/form-data' } }
+          );
+          if (res.data?.data?.url) {
+            uploadedUrls.push(res.data.data.url);
+          }
+        }
+        if (uploadedUrls.length > 0) {
+          await axiosInstance.put(`/api/v1/products/${product.id}`, {
+            imageUrl: uploadedUrls[0],
+            images: JSON.stringify(uploadedUrls)});
+        }
+      }
 
       if (product?.id) {
         onProductCreated(product.id);
@@ -121,11 +145,39 @@ export function FirstProductStep({ onNext, onBack, storeId, onProductCreated }: 
             <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700">
               <div className="flex flex-col items-center justify-center pt-5 pb-6">
                 <Plus className="h-8 w-8 text-gray-500 dark:text-gray-400 mb-2" />
-                <p className="text-sm text-gray-500 dark:text-gray-400">Click to upload product images</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {images.length > 0 ? `${images.length} image(s) selected` : 'Click to upload product images'}
+                </p>
               </div>
-              <input type="file" className="hidden" accept="image/*" multiple />
+              <input
+                type="file"
+                className="hidden"
+                accept="image/*"
+                multiple
+                onChange={(e) => setImages(Array.from(e.target.files || []))}
+              />
             </label>
           </div>
+          {images.length > 0 && (
+            <div className="flex gap-2 mt-2 flex-wrap">
+              {images.map((file, idx) => (
+                <div key={idx} className="relative w-16 h-16 rounded-lg overflow-hidden border border-gray-200">
+                  <img
+                    src={URL.createObjectURL(file)}
+                    alt={`Preview ${idx + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setImages(images.filter((_, i) => i !== idx))}
+                    className="absolute top-0.5 right-0.5 bg-red-500 text-white rounded-full p-0.5"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="p-4 rounded-lg border border-blue-200 dark:border-blue-900 bg-blue-50 dark:bg-blue-900/20">

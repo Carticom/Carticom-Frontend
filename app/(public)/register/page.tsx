@@ -6,6 +6,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Eye, EyeOff, Loader2, AlertCircle } from 'lucide-react';
@@ -17,6 +18,7 @@ import type { RegisterBusinessOwnerSchema } from '@/features/auth/schemas';
 
 export default function RegisterPage() {
   const { register: authRegister } = useAuth();
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
@@ -45,7 +47,8 @@ export default function RegisterPage() {
 
     if (result.success) {
       authToasts.registerSuccess();
-      // On success, the useAuth hook handles redirect via login
+      // Redirect new users to onboarding
+      router.push('/onboarding');
     } else {
       const errorMessage = result.error ?? 'Registration failed. Please try again.';
       setServerError(errorMessage);

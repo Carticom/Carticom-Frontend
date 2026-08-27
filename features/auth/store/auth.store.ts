@@ -84,6 +84,11 @@ export const useAuthStore = create<AuthState>()(
         // Redirect to change-password if mustChangePassword is set
         if (user.mustChangePassword && typeof window !== 'undefined') {
           window.location.href = '/change-password';
+          return;
+        }
+        // Redirect to onboarding if not completed
+        if (user.onboardingCompleted === false && typeof window !== 'undefined') {
+          window.location.href = '/onboarding';
         }
       },
 
@@ -175,6 +180,11 @@ export const useAuthStore = create<AuthState>()(
               set({ user, isLoading: false, isAuthenticated: true });
               if (user?.mustChangePassword && typeof window !== 'undefined') {
                 window.location.href = '/change-password';
+                return;
+              }
+              if (user?.onboardingCompleted === false && typeof window !== 'undefined') {
+                window.location.href = '/onboarding';
+                return;
               }
               return;
             } catch {
@@ -201,6 +211,11 @@ export const useAuthStore = create<AuthState>()(
               if (user?.role) setSessionMarker(user.role, 3600);
               if (user?.mustChangePassword && typeof window !== 'undefined') {
                 window.location.href = '/change-password';
+                return;
+              }
+              if (user?.onboardingCompleted === false && typeof window !== 'undefined') {
+                window.location.href = '/onboarding';
+                return;
               }
               return;
             }
