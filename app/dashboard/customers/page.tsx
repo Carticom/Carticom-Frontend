@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useMemo } from 'react';
 import { useCurrentStoreId } from '@/hooks/useCurrentStore';
 import Image from 'next/image';
 import { useCustomers } from '@/features/dashboard/hooks/useCustomers';
@@ -8,7 +9,7 @@ import type { CustomerDto } from '@/features/dashboard/types/customers.types';
 import { Download } from 'lucide-react';
 
 function formatCurrency(amount: number) {
-  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
+  return new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 0 }).format(amount);
 }
 
 function formatDate(dateStr: string) {
@@ -34,7 +35,19 @@ function exportCustomersCsv(customers: CustomerDto[]) {
 
 export default function CustomersPage() {
   const { storeId } = useCurrentStoreId();
+  const [search, setSearch] = useState('');
   const { data: customers, isLoading, error, refetch } = useCustomers(storeId ?? '', { page: 0, limit: 50 });
+
+  const filteredCustomers = useMemo(() => {
+    if (!customers) return [];
+    if (!search.trim()) return customers;
+    const q = search.toLowerCase();
+    return customers.filter((c: CustomerDto) =>
+      `${c.firstName} ${c.lastName}`.toLowerCase().includes(q) ||
+      c.email.toLowerCase().includes(q) ||
+      (c.phone && c.phone.toLowerCase().includes(q))
+    );
+  }, [customers, search]);
 
   if (!storeId || isLoading) return <LoadingState message="Loading customers..." />;
   if (error) return <ErrorState title="Failed to load customers" onRetry={refetch} />;
@@ -61,7 +74,7 @@ export default function CustomersPage() {
           <p className="text-gray-600 dark:text-gray-400 mt-2">Manage your customer relationships</p>
         </div>
         <button
-          onClick={() => exportCustomersCsv(customers)}
+          onClick={() => exportCustomersCsv(filteredCustomers)}
           className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg text-sm hover:bg-gray-50 dark:hover:bg-gray-800"
         >
           <Download className="h-4 w-4" /> Export CSV
@@ -72,6 +85,8 @@ export default function CustomersPage() {
         <input
           type="text"
           placeholder="Search customers..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
           className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white mb-4"
         />
 
@@ -88,7 +103,7 @@ export default function CustomersPage() {
               </tr>
             </thead>
             <tbody>
-              {customers.map((customer: CustomerDto) => (
+              {filteredCustomers.map((customer: CustomerDto) => (
                 <tr key={customer.id} className="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50">
                   <td className="py-3 px-4">
                     <div className="flex items-center gap-3">

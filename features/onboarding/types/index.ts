@@ -30,6 +30,7 @@ export interface StoreDto {
   whatsappNumber?: string;
   seoTitle?: string;
   seoDescription?: string;
+  customCss?: string;
   phone?: string;
   email?: string;
   address?: string;
@@ -101,6 +102,11 @@ export interface UpdateStoreDto {
   fontFamily?: string;
   seoTitle?: string;
   seoDescription?: string;
+  facebookUrl?: string;
+  instagramUrl?: string;
+  twitterUrl?: string;
+  whatsappNumber?: string;
+  customCss?: string;
 }
 
 // ─── Product ──────────────────────────────────────────────────

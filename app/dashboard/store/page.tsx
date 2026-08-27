@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { useAuthStore } from '@/features/auth/store/auth.store';
 import { useMyStores, useUpdateStore } from '@/features/onboarding/hooks/useOnboarding';
@@ -37,23 +37,24 @@ const [editing, setEditing] = useState(false);
   const [customCss, setCustomCss] = useState('');
 
   const [syncedStore, setSyncedStore] = useState<typeof store>(null);
-  if (store !== syncedStore) {
-    setSyncedStore(store);
-if (store) {
+
+  useEffect(() => {
+    if (store && store !== syncedStore) {
+      setSyncedStore(store);
       setName(store.name ?? '');
       setDescription(store.description ?? '');
       setSeoTitle(store.name ?? '');
       setSeoDesc(store.description ?? '');
-      setPrimaryColor((store as any).primaryColor ?? '#4f46e5');
-      setSecondaryColor((store as any).secondaryColor ?? '#7c3aed');
-      setFontFamily((store as any).fontFamily ?? 'Inter');
-      setFacebookUrl((store as any).facebookUrl ?? '');
-      setInstagramUrl((store as any).instagramUrl ?? '');
-      setTwitterUrl((store as any).twitterUrl ?? '');
-      setWhatsappNumber((store as any).whatsappNumber ?? '');
-      setCustomCss((store as any).customCss ?? '');
+      setPrimaryColor(store.primaryColor ?? '#4f46e5');
+      setSecondaryColor(store.secondaryColor ?? '#7c3aed');
+      setFontFamily(store.fontFamily ?? 'Inter');
+      setFacebookUrl(store.facebookUrl ?? '');
+      setInstagramUrl(store.instagramUrl ?? '');
+      setTwitterUrl(store.twitterUrl ?? '');
+      setWhatsappNumber(store.whatsappNumber ?? '');
+      setCustomCss(store.customCss ?? '');
     }
-  }
+  }, [store, syncedStore]);
 
 const handleSave = () => {
     if (!store) return;
@@ -116,7 +117,7 @@ const handleSave = () => {
     try {
       await updateStore.mutateAsync({
         id: store.id,
-        data: { primaryColor, secondaryColor } as any,
+        data: { primaryColor, secondaryColor },
       });
       showToast('success', 'Colors saved');
       refetch();
@@ -130,7 +131,7 @@ const handleSave = () => {
     try {
       await updateStore.mutateAsync({
         id: store.id,
-        data: { fontFamily } as any,
+        data: { fontFamily },
       });
       showToast('success', 'Font saved');
       refetch();
@@ -144,7 +145,7 @@ const handleSave = () => {
     try {
       await updateStore.mutateAsync({
         id: store.id,
-        data: { facebookUrl, instagramUrl, twitterUrl, whatsappNumber } as any,
+        data: { facebookUrl, instagramUrl, twitterUrl, whatsappNumber },
       });
       showToast('success', 'Social links saved');
       refetch();
@@ -158,7 +159,7 @@ const handleSave = () => {
     try {
       await updateStore.mutateAsync({
         id: store.id,
-        data: { customCss } as any,
+        data: { customCss },
       });
       showToast('success', 'Custom CSS saved');
       refetch();

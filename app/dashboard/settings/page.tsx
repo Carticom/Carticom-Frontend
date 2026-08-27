@@ -62,20 +62,23 @@ export default function SettingsPage() {
   const [facebookEnabled, setFacebookEnabled] = useState(false);
 
   const [syncedSettings, setSyncedSettings] = useState<SettingsDto | undefined>(undefined);
-  if (settings !== syncedSettings) {
-    setSyncedSettings(settings);
-    if (settings?.business) {
-      setBusinessName(settings.business.businessName ?? '');
-      setPhone(settings.business.phone ?? '');
-      setEmail(settings.business.email ?? '');
-      setAddress(settings.business.address ?? '');
+
+  useEffect(() => {
+    if (settings && settings !== syncedSettings) {
+      setSyncedSettings(settings);
+      if (settings.business) {
+        setBusinessName(settings.business.businessName ?? '');
+        setPhone(settings.business.phone ?? '');
+        setEmail(settings.business.email ?? '');
+        setAddress(settings.business.address ?? '');
+      }
+      if (settings.notifications) {
+        setEmailNotifications(settings.notifications.emailNotifications ?? false);
+        setOrderNotifications(settings.notifications.orderNotifications ?? false);
+        setMarketingEmails(settings.notifications.marketingEmails ?? false);
+      }
     }
-    if (settings?.notifications) {
-      setEmailNotifications(settings.notifications.emailNotifications ?? false);
-      setOrderNotifications(settings.notifications.orderNotifications ?? false);
-      setMarketingEmails(settings.notifications.marketingEmails ?? false);
-    }
-  }
+  }, [settings, syncedSettings]);
 
   useEffect(() => {
     if (user) {

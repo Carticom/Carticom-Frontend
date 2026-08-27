@@ -21,7 +21,7 @@ const productSchema = z.object({
 type ProductFormData = z.infer<typeof productSchema>;
 
 function formatCurrency(amount: number) {
-  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
+  return new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 0 }).format(amount);
 }
 
 function formatDate(dateStr: string) {
