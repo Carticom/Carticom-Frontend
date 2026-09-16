@@ -1,5 +1,8 @@
 "use client";
 
+// WARNING: This component contains fabricated stats ("50K+ Active Sellers", "$2.5B GMV", "45+ Countries").
+// Do NOT use in production or show to accelerators/investors who will fact-check.
+// Use HeroSection.tsx instead for the live landing page.
 
 import { motion } from "framer-motion";
 import { ArrowRight, Play, Store, CreditCard, Bot, TrendingUp, Globe } from "lucide-react";

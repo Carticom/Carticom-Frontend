@@ -1,17 +1,11 @@
 'use client';
 
-import { useEffect } from 'react';
-
 export default function RootErrorBoundary({
   error,
   reset}: {
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-  useEffect(() => {
-    console.error('Root error:', error);
-  }, [error]);
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="text-center max-w-md mx-auto px-4">

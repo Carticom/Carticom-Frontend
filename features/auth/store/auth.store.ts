@@ -67,7 +67,6 @@ export const useAuthStore = create<AuthState>()(
       // ─── Login ────────────────────────────────────────────
       login: (user: UserDto, tokens: AuthTokens) => {
         if (!tokens?.accessToken) {
-          console.error('Login called without accessToken');
           return;
         }
         setAccessToken(tokens.accessToken);
@@ -115,7 +114,6 @@ export const useAuthStore = create<AuthState>()(
       // ─── Set Tokens ───────────────────────────────────────
       setTokens: (tokens: AuthTokens) => {
         if (!tokens?.accessToken) {
-          console.error('setTokens called without accessToken');
           return;
         }
         setAccessToken(tokens.accessToken);

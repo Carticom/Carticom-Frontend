@@ -2,9 +2,13 @@
 // CARTICOM — Storefront Customer Auth
 // Store-scoped customer accounts. Separate from the business
 // owner session: token lives in its own localStorage key.
+// Also integrates with the shared axios instance for API calls.
 // ============================================================
 
+import { setAccessToken, setRefreshTokenValue } from '@/lib/axios';
+
 const CUSTOMER_TOKEN_KEY = 'carticom_customer_token';
+const CUSTOMER_REFRESH_KEY = 'carticom_customer_refresh';
 const CUSTOMER_USER_KEY = 'carticom_customer_user';
 
 export interface CustomerAuthData {
@@ -44,15 +48,31 @@ export function getCustomerUser(): CustomerAuthData | null {
 export function clearCustomerSession(): void {
   if (typeof window === 'undefined') return;
   window.localStorage.removeItem(CUSTOMER_TOKEN_KEY);
+  window.localStorage.removeItem(CUSTOMER_REFRESH_KEY);
   window.localStorage.removeItem(CUSTOMER_USER_KEY);
+  setAccessToken(null);
+  setRefreshTokenValue(null);
 }
 
 function persist(data: CustomerAuthData): CustomerAuthData {
   if (data.accessToken) {
     window.localStorage.setItem(CUSTOMER_TOKEN_KEY, data.accessToken);
+    setAccessToken(data.accessToken);
+  }
+  if (data.refreshToken) {
+    window.localStorage.setItem(CUSTOMER_REFRESH_KEY, data.refreshToken);
+    setRefreshTokenValue(data.refreshToken);
   }
   window.localStorage.setItem(CUSTOMER_USER_KEY, JSON.stringify(data));
   return data;
+}
+
+/** Restore customer session into axios on page load */
+export function restoreCustomerSession(): void {
+  const token = getCustomerToken();
+  if (token) {
+    setAccessToken(token);
+  }
 }
 
 async function parse(res: Response): Promise<CustomerAuthData> {

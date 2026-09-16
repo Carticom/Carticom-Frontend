@@ -143,7 +143,9 @@ export default function PricingPage() {
             popular: p.name === 'Growth'})));
         }
       })
-      .catch(() => {})
+      .catch(() => {
+        // Fallback plans already loaded — API error is non-critical
+      })
       .finally(() => setLoading(false));
   }, [yearly, isAuthenticated, planHref]);
 

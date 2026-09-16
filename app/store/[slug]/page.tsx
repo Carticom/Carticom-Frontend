@@ -61,11 +61,11 @@ export default function StorePage() {
     setRetryKey((k) => k + 1);
   };
 
-  const handleAddToCart = async (productId: string) => {
+  const handleAddToCart = async (productId: string, variantId?: string) => {
     if (!store) return;
     setAddingToCart(productId);
     try {
-      await cartApi.add({ storeId: store.id, productId, quantity: 1 });
+      await cartApi.add({ storeId: store.id, productId, quantity: 1, variantId });
       showToast('success', 'Added to cart!');
     } catch (err) {
       const msg = extractErrorMessage(err);

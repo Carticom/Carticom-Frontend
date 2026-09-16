@@ -60,7 +60,7 @@ export const config = {
     '/api/auth/:path*',
   ]};
 
-export function proxy(req: NextRequest) {
+export default function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const session = decodeSessionMarker(req.cookies.get('carticom_session')?.value);
 

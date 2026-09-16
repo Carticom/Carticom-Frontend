@@ -9,6 +9,8 @@ import { productApi, cartApi } from '@/features/onboarding/services/onboarding.s
 import type { ProductDto } from '@/features/onboarding/types';
 import { Button } from '@/components/ui/button';
 import { LoadingState, ErrorState } from '@/components/dashboard/shared/StateComponents';
+import { VariantSelector } from '@/components/storefront/VariantSelector';
+import type { SelectedVariant } from '@/components/storefront/VariantSelector';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 
@@ -24,6 +26,7 @@ export default function ProductDetailPage() {
   const [adding, setAdding] = useState(false);
   const [justAdded, setJustAdded] = useState(false);
   const [retryKey, setRetryKey] = useState(0);
+  const [selectedVariants, setSelectedVariants] = useState<SelectedVariant[]>([]);
 
   useEffect(() => {
     if (!id) return;
@@ -58,7 +61,8 @@ export default function ProductDetailPage() {
       await cartApi.add({
         storeId: product.storeId,
         productId: product.id,
-        quantity});
+        quantity,
+        variantId: selectedVariants[0]?.id});
       toast.success(`${product.name} added to cart!`);
       setJustAdded(true);
     } catch {
@@ -91,7 +95,11 @@ export default function ProductDetailPage() {
     }
   }
 
-  const inStock = product.quantity > 0;
+  const effectivePrice = selectedVariants.find(v => v.price != null)?.price ?? product.price;
+  const effectiveStock = selectedVariants.length > 0
+    ? selectedVariants.reduce((min, v) => Math.min(min, v.stock), Infinity)
+    : product.quantity;
+  const inStock = effectiveStock > 0;
 
   return (
     <div className="space-y-6 py-4">
@@ -154,9 +162,9 @@ export default function ProductDetailPage() {
 
           <div className="flex items-baseline gap-3">
             <span className="text-3xl font-bold text-blue-600">
-              {formatPrice(product.price)}
+              {formatPrice(effectivePrice)}
             </span>
-            {product.compareAtPrice && product.compareAtPrice > product.price && (
+            {product.compareAtPrice && product.compareAtPrice > effectivePrice && (
               <span className="text-lg text-gray-500 line-through">
                 {formatPrice(product.compareAtPrice)}
               </span>
@@ -172,9 +180,14 @@ export default function ProductDetailPage() {
                   : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
               )}
             >
-              {inStock ? `In Stock (${product.quantity} available)` : 'Out of Stock'}
+              {inStock ? `In Stock (${effectiveStock} available)` : 'Out of Stock'}
             </span>
           </div>
+
+          <VariantSelector
+            productId={product.id}
+            onChange={setSelectedVariants}
+          />
 
           {product.description && (
             <div>
@@ -205,8 +218,8 @@ export default function ProductDetailPage() {
                   {quantity}
                 </span>
                 <button
-                  onClick={() => setQuantity(Math.min(product.quantity, quantity + 1))}
-                  disabled={quantity >= product.quantity}
+                  onClick={() => setQuantity(Math.min(effectiveStock, quantity + 1))}
+                  disabled={quantity >= effectiveStock}
                   className="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-50 transition-colors"
                   aria-label="Increase quantity"
                 >
@@ -227,7 +240,7 @@ export default function ProductDetailPage() {
             ) : (
               <>
                 <ShoppingCart className="h-5 w-5 mr-2" />
-                Add to Cart — {formatPrice(product.price * quantity)}
+                Add to Cart — {formatPrice(effectivePrice * quantity)}
               </>
             )}
           </Button>

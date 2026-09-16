@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { HeroSection } from '@/components/marketing/HeroSection';
 import { ProblemSection } from '@/components/marketing/ProblemSection';
 import { FeaturesSection } from '@/components/marketing/FeaturesSection';
+import { AISection } from '@/components/marketing/AISection';
 import { HowItWorksSection } from '@/components/marketing/HowItWorksSection';
 import { DashboardShowcase } from '@/components/marketing/DashboardShowcase';
 import { PricingSection } from '@/components/marketing/PricingSection';
@@ -11,20 +12,20 @@ import { CTASection } from '@/components/marketing/CTASection';
 import { FooterSection } from '@/components/marketing/FooterSection';
 
 export const metadata: Metadata = {
-  title: 'Carticom - Sell Online. Grow Your Business.',
-  description: 'Everything you need to sell online. Carticom gives African businesses a simple way to create an online store, manage their business and sell to customers — without needing a developer.',
-  keywords: ['commerce', 'africa', 'ecommerce', 'payments', 'ai', 'business', 'store builder', 'nigeria', 'saas', 'sell online'],
+  title: 'Carticom - AI Commerce Operating System for Africa',
+  description: 'Carticom is the AI commerce operating system for African businesses. Turn WhatsApp and social-media conversations into sales while managing products, customers, orders and operations from one platform.',
+  keywords: ['ai commerce', 'africa', 'ecommerce', 'payments', 'ai', 'business', 'store builder', 'nigeria', 'saas', 'sell online', 'whatsapp commerce', 'social commerce'],
   openGraph: {
-    title: 'Carticom - Sell Online. Grow Your Business.',
-    description: 'Everything you need to sell online. Carticom gives African businesses a simple way to create an online store and sell.',
+    title: 'Carticom - AI Commerce Operating System for Africa',
+    description: 'Turn WhatsApp and social-media conversations into sales. AI-powered commerce for African businesses.',
     type: 'website',
     locale: 'en_NG',
     siteName: 'Carticom',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Carticom - Sell Online. Grow Your Business.',
-    description: 'Everything you need to sell online. Carticom gives African businesses a simple way to create an online store and sell.',
+    title: 'Carticom - AI Commerce Operating System for Africa',
+    description: 'Turn WhatsApp and social-media conversations into sales. AI-powered commerce for African businesses.',
   },
 };
 
@@ -34,6 +35,7 @@ export default function Home() {
       <HeroSection />
       <ProblemSection />
       <FeaturesSection />
+      <AISection />
       <HowItWorksSection />
       <DashboardShowcase />
       <PricingSection />

@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect } from 'react';
 import Link from 'next/link';
 
 export default function StorefrontErrorBoundary({
@@ -9,10 +8,6 @@ export default function StorefrontErrorBoundary({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-  useEffect(() => {
-    console.error('Storefront error:', error);
-  }, [error]);
-
   return (
     <div className="flex flex-col items-center justify-center py-20">
       <h2 className="text-2xl font-bold text-gray-900 mb-2">Storefront error</h2>

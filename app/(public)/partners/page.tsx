@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Container } from '@/components/common/Container';
-import { Handshake, Building2, Store, GitBranch, GraduationCap, ArrowRight, Star, Users } from 'lucide-react';
+import { Handshake, Building2, Store, GitBranch, GraduationCap, ArrowRight } from 'lucide-react';
 
 const partnerTypes = [
   {
@@ -27,23 +27,6 @@ const partnerTypes = [
     benefits: ['Student accounts', 'Curriculum resources', 'Certification programs', 'Guest lectures']},
 ];
 
-const stats = [
-  { value: '200+', label: 'Active Partners', icon: Handshake },
-  { value: '50+', label: 'Countries', icon: Globe },
-  { value: '98%', label: 'Partner Satisfaction', icon: Star },
-  { value: '15,000+', label: 'Merchants Served', icon: Users },
-];
-
-function Globe({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="10" />
-      <line x1="2" y1="12" x2="22" y2="12" />
-      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-    </svg>
-  );
-}
-
 export default function PartnersPage() {
   return (
     <main className="flex-1 py-16">
@@ -63,23 +46,6 @@ export default function PartnersPage() {
             Together, we can empower businesses across the continent.
           </p>
         </motion.div>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20">
-          {stats.map((stat, index) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: index * 0.1 }}
-              className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm text-center"
-            >
-              <stat.icon className="w-8 h-8 text-blue-600 mx-auto mb-3" />
-              <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
-              <p className="text-sm text-gray-500 mt-1">{stat.label}</p>
-            </motion.div>
-          ))}
-        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
           {partnerTypes.map((partner, index) => (

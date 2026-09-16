@@ -1,6 +1,6 @@
 'use client';
 
-export default function DashboardErrorBoundary({
+export default function StaffErrorBoundary({
   error,
   reset}: {
   error: Error & { digest?: string };

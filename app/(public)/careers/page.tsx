@@ -2,16 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Container } from '@/components/common/Container';
-import { Briefcase, MapPin, Clock, Users, Rocket, Heart, Lightbulb, Handshake } from 'lucide-react';
-
-const openRoles = [
-  { title: 'Senior Software Engineer', department: 'Engineering', location: 'Lagos, Nigeria', type: 'Full-time' },
-  { title: 'Product Designer', department: 'Design', location: 'Remote', type: 'Full-time' },
-  { title: 'Customer Success Manager', department: 'Operations', location: 'Lagos, Nigeria', type: 'Full-time' },
-  { title: 'Marketing Lead', department: 'Marketing', location: 'Lagos, Nigeria', type: 'Full-time' },
-  { title: 'Data Analyst', department: 'Data', location: 'Remote', type: 'Contract' },
-  { title: 'DevOps Engineer', department: 'Engineering', location: 'Remote', type: 'Full-time' },
-];
+import { Briefcase, Rocket, Heart, Lightbulb, Handshake } from 'lucide-react';
 
 const values = [
   { icon: Rocket, title: 'Innovation', description: 'We push boundaries to build solutions that empower African businesses.' },
@@ -63,51 +54,10 @@ export default function CareersPage() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mb-12"
-        >
-          <h2 className="text-2xl font-bold text-gray-900 mb-8">Open Positions</h2>
-          <div className="space-y-4">
-            {openRoles.map((role, index) => (
-              <motion.div
-                key={role.title}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.3, delay: index * 0.05 }}
-                className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm flex flex-wrap items-center justify-between gap-4 hover:shadow-md transition-shadow cursor-pointer group"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
-                    <Briefcase className="w-5 h-5 text-blue-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900">{role.title}</h3>
-                    <p className="text-sm text-gray-500">{role.department}</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-4 text-sm text-gray-500">
-                  <span className="flex items-center gap-1">
-                    <MapPin className="w-4 h-4" />
-                    {role.location}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Clock className="w-4 h-4" />
-                    {role.type}
-                  </span>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
           className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl p-10 text-center text-white"
         >
-          <Users className="w-12 h-12 mx-auto mb-4 opacity-80" />
-          <h2 className="text-2xl font-bold mb-3">Do Not See a Role That Fits?</h2>
+          <Briefcase className="w-12 h-12 mx-auto mb-4 opacity-80" />
+          <h2 className="text-2xl font-bold mb-3">We Are Hiring</h2>
           <p className="text-blue-100 mb-6 max-w-lg mx-auto">
             We are always looking for talented individuals. Send us your resume and we will keep you in mind for future opportunities.
           </p>

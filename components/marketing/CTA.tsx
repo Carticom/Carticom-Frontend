@@ -1,5 +1,8 @@
 'use client';
 
+// WARNING: This component contains fabricated stats ("Join 50,000+ African businesses").
+// Do NOT use in production or show to accelerators/investors who will fact-check.
+// Use CTASection.tsx instead for the live landing page.
 
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles, CheckCircle } from 'lucide-react';

@@ -44,7 +44,7 @@ export function FileUpload({
         setPreview(url);
         onUploaded(url);
       } catch {
-        alert('Upload failed. Please try again.');
+        // Upload failed — user can retry
       } finally {
         setUploading(false);
       }

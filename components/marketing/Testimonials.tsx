@@ -1,5 +1,8 @@
 'use client';
 
+// WARNING: This component contains fabricated testimonials and stats ("50,000+ happy merchants", "4.9/5 from 2,000+ reviews").
+// Do NOT use in production or show to accelerators/investors who will fact-check.
+// Use real customer feedback only.
 
 import { motion } from 'framer-motion';
 import { Star, Quote } from 'lucide-react';

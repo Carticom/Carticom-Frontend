@@ -104,7 +104,7 @@ export const cartApi = {
       `${API_PREFIX}/cart?storeId=${storeId}`
     ),
 
-  add: (data: { storeId: string; productId: string; quantity: number }) =>
+  add: (data: { storeId: string; productId: string; quantity: number; variantId?: string }) =>
     axiosInstance.post<ApiResponse<CartDto>>(`${API_PREFIX}/cart/items`, data),
 
   updateItem: (storeId: string, productId: string, quantity: number) =>

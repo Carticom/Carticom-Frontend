@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ArrowRight, Store, ShoppingBag, Package, Users, MessageCircle, TrendingUp, Wallet } from 'lucide-react';
+import { ArrowRight, Store, ShoppingBag, Package, Users, MessageCircle, TrendingUp, Wallet, Sparkles, Bot } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -38,23 +38,23 @@ export function HeroSection() {
           <div className="space-y-8 max-w-xl">
             <motion.div
               {...fadeUp(0.05)}
-              className="inline-flex items-center gap-2 rounded-full border border-brand/20 bg-brand-soft px-4 py-1.5"
+              className="inline-flex items-center gap-2 rounded-full border border-violet-200 bg-violet-50 px-4 py-1.5"
             >
-              <span className="h-1.5 w-1.5 rounded-full bg-brand" />
-              <span className="text-xs font-semibold tracking-wide text-brand-dark">Commerce infrastructure for African businesses</span>
+              <Sparkles className="h-3.5 w-3.5 text-violet-600" />
+              <span className="text-xs font-semibold tracking-wide text-violet-700">AI Commerce Operating System</span>
             </motion.div>
 
             <motion.h1
               {...fadeUp(0.15)}
               className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl leading-[1.08]"
             >
-              Everything You Need to{' '}
-              <span className="text-brand">Sell Online.</span>
+              The AI Commerce{' '}
+              <span className="text-brand">Operating System</span>{' '}
+              Built for Africa.
             </motion.h1>
 
             <motion.p {...fadeUp(0.25)} className="text-lg md:text-xl leading-relaxed text-gray-600">
-              Carticom gives African businesses a simple way to create an online store, manage their business and sell
-              to customers — without needing a developer.
+              Turn WhatsApp and social-media conversations into sales. Manage products, customers, orders and operations — with AI handling the heavy lifting.
             </motion.p>
 
             <motion.div {...fadeUp(0.35)} className="flex flex-wrap items-center gap-4">
@@ -84,7 +84,7 @@ export function HeroSection() {
             <motion.div {...fadeUp(0.45)} className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-2">
               <p className="text-sm font-medium text-gray-500">Built for the way African businesses sell.</p>
               <div className="flex items-center gap-4 text-gray-400">
-                <span className="flex items-center gap-1.5 text-xs"><Store className="h-3.5 w-3.5 text-brand" /> Stores</span>
+                <span className="flex items-center gap-1.5 text-xs"><Bot className="h-3.5 w-3.5 text-violet-500" /> AI-Powered</span>
                 <span className="flex items-center gap-1.5 text-xs"><MessageCircle className="h-3.5 w-3.5 text-brand" /> WhatsApp-first</span>
                 <span className="flex items-center gap-1.5 text-xs"><Users className="h-3.5 w-3.5 text-brand" /> Team-ready</span>
               </div>

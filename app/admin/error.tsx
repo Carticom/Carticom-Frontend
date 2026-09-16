@@ -1,6 +1,6 @@
 'use client';
 
-export default function DashboardErrorBoundary({
+export default function AdminErrorBoundary({
   error,
   reset}: {
   error: Error & { digest?: string };
@@ -9,7 +9,7 @@ export default function DashboardErrorBoundary({
   return (
     <div className="flex flex-col items-center justify-center py-20">
       <h2 className="text-2xl font-bold text-gray-900 mb-2">Something went wrong</h2>
-      <p className="text-gray-500 mb-6">An error occurred while loading this page.</p>
+      <p className="text-gray-500 mb-6">An error occurred while loading this admin page.</p>
       <button
         onClick={reset}
         className="px-6 py-2.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors"

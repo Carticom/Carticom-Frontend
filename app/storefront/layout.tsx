@@ -8,7 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Container } from '@/components/common/Container';
 import { cn } from '@/lib/utils';
 import { useAuthStore } from '@/features/auth/store/auth.store';
-import { cartApi, storefrontApi } from '@/features/onboarding/services/onboarding.service';
+import { useCartStore } from '@/store/cart.store';
+import { storefrontApi } from '@/features/onboarding/services/onboarding.service';
 
 export default function StorefrontLayout({
   children}: {
@@ -16,12 +17,13 @@ export default function StorefrontLayout({
 }) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [cartCount, setCartCount] = useState(0);
   const queryStoreId = typeof window !== 'undefined'
     ? new URLSearchParams(window.location.search).get('store')
     : null;
   const [resolvedStoreId, setResolvedStoreId] = useState<string | null>(null);
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const { items, fetchCart, setStoreId } = useCartStore();
+  const cartCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
   const getStoreSlugFromPath = () => {
     if (!pathname) return null;
@@ -41,25 +43,18 @@ export default function StorefrontLayout({
       .then((res) => {
         if (!cancelled && res.data.data?.id) setResolvedStoreId(res.data.data.id);
       })
-      .catch(() => {});
+      .catch(() => {
+        // Store resolution failed — slug may be invalid
+      });
     return () => { cancelled = true; };
   }, [storeSlug, queryStoreId]);
 
   useEffect(() => {
-    let cancelled = false;
-    const load = async () => {
-      try {
-        const res = storeId ? await cartApi.get(storeId) : null;
-        if (cancelled) return;
-        setCartCount(res?.data.data?.items?.length ?? 0);
-      } catch {
-        if (cancelled) return;
-        setCartCount(0);
-      }
-    };
-    load();
-    return () => { cancelled = true; };
-  }, [storeId]);
+    if (storeId) {
+      setStoreId(storeId);
+      fetchCart(storeId);
+    }
+  }, [storeId, fetchCart, setStoreId]);
 
   const isCheckoutPage = pathname?.startsWith('/storefront/checkout');
   const isPreviewPage = pathname?.startsWith('/store/preview/');

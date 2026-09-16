@@ -241,6 +241,9 @@ export interface CartItemDto {
   quantity: number;
   unitPrice: number;
   lineTotal: number;
+  variantId?: string;
+  variantName?: string;
+  variantValue?: string;
   createdAt: string;
   updatedAt: string;
 }

@@ -61,7 +61,9 @@ function GuestCheckoutPageContent() {
           quantity: i.quantity,
         })));
       })
-      .catch(() => {});
+      .catch(() => {
+        // Cart data unavailable — user can manually enter items
+      });
     return () => { cancelled = true; };
   }, [storeId]);
 
