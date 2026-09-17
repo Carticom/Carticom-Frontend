@@ -44,7 +44,7 @@ function exportProductsCsv(products: ProductDto[]) {
     p.sku || '',
     p.price?.toString() || '0',
     p.status,
-    p.quantity?.toString() || '',
+    p.inventory?.quantity?.toString() || '',
     p.categoryName || '',
     p.createdAt ? new Date(p.createdAt).toLocaleDateString() : ''
   ]);

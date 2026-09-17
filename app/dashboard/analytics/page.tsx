@@ -184,8 +184,8 @@ export default function AnalyticsPage() {
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <RevenueLineChart data={trends.revenue.map((t, i) => ({ name: t.label || `Day ${i + 1}`, revenue: t.value, orders: trends.orders[i]?.value || 0 }))} />
-        <SalesBarChart data={trends.revenue.map((t, i) => ({ name: t.label || `Day ${i + 1}`, sales: trends.orders[i]?.value || 0, revenue: t.value }))} />
+        <RevenueLineChart data={trends.revenue.map((t, i) => ({ name: t.date || `Day ${i + 1}`, revenue: t.value, orders: trends.orders[i]?.value || 0 }))} />
+        <SalesBarChart data={trends.revenue.map((t, i) => ({ name: t.date || `Day ${i + 1}`, sales: trends.orders[i]?.value || 0, revenue: t.value }))} />
       </div>
 
       {/* Top Products & Categories */}
